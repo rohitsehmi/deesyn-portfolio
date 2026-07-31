@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Agent memory — a symlink to ~/.claude/projects/…, machine-specific and
+# outside the repo. Committing it would store a broken absolute-path link.
+memory
+
+# Local Claude Code settings (machine-specific permissions)
+.claude/settings.local.json
