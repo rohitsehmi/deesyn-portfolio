@@ -42,6 +42,12 @@ Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development
 - Children of a `SECTION` use **section-relative** x/y, not absolute canvas coords.
 - Always verify layout numerically or by screenshot after building — collapsed frames still report success.
 
+## Repository
+
+`https://github.com/rohitsehmi/revolut-case-studies` — **private**. Keep it private: `CLAUDE.md` and `docs/` state the ask context openly, and the repo reconstructs Revolut's design tokens under their name.
+
+`memory` (symlink to `~/.claude/projects/…`) and `.claude/settings.local.json` are gitignored on purpose — the first would commit a broken absolute path, the second is machine-specific.
+
 ## Tokens
 
 `tokens/tokens.json` — W3C DTCG format, 207 leaf tokens, exported from Figma and checksum-verified against it.
