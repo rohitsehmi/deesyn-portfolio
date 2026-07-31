@@ -72,8 +72,22 @@ Built and visually verified on "Foundations — Revolut":
 - **1 paint style** — `Gradient/Brand` (`#1227fd → #6fa0ff`)
 - **4 specimen sections** — Colour (Light + Dark), Type, Space/Radius/Breakpoints, Elevation
 
+## Banding
+
+`docs/banding-system.md` — band roles, foreground inheritance, adjacency rules, vertical scale, measure. Built on Figma page **Banding** (5 sections).
+
+Bands are **relative, not absolute**: a band declares a tonal role and the mode resolves it. Hardcoding `#ffffff`/`#f7f7f7`/`#000000` would break dark mode.
+
+**Four roles, two variables.** `inverse` and `inverse-raised` are `band/base` and `band/sunken` *under an inverted mode* — not separate fills. An inverse band is the same band in the other theme.
+
+**A band owns the foreground of everything inside it.** In Figma that's `setExplicitVariableModeForCollection` on the band frame — it cascades to grandchildren, so an instance dropped into an inverse band flips at **zero overrides** (asserted in section 03). In CSS it's one attribute re-declaring the custom properties. Caveat: CSS redeclaration is *relative*, Figma's override is *absolute*, so Figma bands must be re-pointed when the same layout is shown in the other theme.
+
+Don't reach for `bg/inverse` when you mean a band — it's `#191c1f`, the app surface, not band black.
+
+**The spec is machine-readable**: `page.getSharedPluginData('banding', 'spec')` returns the whole rule set as JSON, and every band node carries `getPluginData('band')` → `{role, scale}`. A page built from bands can be linted against the adjacency rules rather than checked by eye.
+
 ## Next up
 
-1. **The three case studies** — which three, and what each is *for*. Recommended first: components built before the content is known tend to get built twice.
-2. **The banding system** — full-width `#000000` / `#ffffff` / `#f7f7f7` alternation is the site's core structural move. A layout pattern, not a token.
-3. **Components** — button (48px pill), input (56px), nav (56px), card at r20, case-study tile, footer.
+1. **The three case studies** — which three, and what each is *for*. Recommended first: components built before the content is known tend to get built twice. Also gates the band *rhythm* (§7 of the banding doc).
+2. **Re-export tokens** — `band/base` and `band/sunken` exist in Figma but not yet in `tokens/figma-export.json`, so the checksum is currently stale.
+3. **Components** — button (48px pill, replacing `Demo / Button (stand-in)`), input (56px), nav (56px), card at r20, case-study tile, footer.
