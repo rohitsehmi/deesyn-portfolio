@@ -50,7 +50,7 @@ Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development
 
 ## Tokens
 
-`tokens/tokens.json` — W3C DTCG format, 207 leaf tokens, exported from Figma and checksum-verified against it.
+`tokens/tokens.json` — W3C DTCG format, 211 leaf tokens, exported from Figma and checksum-verified against it (`4127555889`, matched 2026-07-31).
 
 ```bash
 node tokens/build.mjs     # regenerate from tokens/figma-export.json
@@ -66,7 +66,7 @@ node tokens/verify.mjs    # checksum + alias integrity
 Built and visually verified on "Foundations — Revolut":
 
 - **`01 Primitives`** — 113 variables (colour ramp, white/black alphas, `sp50–sp1000`, layout scale, radius, sizing, breakpoints)
-- **`02 Semantic`** — 32 tokens × Light/Dark, every one aliased to a primitive, nothing hardcoded
+- **`02 Semantic`** — 34 tokens × Light/Dark, every one aliased to a primitive, nothing hardcoded
 - **23 text styles** — `Display/*`, `Heading/*`, `Lead/*`, `Body/*`, `Emphasis/*`, plus `UI/*` fenced off as product-only
 - **6 effect styles** — kept for app mockups only; the website itself uses zero shadows
 - **1 paint style** — `Gradient/Brand` (`#1227fd → #6fa0ff`)
@@ -89,5 +89,4 @@ Don't reach for `bg/inverse` when you mean a band — it's `#191c1f`, the app su
 ## Next up
 
 1. **The three case studies** — which three, and what each is *for*. Recommended first: components built before the content is known tend to get built twice. Also gates the band *rhythm* (§7 of the banding doc).
-2. **Re-export tokens** — `band/base` and `band/sunken` exist in Figma but not yet in `tokens/figma-export.json`, so the checksum is currently stale.
-3. **Components** — button (48px pill, replacing `Demo / Button (stand-in)`), input (56px), nav (56px), card at r20, case-study tile, footer.
+2. **Components** — button (48px pill, replacing `Demo / Button (stand-in)`), input (56px), nav (56px), card at r20, case-study tile, footer.

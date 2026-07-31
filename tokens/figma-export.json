@@ -1,6 +1,7 @@
 {
   "_comment": "Raw compact export from Figma file UnybX8G5sQIEhLLZN2YFl6, page 'Foundations — Revolut'. Source of truth. Regenerate via the figma_execute snippet in build.mjs's header comment, then run `node build.mjs`.",
   "_exported": "2026-07-31",
+  "_note": "band.base / band.sunken are the page-banding fills. inverse and inverse-raised are these two under an inverted mode, not separate tokens. See docs/banding-system.md.",
   "P": {
     "brand.accent": "#ea035d",
     "brand.accent-deep": "#400013",
@@ -126,6 +127,8 @@
     "bg.widget": ["alpha.black-4", "alpha.white-6"],
     "bg.widget-hover": ["alpha.black-15", "alpha.white-10"],
     "bg.scrim": ["alpha.black-40", "alpha.black-70"],
+    "band.base": ["neutral.white", "neutral.black"],
+    "band.sunken": ["neutral.20", "neutral.750"],
     "fg.primary": ["neutral.850", "neutral.white"],
     "fg.secondary": ["neutral.500", "alpha.white-70"],
     "fg.tertiary": ["neutral.200", "alpha.white-50"],

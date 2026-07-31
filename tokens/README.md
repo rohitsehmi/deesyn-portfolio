@@ -20,7 +20,7 @@ node tokens/verify.mjs    # checksum + integrity check
 
 ## What's in `tokens.json`
 
-207 leaf tokens, 64 alias references, all resolving.
+211 leaf tokens, 68 alias references, all resolving.
 
 ```
 primitive/        113   raw values — never reference these from components
@@ -36,8 +36,8 @@ primitive/        113   raw values — never reference these from components
   size            19    controls, nav, max-width
   breakpoint      4     425 / 768 / 1024 / 1440
 
-semantic/         32 × 2 modes   ← reference THESE
-  light/ dark/    bg · fg · border · action · status
+semantic/         34 × 2 modes   ← reference THESE
+  light/ dark/    bg · band · fg · border · action · status
 
 typography/       23    display · heading · lead · body · emphasis · ui
 shadow/           6     app mockups only — the site itself uses none
@@ -47,6 +47,8 @@ gradient/         1     brand (#1227fd → #6fa0ff)
 ## Two rules
 
 **1. Components reference `semantic`, never `primitive`.** The whole point of the two-layer split is that re-theming touches one file. A component that reaches for `primitive.brand.action-blue` breaks that.
+
+**1b. `band.base` and `band.sunken` are the page-banding fills.** `inverse` and `inverse-raised` are these two *under an inverted mode*, not separate tokens — which is also why a component dropped into an inverse band flips with no overrides. Don't reach for `bg.inverse` when you mean a band: it's `#191c1f`, the app surface, not band black. See [`../docs/banding-system.md`](../docs/banding-system.md).
 
 **2. Don't use the shadows in site chrome.** A full scan of revolut.com found **zero** `box-shadow`. Depth comes from full-width colour bands (`#000000` / `#ffffff` / `#f7f7f7` / `#1f1f1f`) and luminance shifts. The shadow tokens exist for app-UI mockups *inside* case studies, and are black-alpha only so they do nothing on dark surfaces anyway.
 
