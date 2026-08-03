@@ -1,0 +1,37 @@
+.nav {
+  height: var(--primitive-size-nav);
+  display: flex;
+  align-items: center;
+  padding-inline: var(--primitive-space-sp600);
+  transition:
+    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    border-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+  border-bottom: 1px solid transparent;
+}
+@media (min-width: 1024px) { .nav { padding-inline: var(--primitive-layout-l48); } }
+
+.nav[data-state='top'] { background: transparent; }
+.nav[data-state='scrolled'] {
+  background: var(--semantic-bg-canvas);
+  border-bottom-color: var(--semantic-border-subtle);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-space-sp600);
+  width: 100%;
+  max-width: var(--primitive-size-max-width);
+  margin-inline: auto;
+}
+.nav__logo { display: inline-flex; color: var(--semantic-fg-primary); margin-right: auto; }
+.nav__logo:focus-visible { outline: 2px solid var(--semantic-border-focus); outline-offset: 4px; border-radius: 4px; }
+.nav__links { display: none; gap: var(--primitive-space-sp200); }
+.nav__actions { display: none; }
+.nav__menu { display: inline-flex; }
+
+/* One line at desktop, always. If items do not fit, cut them. */
+@media (min-width: 768px) {
+  .nav__links, .nav__actions { display: inline-flex; align-items: center; }
+  .nav__menu { display: none; }
+}

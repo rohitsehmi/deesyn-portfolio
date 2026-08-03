@@ -1,0 +1,22 @@
+/* Minimal base. Everything else comes from tokens.css. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--semantic-bg-canvas);
+  color: var(--semantic-fg-primary);
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+:where(button, input, select, textarea) { font: inherit; color: inherit; }
+:where(a) { color: var(--semantic-fg-link); }
+
+/* Motion is opt-in to movement, never mandatory. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

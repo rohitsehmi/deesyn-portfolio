@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import { Nav } from '../components/Nav';
+import { Band } from '../components/Band';
+import { Footer } from '../components/Footer';
+import { Button } from '../components/Button';
+
+// Placeholder until the three case studies are chosen. The band rhythm is
+// deliberately not settled here — see docs/banding-system.md §7.
+const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/' }];
+---
+<Base title="Rohit Sehmi — Product Design">
+  <Band role="base" scale="compact">
+    <Nav client:load state="top" links={links} />
+  </Band>
+
+  <main id="main">
+    <Band role="base" scale="feature">
+      <h1 style="margin:0 0 24px; font:500 clamp(40px,7vw,64px)/1 'Hanken Grotesk',Inter,sans-serif; letter-spacing:-0.0156em; max-width:16ch;">
+        Product design, end to end.
+      </h1>
+      <p style="margin:0 0 32px; max-width:60ch; font:400 18px/1.55 Inter,sans-serif; color:var(--semantic-fg-secondary);">
+        Three case studies are being written. The design system they will be built
+        from is already here — tokens, bands, and components, all verified against Figma.
+      </p>
+      <Button client:visible variant="primary" size="lg" iconTrailing="arrow-thin-right" href="/">
+        Work in progress
+      </Button>
+    </Band>
+
+    <Band role="inverse" scale="default">
+      <p style="margin:0; max-width:52ch; font:500 clamp(24px,4vw,32px)/1.12 'Hanken Grotesk',Inter,sans-serif; letter-spacing:-0.01em;">
+        Nothing in this band declares its own colour. The band re-declares the
+        semantic properties for everything inside it.
+      </p>
+    </Band>
+  </main>
+
+  <Band role="base" scale="compact">
+    <Footer scale="compact" />
+  </Band>
+</Base>

@@ -1,0 +1,35 @@
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  border-radius: var(--primitive-radius-round);
+  transition:
+    transform var(--semantic-duration-press) var(--semantic-easing-out),
+    background-color var(--semantic-duration-press) var(--semantic-easing-out);
+}
+
+/* One token per axis — that is what keeps it a circle rather than a stadium. */
+.icon-button[data-size='sm'] { width: var(--primitive-size-button-sm); height: var(--primitive-size-button-sm); }
+.icon-button[data-size='md'] { width: var(--primitive-size-button-md); height: var(--primitive-size-button-md); }
+.icon-button[data-size='lg'] { width: var(--primitive-size-button-lg); height: var(--primitive-size-button-lg); }
+
+.icon-button[data-variant='primary']   { background: var(--semantic-action-primary-bg);   color: var(--semantic-action-primary-fg); }
+.icon-button[data-variant='secondary'] { background: var(--semantic-action-secondary-bg); color: var(--semantic-action-secondary-fg); }
+.icon-button[data-variant='ghost']     { background: transparent;                          color: var(--semantic-action-secondary-fg); }
+
+@media (hover: hover) and (pointer: fine) {
+  .icon-button[data-variant='primary']:hover   { background: var(--semantic-action-primary-bg-hover); }
+  .icon-button[data-variant='secondary']:hover { background: var(--semantic-action-secondary-bg-hover); }
+  .icon-button[data-variant='ghost']:hover     { background: var(--semantic-action-ghost-bg-hover); }
+}
+.icon-button:active:not(:disabled) { transform: scale(0.97); }
+.icon-button:focus-visible { outline: 2px solid var(--semantic-border-focus); outline-offset: 2px; }
+.icon-button:disabled {
+  background: var(--semantic-action-disabled-bg);
+  color: var(--semantic-action-disabled-fg);
+  cursor: not-allowed; transform: none;
+}
+.icon-button[data-variant='ghost']:disabled { background: transparent; }

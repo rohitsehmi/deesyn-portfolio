@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    name: Verify design system
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+
+      # These are the checks that stop Figma and code drifting apart. Both exit
+      # non-zero on failure, so a renamed or deleted token breaks the build
+      # rather than quietly producing a component that references nothing.
+      - name: Tokens — checksum and alias integrity
+        run: node tokens/verify.mjs
+      - name: Components — token integrity, no literals, checksum
+        run: node design/verify.mjs
+
+      # Regenerating must be a no-op. If it is not, someone hand-edited a
+      # generated file instead of changing Figma and re-exporting.
+      - name: Generated files are up to date
+        run: |
+          npm run tokens
+          npm run specs
+          git diff --exit-code -- src/styles/tokens.css tokens/tokens.json \
+            icons/ marks/ components/ \
+            || (echo "::error::Generated files are stale — run npm run tokens && npm run specs" && exit 1)
+
+      - run: npx astro build
+
+  chromatic:
+    name: Visual regression
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }   # Chromatic needs history to detect changes
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          buildScriptName: build-storybook
+          exitZeroOnChanges: true

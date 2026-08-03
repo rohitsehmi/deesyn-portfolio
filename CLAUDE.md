@@ -6,7 +6,18 @@ Guidance for Claude Code when working in this repository.
 
 A portfolio website showcasing a **maximum of three case studies**, for Rohit Sehmi's design work.
 
-Started 2026-07-31. No site code exists yet — the work so far is design foundations in Figma.
+Started 2026-07-31. **Stack: Astro + React.** Astro for the site and MDX case studies so pages ship no JS unless a component opts in; plain React for components so Storybook and Chromatic work normally.
+
+```bash
+npm run dev          # Astro dev server
+npm run storybook    # component workshop
+npm run tokens       # tokens.json -> src/styles/tokens.css
+npm run specs        # Figma export -> <domain>/specs/
+npm run verify       # token + component integrity, exits non-zero on failure
+npm run chromatic    # visual regression (needs CHROMATIC_PROJECT_TOKEN)
+```
+
+**The Chromatic project token is a write credential.** It lives in `.env` (gitignored) and a GitHub Actions secret, never in the repo or on a command line. `.env.example` documents it.
 
 ## Decisions already made — do not re-litigate
 
@@ -113,6 +124,16 @@ Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Varia
 `Action/Icon Button` is square: one size token drives both axes, so `Radius/Round` is a true circle at 32/44/48. Separate from `Action/Button` because the shape contract differs *and* **`aria-label` is required, not optional**.
 
 **Open question:** Nav and Footer instance `variant=wordmark`, so the site chrome currently presents Revolut's wordmark as the site's own identity. Fine in a private design-system file; a decision before anything is published.
+
+`src/components/` holds the React implementation — one file plus one CSS file per component, consuming tokens as CSS custom properties. `src/components/Band.tsx` implements the banding system: `data-band` re-declares the semantic properties for its subtree, which is the CSS equivalent of Figma's mode override.
+
+**Three things live only in code, because Figma cannot express them:**
+
+- **State is CSS, not a variant.** Figma needs `state=hover|disabled` as a variant axis; code uses `:hover` and `:disabled`. Same contract, different mechanism.
+- **Press feedback.** `transform: scale(0.97)` over `duration/press` with `easing/out`.
+- **Required props.** `IconButton`'s `aria-label` is a required TypeScript prop — the type system enforces what a variant never could.
+
+Every story renders inside a band, and the Storybook toolbar switches the band role, so the zero-override property is checked the same way it is asserted in Figma. Chromatic snapshots each story light and dark.
 
 ### Contracts
 

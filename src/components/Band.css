@@ -1,0 +1,27 @@
+/* Vertical scale from primitive.layout.*, symmetrical, responsive.
+   The band's own fill and foreground come from [data-band] in tokens.css. */
+.band { width: 100%; }
+
+.band[data-scale='compact'] { padding-block: var(--primitive-layout-l40); }
+.band[data-scale='default'] { padding-block: var(--primitive-layout-l64); }
+.band[data-scale='feature'] { padding-block: var(--primitive-layout-l80); }
+
+@media (min-width: 768px) {
+  .band[data-scale='compact'] { padding-block: var(--primitive-layout-l64); }
+  .band[data-scale='default'] { padding-block: var(--primitive-layout-l96); }
+  .band[data-scale='feature'] { padding-block: var(--primitive-layout-l128); }
+}
+@media (min-width: 1024px) {
+  .band[data-scale='compact'] { padding-block: var(--primitive-layout-l80); }
+  .band[data-scale='default'] { padding-block: var(--primitive-layout-l128); }
+  .band[data-scale='feature'] { padding-block: var(--primitive-layout-l200); }
+}
+
+/* Measure: 1000px, measured off the live site. The fill is always full width. */
+.band__measure {
+  max-width: var(--primitive-size-max-width);
+  margin-inline: auto;
+  padding-inline: var(--primitive-space-sp600);
+}
+@media (min-width: 768px)  { .band__measure { padding-inline: var(--primitive-space-sp1000); } }
+@media (min-width: 1024px) { .band__measure { padding-inline: var(--primitive-layout-l40); } }

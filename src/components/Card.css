@@ -1,0 +1,28 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;                       /* so media respects the radius */
+  border-radius: var(--primitive-radius-r20);
+  border: 1px solid var(--semantic-border-subtle);
+  text-decoration: none;
+  color: inherit;
+  transition: background-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+.card[data-variant='base']   { background: var(--semantic-bg-surface); }
+.card[data-variant='sunken'] { background: var(--semantic-bg-subtle); }
+
+@media (hover: hover) and (pointer: fine) {
+  .card[data-interactive='true'][data-variant='base']:hover   { background: var(--semantic-bg-surface-raised); }
+  .card[data-interactive='true'][data-variant='sunken']:hover { background: var(--semantic-bg-surface); }
+}
+.card:focus-visible { outline: 2px solid var(--semantic-border-focus); outline-offset: 2px; }
+
+.card__media { margin: 0; }
+.card__media .media__frame { border-radius: 0; }   /* bleeds to the card edge */
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp600);
+  padding: var(--primitive-space-sp1000);
+}
+.card__actions { display: flex; gap: var(--primitive-space-sp400); }
