@@ -112,10 +112,11 @@ Gutters are a decision, not measured. **Heroes and photography run full-bleed pa
 
 ## 6. Where this is built
 
-Figma file **Revolut**, page **Banding**. Five sections:
+Figma file **Revolut**, page **Banding**. Six sections:
 
 | Section | What it is |
 |---|---|
+| `00 · The system` | This document, rendered on canvas. The role table's swatches are **live** — bound to `band/base` and `band/sunken` with explicit mode overrides, so "four roles, two variables" proves itself rather than being asserted. |
 | `01 · Band — component set` | 12 variants, `role` (4) × `scale` (3). The variant schema is the API. |
 | `02 · Legal sequence` | An 8-band page in Light and Dark, built from real instances. |
 | `03 · Foreground inheritance` | The same button instance on `base` and `inverse`. Asserted at **0 overrides** on both. |
@@ -132,7 +133,7 @@ figma.root.children
 
 Every individual band node also carries `getPluginData('band')` → `{role, scale}`, so a page built from bands can be **linted against the adjacency rules automatically** rather than by eye. That's the part Revolut doesn't have: they publish 378 CSS custom properties and no structure, and the structure is the hard bit to reverse-engineer.
 
-**Nothing is hardcoded.** Audited across all 191 nodes: zero unbound fills, zero unbound strokes, zero raw padding values, zero unstyled text. Every colour is a `semantic` variable, every padding and gap a `Layout/*` or `Space/*` variable, every text a shared style. (Figma `SECTION` nodes carry an unbindable default fill — canvas chrome, not design content.)
+**Nothing is hardcoded.** Audited across every node (191 at the time of writing, plus 85 text nodes in `00 · The system`): zero unbound fills, zero unbound strokes, zero raw padding values, zero unstyled text. Every colour is a `semantic` variable, every padding and gap a `Layout/*` or `Space/*` variable, every text a shared style. (Figma `SECTION` nodes carry an unbindable default fill — canvas chrome, not design content.)
 
 `Demo / Button (stand-in)` exists only to prove foreground inheritance. The real button is a separate task and should replace it.
 

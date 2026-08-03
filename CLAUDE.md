@@ -141,6 +141,8 @@ Don't reach for `bg/inverse` when you mean a band — it's `#191c1f`, the app su
 
 **The spec is machine-readable**: `page.getSharedPluginData('banding', 'spec')` returns the whole rule set as JSON, and every band node carries `getPluginData('band')` → `{role, scale}`. A page built from bands can be linted against the adjacency rules rather than checked by eye.
 
+**The reasoning is on canvas too.** Section `00 · The system` renders the explanation from `docs/banding-system.md` in Figma, so the page is self-explaining without the repo open. Its role-table swatches are live — bound to `band/base` / `band/sunken` under explicit mode overrides — so "four roles, two variables" demonstrates itself instead of being claimed.
+
 ## Skills
 
 Two project skills in `.claude/skills/`, deliberately non-overlapping:
