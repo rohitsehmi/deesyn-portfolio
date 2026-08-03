@@ -1,29 +1,8 @@
 {
-  "$description": "Component contracts, generated from Figma. Do not edit by hand — run node components/build.mjs.",
+  "$description": "Contracts for Figma page \"Components\". Generated — do not edit by hand. Run node design/build.mjs.",
+  "figmaPage": "Components",
   "generated": "2026-08-03",
   "components": [
-    {
-      "name": "Icon",
-      "slug": "icon",
-      "variants": 12,
-      "axes": [
-        "name"
-      ],
-      "slots": [],
-      "spec": "components/specs/icon.json",
-      "doc": "components/specs/icon.md"
-    },
-    {
-      "name": "Brand/Logo",
-      "slug": "brand-logo",
-      "variants": 2,
-      "axes": [
-        "variant"
-      ],
-      "slots": [],
-      "spec": "components/specs/brand-logo.json",
-      "doc": "components/specs/brand-logo.md"
-    },
     {
       "name": "Action/Button",
       "slug": "action-button",

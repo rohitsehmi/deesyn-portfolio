@@ -1,8 +1,8 @@
-# Components
+# Marks
 
-Contracts for Figma page **Components** — the 9 UI components — 78 variants.
+Contracts for Figma page **Marks** — brand marks — the Revolut wordmark and a mark.
 
-These have real variant matrices, states and slots. Icons and marks live in [`../icons/`](../icons/) and [`../marks/`](../marks/) because they behave differently.
+A mark is brand furniture, not a component: `variant=wordmark|mark` selects an asset, it does not express state. It is consumed by `Chrome/Nav` and `Chrome/Footer`.
 
 ## Files
 

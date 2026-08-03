@@ -6,7 +6,7 @@ mark: placeholder. Rohit's own logo goes here — it lives in the CV-Build Figma
 
 NOTE: Chrome/Nav and Chrome/Footer both instance variant=wordmark, so the site chrome currently shows Revolut's wordmark as its own identity.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Brand/Logo`. 2 variants.
+Figma: page **Marks**, set `Brand/Logo` — 2 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -16,7 +16,7 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Brand/Logo`. 2 v
 
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### variant=wordmark
 

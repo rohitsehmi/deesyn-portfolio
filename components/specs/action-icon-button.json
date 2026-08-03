@@ -1,10 +1,12 @@
 {
   "name": "Action/Icon Button",
   "slug": "action-icon-button",
+  "domain": "components",
   "figma": {
     "file": "UnybX8G5sQIEhLLZN2YFl6",
     "page": "Components",
-    "set": "Action/Icon Button"
+    "set": "Action/Icon Button",
+    "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Square: one size token drives both axes, so Radius/Round resolves to a true circle at every size. 32 / 44 / 48 from Size/Button *, with 16 / 20 / 24 icons.\n\nSeparate from Action/Button on purpose. The shape contract differs — square and fixed, not hug-width — and so does the accessibility contract: with no visible text, aria-label is required, not optional. Folding it into Button would also have doubled that set to 54 variants.\n\nPress is scale(0.97) over duration/press with easing/out — documented, not drawn, as everywhere else.\n\nCode-only props: aria-label (REQUIRED), href, target, analytics-id.",
   "variantAxes": {

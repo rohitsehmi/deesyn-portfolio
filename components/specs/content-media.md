@@ -2,7 +2,7 @@
 
 Real screenshots and photography only — never a product UI faked out of rectangles. inset carries r20; bleed is square because it runs to the band edge. Caption is a text property, not a slot: captions are plain text, and decorative photo credits are banned.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Content/Media`. 8 variants.
+Figma: page **Components**, set `Content/Media` — 8 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -20,7 +20,7 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Content/Media`. 
 
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### ratio=16-9, fit=inset · ratio=4-3, fit=inset · ratio=1-1, fit=inset · ratio=3-4, fit=inset
 

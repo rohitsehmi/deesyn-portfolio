@@ -10,7 +10,7 @@ Code-only props: href per column link, mailto address.
 
 The columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Chrome/Footer`. 2 variants.
+Figma: page **Components**, set `Chrome/Footer` — 2 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -24,9 +24,13 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Chrome/Footer`. 
 |---|---|---|
 | `columns` | SLOT | — |
 
+## Slots
+
+- `columns`
+
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### scale=compact
 

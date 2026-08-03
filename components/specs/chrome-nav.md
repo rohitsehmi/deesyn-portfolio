@@ -10,7 +10,7 @@ Code-only props: href per link, aria-current, skip-to-content target.
 
 The actions slot is 140x56 and fills vertically. A SLOT cannot hug on either axis — it is FIXED or FILL — so it needs an explicit size and its content needs positioning inside it.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Chrome/Nav`. 4 variants.
+Figma: page **Components**, set `Chrome/Nav` — 4 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -25,9 +25,13 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Chrome/Nav`. 4 v
 |---|---|---|
 | `actions` | SLOT | — |
 
+## Slots
+
+- `actions`
+
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### layout=desktop, state=top
 

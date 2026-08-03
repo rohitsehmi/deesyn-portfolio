@@ -1,10 +1,12 @@
 {
   "name": "Content/Tag",
   "slug": "content-tag",
+  "domain": "components",
   "figma": {
     "file": "UnybX8G5sQIEhLLZN2YFl6",
     "page": "Components",
-    "set": "Content/Tag"
+    "set": "Content/Tag",
+    "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Metadata only — role, year, platform. Pill radius to match Button, so the page has one interactive-shape system. Never overlaid on an image.",
   "variantAxes": {

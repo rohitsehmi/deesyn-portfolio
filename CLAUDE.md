@@ -26,7 +26,17 @@ Rule: **measure the live site; don't trust secondhand design docs.** A third-par
 
 ## Figma
 
-File **"Revolut"** — `UnybX8G5sQIEhLLZN2YFl6`. Page **"Foundations — Revolut"** holds the built system. The original "Foundations" page (an Expedia EGDS template) is reference scaffolding only — not ours.
+File **"Revolut"** — `UnybX8G5sQIEhLLZN2YFl6`. Pages, and the repo folder each mirrors:
+
+| Page | Repo | Holds |
+|---|---|---|
+| **Foundations — Revolut** | `tokens/` | 246 tokens, 23 text styles, specimens |
+| **Banding** | `docs/banding-system.md` | `Layout/Band` + adjacency rules |
+| **Icons** | `icons/` | the icon set |
+| **Marks** | `marks/` | brand marks |
+| **Components** | `components/` | the 9 UI components |
+
+The original "Foundations" page (an Expedia EGDS template) is reference scaffolding only — not ours.
 
 Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development → **Figma Desktop Bridge** (manifest `~/.figma-console-mcp/plugin/manifest.json`). The plugin window must stay open.
 
@@ -88,60 +98,34 @@ Machine-readable, same pattern as banding: `page.getSharedPluginData('motion', '
 
 ## Components
 
-Figma page **Components**. Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`, `Brand/*`, plus top-level `Icon`. Variant props are **lowercase** (`variant=primary, size=lg`), booleans kebab-case, slot names lowercase nouns.
+Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Variant props are **lowercase** (`variant=primary, size=lg`), booleans kebab-case, slot names lowercase nouns.
 
-Built — **92 variants across 11 sets**: `Icon` (12), `Brand/Logo` (2), `Action/Button` (27), `Action/Icon Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2). `Layout/Band` (12) lives on the Banding page.
+**92 variants across 11 sets, split across three pages:**
 
-`Brand/Logo` — `wordmark` is **Revolut's real wordmark**, verbatim from the live site's inline SVG at its natural 145×32, fill bound to `fg/primary` (the equivalent of `var(--rui-color-foreground)`, so it goes white on an inverse band with no override). `mark` is still a text stand-in; Rohit's own logo lives in the **CV-Build** Figma file and needs the Desktop Bridge plugin open *in that file* before it can be pulled across — the bridge can't open a file on its own.
+- **Icons** (`icons/`) — `Icon` (12). Real Revolut assets, filled paths, verbatim from `assets.revolut.com`. `arrow-up-right` is `ArrowThinRight` rotated +45°; Revolut ships no diagonal arrow and no plain `ArrowRight` either.
+- **Marks** (`marks/`) — `Brand/Logo` (2). `wordmark` is Revolut's real wordmark, fill bound to `fg/primary` (the equivalent of `var(--rui-color-foreground)`). `mark` is a stand-in; Rohit's logo is in the **CV-Build** file, which needs the Desktop Bridge plugin open *in it* before the asset can be pulled across.
+- **Components** (`components/`) — `Action/Button` (27), `Action/Icon Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2).
 
-**Open question:** Nav and Footer both instance `variant=wordmark`, so the site chrome currently presents Revolut's wordmark as the site's own identity. Fine for a design-system demonstration in a private file; a decision to make before anything is published.
+`Layout/Band` (12) stays on the Banding page — a page-layout primitive with adjacency rules, not a UI component.
 
-`Action/Icon Button` is square — one size token drives both axes, so `Radius/Round` resolves to a true circle at 32/44/48 with 16/20/24 icons. It's separate from `Action/Button` because the shape contract differs *and* the a11y contract is stricter: with no visible text, **`aria-label` is required, not optional**. Folding it in would also have taken that set to 54 variants.
+**Icons and marks are not components.** An icon is a flat, growing asset collection with no configuration axis; a mark is brand furniture where `variant` selects an asset rather than expressing state. Both are consumed *by* components — `Chrome/Nav` nests both.
 
-### Icons are real Revolut assets
+`Action/Icon Button` is square: one size token drives both axes, so `Radius/Round` is a true circle at 32/44/48. Separate from `Action/Button` because the shape contract differs *and* **`aria-label` is required, not optional**.
 
-Every icon is pulled verbatim from `assets.revolut.com/assets/icons` — **filled paths, not strokes**, because Revolut's icon system is fill-based and mono (CSS mask + `currentColor`). The Figma equivalent is a bound fill. Hand-drawn approximations were replaced; the rule is the same one that governs the tokens: **measure the live site.**
+**Open question:** Nav and Footer instance `variant=wordmark`, so the site chrome currently presents Revolut's wordmark as the site's own identity. Fine in a private design-system file; a decision before anything is published.
 
-Two things this settled:
+### Contracts
 
-- **Revolut ships no plain `ArrowRight`.** The thin arrow *is* its arrow, so `arrow-right` / `arrow-left` don't exist here — only `arrow-thin-*`.
-- **`arrow-up-right` is `ArrowThinRight` rotated +45°.** Revolut has no diagonal arrow, and rotating the real asset keeps its exact weight rather than inventing one.
+The spec lives **on each component set**, not in a page-level blob: `set.getSharedPluginData('spec', 'contract')`, rendered on canvas in that component's own section.
 
-Components tint whichever paint a vector actually uses (fill *or* stroke), so a swapped icon still recolours.
-
-**Tier 1 is complete.** Everything remaining — case-study tile, heroes, prose and image blocks, quote, outcome, next-study link — waits on the three case studies, because their shape is a content decision. So is the band rhythm (§7 of the banding doc).
-
-Nav links are ghost buttons — that is what the ghost variant exists for. Nav `state=top` is transparent so it inherits whatever band it sits over; Footer is transparent for the same reason.
-
-**Contact is a `mailto:`, not a form.** No backend, and a portfolio contact form converts worse. Input and Form are deliberately not in the inventory.
-
-`Layout/Card` is the only slot user: `media`, `content`, `actions`. Padding sits on the body frame, not the card, so media bleeds to the edge while content stays inset.
-
-Machine-readable in two places. In Figma: `page.getSharedPluginData('components', 'spec')`, rendered on canvas as section `11 · Machine-readable spec`.
-
-**In the repo: `components/`.** One contract per component in `components/specs/*.json` (plus a readable `.md`), generated from the Figma nodes' *bound variables* — not from plugin data, not hand-written. See `components/README.md`.
+Mirrored in the repo under `icons/specs/`, `marks/specs/`, `components/specs/` — one JSON + one Markdown per component, generated from the nodes' *bound variables*, not from plugin data or prose.
 
 ```bash
-node components/build.mjs    # regenerate specs/ from components/figma-export.json
-node components/verify.mjs   # integrity + no-literals + checksum
+node design/build.mjs    # regenerate every <domain>/specs/
+node design/verify.mjs   # integrity + no-literals + checksum
 ```
 
-`components/verify.mjs` **cross-checks every component token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `components/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-03: `2019599942`, 11 components / 92 variants / 43 tokens.
-
-### Plugin API traps found while building
-
-These cost rebuild cycles and are not obvious:
-
-- **`INSTANCE_SWAP` defaults take a node id, not a component key.** The key fails validation.
-- **`setTextStyleIdAsync` reclaims `textDecoration`.** Apply underline in a *later* pass or it silently reverts to `NONE`.
-- **Inside a component set, layers matched by name sync text style and decoration across variants.** Components that must differ typographically have to be separate sets — this is why `Action/Link` and `Action/Arrow Link` are two components, not one set with a `variant` axis.
-- Slots exist: `component.createSlot()` returns a `SLOT` node and auto-creates its property. It is *not* `figma.createSlot`.
-- **A `SLOT` is not an auto-layout frame.** Children placed inside one cannot use `FILL` sizing — set `FILL` on the slot itself and size the content explicitly.
-- **`SLOT` carries its own fill, opaque white by default.** Clear it (`slot.fills = []`) or it paints over the band: invisible on a light band, a white box on an inverse one.
-- **A `SLOT` cannot HUG on either axis** — `FIXED` or `FILL` only. Every slot needs an explicit size, and its content needs positioning inside it. A slot left at its 100×100 default silently blows out the row it sits in.
-- Deleting a `SECTION` deletes the component sets inside it. Moving a set into a section then removing the section destroys the set.
-- **Rotation is counterclockwise-positive.** `+45` turns a right arrow into up-right; `-45` gives down-right.
-- To change an icon without breaking every instance that references it, **replace the geometry in place** and rename the component. Deleting and recreating detaches every nested instance.
+`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-03: `4183560310`, 127 entries. See `design/README.md`.
 
 ## Banding
 

@@ -1,8 +1,8 @@
-# Components
+# Icons
 
-Contracts for Figma page **Components** — the 9 UI components — 78 variants.
+Contracts for Figma page **Icons** — the icon set — 12 real Revolut assets, used verbatim from `assets.revolut.com`.
 
-These have real variant matrices, states and slots. Icons and marks live in [`../icons/`](../icons/) and [`../marks/`](../marks/) because they behave differently.
+An icon is an asset, not a component: a flat, growing collection with no configuration axis. It is consumed by `Action/Button`, `Action/Icon Button`, `Action/Arrow Link` and `Chrome/Nav` via `INSTANCE_SWAP`.
 
 ## Files
 

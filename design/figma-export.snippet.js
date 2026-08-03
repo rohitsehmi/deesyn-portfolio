@@ -1,28 +1,31 @@
 /**
- * The canonical Figma → components/figma-export.json snippet.
+ * The canonical Figma → design/figma-export.json snippet.
  *
  * Run via the Figma Console MCP `figma_execute` with the Desktop Bridge plugin
- * open on file UnybX8G5sQIEhLLZN2YFl6, page "Components". It returns the whole
- * export plus a checksum — paste the export into components/figma-export.json,
- * then run `node components/build.mjs`.
+ * open on file UnybX8G5sQIEhLLZN2YFl6. It walks the Icons, Marks and Components
+ * pages, and does two things:
  *
- * If the returned checksum matches `node components/verify.mjs`, the repo is a
- * faithful mirror of the Figma file. Last matched: 2026-08-03, checksum
- * 2019599942, 11 components / 92 variants / 67 token sets.
+ *   1. writes each component set's own contract back onto it, as
+ *      setSharedPluginData('spec', 'contract', json) — so the spec lives beside
+ *      the component in Figma, not in one page-level blob;
+ *   2. returns the combined export plus a checksum. Paste the export into
+ *      design/figma-export.json, then run `node design/build.mjs`.
  *
- * This reads BOUND VARIABLES off the nodes — it does not trust plugin data or
- * anything hand-written. If a value was hardcoded in Figma it simply will not
- * appear, which is why verify.mjs also asserts there are no literals.
+ * Matching checksum against `node design/verify.mjs` means the repo is a
+ * faithful mirror. Last matched: 2026-08-03, checksum 4183560310, 127 entries,
+ * 11 components / 92 variants / 67 token sets.
  *
- * Not imported by anything; it is reference text for code that runs inside
- * Figma's plugin sandbox, where `figma` is global.
+ * This reads BOUND VARIABLES off the nodes. It does not trust plugin data or
+ * anything hand-written — which is why verify.mjs also asserts no literals.
+ *
+ * Not imported by anything; reference text for code that runs inside Figma's
+ * plugin sandbox, where `figma` is global.
  */
 
 /* eslint-disable */
 // prettier-ignore
 export const SNIPPET = String.raw`
-const page = figma.root.children.find(p => p.name === 'Components');
-await figma.setCurrentPageAsync(page);
+await figma.loadAllPagesAsync();
 
 const colls = await figma.variables.getLocalVariableCollectionsAsync();
 const varName = {};
@@ -33,7 +36,6 @@ for (const c of colls) for (const id of c.variableIds) {
 const styleName = {};
 for (const s of await figma.getLocalTextStylesAsync()) styleName[s.id] = s.name;
 
-// resolve every bound variable on a node to its token NAME
 function bind(n) {
   const o = {}, bv = n.boundVariables || {};
   for (const [k, val] of Object.entries(bv)) {
@@ -67,8 +69,7 @@ function compact(map) {
 const pool = [], poolKey = new Map();
 const intern = (o) => { const s = JSON.stringify(o); if (!poolKey.has(s)) { poolKey.set(s, pool.length); pool.push(o); } return poolKey.get(s); };
 
-const components = {};
-for (const set of page.findAll(n => n.type === 'COMPONENT_SET')) {
+function contractFor(set) {
   const defs = set.componentPropertyDefinitions || {};
   const props = {};
   for (const [k, d] of Object.entries(defs)) {
@@ -81,8 +82,7 @@ for (const set of page.findAll(n => n.type === 'COMPONENT_SET')) {
   for (const c of set.children) {
     const map = {};
     for (const n of [c, ...c.findAll(() => true)]) {
-      const p = pathOf(n, c);
-      const b = bind(n);
+      const p = pathOf(n, c), b = bind(n);
       if (Object.keys(b).length) map[p] = b;
       if (n.type === 'TEXT') {
         map[p] = map[p] || {};
@@ -95,26 +95,46 @@ for (const set of page.findAll(n => n.type === 'COMPONENT_SET')) {
     for (const [k, o] of Object.entries(c2)) if (o.bg && (o.textStyle || /Vector$/.test(k))) { o.fg = o.bg; delete o.bg; }
     variants[c.name] = { size: [Math.round(c.width), Math.round(c.height)], t: intern(c2) };
   }
-  components[set.name] = { description: set.description || '', props, variants };
+  return { description: set.description || '', props, variants };
+}
+
+// domains mirror Figma pages one-to-one
+const PAGES = { icons: 'Icons', marks: 'Marks', components: 'Components' };
+const domains = {};
+for (const [domain, pageName] of Object.entries(PAGES)) {
+  const page = figma.root.children.find(p => p.name === pageName);
+  domains[domain] = { page: pageName, components: {} };
+  for (const set of page.findAll(n => n.type === 'COMPONENT_SET')) {
+    const c = contractFor(set);
+    domains[domain].components[set.name] = c;
+    // the spec lives beside the component, not in a page-level blob
+    set.setSharedPluginData('spec', 'contract', JSON.stringify({
+      component: set.name, variantCount: set.children.length, ...c,
+      tokenSets: Object.values(c.variants).map(v => pool[v.t])
+    }));
+  }
 }
 
 // checksum — keep in sync with canonical() in verify.mjs
+const flat = [];
+for (const [domain, d] of Object.entries(domains))
+  for (const name of Object.keys(d.components)) flat.push([domain, name, d.components[name]]);
+flat.sort((a, b) => (a[0] + a[1]).localeCompare(b[0] + b[1]));
 const parts = [];
-for (const name of Object.keys(components).sort()) {
-  const c = components[name];
+for (const [domain, name, c] of flat) {
   for (const k of Object.keys(c.props).sort()) {
-    const d = c.props[k];
-    parts.push('P|' + name + '|' + k + '|' + d.type + '|' + (d.values || []).join(','));
+    const p = c.props[k];
+    parts.push('P|' + domain + '|' + name + '|' + k + '|' + p.type + '|' + (p.values || []).join(','));
   }
   for (const vn of Object.keys(c.variants).sort()) {
     const v = c.variants[vn], set = pool[v.t];
-    const flat = Object.keys(set).sort().map(node =>
-      node + '{' + Object.keys(set[node]).sort().map(p => p + '=' + set[node][p]).join(',') + '}').join(';');
-    parts.push('V|' + name + '|' + vn + '|' + v.size.join('x') + '|' + flat);
+    const f = Object.keys(set).sort().map(n =>
+      n + '{' + Object.keys(set[n]).sort().map(p => p + '=' + set[n][p]).join(',') + '}').join(';');
+    parts.push('V|' + domain + '|' + name + '|' + vn + '|' + v.size.join('x') + '|' + f);
   }
 }
 const str = parts.join('\n');
 let h = 0; for (let i = 0; i < str.length; i++) h = (Math.imul(h, 31) + str.charCodeAt(i)) >>> 0;
 
-return { components, tokenSets: pool, entries: parts.length, length: str.length, checksum: h };
+return { domains, tokenSets: pool, entries: parts.length, length: str.length, checksum: h };
 `;

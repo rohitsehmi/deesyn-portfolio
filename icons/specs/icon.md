@@ -8,7 +8,7 @@ Revolut has no plain ArrowRight either — the thin arrow IS its arrow, which is
 
 Fill binds to fg/primary. Components tint whichever paint a vector uses.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Icon`. 12 variants.
+Figma: page **Icons**, set `Icon` — 12 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -18,7 +18,7 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Icon`. 12 varian
 
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### name=arrow-thin-right · name=arrow-thin-left · name=arrow-up-right · name=chevron-down · name=chevron-right · name=cross · name=menu · name=envelope · name=arrow-thin-up · name=arrow-thin-down · name=chevron-up · name=link
 

@@ -1,10 +1,12 @@
 {
   "name": "Icon",
   "slug": "icon",
+  "domain": "icons",
   "figma": {
     "file": "UnybX8G5sQIEhLLZN2YFl6",
-    "page": "Components",
-    "set": "Icon"
+    "page": "Icons",
+    "set": "Icon",
+    "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Every icon is a real Revolut asset from assets.revolut.com, used verbatim — filled paths, matching Revolut's own fill-based mono system. No hand-drawn approximations.\n\nThe one exception is arrow-up-right: Revolut ships no diagonal arrow, so it is ArrowThinRight rotated -45°, which keeps the exact weight and geometry of the real asset.\n\nRevolut has no plain ArrowRight either — the thin arrow IS its arrow, which is why arrow-right and arrow-left do not exist here.\n\nFill binds to fg/primary. Components tint whichever paint a vector uses.",
   "variantAxes": {

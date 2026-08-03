@@ -8,7 +8,7 @@ Press is scale(0.97) over duration/press with easing/out — documented, not dra
 
 Code-only props: aria-label (REQUIRED), href, target, analytics-id.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Action/Icon Button`. 27 variants.
+Figma: page **Components**, set `Action/Icon Button` — 27 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -26,7 +26,7 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Action/Icon Butt
 
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### variant=primary, size=sm, state=default
 

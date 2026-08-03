@@ -1,10 +1,12 @@
 {
   "name": "Action/Arrow Link",
   "slug": "action-arrow-link",
+  "domain": "components",
   "figma": {
     "file": "UnybX8G5sQIEhLLZN2YFl6",
     "page": "Components",
-    "set": "Action/Arrow Link"
+    "set": "Action/Arrow Link",
+    "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Standalone call-to-action link. Never underlined; the arrow carries the affordance.\n\nHover translates the arrow 4px right over duration/press with easing/out. Like Button press, that transform is documented rather than drawn.\n\nCode-only props: href, target, rel, aria-label, analytics-id.",
   "variantAxes": {

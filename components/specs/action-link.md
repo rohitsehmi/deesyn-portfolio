@@ -6,7 +6,7 @@ Split from Action/Arrow Link deliberately: inside one component set, layers matc
 
 Code-only props: href, target, rel, aria-label.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Action/Link`. 2 variants.
+Figma: page **Components**, set `Action/Link` — 2 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -22,7 +22,7 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Action/Link`. 2 
 
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### state=default
 

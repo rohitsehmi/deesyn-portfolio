@@ -1,10 +1,12 @@
 {
   "name": "Content/Media",
   "slug": "content-media",
+  "domain": "components",
   "figma": {
     "file": "UnybX8G5sQIEhLLZN2YFl6",
     "page": "Components",
-    "set": "Content/Media"
+    "set": "Content/Media",
+    "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Real screenshots and photography only — never a product UI faked out of rectangles. inset carries r20; bleed is square because it runs to the band edge. Caption is a text property, not a slot: captions are plain text, and decorative photo credits are banned.",
   "variantAxes": {

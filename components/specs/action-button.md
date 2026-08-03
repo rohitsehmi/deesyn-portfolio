@@ -6,7 +6,7 @@ PRESS IS NOT A VARIANT. Press feedback is transform: scale(0.97) over duration/p
 
 Code-only props to add: href, target, aria-label (icon-only), analytics-id.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Action/Button`. 27 variants.
+Figma: page **Components**, set `Action/Button` — 27 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -28,7 +28,7 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Action/Button`. 
 
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### variant=primary, size=sm, state=default
 

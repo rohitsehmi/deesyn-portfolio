@@ -1,10 +1,12 @@
 {
   "name": "Action/Button",
   "slug": "action-button",
+  "domain": "components",
   "figma": {
     "file": "UnybX8G5sQIEhLLZN2YFl6",
     "page": "Components",
-    "set": "Action/Button"
+    "set": "Action/Button",
+    "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Pill button. Height, padding, gap and radius all bind to primitives; every fill binds to a semantic token, so it flips inside an inverse band with no override.\n\nPRESS IS NOT A VARIANT. Press feedback is transform: scale(0.97) over duration/press with easing/out — a transform Figma cannot express in a variant without breaking the layout grid. It is recorded in each variant's plugin data and is a code responsibility.\n\nCode-only props to add: href, target, aria-label (icon-only), analytics-id.",
   "variantAxes": {

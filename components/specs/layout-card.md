@@ -10,7 +10,7 @@ Code-only props: href (when the whole card is a link), analytics-id.
 
 SLOT nodes carry their own fill, opaque white by default. Clear it or the slot paints over the band it sits in — invisible on a light band, a white box on an inverse one.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Layout/Card`. 4 variants.
+Figma: page **Components**, set `Layout/Card` — 4 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -27,9 +27,15 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Layout/Card`. 4 
 | `content` | SLOT | — |
 | `actions` | SLOT | — |
 
+## Slots
+
+- `media`
+- `content`
+- `actions`
+
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### variant=base, state=default · variant=sunken, state=hover
 

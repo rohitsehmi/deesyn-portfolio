@@ -2,7 +2,7 @@
 
 Metadata only — role, year, platform. Pill radius to match Button, so the page has one interactive-shape system. Never overlaid on an image.
 
-Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Content/Tag`. 2 variants.
+Figma: page **Components**, set `Content/Tag` — 2 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
@@ -18,7 +18,7 @@ Figma: file `UnybX8G5sQIEhLLZN2YFl6`, page **Components**, set `Content/Tag`. 2 
 
 ## Token contract
 
-Every value below is a token reference, not a literal. `.` is the component root.
+Every value is a token reference, not a literal. `.` is the component root.
 
 ### variant=neutral
 
