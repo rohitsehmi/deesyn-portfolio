@@ -9,6 +9,7 @@ Values are verified against revolut.com's live CSS — not eyedropped. See [`../
 | File | Role |
 |---|---|
 | `figma-export.json` | Raw compact export from Figma. **Source of truth.** |
+| `figma-export.snippet.js` | The snippet that produces that export, run inside Figma |
 | `build.mjs` | Expands the export into `tokens.json` |
 | `tokens.json` | **The deliverable** — W3C Design Tokens format |
 | `verify.mjs` | Checksums the export against Figma; checks alias integrity |
@@ -20,10 +21,10 @@ node tokens/verify.mjs    # checksum + integrity check
 
 ## What's in `tokens.json`
 
-211 leaf tokens, 68 alias references, all resolving.
+238 leaf tokens, 86 alias references, all resolving.
 
 ```
-primitive/        113   raw values — never reference these from components
+primitive/        122   raw values — never reference these from components
   brand           5     accent, accent-deep, action-blue, blue-deep, blue-light
   neutral         14    black → white
   accent          17    the wider RUI hue set
@@ -35,9 +36,11 @@ primitive/        113   raw values — never reference these from components
   radius          11    r2–r36 + round
   size            19    controls, nav, max-width
   breakpoint      4     425 / 768 / 1024 / 1440
+  duration        5     d100–d400
+  easing          4     out · in-out · drawer · linear
 
-semantic/         34 × 2 modes   ← reference THESE
-  light/ dark/    bg · band · fg · border · action · status
+semantic/         43 × 2 modes   ← reference THESE
+  light/ dark/    bg · band · fg · border · action · status · duration · easing
 
 typography/       23    display · heading · lead · body · emphasis · ui
 shadow/           6     app mockups only — the site itself uses none
@@ -51,6 +54,26 @@ gradient/         1     brand (#1227fd → #6fa0ff)
 **1b. `band.base` and `band.sunken` are the page-banding fills.** `inverse` and `inverse-raised` are these two *under an inverted mode*, not separate tokens — which is also why a component dropped into an inverse band flips with no overrides. Don't reach for `bg.inverse` when you mean a band: it's `#191c1f`, the app surface, not band black. See [`../docs/banding-system.md`](../docs/banding-system.md).
 
 **2. Don't use the shadows in site chrome.** A full scan of revolut.com found **zero** `box-shadow`. Depth comes from full-width colour bands (`#000000` / `#ffffff` / `#f7f7f7` / `#1f1f1f`) and luminance shifts. The shadow tokens exist for app-UI mockups *inside* case studies, and are black-alpha only so they do nothing on dark surfaces anyway.
+
+## Motion
+
+`duration.*` and `easing.*` are mode-independent — both Light and Dark alias the same primitive. They live in the semantic layer anyway so that rule 1 stays true without exception: a component never reaches past `semantic`.
+
+Figma has no duration or cubicBezier variable type, so the primitives are stored as a raw number of milliseconds (`FLOAT`) and a CSS easing string (`STRING`). `build.mjs` expands them into DTCG `duration` (`"160ms"`) and `cubicBezier` (`[0.23, 1, 0.32, 1]`). `easing.linear` becomes `[0, 0, 1, 1]`, the identity curve, because DTCG has no `linear` keyword.
+
+| Token | Value | For |
+|---|---|---|
+| `duration.instant` | 100ms | Repeated or keyboard-initiated. Effectively none. |
+| `duration.press` | 160ms | Button and pressable feedback |
+| `duration.tooltip` | 200ms | Tooltips, small popovers, and every exit |
+| `duration.dropdown` | 250ms | Dropdowns and selects. The UI ceiling. |
+| `duration.overlay` | 400ms | Modals, drawers, sheets |
+| `easing.out` | `0.23, 1, 0.32, 1` | Enter and exit. The default. |
+| `easing.in-out` | `0.77, 0, 0.175, 1` | On-screen movement and morphing |
+| `easing.drawer` | `0.32, 0.72, 0, 1` | Drawers and sheets |
+| `easing.linear` | `0, 0, 1, 1` | Constant motion only. Never UI. |
+
+**Never `ease-in` on UI**, and never animate a keyboard-initiated action. The full rule set — including the frequency gate that decides whether something animates at all — is on Figma page **Foundations — Revolut**, section `05 · Motion`, and readable as JSON via `page.getSharedPluginData('motion', 'spec')`. The reasoning is in `.claude/skills/emil-design-eng/SKILL.md`.
 
 ## Consuming these
 

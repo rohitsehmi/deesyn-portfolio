@@ -50,12 +50,14 @@ Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development
 
 ## Tokens
 
-`tokens/tokens.json` — W3C DTCG format, 211 leaf tokens, exported from Figma and checksum-verified against it (`4127555889`, matched 2026-07-31).
+`tokens/tokens.json` — W3C DTCG format, 238 leaf tokens, exported from Figma and checksum-verified against it (`2816042469`, matched 2026-08-03).
 
 ```bash
 node tokens/build.mjs     # regenerate from tokens/figma-export.json
 node tokens/verify.mjs    # checksum + alias integrity
 ```
+
+The Figma-side export snippet lives in `tokens/figma-export.snippet.js` and returns the same checksum. **Don't rewrite it from memory** — it maps Figma's font *style name* to a numeric weight, and dropping that silently rewrites all 23 typography tokens.
 
 **Components must reference `semantic.*`, never `primitive.*`** — that split is what makes re-theming a one-file change.
 
@@ -65,12 +67,22 @@ node tokens/verify.mjs    # checksum + alias integrity
 
 Built and visually verified on "Foundations — Revolut":
 
-- **`01 Primitives`** — 113 variables (colour ramp, white/black alphas, `sp50–sp1000`, layout scale, radius, sizing, breakpoints)
-- **`02 Semantic`** — 34 tokens × Light/Dark, every one aliased to a primitive, nothing hardcoded
+- **`01 Primitives`** — 122 variables (colour ramp, white/black alphas, `sp50–sp1000`, layout scale, radius, sizing, breakpoints, `Duration/*`, `Easing/*`)
+- **`02 Semantic`** — 43 tokens × Light/Dark, every one aliased to a primitive, nothing hardcoded
 - **23 text styles** — `Display/*`, `Heading/*`, `Lead/*`, `Body/*`, `Emphasis/*`, plus `UI/*` fenced off as product-only
 - **6 effect styles** — kept for app mockups only; the website itself uses zero shadows
 - **1 paint style** — `Gradient/Brand` (`#1227fd → #6fa0ff`)
-- **4 specimen sections** — Colour (Light + Dark), Type, Space/Radius/Breakpoints, Elevation
+- **5 specimen sections** — Colour (Light + Dark), Type, Space/Radius/Breakpoints, Elevation, Motion
+
+## Motion
+
+`05 · Motion` on the Foundations page: four plotted easing curves, the duration scale as proportional bars, and the frequency gate that decides whether a thing animates at all.
+
+`duration.*` and `easing.*` are **mode-independent** — both modes alias the same primitive — but they live in the semantic layer so components never reach past `semantic`. Figma has no duration or cubicBezier variable type, so primitives are a `FLOAT` of milliseconds and a `STRING` of CSS easing; `build.mjs` expands them to DTCG `duration` and `cubicBezier`.
+
+**Never `ease-in` on UI, and never animate a keyboard-initiated action.** Full rules in `tokens/README.md` and `.claude/skills/emil-design-eng/SKILL.md`.
+
+Machine-readable, same pattern as banding: `page.getSharedPluginData('motion', 'spec')` returns the whole rule set, and each specimen node carries `getPluginData('motion-token')`.
 
 ## Banding
 

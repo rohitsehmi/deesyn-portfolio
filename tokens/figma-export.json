@@ -1,7 +1,7 @@
 {
   "_comment": "Raw compact export from Figma file UnybX8G5sQIEhLLZN2YFl6, page 'Foundations — Revolut'. Source of truth. Regenerate via the figma_execute snippet in build.mjs's header comment, then run `node build.mjs`.",
-  "_exported": "2026-07-31",
-  "_note": "band.base / band.sunken are the page-banding fills. inverse and inverse-raised are these two under an inverted mode, not separate tokens. See docs/banding-system.md.",
+  "_exported": "2026-08-03",
+  "_note": "band.base / band.sunken are the page-banding fills. inverse and inverse-raised are these two under an inverted mode, not separate tokens. See docs/banding-system.md. Motion (duration.* / easing.*) added 2026-08-03; easing primitives are CSS strings, expanded to DTCG cubicBezier by build.mjs.",
   "P": {
     "brand.accent": "#ea035d",
     "brand.accent-deep": "#400013",
@@ -115,7 +115,16 @@
     "breakpoint.mobile": 425,
     "breakpoint.tablet": 768,
     "breakpoint.laptop": 1024,
-    "breakpoint.desktop": 1440
+    "breakpoint.desktop": 1440,
+    "duration.d100": 100,
+    "duration.d160": 160,
+    "duration.d200": 200,
+    "duration.d250": 250,
+    "duration.d400": 400,
+    "easing.out": "cubic-bezier(0.23, 1, 0.32, 1)",
+    "easing.in-out": "cubic-bezier(0.77, 0, 0.175, 1)",
+    "easing.drawer": "cubic-bezier(0.32, 0.72, 0, 1)",
+    "easing.linear": "linear"
   },
   "S": {
     "bg.canvas": ["neutral.white", "neutral.black"],
@@ -151,7 +160,16 @@
     "status.success": ["status.success", "status.success"],
     "status.warning": ["status.warning", "status.warning"],
     "status.danger": ["status.danger", "status.danger"],
-    "status.info": ["brand.action-blue", "accent.blue"]
+    "status.info": ["brand.action-blue", "accent.blue"],
+    "duration.instant": ["duration.d100", "duration.d100"],
+    "duration.press": ["duration.d160", "duration.d160"],
+    "duration.tooltip": ["duration.d200", "duration.d200"],
+    "duration.dropdown": ["duration.d250", "duration.d250"],
+    "duration.overlay": ["duration.d400", "duration.d400"],
+    "easing.out": ["easing.out", "easing.out"],
+    "easing.in-out": ["easing.in-out", "easing.in-out"],
+    "easing.drawer": ["easing.drawer", "easing.drawer"],
+    "easing.linear": ["easing.linear", "easing.linear"]
   },
   "T": {
     "display.xl": ["Hanken Grotesk", 500, 88, 1, -0.0236],

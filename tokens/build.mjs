@@ -3,14 +3,11 @@
  *
  *   node tokens/build.mjs
  *
- * To refresh figma-export.json from Figma, run this via the Figma Console MCP
- * (`figma_execute`) with the Desktop Bridge plugin open, and paste the result
- * into the P / S / T / E / G keys of figma-export.json:
- *
- *   const colls = await figma.variables.getLocalVariableCollectionsAsync();
- *   const prim = colls.find(c => c.name === '01 Primitives');
- *   const sem  = colls.find(c => c.name === '02 Semantic');
- *   ... (see docs/revolut-design-foundations.md for the full snippet)
+ * To refresh figma-export.json from Figma, run the snippet in
+ * tokens/figma-export.snippet.js via the Figma Console MCP (`figma_execute`)
+ * with the Desktop Bridge plugin open, and paste the result into the
+ * P / S / T / E / G keys of figma-export.json. It also returns a checksum that
+ * must match `node tokens/verify.mjs`.
  *
  * Token types follow https://tr.designtokens.org/format/
  */
@@ -32,6 +29,31 @@ function set(root, path, leaf) {
 /** Primitive groups that are lengths rather than colours. */
 const DIMENSION = new Set(['space', 'layout', 'radius', 'size', 'breakpoint']);
 
+/** Motion groups. Figma has no duration or cubicBezier variable type, so these
+ *  live as raw numbers (ms) and CSS easing strings and are expanded here. */
+const DURATION = new Set(['duration']);
+const EASING = new Set(['easing']);
+
+/** "cubic-bezier(0.23, 1, 0.32, 1)" -> [0.23, 1, 0.32, 1]. "linear" is the
+ *  identity curve; DTCG has no `linear` keyword, so express it as one. */
+function toCubicBezier(value) {
+  if (value === 'linear') return [0, 0, 1, 1];
+  const m = /^cubic-bezier\(([^)]+)\)$/.exec(value);
+  if (!m) throw new Error(`easing value is neither linear nor cubic-bezier(): ${value}`);
+  const nums = m[1].split(',').map((n) => Number(n.trim()));
+  if (nums.length !== 4 || nums.some(Number.isNaN)) throw new Error(`bad cubic-bezier: ${value}`);
+  return nums;
+}
+
+/** DTCG $type for a token, from its group prefix. */
+function typeOf(key) {
+  const group = key.split('.')[0];
+  if (DIMENSION.has(group)) return 'dimension';
+  if (DURATION.has(group)) return 'duration';
+  if (EASING.has(group)) return 'cubicBezier';
+  return 'color';
+}
+
 const out = {
   $description:
     'Revolut-matched design tokens for the case-study portfolio. Values verified against revolut.com live CSS, not eyedropped. See docs/revolut-design-foundations.md.',
@@ -44,18 +66,21 @@ const out = {
 
 // ---- primitives ----------------------------------------------------------
 for (const [key, value] of Object.entries(src.P)) {
-  const group = key.split('.')[0];
-  const isDimension = DIMENSION.has(group);
-  set(out.primitive, key, {
-    $type: isDimension ? 'dimension' : 'color',
-    $value: isDimension ? `${value}px` : value
-  });
+  const $type = typeOf(key);
+  const $value =
+    $type === 'dimension' ? `${value}px`
+    : $type === 'duration' ? `${value}ms`
+    : $type === 'cubicBezier' ? toCubicBezier(value)
+    : value;
+  set(out.primitive, key, { $type, $value });
 }
 
 // ---- semantic (light / dark), aliased back to primitives -----------------
+// Motion tokens are mode-independent: both modes alias the same primitive.
 for (const [key, [light, dark]] of Object.entries(src.S)) {
-  set(out.semantic.light, key, { $type: 'color', $value: `{primitive.${light}}` });
-  set(out.semantic.dark, key, { $type: 'color', $value: `{primitive.${dark}}` });
+  const $type = typeOf(key);
+  set(out.semantic.light, key, { $type, $value: `{primitive.${light}}` });
+  set(out.semantic.dark, key, { $type, $value: `{primitive.${dark}}` });
 }
 
 // ---- typography ----------------------------------------------------------
