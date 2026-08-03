@@ -88,13 +88,15 @@ Machine-readable, same pattern as banding: `page.getSharedPluginData('motion', '
 
 Figma page **Components**. Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`, `Brand/*`, plus top-level `Icon`. Variant props are **lowercase** (`variant=primary, size=lg`), booleans kebab-case, slot names lowercase nouns.
 
-Built: `Icon` (8), `Brand/Logo` (2), `Action/Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8). `Layout/Band` (12) lives on the Banding page.
+Built — **55 variants across 8 sets**: `Icon` (8), `Brand/Logo` (2), `Action/Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4). `Layout/Band` (12) lives on the Banding page.
 
-Still to build: `Layout/Card` (first slot user), `Chrome/Nav`, `Chrome/Footer`. Everything after those — case-study tile, heroes, prose and image blocks, quote, outcome — waits on the three case studies, because their shape is a content decision.
+Still to build: `Chrome/Nav`, `Chrome/Footer`. Everything after those — case-study tile, heroes, prose and image blocks, quote, outcome — waits on the three case studies, because their shape is a content decision.
 
 **Contact is a `mailto:`, not a form.** No backend, and a portfolio contact form converts worse. Input and Form are deliberately not in the inventory.
 
-Machine-readable: `page.getSharedPluginData('components', 'spec')` returns the schema, per-component props, code-only props, and build notes; each component carries `getPluginData('component')`.
+`Layout/Card` is the only slot user: `media`, `content`, `actions`. Padding sits on the body frame, not the card, so media bleeds to the edge while content stays inset.
+
+Machine-readable, same pattern as banding: `page.getSharedPluginData('components', 'spec')` returns the schema, per-component props, code-only props and build notes; each component carries `getPluginData('component')`. Section `08 · Machine-readable spec` renders that JSON on canvas.
 
 ### Plugin API traps found while building
 
@@ -104,6 +106,9 @@ These cost rebuild cycles and are not obvious:
 - **`setTextStyleIdAsync` reclaims `textDecoration`.** Apply underline in a *later* pass or it silently reverts to `NONE`.
 - **Inside a component set, layers matched by name sync text style and decoration across variants.** Components that must differ typographically have to be separate sets — this is why `Action/Link` and `Action/Arrow Link` are two components, not one set with a `variant` axis.
 - Slots exist: `component.createSlot()` returns a `SLOT` node and auto-creates its property. It is *not* `figma.createSlot`.
+- **A `SLOT` is not an auto-layout frame.** Children placed inside one cannot use `FILL` sizing — set `FILL` on the slot itself and size the content explicitly.
+- **`SLOT` carries its own fill, opaque white by default.** Clear it (`slot.fills = []`) or it paints over the band: invisible on a light band, a white box on an inverse one.
+- Deleting a `SECTION` deletes the component sets inside it. Moving a set into a section then removing the section destroys the set.
 
 ## Banding
 
