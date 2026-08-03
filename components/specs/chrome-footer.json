@@ -1,0 +1,244 @@
+{
+  "name": "Chrome/Footer",
+  "slug": "chrome-footer",
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Chrome/Footer"
+  },
+  "description": "Transparent by design — the band it sits in owns the surface, so the footer inherits foreground with no override. Inner container caps at Size/Max Width (1000).\n\nContact is a mailto arrow link, not a form. No backend to run, and a portfolio contact form converts worse than an address you can copy.\n\ncompact drops the columns slot and the rule: logo, copyright, contact. Use it on case-study pages where the footer should not compete with the next-study link.\n\nCode-only props: href per column link, mailto address.\n\nThe columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.",
+  "variantAxes": {
+    "scale": [
+      "compact",
+      "full"
+    ]
+  },
+  "props": {
+    "columns": {
+      "type": "SLOT"
+    }
+  },
+  "slots": [
+    "columns"
+  ],
+  "variantCount": 2,
+  "variants": {
+    "scale=compact": {
+      "size": {
+        "width": 1440,
+        "height": 196
+      },
+      "tokens": {
+        ".": {
+          "paddingX": {
+            "token": "Layout/l48",
+            "ref": "primitive.layout.l48",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "paddingY": {
+            "token": "Layout/l48",
+            "ref": "primitive.layout.l48",
+            "type": "dimension",
+            "value": "48px"
+          }
+        },
+        "inner": {
+          "gap": {
+            "token": "Layout/l48",
+            "ref": "primitive.layout.l48",
+            "type": "dimension",
+            "value": "48px"
+          }
+        },
+        "inner/bottom": {
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        },
+        "inner/bottom/Brand/Logo/Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/bottom/© 2026 Rohit Sehmi": {
+          "textStyle": {
+            "token": "Body/3",
+            "ref": "typography.body.3",
+            "fontFamily": "Inter",
+            "fontWeight": 400,
+            "fontSize": "12px",
+            "lineHeight": 1.5,
+            "letterSpacing": "0.015em"
+          },
+          "fg": {
+            "token": "fg/secondary",
+            "ref": "semantic.*.fg.secondary",
+            "type": "color",
+            "light": "#717173",
+            "dark": "#ffffffb2"
+          }
+        },
+        "inner/bottom/Action/Arrow Link": {
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "inner/bottom/Action/Arrow Link/label": {
+          "textStyle": {
+            "token": "Emphasis/1",
+            "ref": "typography.emphasis.1",
+            "fontFamily": "Inter",
+            "fontWeight": 600,
+            "fontSize": "16px",
+            "lineHeight": 1.5,
+            "letterSpacing": "0"
+          },
+          "fg": {
+            "token": "fg/link",
+            "ref": "semantic.*.fg.link",
+            "type": "color",
+            "light": "#0666eb",
+            "dark": "#6fa0ff"
+          }
+        },
+        "inner/bottom/Action/Arrow Link/trailing/Vector": {
+          "fg": {
+            "token": "fg/link",
+            "ref": "semantic.*.fg.link",
+            "type": "color",
+            "light": "#0666eb",
+            "dark": "#6fa0ff"
+          }
+        }
+      }
+    },
+    "scale=full": {
+      "size": {
+        "width": 1440,
+        "height": 477
+      },
+      "tokens": {
+        ".": {
+          "paddingX": {
+            "token": "Layout/l48",
+            "ref": "primitive.layout.l48",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "paddingY": {
+            "token": "Layout/l80",
+            "ref": "primitive.layout.l80",
+            "type": "dimension",
+            "value": "80px"
+          }
+        },
+        "inner": {
+          "gap": {
+            "token": "Layout/l48",
+            "ref": "primitive.layout.l48",
+            "type": "dimension",
+            "value": "48px"
+          }
+        },
+        "inner/top": {
+          "gap": {
+            "token": "Layout/l48",
+            "ref": "primitive.layout.l48",
+            "type": "dimension",
+            "value": "48px"
+          }
+        },
+        "inner/top/Brand/Logo/Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/rule": {
+          "bg": {
+            "token": "border/subtle",
+            "ref": "semantic.*.border.subtle",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff1a"
+          }
+        },
+        "inner/bottom": {
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        },
+        "inner/bottom/© 2026 Rohit Sehmi": {
+          "textStyle": {
+            "token": "Body/3",
+            "ref": "typography.body.3",
+            "fontFamily": "Inter",
+            "fontWeight": 400,
+            "fontSize": "12px",
+            "lineHeight": 1.5,
+            "letterSpacing": "0.015em"
+          },
+          "fg": {
+            "token": "fg/secondary",
+            "ref": "semantic.*.fg.secondary",
+            "type": "color",
+            "light": "#717173",
+            "dark": "#ffffffb2"
+          }
+        },
+        "inner/bottom/Action/Arrow Link": {
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "inner/bottom/Action/Arrow Link/label": {
+          "textStyle": {
+            "token": "Emphasis/1",
+            "ref": "typography.emphasis.1",
+            "fontFamily": "Inter",
+            "fontWeight": 600,
+            "fontSize": "16px",
+            "lineHeight": 1.5,
+            "letterSpacing": "0"
+          },
+          "fg": {
+            "token": "fg/link",
+            "ref": "semantic.*.fg.link",
+            "type": "color",
+            "light": "#0666eb",
+            "dark": "#6fa0ff"
+          }
+        },
+        "inner/bottom/Action/Arrow Link/trailing/Vector": {
+          "fg": {
+            "token": "fg/link",
+            "ref": "semantic.*.fg.link",
+            "type": "color",
+            "light": "#0666eb",
+            "dark": "#6fa0ff"
+          }
+        }
+      }
+    }
+  }
+}

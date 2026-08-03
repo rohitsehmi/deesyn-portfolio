@@ -1,0 +1,239 @@
+{
+  "name": "Layout/Card",
+  "slug": "layout-card",
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Layout/Card"
+  },
+  "description": "Three slots: media, content, actions. The card owns shape, surface and rhythm; it does not own what goes inside it.\n\nPadding is on the body frame, not the card, so media bleeds to the edge while content stays inset. clipsContent is on so media respects r20.\n\nA SLOT is not an auto-layout frame — children placed inside one cannot use FILL sizing. Set FILL on the slot itself and size the content explicitly.\n\nCode-only props: href (when the whole card is a link), analytics-id.\n\nSLOT nodes carry their own fill, opaque white by default. Clear it or the slot paints over the band it sits in — invisible on a light band, a white box on an inverse one.",
+  "variantAxes": {
+    "variant": [
+      "base",
+      "sunken"
+    ],
+    "state": [
+      "default",
+      "hover"
+    ]
+  },
+  "props": {
+    "media": {
+      "type": "SLOT"
+    },
+    "content": {
+      "type": "SLOT"
+    },
+    "actions": {
+      "type": "SLOT"
+    }
+  },
+  "slots": [
+    "media",
+    "content",
+    "actions"
+  ],
+  "variantCount": 4,
+  "variants": {
+    "variant=base, state=default": {
+      "size": {
+        "width": 400,
+        "height": 386
+      },
+      "tokens": {
+        ".": {
+          "radius": {
+            "token": "Radius/r20",
+            "ref": "primitive.radius.r20",
+            "type": "dimension",
+            "value": "20px"
+          },
+          "bg": {
+            "token": "bg/surface",
+            "ref": "semantic.*.bg.surface",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#1c1c1e"
+          },
+          "border": {
+            "token": "border/subtle",
+            "ref": "semantic.*.border.subtle",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff1a"
+          }
+        },
+        "body": {
+          "paddingX": {
+            "token": "Space/sp1000",
+            "ref": "primitive.space.sp1000",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "paddingY": {
+            "token": "Space/sp1000",
+            "ref": "primitive.space.sp1000",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        }
+      }
+    },
+    "variant=base, state=hover": {
+      "size": {
+        "width": 400,
+        "height": 386
+      },
+      "tokens": {
+        ".": {
+          "radius": {
+            "token": "Radius/r20",
+            "ref": "primitive.radius.r20",
+            "type": "dimension",
+            "value": "20px"
+          },
+          "bg": {
+            "token": "bg/surface-raised",
+            "ref": "semantic.*.bg.surface-raised",
+            "type": "color",
+            "light": "#f4f5f6",
+            "dark": "#272b2f"
+          },
+          "border": {
+            "token": "border/subtle",
+            "ref": "semantic.*.border.subtle",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff1a"
+          }
+        },
+        "body": {
+          "paddingX": {
+            "token": "Space/sp1000",
+            "ref": "primitive.space.sp1000",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "paddingY": {
+            "token": "Space/sp1000",
+            "ref": "primitive.space.sp1000",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        }
+      }
+    },
+    "variant=sunken, state=default": {
+      "size": {
+        "width": 400,
+        "height": 386
+      },
+      "tokens": {
+        ".": {
+          "radius": {
+            "token": "Radius/r20",
+            "ref": "primitive.radius.r20",
+            "type": "dimension",
+            "value": "20px"
+          },
+          "bg": {
+            "token": "bg/subtle",
+            "ref": "semantic.*.bg.subtle",
+            "type": "color",
+            "light": "#f7f7f7",
+            "dark": "#111111"
+          },
+          "border": {
+            "token": "border/subtle",
+            "ref": "semantic.*.border.subtle",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff1a"
+          }
+        },
+        "body": {
+          "paddingX": {
+            "token": "Space/sp1000",
+            "ref": "primitive.space.sp1000",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "paddingY": {
+            "token": "Space/sp1000",
+            "ref": "primitive.space.sp1000",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        }
+      }
+    },
+    "variant=sunken, state=hover": {
+      "size": {
+        "width": 400,
+        "height": 386
+      },
+      "tokens": {
+        ".": {
+          "radius": {
+            "token": "Radius/r20",
+            "ref": "primitive.radius.r20",
+            "type": "dimension",
+            "value": "20px"
+          },
+          "bg": {
+            "token": "bg/surface",
+            "ref": "semantic.*.bg.surface",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#1c1c1e"
+          },
+          "border": {
+            "token": "border/subtle",
+            "ref": "semantic.*.border.subtle",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff1a"
+          }
+        },
+        "body": {
+          "paddingX": {
+            "token": "Space/sp1000",
+            "ref": "primitive.space.sp1000",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "paddingY": {
+            "token": "Space/sp1000",
+            "ref": "primitive.space.sp1000",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "name": "Action/Arrow Link",
+  "slug": "action-arrow-link",
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Action/Arrow Link"
+  },
+  "description": "Standalone call-to-action link. Never underlined; the arrow carries the affordance.\n\nHover translates the arrow 4px right over duration/press with easing/out. Like Button press, that transform is documented rather than drawn.\n\nCode-only props: href, target, rel, aria-label, analytics-id.",
+  "variantAxes": {
+    "state": [
+      "default",
+      "hover"
+    ]
+  },
+  "props": {
+    "label": {
+      "type": "TEXT",
+      "default": "Read the case study"
+    },
+    "trailing": {
+      "type": "INSTANCE_SWAP"
+    }
+  },
+  "slots": [],
+  "variantCount": 2,
+  "variants": {
+    "state=default": {
+      "size": {
+        "width": 184,
+        "height": 24
+      },
+      "tokens": {
+        ".": {
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "label": {
+          "textStyle": {
+            "token": "Emphasis/1",
+            "ref": "typography.emphasis.1",
+            "fontFamily": "Inter",
+            "fontWeight": 600,
+            "fontSize": "16px",
+            "lineHeight": 1.5,
+            "letterSpacing": "0"
+          },
+          "fg": {
+            "token": "fg/link",
+            "ref": "semantic.*.fg.link",
+            "type": "color",
+            "light": "#0666eb",
+            "dark": "#6fa0ff"
+          }
+        },
+        "trailing/Vector": {
+          "fg": {
+            "token": "fg/link",
+            "ref": "semantic.*.fg.link",
+            "type": "color",
+            "light": "#0666eb",
+            "dark": "#6fa0ff"
+          }
+        }
+      }
+    },
+    "state=hover": {
+      "size": {
+        "width": 184,
+        "height": 24
+      },
+      "tokens": {
+        ".": {
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "label": {
+          "textStyle": {
+            "token": "Emphasis/1",
+            "ref": "typography.emphasis.1",
+            "fontFamily": "Inter",
+            "fontWeight": 600,
+            "fontSize": "16px",
+            "lineHeight": 1.5,
+            "letterSpacing": "0"
+          },
+          "fg": {
+            "token": "fg/link-hover",
+            "ref": "semantic.*.fg.link-hover",
+            "type": "color",
+            "light": "#1227fd",
+            "dark": "#2bb2ff"
+          }
+        },
+        "trailing/Vector": {
+          "fg": {
+            "token": "fg/link-hover",
+            "ref": "semantic.*.fg.link-hover",
+            "type": "color",
+            "light": "#1227fd",
+            "dark": "#2bb2ff"
+          }
+        }
+      }
+    }
+  }
+}

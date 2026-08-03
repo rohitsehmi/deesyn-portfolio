@@ -1,0 +1,235 @@
+{
+  "name": "Icon",
+  "slug": "icon",
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Icon"
+  },
+  "description": "Every icon is a real Revolut asset from assets.revolut.com, used verbatim — filled paths, matching Revolut's own fill-based mono system. No hand-drawn approximations.\n\nThe one exception is arrow-up-right: Revolut ships no diagonal arrow, so it is ArrowThinRight rotated -45°, which keeps the exact weight and geometry of the real asset.\n\nRevolut has no plain ArrowRight either — the thin arrow IS its arrow, which is why arrow-right and arrow-left do not exist here.\n\nFill binds to fg/primary. Components tint whichever paint a vector uses.",
+  "variantAxes": {
+    "name": [
+      "arrow-up-right",
+      "chevron-down",
+      "chevron-right",
+      "menu",
+      "arrow-thin-right",
+      "arrow-thin-left",
+      "arrow-thin-up",
+      "arrow-thin-down",
+      "cross",
+      "envelope",
+      "chevron-up",
+      "link"
+    ]
+  },
+  "props": {},
+  "slots": [],
+  "variantCount": 12,
+  "variants": {
+    "name=arrow-thin-right": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=arrow-thin-left": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=arrow-up-right": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=chevron-down": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=chevron-right": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=cross": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=menu": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=envelope": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=arrow-thin-up": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=arrow-thin-down": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=chevron-up": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=link": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    }
+  }
+}

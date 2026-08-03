@@ -1,0 +1,142 @@
+{
+  "$description": "Component contracts, generated from Figma. Do not edit by hand — run node components/build.mjs.",
+  "generated": "2026-08-03",
+  "components": [
+    {
+      "name": "Icon",
+      "slug": "icon",
+      "variants": 12,
+      "axes": [
+        "name"
+      ],
+      "slots": [],
+      "spec": "components/specs/icon.json",
+      "doc": "components/specs/icon.md"
+    },
+    {
+      "name": "Brand/Logo",
+      "slug": "brand-logo",
+      "variants": 2,
+      "axes": [
+        "variant"
+      ],
+      "slots": [],
+      "spec": "components/specs/brand-logo.json",
+      "doc": "components/specs/brand-logo.md"
+    },
+    {
+      "name": "Action/Button",
+      "slug": "action-button",
+      "variants": 27,
+      "axes": [
+        "variant",
+        "size",
+        "state"
+      ],
+      "slots": [],
+      "spec": "components/specs/action-button.json",
+      "doc": "components/specs/action-button.md"
+    },
+    {
+      "name": "Action/Icon Button",
+      "slug": "action-icon-button",
+      "variants": 27,
+      "axes": [
+        "variant",
+        "size",
+        "state"
+      ],
+      "slots": [],
+      "spec": "components/specs/action-icon-button.json",
+      "doc": "components/specs/action-icon-button.md"
+    },
+    {
+      "name": "Action/Link",
+      "slug": "action-link",
+      "variants": 2,
+      "axes": [
+        "state"
+      ],
+      "slots": [],
+      "spec": "components/specs/action-link.json",
+      "doc": "components/specs/action-link.md"
+    },
+    {
+      "name": "Action/Arrow Link",
+      "slug": "action-arrow-link",
+      "variants": 2,
+      "axes": [
+        "state"
+      ],
+      "slots": [],
+      "spec": "components/specs/action-arrow-link.json",
+      "doc": "components/specs/action-arrow-link.md"
+    },
+    {
+      "name": "Content/Tag",
+      "slug": "content-tag",
+      "variants": 2,
+      "axes": [
+        "variant"
+      ],
+      "slots": [],
+      "spec": "components/specs/content-tag.json",
+      "doc": "components/specs/content-tag.md"
+    },
+    {
+      "name": "Content/Media",
+      "slug": "content-media",
+      "variants": 8,
+      "axes": [
+        "ratio",
+        "fit"
+      ],
+      "slots": [],
+      "spec": "components/specs/content-media.json",
+      "doc": "components/specs/content-media.md"
+    },
+    {
+      "name": "Layout/Card",
+      "slug": "layout-card",
+      "variants": 4,
+      "axes": [
+        "variant",
+        "state"
+      ],
+      "slots": [
+        "media",
+        "content",
+        "actions"
+      ],
+      "spec": "components/specs/layout-card.json",
+      "doc": "components/specs/layout-card.md"
+    },
+    {
+      "name": "Chrome/Nav",
+      "slug": "chrome-nav",
+      "variants": 4,
+      "axes": [
+        "layout",
+        "state"
+      ],
+      "slots": [
+        "actions"
+      ],
+      "spec": "components/specs/chrome-nav.json",
+      "doc": "components/specs/chrome-nav.md"
+    },
+    {
+      "name": "Chrome/Footer",
+      "slug": "chrome-footer",
+      "variants": 2,
+      "axes": [
+        "scale"
+      ],
+      "slots": [
+        "columns"
+      ],
+      "spec": "components/specs/chrome-footer.json",
+      "doc": "components/specs/chrome-footer.md"
+    }
+  ]
+}

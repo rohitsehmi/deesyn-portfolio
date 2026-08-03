@@ -1,0 +1,373 @@
+{
+  "name": "Chrome/Nav",
+  "slug": "chrome-nav",
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Chrome/Nav"
+  },
+  "description": "Height binds to Size/Nav (56). The inner container caps at Size/Max Width (1000) via maxWidth, so the bar spans full-bleed while its content stays on the measure.\n\nstate=top is transparent and sits over whatever band is beneath it, which is how it inherits that band's foreground for free. state=scrolled takes bg/canvas plus a 1px border/subtle hairline — no shadow, per the banding system.\n\nNav links are ghost buttons. That is what the ghost variant exists for: a low-emphasis action that is still a real button, with real hit area and real press feedback.\n\nCode-only props: href per link, aria-current, skip-to-content target.\n\nThe actions slot is 140x56 and fills vertically. A SLOT cannot hug on either axis — it is FIXED or FILL — so it needs an explicit size and its content needs positioning inside it.",
+  "variantAxes": {
+    "layout": [
+      "desktop",
+      "mobile"
+    ],
+    "state": [
+      "top",
+      "scrolled"
+    ]
+  },
+  "props": {
+    "actions": {
+      "type": "SLOT"
+    }
+  },
+  "slots": [
+    "actions"
+  ],
+  "variantCount": 4,
+  "variants": {
+    "layout=desktop, state=top": {
+      "size": {
+        "width": 1440,
+        "height": 56
+      },
+      "tokens": {
+        ".": {
+          "height": {
+            "token": "Size/Nav",
+            "ref": "primitive.size.nav",
+            "type": "dimension",
+            "value": "56px"
+          },
+          "paddingX": {
+            "token": "Layout/l48",
+            "ref": "primitive.layout.l48",
+            "type": "dimension",
+            "value": "48px"
+          }
+        },
+        "inner": {
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        },
+        "inner/Brand/Logo/Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/links": {
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "inner/links/Action/Button": {
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "paddingX": {
+            "token": "Space/sp500",
+            "ref": "primitive.space.sp500",
+            "type": "dimension",
+            "value": "16px"
+          },
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "inner/links/Action/Button/leading/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/links/Action/Button/label": {
+          "textStyle": {
+            "token": "Emphasis/2",
+            "ref": "typography.emphasis.2",
+            "fontFamily": "Inter",
+            "fontWeight": 600,
+            "fontSize": "14px",
+            "lineHeight": 1.43,
+            "letterSpacing": "0"
+          },
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/links/Action/Button/trailing/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "layout=desktop, state=scrolled": {
+      "size": {
+        "width": 1440,
+        "height": 56
+      },
+      "tokens": {
+        ".": {
+          "height": {
+            "token": "Size/Nav",
+            "ref": "primitive.size.nav",
+            "type": "dimension",
+            "value": "56px"
+          },
+          "paddingX": {
+            "token": "Layout/l48",
+            "ref": "primitive.layout.l48",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "bg": {
+            "token": "bg/canvas",
+            "ref": "semantic.*.bg.canvas",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#000000"
+          },
+          "border": {
+            "token": "border/subtle",
+            "ref": "semantic.*.border.subtle",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff1a"
+          }
+        },
+        "inner": {
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        },
+        "inner/Brand/Logo/Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/links": {
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "inner/links/Action/Button": {
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "paddingX": {
+            "token": "Space/sp500",
+            "ref": "primitive.space.sp500",
+            "type": "dimension",
+            "value": "16px"
+          },
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "inner/links/Action/Button/leading/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/links/Action/Button/label": {
+          "textStyle": {
+            "token": "Emphasis/2",
+            "ref": "typography.emphasis.2",
+            "fontFamily": "Inter",
+            "fontWeight": 600,
+            "fontSize": "14px",
+            "lineHeight": 1.43,
+            "letterSpacing": "0"
+          },
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/links/Action/Button/trailing/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "layout=mobile, state=top": {
+      "size": {
+        "width": 375,
+        "height": 56
+      },
+      "tokens": {
+        ".": {
+          "height": {
+            "token": "Size/Nav",
+            "ref": "primitive.size.nav",
+            "type": "dimension",
+            "value": "56px"
+          },
+          "paddingX": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        },
+        "inner": {
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        },
+        "inner/Brand/Logo/Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/menu/Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "layout=mobile, state=scrolled": {
+      "size": {
+        "width": 375,
+        "height": 56
+      },
+      "tokens": {
+        ".": {
+          "height": {
+            "token": "Size/Nav",
+            "ref": "primitive.size.nav",
+            "type": "dimension",
+            "value": "56px"
+          },
+          "paddingX": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          },
+          "bg": {
+            "token": "bg/canvas",
+            "ref": "semantic.*.bg.canvas",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#000000"
+          },
+          "border": {
+            "token": "border/subtle",
+            "ref": "semantic.*.border.subtle",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff1a"
+          }
+        },
+        "inner": {
+          "gap": {
+            "token": "Space/sp600",
+            "ref": "primitive.space.sp600",
+            "type": "dimension",
+            "value": "20px"
+          }
+        },
+        "inner/Brand/Logo/Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "inner/menu/Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    }
+  }
+}

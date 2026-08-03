@@ -1,0 +1,96 @@
+{
+  "name": "Action/Link",
+  "slug": "action-link",
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Action/Link"
+  },
+  "description": "Inline prose link. Underlined — an unstyled link inside body copy is an accessibility failure, not a style choice.\n\nSplit from Action/Arrow Link deliberately: inside one component set, layers matched by name sync their text style and decoration across variants, so the two could not differ. They are different components anyway — one is prose, one is a call to action.\n\nCode-only props: href, target, rel, aria-label.",
+  "variantAxes": {
+    "state": [
+      "default",
+      "hover"
+    ]
+  },
+  "props": {
+    "label": {
+      "type": "TEXT",
+      "default": "Read the case study"
+    }
+  },
+  "slots": [],
+  "variantCount": 2,
+  "variants": {
+    "state=default": {
+      "size": {
+        "width": 152,
+        "height": 24
+      },
+      "tokens": {
+        ".": {
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "label": {
+          "textStyle": {
+            "token": "Body/1",
+            "ref": "typography.body.1",
+            "fontFamily": "Inter",
+            "fontWeight": 400,
+            "fontSize": "16px",
+            "lineHeight": 1.5,
+            "letterSpacing": "-0.01em"
+          },
+          "textDecoration": "UNDERLINE",
+          "fg": {
+            "token": "fg/link",
+            "ref": "semantic.*.fg.link",
+            "type": "color",
+            "light": "#0666eb",
+            "dark": "#6fa0ff"
+          }
+        }
+      }
+    },
+    "state=hover": {
+      "size": {
+        "width": 152,
+        "height": 24
+      },
+      "tokens": {
+        ".": {
+          "gap": {
+            "token": "Space/sp200",
+            "ref": "primitive.space.sp200",
+            "type": "dimension",
+            "value": "6px"
+          }
+        },
+        "label": {
+          "textStyle": {
+            "token": "Body/1",
+            "ref": "typography.body.1",
+            "fontFamily": "Inter",
+            "fontWeight": 400,
+            "fontSize": "16px",
+            "lineHeight": 1.5,
+            "letterSpacing": "-0.01em"
+          },
+          "textDecoration": "UNDERLINE",
+          "fg": {
+            "token": "fg/link-hover",
+            "ref": "semantic.*.fg.link-hover",
+            "type": "color",
+            "light": "#1227fd",
+            "dark": "#2bb2ff"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "name": "Brand/Logo",
+  "slug": "brand-logo",
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Brand/Logo"
+  },
+  "description": "wordmark: Revolut's real wordmark, verbatim from the live site, 145x32 natural. Fill binds to fg/primary, mirroring var(--rui-color-foreground).\n\nmark: placeholder. Rohit's own logo goes here — it lives in the CV-Build Figma file, which needs the Desktop Bridge plugin open in it before the asset can be pulled across.\n\nNOTE: Chrome/Nav and Chrome/Footer both instance variant=wordmark, so the site chrome currently shows Revolut's wordmark as its own identity.",
+  "variantAxes": {
+    "variant": [
+      "wordmark",
+      "mark"
+    ]
+  },
+  "props": {},
+  "slots": [],
+  "variantCount": 2,
+  "variants": {
+    "variant=wordmark": {
+      "size": {
+        "width": 145,
+        "height": 32
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=mark": {
+      "size": {
+        "width": 23,
+        "height": 26
+      },
+      "tokens": {
+        "RS": {
+          "textStyle": {
+            "token": "Heading/S",
+            "ref": "typography.heading.s",
+            "fontFamily": "Hanken Grotesk",
+            "fontWeight": 500,
+            "fontSize": "20px",
+            "lineHeight": 1.3,
+            "letterSpacing": "-0.01em"
+          },
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    }
+  }
+}

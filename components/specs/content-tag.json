@@ -1,0 +1,132 @@
+{
+  "name": "Content/Tag",
+  "slug": "content-tag",
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Content/Tag"
+  },
+  "description": "Metadata only — role, year, platform. Pill radius to match Button, so the page has one interactive-shape system. Never overlaid on an image.",
+  "variantAxes": {
+    "variant": [
+      "neutral",
+      "accent"
+    ]
+  },
+  "props": {
+    "label": {
+      "type": "TEXT",
+      "default": "designer"
+    }
+  },
+  "slots": [],
+  "variantCount": 2,
+  "variants": {
+    "variant=neutral": {
+      "size": {
+        "width": 159,
+        "height": 26
+      },
+      "tokens": {
+        ".": {
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "paddingX": {
+            "token": "Space/sp400",
+            "ref": "primitive.space.sp400",
+            "type": "dimension",
+            "value": "12px"
+          },
+          "paddingY": {
+            "token": "Space/sp150",
+            "ref": "primitive.space.sp150",
+            "type": "dimension",
+            "value": "4px"
+          },
+          "bg": {
+            "token": "bg/widget",
+            "ref": "semantic.*.bg.widget",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff0f"
+          }
+        },
+        "label": {
+          "textStyle": {
+            "token": "Emphasis/3",
+            "ref": "typography.emphasis.3",
+            "fontFamily": "Inter",
+            "fontWeight": 600,
+            "fontSize": "12px",
+            "lineHeight": 1.5,
+            "letterSpacing": "0.01em"
+          },
+          "fg": {
+            "token": "fg/secondary",
+            "ref": "semantic.*.fg.secondary",
+            "type": "color",
+            "light": "#717173",
+            "dark": "#ffffffb2"
+          }
+        }
+      }
+    },
+    "variant=accent": {
+      "size": {
+        "width": 159,
+        "height": 26
+      },
+      "tokens": {
+        ".": {
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "paddingX": {
+            "token": "Space/sp400",
+            "ref": "primitive.space.sp400",
+            "type": "dimension",
+            "value": "12px"
+          },
+          "paddingY": {
+            "token": "Space/sp150",
+            "ref": "primitive.space.sp150",
+            "type": "dimension",
+            "value": "4px"
+          },
+          "bg": {
+            "token": "action/accent-bg",
+            "ref": "semantic.*.action.accent-bg",
+            "type": "color",
+            "light": "#0666eb",
+            "dark": "#0666eb"
+          }
+        },
+        "label": {
+          "textStyle": {
+            "token": "Emphasis/3",
+            "ref": "typography.emphasis.3",
+            "fontFamily": "Inter",
+            "fontWeight": 600,
+            "fontSize": "12px",
+            "lineHeight": 1.5,
+            "letterSpacing": "0.01em"
+          },
+          "fg": {
+            "token": "action/accent-fg",
+            "ref": "semantic.*.action.accent-fg",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    }
+  }
+}

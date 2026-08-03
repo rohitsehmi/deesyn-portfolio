@@ -117,7 +117,16 @@ Nav links are ghost buttons — that is what the ghost variant exists for. Nav `
 
 `Layout/Card` is the only slot user: `media`, `content`, `actions`. Padding sits on the body frame, not the card, so media bleeds to the edge while content stays inset.
 
-Machine-readable, same pattern as banding: `page.getSharedPluginData('components', 'spec')` returns the schema, per-component props, code-only props and build notes; each component carries `getPluginData('component')`. Section `08 · Machine-readable spec` renders that JSON on canvas.
+Machine-readable in two places. In Figma: `page.getSharedPluginData('components', 'spec')`, rendered on canvas as section `11 · Machine-readable spec`.
+
+**In the repo: `components/`.** One contract per component in `components/specs/*.json` (plus a readable `.md`), generated from the Figma nodes' *bound variables* — not from plugin data, not hand-written. See `components/README.md`.
+
+```bash
+node components/build.mjs    # regenerate specs/ from components/figma-export.json
+node components/verify.mjs   # integrity + no-literals + checksum
+```
+
+`components/verify.mjs` **cross-checks every component token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `components/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-03: `2019599942`, 11 components / 92 variants / 43 tokens.
 
 ### Plugin API traps found while building
 

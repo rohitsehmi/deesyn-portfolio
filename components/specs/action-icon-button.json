@@ -1,0 +1,1182 @@
+{
+  "name": "Action/Icon Button",
+  "slug": "action-icon-button",
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Action/Icon Button"
+  },
+  "description": "Square: one size token drives both axes, so Radius/Round resolves to a true circle at every size. 32 / 44 / 48 from Size/Button *, with 16 / 20 / 24 icons.\n\nSeparate from Action/Button on purpose. The shape contract differs — square and fixed, not hug-width — and so does the accessibility contract: with no visible text, aria-label is required, not optional. Folding it into Button would also have doubled that set to 54 variants.\n\nPress is scale(0.97) over duration/press with easing/out — documented, not drawn, as everywhere else.\n\nCode-only props: aria-label (REQUIRED), href, target, analytics-id.",
+  "variantAxes": {
+    "variant": [
+      "primary",
+      "secondary",
+      "ghost"
+    ],
+    "size": [
+      "sm",
+      "md",
+      "lg"
+    ],
+    "state": [
+      "default",
+      "hover",
+      "disabled"
+    ]
+  },
+  "props": {
+    "icon": {
+      "type": "INSTANCE_SWAP"
+    }
+  },
+  "slots": [],
+  "variantCount": 27,
+  "variants": {
+    "variant=primary, size=sm, state=default": {
+      "size": {
+        "width": 32,
+        "height": 32
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/primary-bg",
+            "ref": "semantic.*.action.primary-bg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#191c1f"
+          }
+        }
+      }
+    },
+    "variant=primary, size=sm, state=hover": {
+      "size": {
+        "width": 32,
+        "height": 32
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/primary-bg-hover",
+            "ref": "semantic.*.action.primary-bg-hover",
+            "type": "color",
+            "light": "#272b2f",
+            "dark": "#e2e2e7"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#191c1f"
+          }
+        }
+      }
+    },
+    "variant=primary, size=sm, state=disabled": {
+      "size": {
+        "width": 32,
+        "height": 32
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/disabled-bg",
+            "ref": "semantic.*.action.disabled-bg",
+            "type": "color",
+            "light": "#f4f5f6",
+            "dark": "#1f1f1f"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/disabled-fg",
+            "ref": "semantic.*.action.disabled-fg",
+            "type": "color",
+            "light": "#c9c9cd",
+            "dark": "#ffffff3d"
+          }
+        }
+      }
+    },
+    "variant=primary, size=md, state=default": {
+      "size": {
+        "width": 44,
+        "height": 44
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "height": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/primary-bg",
+            "ref": "semantic.*.action.primary-bg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#191c1f"
+          }
+        }
+      }
+    },
+    "variant=primary, size=md, state=hover": {
+      "size": {
+        "width": 44,
+        "height": 44
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "height": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/primary-bg-hover",
+            "ref": "semantic.*.action.primary-bg-hover",
+            "type": "color",
+            "light": "#272b2f",
+            "dark": "#e2e2e7"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#191c1f"
+          }
+        }
+      }
+    },
+    "variant=primary, size=md, state=disabled": {
+      "size": {
+        "width": 44,
+        "height": 44
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "height": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/disabled-bg",
+            "ref": "semantic.*.action.disabled-bg",
+            "type": "color",
+            "light": "#f4f5f6",
+            "dark": "#1f1f1f"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/disabled-fg",
+            "ref": "semantic.*.action.disabled-fg",
+            "type": "color",
+            "light": "#c9c9cd",
+            "dark": "#ffffff3d"
+          }
+        }
+      }
+    },
+    "variant=primary, size=lg, state=default": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/primary-bg",
+            "ref": "semantic.*.action.primary-bg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#191c1f"
+          }
+        }
+      }
+    },
+    "variant=primary, size=lg, state=hover": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/primary-bg-hover",
+            "ref": "semantic.*.action.primary-bg-hover",
+            "type": "color",
+            "light": "#272b2f",
+            "dark": "#e2e2e7"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
+            "type": "color",
+            "light": "#ffffff",
+            "dark": "#191c1f"
+          }
+        }
+      }
+    },
+    "variant=primary, size=lg, state=disabled": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/disabled-bg",
+            "ref": "semantic.*.action.disabled-bg",
+            "type": "color",
+            "light": "#f4f5f6",
+            "dark": "#1f1f1f"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/disabled-fg",
+            "ref": "semantic.*.action.disabled-fg",
+            "type": "color",
+            "light": "#c9c9cd",
+            "dark": "#ffffff3d"
+          }
+        }
+      }
+    },
+    "variant=secondary, size=sm, state=default": {
+      "size": {
+        "width": 32,
+        "height": 32
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/secondary-bg",
+            "ref": "semantic.*.action.secondary-bg",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff24"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=secondary, size=sm, state=hover": {
+      "size": {
+        "width": 32,
+        "height": 32
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/secondary-bg-hover",
+            "ref": "semantic.*.action.secondary-bg-hover",
+            "type": "color",
+            "light": "#00000026",
+            "dark": "#ffffff3d"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=secondary, size=sm, state=disabled": {
+      "size": {
+        "width": 32,
+        "height": 32
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/disabled-bg",
+            "ref": "semantic.*.action.disabled-bg",
+            "type": "color",
+            "light": "#f4f5f6",
+            "dark": "#1f1f1f"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/disabled-fg",
+            "ref": "semantic.*.action.disabled-fg",
+            "type": "color",
+            "light": "#c9c9cd",
+            "dark": "#ffffff3d"
+          }
+        }
+      }
+    },
+    "variant=secondary, size=md, state=default": {
+      "size": {
+        "width": 44,
+        "height": 44
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "height": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/secondary-bg",
+            "ref": "semantic.*.action.secondary-bg",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff24"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=secondary, size=md, state=hover": {
+      "size": {
+        "width": 44,
+        "height": 44
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "height": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/secondary-bg-hover",
+            "ref": "semantic.*.action.secondary-bg-hover",
+            "type": "color",
+            "light": "#00000026",
+            "dark": "#ffffff3d"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=secondary, size=md, state=disabled": {
+      "size": {
+        "width": 44,
+        "height": 44
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "height": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/disabled-bg",
+            "ref": "semantic.*.action.disabled-bg",
+            "type": "color",
+            "light": "#f4f5f6",
+            "dark": "#1f1f1f"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/disabled-fg",
+            "ref": "semantic.*.action.disabled-fg",
+            "type": "color",
+            "light": "#c9c9cd",
+            "dark": "#ffffff3d"
+          }
+        }
+      }
+    },
+    "variant=secondary, size=lg, state=default": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/secondary-bg",
+            "ref": "semantic.*.action.secondary-bg",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff24"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=secondary, size=lg, state=hover": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/secondary-bg-hover",
+            "ref": "semantic.*.action.secondary-bg-hover",
+            "type": "color",
+            "light": "#00000026",
+            "dark": "#ffffff3d"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=secondary, size=lg, state=disabled": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/disabled-bg",
+            "ref": "semantic.*.action.disabled-bg",
+            "type": "color",
+            "light": "#f4f5f6",
+            "dark": "#1f1f1f"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/disabled-fg",
+            "ref": "semantic.*.action.disabled-fg",
+            "type": "color",
+            "light": "#c9c9cd",
+            "dark": "#ffffff3d"
+          }
+        }
+      }
+    },
+    "variant=ghost, size=sm, state=default": {
+      "size": {
+        "width": 32,
+        "height": 32
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=ghost, size=sm, state=hover": {
+      "size": {
+        "width": 32,
+        "height": 32
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/ghost-bg-hover",
+            "ref": "semantic.*.action.ghost-bg-hover",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff0f"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=ghost, size=sm, state=disabled": {
+      "size": {
+        "width": 32,
+        "height": 32
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "height": {
+            "token": "Size/Button sm",
+            "ref": "primitive.size.button-sm",
+            "type": "dimension",
+            "value": "32px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/disabled-fg",
+            "ref": "semantic.*.action.disabled-fg",
+            "type": "color",
+            "light": "#c9c9cd",
+            "dark": "#ffffff3d"
+          }
+        }
+      }
+    },
+    "variant=ghost, size=md, state=default": {
+      "size": {
+        "width": 44,
+        "height": 44
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "height": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=ghost, size=md, state=hover": {
+      "size": {
+        "width": 44,
+        "height": 44
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "height": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/ghost-bg-hover",
+            "ref": "semantic.*.action.ghost-bg-hover",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff0f"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=ghost, size=md, state=disabled": {
+      "size": {
+        "width": 44,
+        "height": 44
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "height": {
+            "token": "Size/Button md",
+            "ref": "primitive.size.button-md",
+            "type": "dimension",
+            "value": "44px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/disabled-fg",
+            "ref": "semantic.*.action.disabled-fg",
+            "type": "color",
+            "light": "#c9c9cd",
+            "dark": "#ffffff3d"
+          }
+        }
+      }
+    },
+    "variant=ghost, size=lg, state=default": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=ghost, size=lg, state=hover": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/ghost-bg-hover",
+            "ref": "semantic.*.action.ghost-bg-hover",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff0f"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "variant=ghost, size=lg, state=disabled": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        ".": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          }
+        },
+        "icon/Vector": {
+          "fg": {
+            "token": "action/disabled-fg",
+            "ref": "semantic.*.action.disabled-fg",
+            "type": "color",
+            "light": "#c9c9cd",
+            "dark": "#ffffff3d"
+          }
+        }
+      }
+    }
+  }
+}
