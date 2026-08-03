@@ -24,6 +24,12 @@ Figma: page **Components**, set `Action/Icon Button` — 27 variants. The same c
 |---|---|---|
 | `icon` | INSTANCE_SWAP | — |
 
+## Don't
+
+- Never ship one without aria-label. There is no visible text, so without it the control has no accessible name.
+- Do not use it where a labelled button fits. An icon alone is only unambiguous for back, close, next and previous.
+- Do not resize it off the token scale. Both axes bind to one size token — that is what keeps it a circle.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

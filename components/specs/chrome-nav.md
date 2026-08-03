@@ -29,6 +29,12 @@ Figma: page **Components**, set `Chrome/Nav` — 4 variants. The same contract i
 
 - `actions`
 
+## Don't
+
+- Do not give state=top a fill. Transparent is the point — it inherits whatever band it sits over.
+- Never add a shadow to state=scrolled. The hairline is the seam; revolut.com has zero box-shadow.
+- Do not exceed one line at desktop. If the items do not fit, cut them — a two-line nav is broken.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

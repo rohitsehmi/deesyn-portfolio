@@ -19,7 +19,8 @@ node design/verify.mjs   # integrity + no-literals + checksum, exits non-zero on
 
 | File | Role |
 |---|---|
-| `figma-export.json` | Compact export read off the Figma nodes. **Source of truth.** |
+| `figma-export.json` | Compact export read off the Figma nodes. **Source of truth for what components *are*.** |
+| `usage-rules.json` | Authored guidance — what components are *for*, and how they get misused. Mirrored onto each set in Figma as `getSharedPluginData('spec','donts')`. |
 | `figma-export.snippet.js` | The snippet that produces it, run inside Figma |
 | `build.mjs` | Expands the export into per-domain spec files |
 | `verify.mjs` | Integrity, no-literals, checksum |
@@ -39,6 +40,15 @@ set.getSharedPluginData('spec', 'contract')
 ```
 
 A designer opening `Action/Button` sees Button's contract on that section. There is no page-level blob to scroll past, and no ambiguity about which spec describes what. The snippet writes these back as part of every export, so they cannot go stale independently of the repo.
+
+## Measured vs authored
+
+Two kinds of content, kept apart on purpose:
+
+- **`figma-export.json` is measured.** Read off the nodes' bound variables. Nobody wrote it; it cannot flatter the system.
+- **`usage-rules.json` is authored.** The failure modes someone picking this up would actually hit — ghost is not a primary action, never ship an icon-only button without `aria-label`, never fake a product UI out of rectangles. No tool can derive these.
+
+`build.mjs` merges them into each spec so a reader gets both, but the files stay separate so it is always obvious which is which. In Figma the same split holds: `getSharedPluginData('spec','contract')` is measured, `getSharedPluginData('spec','donts')` is authored.
 
 ## What makes it trustworthy
 

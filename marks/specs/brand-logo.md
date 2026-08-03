@@ -14,6 +14,12 @@ Figma: page **Marks**, set `Brand/Logo` — 2 variants. The same contract is on 
 |---|---|
 | `variant` | `wordmark` · `mark` |
 
+## Don't
+
+- Do not recolour it. The fill binds to fg/primary, mirroring var(--rui-color-foreground) — it flips on its own.
+- Do not rescale the wordmark off its aspect. 145x32 is the real asset's natural size.
+- Decide what the site presents as. Nav and Footer currently instance the Revolut wordmark as the site identity.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

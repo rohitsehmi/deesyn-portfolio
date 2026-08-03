@@ -9,6 +9,10 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Inline prose link. Underlined — an unstyled link inside body copy is an accessibility failure, not a style choice.\n\nSplit from Action/Arrow Link deliberately: inside one component set, layers matched by name sync their text style and decoration across variants, so the two could not differ. They are different components anyway — one is prose, one is a call to action.\n\nCode-only props: href, target, rel, aria-label.",
+  "donts": [
+    "Do not remove the underline. An unstyled link inside body copy is an accessibility failure, not a style choice.",
+    "Do not use it as a call to action. Use Action/Arrow Link — the arrow carries the affordance."
+  ],
   "variantAxes": {
     "state": [
       "default",

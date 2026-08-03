@@ -16,6 +16,12 @@ Figma: page **Components**, set `Content/Tag` — 2 variants. The same contract 
 |---|---|---|
 | `label` | TEXT | `"designer"` |
 
+## Don't
+
+- Metadata only — role, year, platform. It is not a button and not a filter.
+- Never overlay it on an image. Captions sit below the image, outside it.
+- Do not use accent for decoration. Accent means the tag carries meaning the neutral one does not.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

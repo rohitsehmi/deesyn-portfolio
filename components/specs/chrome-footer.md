@@ -28,6 +28,11 @@ Figma: page **Components**, set `Chrome/Footer` — 2 variants. The same contrac
 
 - `columns`
 
+## Don't
+
+- Do not give it a surface. It is transparent so the band owns the background; setting a fill breaks the inverse case.
+- Contact is a mailto, not a form. No backend, and a portfolio form converts worse than a copyable address.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

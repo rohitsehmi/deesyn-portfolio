@@ -26,6 +26,12 @@ Figma: page **Components**, set `Action/Button` — 27 variants. The same contra
 | `leading` | INSTANCE_SWAP | — |
 | `trailing` | INSTANCE_SWAP | — |
 
+## Don't
+
+- Ghost is not a primary action. It exists for nav links and tertiary actions; if it is the only button in a band, it is the wrong variant.
+- Do not animate press with a variant. Press is scale(0.97) over duration/press — a code concern, deliberately absent here.
+- Do not override the fill to match a band. The band owns the foreground; the button already flips.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

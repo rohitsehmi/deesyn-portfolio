@@ -9,6 +9,11 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Metadata only — role, year, platform. Pill radius to match Button, so the page has one interactive-shape system. Never overlaid on an image.",
+  "donts": [
+    "Metadata only — role, year, platform. It is not a button and not a filter.",
+    "Never overlay it on an image. Captions sit below the image, outside it.",
+    "Do not use accent for decoration. Accent means the tag carries meaning the neutral one does not."
+  ],
   "variantAxes": {
     "variant": [
       "neutral",

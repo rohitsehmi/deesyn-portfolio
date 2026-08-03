@@ -9,6 +9,11 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Pill button. Height, padding, gap and radius all bind to primitives; every fill binds to a semantic token, so it flips inside an inverse band with no override.\n\nPRESS IS NOT A VARIANT. Press feedback is transform: scale(0.97) over duration/press with easing/out — a transform Figma cannot express in a variant without breaking the layout grid. It is recorded in each variant's plugin data and is a code responsibility.\n\nCode-only props to add: href, target, aria-label (icon-only), analytics-id.",
+  "donts": [
+    "Ghost is not a primary action. It exists for nav links and tertiary actions; if it is the only button in a band, it is the wrong variant.",
+    "Do not animate press with a variant. Press is scale(0.97) over duration/press — a code concern, deliberately absent here.",
+    "Do not override the fill to match a band. The band owns the foreground; the button already flips."
+  ],
   "variantAxes": {
     "variant": [
       "primary",

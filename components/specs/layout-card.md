@@ -33,6 +33,12 @@ Figma: page **Components**, set `Layout/Card` — 4 variants. The same contract 
 - `content`
 - `actions`
 
+## Don't
+
+- Never nest cards. If content inside a card needs its own container, the card is doing too much.
+- Do not use a card where spacing would do. A card claims the content is a discrete object — if it is not, use a rule or negative space.
+- Do not put padding on the card. It lives on the body, which is what lets media bleed to the edge.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

@@ -9,6 +9,10 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Transparent by design — the band it sits in owns the surface, so the footer inherits foreground with no override. Inner container caps at Size/Max Width (1000).\n\nContact is a mailto arrow link, not a form. No backend to run, and a portfolio contact form converts worse than an address you can copy.\n\ncompact drops the columns slot and the rule: logo, copyright, contact. Use it on case-study pages where the footer should not compete with the next-study link.\n\nCode-only props: href per column link, mailto address.\n\nThe columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.",
+  "donts": [
+    "Do not give it a surface. It is transparent so the band owns the background; setting a fill breaks the inverse case.",
+    "Contact is a mailto, not a form. No backend, and a portfolio form converts worse than a copyable address."
+  ],
   "variantAxes": {
     "scale": [
       "compact",

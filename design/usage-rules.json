@@ -1,0 +1,59 @@
+{
+  "_comment": "Authored usage guidance — the failure modes someone picking this system up would actually hit. NOT extracted from Figma: figma-export.json holds what the nodes measurably are, this holds what they are for. build.mjs merges these into each component spec.",
+  "_mirror": "The same text is on each component set in Figma as setSharedPluginData('spec', 'donts').",
+  "donts": {
+    "Action/Button": [
+      "Ghost is not a primary action. It exists for nav links and tertiary actions; if it is the only button in a band, it is the wrong variant.",
+      "Do not animate press with a variant. Press is scale(0.97) over duration/press — a code concern, deliberately absent here.",
+      "Do not override the fill to match a band. The band owns the foreground; the button already flips."
+    ],
+    "Action/Icon Button": [
+      "Never ship one without aria-label. There is no visible text, so without it the control has no accessible name.",
+      "Do not use it where a labelled button fits. An icon alone is only unambiguous for back, close, next and previous.",
+      "Do not resize it off the token scale. Both axes bind to one size token — that is what keeps it a circle."
+    ],
+    "Action/Link": [
+      "Do not remove the underline. An unstyled link inside body copy is an accessibility failure, not a style choice.",
+      "Do not use it as a call to action. Use Action/Arrow Link — the arrow carries the affordance."
+    ],
+    "Action/Arrow Link": [
+      "Never underline it. The arrow is the affordance; both together is noise.",
+      "Do not use it inside a sentence. It is standalone; inline links are Action/Link."
+    ],
+    "Content/Tag": [
+      "Metadata only — role, year, platform. It is not a button and not a filter.",
+      "Never overlay it on an image. Captions sit below the image, outside it.",
+      "Do not use accent for decoration. Accent means the tag carries meaning the neutral one does not."
+    ],
+    "Content/Media": [
+      "Never fake a product UI out of rectangles. Use a real screenshot or nothing — a div mock is the single clearest tell.",
+      "No labels or pills overlaid on the image. Caption below, outside the frame.",
+      "No decorative photo credits. Credit a real photographer or write nothing.",
+      "Use bleed only when the image runs to the band edge. Otherwise inset, which carries r20."
+    ],
+    "Layout/Card": [
+      "Never nest cards. If content inside a card needs its own container, the card is doing too much.",
+      "Do not use a card where spacing would do. A card claims the content is a discrete object — if it is not, use a rule or negative space.",
+      "Do not put padding on the card. It lives on the body, which is what lets media bleed to the edge."
+    ],
+    "Chrome/Nav": [
+      "Do not give state=top a fill. Transparent is the point — it inherits whatever band it sits over.",
+      "Never add a shadow to state=scrolled. The hairline is the seam; revolut.com has zero box-shadow.",
+      "Do not exceed one line at desktop. If the items do not fit, cut them — a two-line nav is broken."
+    ],
+    "Chrome/Footer": [
+      "Do not give it a surface. It is transparent so the band owns the background; setting a fill breaks the inverse case.",
+      "Contact is a mailto, not a form. No backend, and a portfolio form converts worse than a copyable address."
+    ],
+    "Icon": [
+      "Never hand-draw one. Every icon here is a real Revolut asset; an approximation sits next to the real thing and loses.",
+      "Do not restroke them. They are filled paths — Revolut's system is fill-based, not stroke-based.",
+      "Do not use arrow-right or arrow-left. They do not exist: the thin arrow IS Revolut's arrow."
+    ],
+    "Brand/Logo": [
+      "Do not recolour it. The fill binds to fg/primary, mirroring var(--rui-color-foreground) — it flips on its own.",
+      "Do not rescale the wordmark off its aspect. 145x32 is the real asset's natural size.",
+      "Decide what the site presents as. Nav and Footer currently instance the Revolut wordmark as the site identity."
+    ]
+  }
+}

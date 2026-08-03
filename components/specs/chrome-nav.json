@@ -9,6 +9,11 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Height binds to Size/Nav (56). The inner container caps at Size/Max Width (1000) via maxWidth, so the bar spans full-bleed while its content stays on the measure.\n\nstate=top is transparent and sits over whatever band is beneath it, which is how it inherits that band's foreground for free. state=scrolled takes bg/canvas plus a 1px border/subtle hairline — no shadow, per the banding system.\n\nNav links are ghost buttons. That is what the ghost variant exists for: a low-emphasis action that is still a real button, with real hit area and real press feedback.\n\nCode-only props: href per link, aria-current, skip-to-content target.\n\nThe actions slot is 140x56 and fills vertically. A SLOT cannot hug on either axis — it is FIXED or FILL — so it needs an explicit size and its content needs positioning inside it.",
+  "donts": [
+    "Do not give state=top a fill. Transparent is the point — it inherits whatever band it sits over.",
+    "Never add a shadow to state=scrolled. The hairline is the seam; revolut.com has zero box-shadow.",
+    "Do not exceed one line at desktop. If the items do not fit, cut them — a two-line nav is broken."
+  ],
   "variantAxes": {
     "layout": [
       "desktop",

@@ -16,6 +16,12 @@ Figma: page **Icons**, set `Icon` — 12 variants. The same contract is on the s
 |---|---|
 | `name` | `arrow-up-right` · `chevron-down` · `chevron-right` · `menu` · `arrow-thin-right` · `arrow-thin-left` · `arrow-thin-up` · `arrow-thin-down` · `cross` · `envelope` · `chevron-up` · `link` |
 
+## Don't
+
+- Never hand-draw one. Every icon here is a real Revolut asset; an approximation sits next to the real thing and loses.
+- Do not restroke them. They are filled paths — Revolut's system is fill-based, not stroke-based.
+- Do not use arrow-right or arrow-left. They do not exist: the thin arrow IS Revolut's arrow.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

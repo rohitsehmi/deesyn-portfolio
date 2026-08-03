@@ -26,6 +26,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
 const src = JSON.parse(readFileSync(join(here, 'figma-export.json'), 'utf8'));
 const tokens = JSON.parse(readFileSync(join(root, 'tokens', 'tokens.json'), 'utf8'));
+// authored guidance, kept separate from what was measured off the nodes
+const usage = JSON.parse(readFileSync(join(here, 'usage-rules.json'), 'utf8'));
 
 /** "Size/Button lg" -> "size.button-lg" (same rule the token export uses). */
 export const tokenKey = (name) => name.toLowerCase().replace(/\//g, '.').replace(/\s+/g, '-');
@@ -112,6 +114,7 @@ function build() {
         figma: { file: 'UnybX8G5sQIEhLLZN2YFl6', page: d.page, set: name,
                  contract: 'set.getSharedPluginData("spec", "contract")' },
         description: c.description,
+        donts: usage.donts[name] || [],
         variantAxes, props: otherProps, slots,
         variantCount: Object.keys(c.variants).length,
         variants: Object.fromEntries(Object.entries(c.variants).map(([vn, v]) => [
@@ -135,6 +138,8 @@ function build() {
         md.push('');
       }
       if (slots.length) md.push('## Slots', '', slots.map(x => `- \`${x}\``).join('\n'), '');
+      const donts = usage.donts[name] || [];
+      if (donts.length) md.push("## Don't", '', donts.map(x => `- ${x}`).join('\n'), '');
       md.push('## Token contract', '',
         'Every value is a token reference, not a literal. `.` is the component root.', '');
       const seen = new Set();

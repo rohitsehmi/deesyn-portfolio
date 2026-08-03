@@ -20,6 +20,11 @@ Figma: page **Components**, set `Action/Link` — 2 variants. The same contract 
 |---|---|---|
 | `label` | TEXT | `"Read the case study"` |
 
+## Don't
+
+- Do not remove the underline. An unstyled link inside body copy is an accessibility failure, not a style choice.
+- Do not use it as a call to action. Use Action/Arrow Link — the arrow carries the affordance.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

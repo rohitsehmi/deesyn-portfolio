@@ -9,6 +9,11 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Every icon is a real Revolut asset from assets.revolut.com, used verbatim — filled paths, matching Revolut's own fill-based mono system. No hand-drawn approximations.\n\nThe one exception is arrow-up-right: Revolut ships no diagonal arrow, so it is ArrowThinRight rotated -45°, which keeps the exact weight and geometry of the real asset.\n\nRevolut has no plain ArrowRight either — the thin arrow IS its arrow, which is why arrow-right and arrow-left do not exist here.\n\nFill binds to fg/primary. Components tint whichever paint a vector uses.",
+  "donts": [
+    "Never hand-draw one. Every icon here is a real Revolut asset; an approximation sits next to the real thing and loses.",
+    "Do not restroke them. They are filled paths — Revolut's system is fill-based, not stroke-based.",
+    "Do not use arrow-right or arrow-left. They do not exist: the thin arrow IS Revolut's arrow."
+  ],
   "variantAxes": {
     "name": [
       "arrow-up-right",

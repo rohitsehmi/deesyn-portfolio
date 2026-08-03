@@ -9,6 +9,11 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Three slots: media, content, actions. The card owns shape, surface and rhythm; it does not own what goes inside it.\n\nPadding is on the body frame, not the card, so media bleeds to the edge while content stays inset. clipsContent is on so media respects r20.\n\nA SLOT is not an auto-layout frame — children placed inside one cannot use FILL sizing. Set FILL on the slot itself and size the content explicitly.\n\nCode-only props: href (when the whole card is a link), analytics-id.\n\nSLOT nodes carry their own fill, opaque white by default. Clear it or the slot paints over the band it sits in — invisible on a light band, a white box on an inverse one.",
+  "donts": [
+    "Never nest cards. If content inside a card needs its own container, the card is doing too much.",
+    "Do not use a card where spacing would do. A card claims the content is a discrete object — if it is not, use a rule or negative space.",
+    "Do not put padding on the card. It lives on the body, which is what lets media bleed to the edge."
+  ],
   "variantAxes": {
     "variant": [
       "base",

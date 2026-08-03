@@ -9,6 +9,10 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Standalone call-to-action link. Never underlined; the arrow carries the affordance.\n\nHover translates the arrow 4px right over duration/press with easing/out. Like Button press, that transform is documented rather than drawn.\n\nCode-only props: href, target, rel, aria-label, analytics-id.",
+  "donts": [
+    "Never underline it. The arrow is the affordance; both together is noise.",
+    "Do not use it inside a sentence. It is standalone; inline links are Action/Link."
+  ],
   "variantAxes": {
     "state": [
       "default",

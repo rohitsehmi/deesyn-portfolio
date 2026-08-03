@@ -9,6 +9,12 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Real screenshots and photography only — never a product UI faked out of rectangles. inset carries r20; bleed is square because it runs to the band edge. Caption is a text property, not a slot: captions are plain text, and decorative photo credits are banned.",
+  "donts": [
+    "Never fake a product UI out of rectangles. Use a real screenshot or nothing — a div mock is the single clearest tell.",
+    "No labels or pills overlaid on the image. Caption below, outside the frame.",
+    "No decorative photo credits. Credit a real photographer or write nothing.",
+    "Use bleed only when the image runs to the band edge. Otherwise inset, which carries r20."
+  ],
   "variantAxes": {
     "ratio": [
       "16-9",

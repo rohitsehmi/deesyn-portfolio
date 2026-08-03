@@ -21,6 +21,11 @@ Figma: page **Components**, set `Action/Arrow Link` — 2 variants. The same con
 | `label` | TEXT | `"Read the case study"` |
 | `trailing` | INSTANCE_SWAP | — |
 
+## Don't
+
+- Never underline it. The arrow is the affordance; both together is noise.
+- Do not use it inside a sentence. It is standalone; inline links are Action/Link.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

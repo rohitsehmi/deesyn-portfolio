@@ -18,6 +18,13 @@ Figma: page **Components**, set `Content/Media` — 8 variants. The same contrac
 | `caption` | TEXT | `"Caption"` |
 | `show-caption` | BOOLEAN | `false` |
 
+## Don't
+
+- Never fake a product UI out of rectangles. Use a real screenshot or nothing — a div mock is the single clearest tell.
+- No labels or pills overlaid on the image. Caption below, outside the frame.
+- No decorative photo credits. Credit a real photographer or write nothing.
+- Use bleed only when the image runs to the band edge. Otherwise inset, which carries r20.
+
 ## Token contract
 
 Every value is a token reference, not a literal. `.` is the component root.

@@ -9,6 +9,11 @@
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
   "description": "Square: one size token drives both axes, so Radius/Round resolves to a true circle at every size. 32 / 44 / 48 from Size/Button *, with 16 / 20 / 24 icons.\n\nSeparate from Action/Button on purpose. The shape contract differs — square and fixed, not hug-width — and so does the accessibility contract: with no visible text, aria-label is required, not optional. Folding it into Button would also have doubled that set to 54 variants.\n\nPress is scale(0.97) over duration/press with easing/out — documented, not drawn, as everywhere else.\n\nCode-only props: aria-label (REQUIRED), href, target, analytics-id.",
+  "donts": [
+    "Never ship one without aria-label. There is no visible text, so without it the control has no accessible name.",
+    "Do not use it where a labelled button fits. An icon alone is only unambiguous for back, close, next and previous.",
+    "Do not resize it off the token scale. Both axes bind to one size token — that is what keeps it a circle."
+  ],
   "variantAxes": {
     "variant": [
       "primary",
