@@ -50,7 +50,7 @@ Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development
 
 ## Tokens
 
-`tokens/tokens.json` — W3C DTCG format, 244 leaf tokens, exported from Figma and checksum-verified against it (`3182232140`, matched 2026-08-03).
+`tokens/tokens.json` — W3C DTCG format, 246 leaf tokens, exported from Figma and checksum-verified against it (`4115829316`, matched 2026-08-03).
 
 ```bash
 node tokens/build.mjs     # regenerate from tokens/figma-export.json
@@ -68,7 +68,7 @@ The Figma-side export snippet lives in `tokens/figma-export.snippet.js` and retu
 Built and visually verified on "Foundations — Revolut":
 
 - **`01 Primitives`** — 122 variables (colour ramp, white/black alphas, `sp50–sp1000`, layout scale, radius, sizing, breakpoints, `Duration/*`, `Easing/*`)
-- **`02 Semantic`** — 43 tokens × Light/Dark, every one aliased to a primitive, nothing hardcoded
+- **`02 Semantic`** — 47 tokens × Light/Dark, every one aliased to a primitive, nothing hardcoded
 - **23 text styles** — `Display/*`, `Heading/*`, `Lead/*`, `Body/*`, `Emphasis/*`, plus `UI/*` fenced off as product-only
 - **6 effect styles** — kept for app mockups only; the website itself uses zero shadows
 - **1 paint style** — `Gradient/Brand` (`#1227fd → #6fa0ff`)
@@ -83,6 +83,27 @@ Built and visually verified on "Foundations — Revolut":
 **Never `ease-in` on UI, and never animate a keyboard-initiated action.** Full rules in `tokens/README.md` and `.claude/skills/emil-design-eng/SKILL.md`.
 
 Machine-readable, same pattern as banding: `page.getSharedPluginData('motion', 'spec')` returns the whole rule set, and each specimen node carries `getPluginData('motion-token')`.
+
+## Components
+
+Figma page **Components**. Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`, `Brand/*`, plus top-level `Icon`. Variant props are **lowercase** (`variant=primary, size=lg`), booleans kebab-case, slot names lowercase nouns.
+
+Built: `Icon` (8), `Brand/Logo` (2), `Action/Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8). `Layout/Band` (12) lives on the Banding page.
+
+Still to build: `Layout/Card` (first slot user), `Chrome/Nav`, `Chrome/Footer`. Everything after those — case-study tile, heroes, prose and image blocks, quote, outcome — waits on the three case studies, because their shape is a content decision.
+
+**Contact is a `mailto:`, not a form.** No backend, and a portfolio contact form converts worse. Input and Form are deliberately not in the inventory.
+
+Machine-readable: `page.getSharedPluginData('components', 'spec')` returns the schema, per-component props, code-only props, and build notes; each component carries `getPluginData('component')`.
+
+### Plugin API traps found while building
+
+These cost rebuild cycles and are not obvious:
+
+- **`INSTANCE_SWAP` defaults take a node id, not a component key.** The key fails validation.
+- **`setTextStyleIdAsync` reclaims `textDecoration`.** Apply underline in a *later* pass or it silently reverts to `NONE`.
+- **Inside a component set, layers matched by name sync text style and decoration across variants.** Components that must differ typographically have to be separate sets — this is why `Action/Link` and `Action/Arrow Link` are two components, not one set with a `variant` axis.
+- Slots exist: `component.createSlot()` returns a `SLOT` node and auto-creates its property. It is *not* `figma.createSlot`.
 
 ## Banding
 

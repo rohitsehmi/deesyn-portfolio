@@ -172,7 +172,8 @@
     "easing.linear": ["easing.linear", "easing.linear"],
     "action.primary-bg-hover": ["neutral.700", "neutral.100"],
     "action.secondary-bg-hover": ["alpha.black-15", "alpha.white-24"],
-    "action.ghost-bg-hover": ["alpha.black-4", "alpha.white-6"]
+    "action.ghost-bg-hover": ["alpha.black-4", "alpha.white-6"],
+    "fg.link-hover": ["brand.blue-deep", "accent.light-blue"]
   },
   "T": {
     "display.xl": ["Hanken Grotesk", 500, 88, 1, -0.0236],
