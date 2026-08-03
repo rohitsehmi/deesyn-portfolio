@@ -20,3 +20,8 @@ storybook-static/
 # Secrets — Chromatic project token lives here, never in the repo
 .env
 .env.local
+
+# Chromatic run artefacts
+chromatic.log
+chromatic-diagnostics.json
+build-storybook.log
