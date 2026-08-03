@@ -92,6 +92,10 @@ Figma page **Components**. Naming groups by purpose: `Layout/*`, `Action/*`, `Ch
 
 Built — **92 variants across 11 sets**: `Icon` (12), `Brand/Logo` (2), `Action/Button` (27), `Action/Icon Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2). `Layout/Band` (12) lives on the Banding page.
 
+`Brand/Logo` — `wordmark` is **Revolut's real wordmark**, verbatim from the live site's inline SVG at its natural 145×32, fill bound to `fg/primary` (the equivalent of `var(--rui-color-foreground)`, so it goes white on an inverse band with no override). `mark` is still a text stand-in; Rohit's own logo lives in the **CV-Build** Figma file and needs the Desktop Bridge plugin open *in that file* before it can be pulled across — the bridge can't open a file on its own.
+
+**Open question:** Nav and Footer both instance `variant=wordmark`, so the site chrome currently presents Revolut's wordmark as the site's own identity. Fine for a design-system demonstration in a private file; a decision to make before anything is published.
+
 `Action/Icon Button` is square — one size token drives both axes, so `Radius/Round` resolves to a true circle at 32/44/48 with 16/20/24 icons. It's separate from `Action/Button` because the shape contract differs *and* the a11y contract is stricter: with no visible text, **`aria-label` is required, not optional**. Folding it in would also have taken that set to 54 variants.
 
 ### Icons are real Revolut assets
