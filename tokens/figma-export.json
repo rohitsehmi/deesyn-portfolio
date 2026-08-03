@@ -1,7 +1,7 @@
 {
   "_comment": "Raw compact export from Figma file UnybX8G5sQIEhLLZN2YFl6, page 'Foundations — Revolut'. Source of truth. Regenerate via the figma_execute snippet in build.mjs's header comment, then run `node build.mjs`.",
   "_exported": "2026-08-03",
-  "_note": "band.base / band.sunken are the page-banding fills. inverse and inverse-raised are these two under an inverted mode, not separate tokens. See docs/banding-system.md. Motion (duration.* / easing.*) added 2026-08-03; easing primitives are CSS strings, expanded to DTCG cubicBezier by build.mjs.",
+  "_note": "band.base / band.sunken are the page-banding fills. inverse and inverse-raised are these two under an inverted mode, not separate tokens. See docs/banding-system.md. Motion (duration.* / easing.*) added 2026-08-03; easing primitives are CSS strings, expanded to DTCG cubicBezier by build.mjs. Button hover states added 2026-08-03.",
   "P": {
     "brand.accent": "#ea035d",
     "brand.accent-deep": "#400013",
@@ -169,7 +169,10 @@
     "easing.out": ["easing.out", "easing.out"],
     "easing.in-out": ["easing.in-out", "easing.in-out"],
     "easing.drawer": ["easing.drawer", "easing.drawer"],
-    "easing.linear": ["easing.linear", "easing.linear"]
+    "easing.linear": ["easing.linear", "easing.linear"],
+    "action.primary-bg-hover": ["neutral.700", "neutral.100"],
+    "action.secondary-bg-hover": ["alpha.black-15", "alpha.white-24"],
+    "action.ghost-bg-hover": ["alpha.black-4", "alpha.white-6"]
   },
   "T": {
     "display.xl": ["Hanken Grotesk", 500, 88, 1, -0.0236],

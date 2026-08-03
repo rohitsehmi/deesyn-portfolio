@@ -50,7 +50,7 @@ Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development
 
 ## Tokens
 
-`tokens/tokens.json` — W3C DTCG format, 238 leaf tokens, exported from Figma and checksum-verified against it (`2816042469`, matched 2026-08-03).
+`tokens/tokens.json` — W3C DTCG format, 244 leaf tokens, exported from Figma and checksum-verified against it (`3182232140`, matched 2026-08-03).
 
 ```bash
 node tokens/build.mjs     # regenerate from tokens/figma-export.json

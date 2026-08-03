@@ -21,7 +21,7 @@ node tokens/verify.mjs    # checksum + integrity check
 
 ## What's in `tokens.json`
 
-238 leaf tokens, 86 alias references, all resolving.
+244 leaf tokens, 92 alias references, all resolving.
 
 ```
 primitive/        122   raw values — never reference these from components
@@ -39,7 +39,7 @@ primitive/        122   raw values — never reference these from components
   duration        5     d100–d400
   easing          4     out · in-out · drawer · linear
 
-semantic/         43 × 2 modes   ← reference THESE
+semantic/         46 × 2 modes   ← reference THESE
   light/ dark/    bg · band · fg · border · action · status · duration · easing
 
 typography/       23    display · heading · lead · body · emphasis · ui
