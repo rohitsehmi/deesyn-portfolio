@@ -152,6 +152,23 @@ node design/verify.mjs   # integrity + no-literals + checksum
 
 **Each component section on canvas carries** its reasoning (rendered from the set's own `description`, one source), its don't-rules, a readable contract table, and an in-context usage example in both a base and an inverse band. The raw contract JSON is deliberately *not* on canvas — a 12,000px JSON wall is documentation theatre. Machines read it from plugin data and the repo.
 
+## Storybook and Chromatic
+
+Storybook is the component workshop; Chromatic is visual regression on top of it. Chromatic project `6a70c473fc9430ebb1214df6`.
+
+Every story renders **inside a band**, and the toolbar switches the band role — so the zero-override property is checked the same way it is asserted in Figma. Chromatic snapshots each story light *and* dark, so a regression in either mode fails.
+
+```bash
+npm run storybook     # dev
+npm run chromatic     # publish a build (needs CHROMATIC_PROJECT_TOKEN)
+```
+
+**Published Storybooks are access-controlled**, inherited from the private GitHub repo — an unauthenticated request returns `401`. To share, invite people in Chromatic → Manage → Collaborate. **Do not make it public yet:** it currently contains Revolut's wordmark used as the site's own identity plus their real icon assets. Sent to Revolut that reads as close study; on an open URL it is their trademark on an artefact that is not theirs. Resolve `Brand/Logo`'s `mark` first.
+
+Build URLs are per-build. Anything you send out should use the project permalink, not the URL a run prints.
+
+**Outstanding:** the project token was pasted into a chat transcript on 2026-08-03 — rotate it in Chromatic → Manage → Configure, then update `.env` and the GitHub Actions secret.
+
 ## Banding
 
 `docs/banding-system.md` — band roles, foreground inheritance, adjacency rules, vertical scale, measure. Built on Figma page **Banding** (5 sections).
