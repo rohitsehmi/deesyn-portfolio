@@ -90,7 +90,9 @@ Machine-readable, same pattern as banding: `page.getSharedPluginData('motion', '
 
 Figma page **Components**. Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`, `Brand/*`, plus top-level `Icon`. Variant props are **lowercase** (`variant=primary, size=lg`), booleans kebab-case, slot names lowercase nouns.
 
-Built — **65 variants across 10 sets**: `Icon` (12), `Brand/Logo` (2), `Action/Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2). `Layout/Band` (12) lives on the Banding page.
+Built — **92 variants across 11 sets**: `Icon` (12), `Brand/Logo` (2), `Action/Button` (27), `Action/Icon Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2). `Layout/Band` (12) lives on the Banding page.
+
+`Action/Icon Button` is square — one size token drives both axes, so `Radius/Round` resolves to a true circle at 32/44/48 with 16/20/24 icons. It's separate from `Action/Button` because the shape contract differs *and* the a11y contract is stricter: with no visible text, **`aria-label` is required, not optional**. Folding it in would also have taken that set to 54 variants.
 
 ### Icons are real Revolut assets
 
