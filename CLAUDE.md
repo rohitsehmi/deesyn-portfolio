@@ -59,7 +59,9 @@ node tokens/verify.mjs    # checksum + alias integrity
 
 The Figma-side export snippet lives in `tokens/figma-export.snippet.js` and returns the same checksum. **Don't rewrite it from memory** — it maps Figma's font *style name* to a numeric weight, and dropping that silently rewrites all 23 typography tokens.
 
-**Components must reference `semantic.*`, never `primitive.*`** — that split is what makes re-theming a one-file change.
+**Components must reference `semantic.*`, never `primitive.*`** — that split is what makes re-theming a one-file change. Exception by design: spacing, radius and sizing bind to `Space/*`, `Layout/*`, `Radius/*` and `Size/*` primitives, because there are no semantic equivalents and those values don't re-theme.
+
+**`fg/tertiary` is not a text colour.** It's `#c9c9cd` in light mode — **1.65:1 on white**, failing AA for body *and* large text. Dividers, disabled states and decorative marks only; low-emphasis text uses `fg/secondary` (4.87:1). It passes in dark mode (5.28:1), which is precisely why it went unnoticed — 42 text nodes across the file were using it. Re-pointing can't fix it: any grey hitting 4.5:1 on white is already `fg/secondary`. See `tokens/README.md`.
 
 **Do not use the shadow tokens in site chrome.** revolut.com has zero `box-shadow`; depth is colour-banding and luminance. Shadows are for app mockups inside case studies only. See `tokens/README.md`.
 
@@ -88,9 +90,11 @@ Machine-readable, same pattern as banding: `page.getSharedPluginData('motion', '
 
 Figma page **Components**. Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`, `Brand/*`, plus top-level `Icon`. Variant props are **lowercase** (`variant=primary, size=lg`), booleans kebab-case, slot names lowercase nouns.
 
-Built — **55 variants across 8 sets**: `Icon` (8), `Brand/Logo` (2), `Action/Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4). `Layout/Band` (12) lives on the Banding page.
+Built — **61 variants across 10 sets**: `Icon` (8), `Brand/Logo` (2), `Action/Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2). `Layout/Band` (12) lives on the Banding page.
 
-Still to build: `Chrome/Nav`, `Chrome/Footer`. Everything after those — case-study tile, heroes, prose and image blocks, quote, outcome — waits on the three case studies, because their shape is a content decision.
+**Tier 1 is complete.** Everything remaining — case-study tile, heroes, prose and image blocks, quote, outcome, next-study link — waits on the three case studies, because their shape is a content decision. So is the band rhythm (§7 of the banding doc).
+
+Nav links are ghost buttons — that is what the ghost variant exists for. Nav `state=top` is transparent so it inherits whatever band it sits over; Footer is transparent for the same reason.
 
 **Contact is a `mailto:`, not a form.** No backend, and a portfolio contact form converts worse. Input and Form are deliberately not in the inventory.
 
@@ -108,6 +112,7 @@ These cost rebuild cycles and are not obvious:
 - Slots exist: `component.createSlot()` returns a `SLOT` node and auto-creates its property. It is *not* `figma.createSlot`.
 - **A `SLOT` is not an auto-layout frame.** Children placed inside one cannot use `FILL` sizing — set `FILL` on the slot itself and size the content explicitly.
 - **`SLOT` carries its own fill, opaque white by default.** Clear it (`slot.fills = []`) or it paints over the band: invisible on a light band, a white box on an inverse one.
+- **A `SLOT` cannot HUG on either axis** — `FIXED` or `FILL` only. Every slot needs an explicit size, and its content needs positioning inside it. A slot left at its 100×100 default silently blows out the row it sits in.
 - Deleting a `SECTION` deletes the component sets inside it. Moving a set into a section then removing the section destroys the set.
 
 ## Banding

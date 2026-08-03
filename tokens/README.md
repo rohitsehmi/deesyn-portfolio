@@ -55,6 +55,22 @@ gradient/         1     brand (#1227fd → #6fa0ff)
 
 **2. Don't use the shadows in site chrome.** A full scan of revolut.com found **zero** `box-shadow`. Depth comes from full-width colour bands (`#000000` / `#ffffff` / `#f7f7f7` / `#1f1f1f`) and luminance shifts. The shadow tokens exist for app-UI mockups *inside* case studies, and are black-alpha only so they do nothing on dark surfaces anyway.
 
+## `fg/tertiary` is not a text colour
+
+In light mode `fg.tertiary` resolves to `neutral.200` (`#c9c9cd`), which is **1.65:1 on white**. That fails WCAG AA for body text (4.5:1) and for large text (3:1). Use it for dividers, disabled states and decorative marks only.
+
+**Low-emphasis text uses `fg/secondary`** (`neutral.500`, 4.87:1).
+
+There is no re-pointing that fixes this. On white, any grey reaching 4.5:1 is roughly `#767676` or darker — which is `fg/secondary` already. A lighter tertiary *text* tone is arithmetically impossible in light mode, so the token has to mean something other than text.
+
+Dark mode is fine (`alpha.white-50`, 5.28:1), which is exactly why this went unnoticed: it only fails in one mode.
+
+| Token | Light on `band/base` | Dark on `band/base` |
+|---|---|---|
+| `fg/primary` | 17.11:1 | 21:1 |
+| `fg/secondary` | 4.87:1 | 9.96:1 |
+| `fg/tertiary` | **1.65:1 — non-text** | 5.28:1 |
+
 ## Motion
 
 `duration.*` and `easing.*` are mode-independent — both Light and Dark alias the same primitive. They live in the semantic layer anyway so that rule 1 stays true without exception: a component never reaches past `semantic`.
