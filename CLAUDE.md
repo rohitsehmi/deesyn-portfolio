@@ -90,7 +90,18 @@ Machine-readable, same pattern as banding: `page.getSharedPluginData('motion', '
 
 Figma page **Components**. Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`, `Brand/*`, plus top-level `Icon`. Variant props are **lowercase** (`variant=primary, size=lg`), booleans kebab-case, slot names lowercase nouns.
 
-Built — **61 variants across 10 sets**: `Icon` (8), `Brand/Logo` (2), `Action/Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2). `Layout/Band` (12) lives on the Banding page.
+Built — **65 variants across 10 sets**: `Icon` (12), `Brand/Logo` (2), `Action/Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2). `Layout/Band` (12) lives on the Banding page.
+
+### Icons are real Revolut assets
+
+Every icon is pulled verbatim from `assets.revolut.com/assets/icons` — **filled paths, not strokes**, because Revolut's icon system is fill-based and mono (CSS mask + `currentColor`). The Figma equivalent is a bound fill. Hand-drawn approximations were replaced; the rule is the same one that governs the tokens: **measure the live site.**
+
+Two things this settled:
+
+- **Revolut ships no plain `ArrowRight`.** The thin arrow *is* its arrow, so `arrow-right` / `arrow-left` don't exist here — only `arrow-thin-*`.
+- **`arrow-up-right` is `ArrowThinRight` rotated +45°.** Revolut has no diagonal arrow, and rotating the real asset keeps its exact weight rather than inventing one.
+
+Components tint whichever paint a vector actually uses (fill *or* stroke), so a swapped icon still recolours.
 
 **Tier 1 is complete.** Everything remaining — case-study tile, heroes, prose and image blocks, quote, outcome, next-study link — waits on the three case studies, because their shape is a content decision. So is the band rhythm (§7 of the banding doc).
 
@@ -114,6 +125,8 @@ These cost rebuild cycles and are not obvious:
 - **`SLOT` carries its own fill, opaque white by default.** Clear it (`slot.fills = []`) or it paints over the band: invisible on a light band, a white box on an inverse one.
 - **A `SLOT` cannot HUG on either axis** — `FIXED` or `FILL` only. Every slot needs an explicit size, and its content needs positioning inside it. A slot left at its 100×100 default silently blows out the row it sits in.
 - Deleting a `SECTION` deletes the component sets inside it. Moving a set into a section then removing the section destroys the set.
+- **Rotation is counterclockwise-positive.** `+45` turns a right arrow into up-right; `-45` gives down-right.
+- To change an icon without breaking every instance that references it, **replace the geometry in place** and rename the component. Deleting and recreating detaches every nested instance.
 
 ## Banding
 
