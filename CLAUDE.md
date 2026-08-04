@@ -195,6 +195,8 @@ Bands are **relative, not absolute**: a band declares a tonal role and the mode 
 
 Don't reach for `bg/inverse` when you mean a band — it's `#191c1f`, the app surface, not band black.
 
+**Bands are relative. Media is absolute.** `inverse` means *this band in the other theme*, so it flips when the theme flips. That is right for a band whose fill is a token and wrong over a photograph, which is dark in both themes: the foreground goes white in light mode and dark in dark mode over the same image, and `bg/scrim` weakens from 70% to 40% at the same moment. Content over media carries **`data-on-media`** instead, which `tokens/css.mjs` emits last and unconditionally from the dark-mode values. Used by `Parallax` and by `Nav onMedia` while it is transparent over the hero.
+
 **The spec is machine-readable**: `page.getSharedPluginData('banding', 'spec')` returns the whole rule set as JSON, and every band node carries `getPluginData('band')` → `{role, scale}`. A page built from bands can be linted against the adjacency rules rather than checked by eye.
 
 **The reasoning is on canvas too.** Section `00 · The system` renders the explanation from `docs/banding-system.md` in Figma, so the page is self-explaining without the repo open. Its role-table swatches are live — bound to `band/base` / `band/sunken` under explicit mode overrides — so "four roles, two variables" demonstrates itself instead of being claimed.

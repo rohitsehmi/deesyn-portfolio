@@ -17,19 +17,19 @@ const links = linksFor(Astro.url.pathname);
     stack and would otherwise render dark text on a dark image. It drops back to
     the page's own foreground the moment it takes bg/canvas.
   */}
-  <Nav client:load sticky overBand="inverse" links={links} />
+  <Nav client:load sticky onMedia links={links} />
 
   <main id="main">
     {/*
-      The hero sets the tonal key and, per the hero note in the banding spec, is
-      content-led rather than a band scale and does not count toward the
-      alternation. inverse is not a style choice here: it resolves bg/scrim to
-      70% black, which is what makes white text over this photograph clear AA.
+      The hero is content-led and does not count toward the band alternation,
+      per the hero note in the banding spec. It carries data-on-media rather
+      than a band role: bands are relative and flip with the theme, and a
+      photograph does not. Absolute is also what keeps bg/scrim at 70% in both
+      themes, which is what makes white text over this image clear AA.
     */}
     <Parallax
       src="/media/hero-parallax.png"
       alt="[NEEDS: replace with your own imagery. This is a Revolut marketing asset, used here to build the effect against.]"
-      band="inverse"
       underNav
       priority
       client:visible

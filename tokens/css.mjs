@@ -109,6 +109,24 @@ lines.push('[data-theme="dark"] [data-band="inverse-raised"] {');
 lines.push(asBlock(lightDecls, '  '));
 lines.push('}', '');
 
+// ---- over media ----------------------------------------------------------
+// Bands are relative: `inverse` means "this band, in the other theme", so it
+// flips when the theme flips. That is right for a band whose fill is a token.
+//
+// It is wrong over a photograph. A photograph is dark in both themes, so a
+// relative role sends the foreground the wrong way in one of them: white text
+// in light mode, dark text in dark mode, over the same dark image. bg/scrim
+// weakens from 70% to 40% at the same moment, so the contrast drops exactly
+// where it was already doing the most work.
+//
+// This is absolute. It always resolves to the dark-mode values, whatever the
+// page theme is, because the surface underneath it does not change. Emitted
+// last so it wins over the theme blocks above.
+lines.push('/* Content over media. Absolute, not relative: the image is dark in both themes. */');
+lines.push('[data-on-media] {');
+lines.push(asBlock(Object.entries(darkPairs), '  '));
+lines.push('}', '');
+
 // ---- type styles ----------------------------------------------------------
 // Emitted twice, from the same source, for two different consumers.
 //

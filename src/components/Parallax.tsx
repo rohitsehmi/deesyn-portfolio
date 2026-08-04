@@ -1,5 +1,4 @@
 import { useEffect, useRef, type ReactNode, type CSSProperties } from 'react';
-import type { BandRole } from './Band';
 import './Parallax.css';
 
 /**
@@ -89,12 +88,6 @@ export interface ParallaxProps {
    */
   scrim?: boolean;
   /**
-   * The tonal key this section sets. Applied as `data-band` without a scale,
-   * because a hero is content-led and does not count toward the band
-   * alternation. See the `hero` note in design/banding-export.json.
-   */
-  band?: BandRole;
-  /**
    * Pulls the section up under a transparent nav so the image starts at the top
    * of the page and the nav floats over it, which is the whole point of the
    * pattern. Pair with `Nav overBand` so the nav takes this section's
@@ -121,6 +114,12 @@ export interface ParallaxProps {
  *
  * Reduced motion stops it in both paths.
  *
+ * The section carries `data-on-media`, not a band role. Bands are relative:
+ * `inverse` means this band in the other theme, so it flips with the theme.
+ * A photograph does not. Over media the foreground has to be absolute or it
+ * inverts in one of the two themes, which is white text in light mode and
+ * dark text in dark mode over the same dark image.
+ *
  * The timing function is `linear` and must stay that way. Scroll position is
  * the timeline, so easing would decouple the image from the reader's finger.
  *
@@ -135,7 +134,6 @@ export function Parallax({
   minHeight = 'min(78vh, 720px)',
   range = 'cover',
   scrim = true,
-  band,
   underNav = false,
   priority = false,
   children
@@ -147,7 +145,7 @@ export function Parallax({
     <section
       ref={ref}
       className="parallax"
-      data-band={band}
+      data-on-media="true"
       data-range={range}
       data-scrim={scrim ? 'true' : undefined}
       data-under-nav={underNav ? 'true' : undefined}

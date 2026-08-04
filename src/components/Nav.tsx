@@ -1,5 +1,4 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import type { BandRole } from './Band';
 import { Logo } from './Logo';
 import { Button } from './Button';
 import { IconButton } from './IconButton';
@@ -17,17 +16,20 @@ export interface NavProps {
    */
   sticky?: boolean;
   /**
-   * The band the nav floats over before it scrolls.
+   * Set when the nav floats over a full-bleed image before it scrolls.
    *
    * At `state=top` the nav is transparent, so it needs the foreground of what
-   * is beneath it. It sits outside the band stack, so it cannot inherit that:
-   * over a dark hero it would render dark text on a dark image. Setting this
-   * re-declares the band's semantic properties on the nav itself.
+   * is beneath it. It sits outside the band stack and cannot inherit that, so
+   * over a dark hero it would otherwise render dark text on a dark image.
+   *
+   * Absolute rather than a band role, for the same reason the hero itself is:
+   * a photograph is dark in both themes, so a relative role would send the nav
+   * the wrong way in one of them.
    *
    * Dropped the moment it scrolls, because a scrolled nav takes bg/canvas and
    * needs the page's own foreground again.
    */
-  overBand?: BandRole;
+  onMedia?: boolean;
 }
 
 /**
@@ -38,7 +40,7 @@ export interface NavProps {
  *
  * Nav links are ghost buttons — real hit area, real press feedback.
  */
-export function Nav({ links = [], actions, state = 'top', sticky = false, overBand }: NavProps) {
+export function Nav({ links = [], actions, state = 'top', sticky = false, onMedia = false }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -58,7 +60,7 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, overBa
       className="nav"
       data-state={resolved}
       data-sticky={sticky ? 'true' : undefined}
-      data-band={resolved === 'top' ? overBand : undefined}
+      data-on-media={onMedia && resolved === 'top' ? 'true' : undefined}
     >
       <div className="measure nav__inner">
         <a className="nav__logo" href="/" aria-label="Home"><Logo height={32} /></a>
