@@ -8,7 +8,7 @@ type S = StoryObj<typeof meta>;
 /** Inline links are underlined. An unstyled link in body copy is an a11y failure. */
 export const InProse: S = {
   render: () => (
-    <p style={{ maxWidth: '65ch', font: '400 16px/1.5 Inter, sans-serif', color: 'var(--semantic-fg-secondary)' }}>
+    <p className="type-body-1" style={{ maxWidth: '65ch', color: 'var(--semantic-fg-secondary)' }}>
       The rollout covered forty markets in eleven weeks. The constraint was not design
       capacity but review throughput, which is set out in <Link href="#">the delivery note</Link>.
     </p>

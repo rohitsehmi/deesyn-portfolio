@@ -21,13 +21,15 @@
 
 .contribution__term {
   margin: 0;
-  font: 500 15px/1.45 Inter, system-ui, sans-serif;
+  font: var(--type-emphasis-1);
+  letter-spacing: var(--type-emphasis-1-tracking);
   color: var(--semantic-fg-primary);
 }
 
 .contribution__detail {
   margin: 0;
-  font: 400 16px/1.55 Inter, system-ui, sans-serif;
+  font: var(--type-body-1);
+  letter-spacing: var(--type-body-1-tracking);
   color: var(--semantic-fg-secondary);
   text-wrap: pretty;
 }

@@ -1,5 +1,5 @@
-/* Type is inlined here rather than bound to a token because the 23 Figma text
-   styles are not yet exported to CSS. When they are, this file changes once. */
+/* Responsive type steps between two styles on the scale rather than clamping to
+   a value that is on no scale at all. Every rendered size is a Figma text style. */
 .section-heading {
   display: flex;
   flex-direction: column;
@@ -9,19 +9,39 @@
 
 .section-heading__title {
   margin: 0;
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 500;
-  letter-spacing: -0.0156em;
   text-wrap: balance;
   color: var(--semantic-fg-primary);
 }
-.section-heading[data-level='2'] .section-heading__title { font-size: clamp(28px, 4vw, 40px); line-height: 1.1; }
-.section-heading[data-level='3'] .section-heading__title { font-size: clamp(20px, 2.5vw, 24px); line-height: 1.2; }
+.section-heading[data-level='2'] .section-heading__title {
+  font: var(--type-heading-l);
+  letter-spacing: var(--type-heading-l-tracking);
+}
+.section-heading[data-level='3'] .section-heading__title {
+  font: var(--type-heading-s);
+  letter-spacing: var(--type-heading-s-tracking);
+}
+@media (min-width: 768px) {
+  .section-heading[data-level='2'] .section-heading__title {
+    font: var(--type-display-s);
+    letter-spacing: var(--type-display-s-tracking);
+  }
+  .section-heading[data-level='3'] .section-heading__title {
+    font: var(--type-heading-m);
+    letter-spacing: var(--type-heading-m-tracking);
+  }
+}
 
 .section-heading__standfirst {
   margin: 0;
   max-width: 68ch;
-  font: 400 clamp(17px, 1.6vw, 20px)/1.5 Inter, system-ui, sans-serif;
+  font: var(--type-body-l);
+  letter-spacing: var(--type-body-l-tracking);
   color: var(--semantic-fg-secondary);
   text-wrap: pretty;
+}
+@media (min-width: 768px) {
+  .section-heading__standfirst {
+    font: var(--type-body-xl);
+    letter-spacing: var(--type-body-xl-tracking);
+  }
 }

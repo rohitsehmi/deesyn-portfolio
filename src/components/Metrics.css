@@ -24,13 +24,18 @@
 
 .metrics__value {
   margin: 0;
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-size: clamp(40px, 5.5vw, 64px);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font: var(--type-display-s);
+  letter-spacing: var(--type-display-s-tracking);
+  /* Must follow the `font` shorthand: it resets font-variant. */
   font-variant-numeric: tabular-nums;
   color: var(--semantic-fg-primary);
+}
+@media (min-width: 1024px) {
+  .metrics__value {
+    font: var(--type-display-l);
+    letter-spacing: var(--type-display-l-tracking);
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 .metrics__label {
@@ -38,16 +43,23 @@
   display: flex;
   flex-direction: column;
   gap: var(--primitive-space-sp100);
-  font: 400 15px/1.45 Inter, system-ui, sans-serif;
+  font: var(--type-body-1);
+  letter-spacing: var(--type-body-1-tracking);
   color: var(--semantic-fg-secondary);
   max-width: 32ch;
 }
-.metrics__from { color: var(--semantic-fg-secondary); opacity: 0.85; }
+.metrics__from {
+  font: var(--type-body-2);
+  letter-spacing: var(--type-body-2-tracking);
+  color: var(--semantic-fg-secondary);
+  opacity: 0.85;
+}
 
 /* Provenance, set quietly but at full contrast. fg/tertiary would fail AA. */
 .metrics__source {
   margin: 0;
   max-width: 68ch;
-  font: 400 14px/1.5 Inter, system-ui, sans-serif;
+  font: var(--type-body-2);
+  letter-spacing: var(--type-body-2-tracking);
   color: var(--semantic-fg-secondary);
 }

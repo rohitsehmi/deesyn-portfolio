@@ -22,6 +22,8 @@ jobs:
         run: node tokens/verify.mjs
       - name: Components — token integrity, no literals, checksum
         run: node design/verify.mjs
+      - name: Type — every font value bound to the Figma scale
+        run: node design/verify-type.mjs
 
       # Regenerating must be a no-op. If it is not, someone hand-edited a
       # generated file instead of changing Figma and re-exporting.

@@ -17,10 +17,10 @@ export const CaseStudy: S = {
         actions={<ArrowLink href="#">Read the case study</ArrowLink>}
       >
         <Tag variant="accent">designer</Tag>
-        <h3 style={{ margin: 0, font: "500 20px/1.3 'Hanken Grotesk', Inter, sans-serif", letterSpacing: '-0.01em' }}>
+        <h3 className="type-heading-s" style={{ margin: 0 }}>
           Rebuilding onboarding across 40 markets
         </h3>
-        <p style={{ margin: 0, font: '400 14px/1.43 Inter, sans-serif', color: 'var(--semantic-fg-secondary)' }}>
+        <p className="type-body-2" style={{ margin: 0, color: 'var(--semantic-fg-secondary)' }}>
           One line that says what the problem was, and earns the click.
         </p>
       </Card>

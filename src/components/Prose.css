@@ -1,6 +1,6 @@
 .prose {
   color: var(--semantic-fg-primary);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: var(--type-body-l-family);
 }
 .prose[data-measure='default'] { max-width: 68ch; }
 .prose[data-measure='narrow']  { max-width: 62ch; }
@@ -9,23 +9,29 @@
 .prose > * + * { margin-block-start: var(--primitive-space-sp600); }
 
 .prose p {
-  font-size: 17px;
-  line-height: 1.6;
+  font: var(--type-body-l);
+  letter-spacing: var(--type-body-l-tracking);
   color: var(--semantic-fg-secondary);
   text-wrap: pretty;
 }
 .prose[data-lead='true'] > p:first-child {
-  font-size: clamp(19px, 2vw, 22px);
-  line-height: 1.5;
+  font: var(--type-body-xl);
+  letter-spacing: var(--type-body-xl-tracking);
   color: var(--semantic-fg-primary);
 }
 
-.prose strong { font-weight: 600; color: var(--semantic-fg-primary); }
+/* Weight comes from the emphasis style; size stays with the surrounding text,
+   because changing size inside a paragraph is a different thing entirely. */
+.prose strong { font-weight: var(--type-emphasis-1-weight); color: var(--semantic-fg-primary); }
 .prose a { color: var(--semantic-fg-link); text-underline-offset: 3px; }
 .prose a:hover { color: var(--semantic-fg-link-hover); }
 
 .prose ul, .prose ol { padding-inline-start: var(--primitive-space-sp600); }
-.prose li { font-size: 17px; line-height: 1.6; color: var(--semantic-fg-secondary); }
+.prose li {
+  font: var(--type-body-l);
+  letter-spacing: var(--type-body-l-tracking);
+  color: var(--semantic-fg-secondary);
+}
 .prose li + li { margin-block-start: var(--primitive-space-sp300); }
 
 /* One rule, used sparsely, rather than a hairline under every row. */

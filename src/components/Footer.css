@@ -10,4 +10,4 @@
 .footer__columns { margin-left: auto; display: flex; gap: var(--primitive-layout-l48); }
 .footer__rule { border: 0; height: 1px; background: var(--semantic-border-subtle); margin: 0; }
 .footer__bottom { display: flex; align-items: center; gap: var(--primitive-space-sp600); flex-wrap: wrap; }
-.footer__copy { margin: 0; margin-right: auto; color: var(--semantic-fg-secondary); font: 400 12px/1.5 Inter, system-ui, sans-serif; letter-spacing: 0.015em; }
+.footer__copy { margin: 0; margin-right: auto; color: var(--semantic-fg-secondary); font: var(--type-body-3); letter-spacing: var(--type-body-3-tracking); }

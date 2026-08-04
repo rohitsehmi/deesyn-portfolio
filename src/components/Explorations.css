@@ -29,8 +29,8 @@
 
 .explorations__title {
   margin: 0;
-  font: 500 20px/1.25 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  letter-spacing: -0.01em;
+  font: var(--type-heading-s);
+  letter-spacing: var(--type-heading-s-tracking);
   color: var(--semantic-fg-primary);
   text-wrap: balance;
 }
@@ -38,7 +38,8 @@
 .explorations__why {
   margin: 0;
   max-width: 52ch;
-  font: 400 16px/1.55 Inter, system-ui, sans-serif;
+  font: var(--type-body-1);
+  letter-spacing: var(--type-body-1-tracking);
   color: var(--semantic-fg-secondary);
   text-wrap: pretty;
 }

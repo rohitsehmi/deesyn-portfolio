@@ -101,22 +101,32 @@ const footerRole = hasNext ? 'base' : 'sunken';
   }
   /* Each element caps its own measure. The container stays full width so the
      contribution block below can use the band's grid. */
+  /* Three steps up the display scale rather than one clamp. Every size the
+     page renders is a Figma text style. */
   .cs-hero__title {
     margin: 0;
     max-width: 18ch;
-    font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-    font-size: clamp(40px, 7vw, 64px);
-    font-weight: 500;
-    line-height: 1.05;
-    letter-spacing: -0.0156em;
+    font: var(--type-display-s);
+    letter-spacing: var(--type-display-s-tracking);
     color: var(--semantic-fg-primary);
     text-wrap: balance;
   }
+  @media (min-width: 768px) {
+    .cs-hero__title { font: var(--type-display-m); letter-spacing: var(--type-display-m-tracking); }
+  }
+  @media (min-width: 1024px) {
+    .cs-hero__title { font: var(--type-display-l); letter-spacing: var(--type-display-l-tracking); }
+  }
+
   .cs-hero__standfirst {
     margin: 0;
     max-width: 60ch;
-    font: 400 clamp(18px, 2vw, 22px)/1.5 Inter, system-ui, sans-serif;
+    font: var(--type-body-l);
+    letter-spacing: var(--type-body-l-tracking);
     color: var(--semantic-fg-secondary);
     text-wrap: pretty;
+  }
+  @media (min-width: 768px) {
+    .cs-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
   }
 </style>

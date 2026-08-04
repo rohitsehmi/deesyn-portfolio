@@ -11,7 +11,7 @@ type S = StoryObj<typeof meta>;
 const Sample = () => (
   <div style={{ display: 'grid', gap: 16, justifyItems: 'start' }}>
     <Tag variant="accent">designer</Tag>
-    <h2 style={{ margin: 0, font: "500 32px/1.12 'Hanken Grotesk', Inter, sans-serif", letterSpacing: '-0.01em' }}>
+    <h2 className="type-heading-l" style={{ margin: 0 }}>
       A band owns the foreground of everything inside it
     </h2>
     <div style={{ display: 'flex', gap: 12 }}>

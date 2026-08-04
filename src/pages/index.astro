@@ -5,11 +5,11 @@ import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { Button } from '../components/Button';
 
-// Placeholder until the three case studies are chosen. The band rhythm is
+// Placeholder until the two case studies are chosen. The band rhythm is
 // deliberately not settled here — see docs/banding-system.md §7.
 const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/' }];
 ---
-<Base title="Rohit Sehmi — Product Design">
+<Base title="Rohit Sehmi · Product Design">
   {/* Not in a band: a base nav above a base hero stacks padding at a seam with
       no colour step, which rule 1 forbids. Nav is transparent at state=top and
       inherits the band beneath it. */}
@@ -17,12 +17,10 @@ const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/' }];
 
   <main id="main">
     <Band role="base" scale="feature">
-      <h1 style="margin:0 0 24px; font:500 clamp(40px,7vw,64px)/1 'Hanken Grotesk',Inter,sans-serif; letter-spacing:-0.0156em; max-width:16ch;">
-        Product design, end to end.
-      </h1>
-      <p style="margin:0 0 32px; max-width:60ch; font:400 18px/1.55 Inter,sans-serif; color:var(--semantic-fg-secondary);">
-        Three case studies are being written. The design system they will be built
-        from is already here — tokens, bands, and components, all verified against Figma.
+      <h1 class="home-hero__title">Product design, end to end.</h1>
+      <p class="home-hero__standfirst">
+        Two case studies are being written. The design system they will be built
+        from is already here: tokens, bands, and components, all verified against Figma.
       </p>
       <Button client:visible variant="primary" size="lg" iconTrailing="arrow-thin-right" href="/">
         Work in progress
@@ -30,7 +28,7 @@ const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/' }];
     </Band>
 
     <Band role="inverse" scale="default">
-      <p style="margin:0; max-width:52ch; font:500 clamp(24px,4vw,32px)/1.12 'Hanken Grotesk',Inter,sans-serif; letter-spacing:-0.01em;">
+      <p class="home-claim">
         Nothing in this band declares its own colour. The band re-declares the
         semantic properties for everything inside it.
       </p>
@@ -41,3 +39,42 @@ const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/' }];
     <Footer scale="compact" />
   </Band>
 </Base>
+
+<style is:global>
+  /* Type steps between styles on the scale. No clamps, no raw sizes. */
+  .home-hero__title {
+    margin: 0 0 var(--primitive-space-sp600);
+    max-width: 16ch;
+    font: var(--type-display-s);
+    letter-spacing: var(--type-display-s-tracking);
+    color: var(--semantic-fg-primary);
+    text-wrap: balance;
+  }
+  @media (min-width: 768px) {
+    .home-hero__title { font: var(--type-display-m); letter-spacing: var(--type-display-m-tracking); }
+  }
+  @media (min-width: 1024px) {
+    .home-hero__title { font: var(--type-display-l); letter-spacing: var(--type-display-l-tracking); }
+  }
+
+  .home-hero__standfirst {
+    margin: 0 0 var(--primitive-space-sp800);
+    max-width: 60ch;
+    font: var(--type-body-l);
+    letter-spacing: var(--type-body-l-tracking);
+    color: var(--semantic-fg-secondary);
+    text-wrap: pretty;
+  }
+
+  .home-claim {
+    margin: 0;
+    max-width: 52ch;
+    font: var(--type-heading-m);
+    letter-spacing: var(--type-heading-m-tracking);
+    color: var(--semantic-fg-primary);
+    text-wrap: balance;
+  }
+  @media (min-width: 768px) {
+    .home-claim { font: var(--type-heading-l); letter-spacing: var(--type-heading-l-tracking); }
+  }
+</style>
