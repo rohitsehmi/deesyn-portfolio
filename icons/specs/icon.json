@@ -27,12 +27,14 @@
       "cross",
       "envelope",
       "chevron-up",
-      "link"
+      "link",
+      "moon",
+      "sun"
     ]
   },
   "props": {},
   "slots": [],
-  "variantCount": 12,
+  "variantCount": 14,
   "variants": {
     "name=arrow-thin-right": {
       "size": {
@@ -222,6 +224,40 @@
       }
     },
     "name=link": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=moon": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=sun": {
       "size": {
         "width": 24,
         "height": 24

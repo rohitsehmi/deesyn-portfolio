@@ -8,13 +8,13 @@ Revolut has no plain ArrowRight either — the thin arrow IS its arrow, which is
 
 Fill binds to fg/primary. Components tint whichever paint a vector uses.
 
-Figma: page **Icons**, set `Icon` — 12 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
+Figma: page **Icons**, set `Icon` — 14 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes
 
 | Axis | Values |
 |---|---|
-| `name` | `arrow-up-right` · `chevron-down` · `chevron-right` · `menu` · `arrow-thin-right` · `arrow-thin-left` · `arrow-thin-up` · `arrow-thin-down` · `cross` · `envelope` · `chevron-up` · `link` |
+| `name` | `arrow-up-right` · `chevron-down` · `chevron-right` · `menu` · `arrow-thin-right` · `arrow-thin-left` · `arrow-thin-up` · `arrow-thin-down` · `cross` · `envelope` · `chevron-up` · `link` · `moon` · `sun` |
 
 ## Don't
 
@@ -26,7 +26,7 @@ Figma: page **Icons**, set `Icon` — 12 variants. The same contract is on the s
 
 Every value is a token reference, not a literal. `.` is the component root.
 
-### name=arrow-thin-right · name=arrow-thin-left · name=arrow-up-right · name=chevron-down · name=chevron-right · name=cross · name=menu · name=envelope · name=arrow-thin-up · name=arrow-thin-down · name=chevron-up · name=link
+### name=arrow-thin-right · name=arrow-thin-left · name=arrow-up-right · name=chevron-down · name=chevron-right · name=cross · name=menu · name=envelope · name=arrow-thin-up · name=arrow-thin-down · name=chevron-up · name=link · name=moon · name=sun
 
 | Node | Property | Token |
 |---|---|---|

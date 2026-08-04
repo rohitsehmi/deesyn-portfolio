@@ -6,7 +6,7 @@
     {
       "name": "Icon",
       "slug": "icon",
-      "variants": 12,
+      "variants": 14,
       "axes": [
         "name"
       ],

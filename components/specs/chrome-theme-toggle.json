@@ -2,60 +2,116 @@
   "name": "Chrome/Theme Toggle",
   "slug": "chrome-theme-toggle",
   "domain": "components",
-  "source": {
-    "kind": "code-only",
-    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
-    "component": "src/components/ThemeToggle.tsx",
-    "styles": "src/components/ThemeToggle.css"
+  "figma": {
+    "file": "UnybX8G5sQIEhLLZN2YFl6",
+    "page": "Components",
+    "set": "Chrome/Theme Toggle",
+    "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
-  "description": "Flips the site between light and dark, and remembers the choice.\n\nWhich icon shows is decided in CSS, not JavaScript, using the same cascade\ntokens.css uses to resolve the theme: `[data-theme]` when a choice has been\nmade, `prefers-color-scheme` when it has not. That means the correct icon is\npainted before any script runs and there is no hydration mismatch to work\naround. The button shows where you are going, not where you are.\n\nThe accessible name is state independent on purpose. \"Switch colour theme\"\nis true in both directions, so it needs no JavaScript to stay accurate, and\na screen reader user is told what the control does rather than what the\npage currently looks like.\n\nThe no-flash script lives in Base.astro and has to run before first paint,\nso it cannot live here.\n\nrevolut.com has no theme toggle, so this is a deliberate departure. It earns\nits place on this site because the whole system is dual-theme by\nconstruction and this is the only way a reader can see that.",
+  "description": "Flips the site between light and dark, and remembers the choice. Fixed to the bottom right of the viewport.\n\nIt is an instance of Action/Icon Button with the icon swapped, not a new shape. The two variants document which icon shows at which resolved theme; they are not states a designer picks.\n\nThe button shows the theme you will get, not the one you are in: moon while light, sun while dark.\n\nThree things live only in code, because Figma has no equivalent. Which icon shows is resolved in CSS using the same cascade tokens.css uses, so the correct one is painted on the first frame rather than after hydration. A blocking inline script in the document head applies a remembered choice before the first paint, without which the page paints in the system theme and visibly flips. And the accessible name is state independent, \"Switch colour theme\", so it stays true in both directions without a script keeping it accurate.\n\nrevolut.com has no theme toggle. This is a deliberate departure: the whole system is dual-theme by construction and this is the only way a reader can see that.",
   "donts": [
     "Do not decide the icon in JavaScript. Resolving it in CSS, with the same cascade tokens.css uses, means the right icon is painted on the first frame instead of after hydration.",
     "Do not drop the blocking inline script in the document head. Without it the page paints in the system theme and then visibly flips to the remembered one, which is worse than having no toggle.",
     "Do not make the accessible name describe the current theme. It describes the action, so it stays true in both directions and needs no script to keep it accurate.",
     "Do not add a third state to the button. Light and dark is what a single control can carry; if following the system needs to be reachable again, that is a separate control, not a longer cycle."
   ],
-  "props": {
-    "size": {
-      "type": "'sm' | 'md' | 'lg'",
-      "required": false,
-      "note": "sm 32, md 44, lg 48. Marketing minimum is 48."
-    }
-  },
-  "tokens": {
-    ".theme-toggle": [
-      {
-        "property": "right",
-        "var": "--primitive-space-sp600",
-        "ref": "primitive.space.sp600"
-      },
-      {
-        "property": "bottom",
-        "var": "--primitive-space-sp600",
-        "ref": "primitive.space.sp600"
-      },
-      {
-        "property": "z-index",
-        "var": "--z-fab",
-        "local": "--z-fab"
-      },
-      {
-        "property": "border",
-        "var": "--semantic-border-subtle",
-        "ref": "semantic.*.border.subtle"
-      }
-    ],
-    "@media (min-width: 768px) { .theme-toggle }": [
-      {
-        "property": "right",
-        "var": "--primitive-layout-l40",
-        "ref": "primitive.layout.l40"
-      },
-      {
-        "property": "bottom",
-        "var": "--primitive-layout-l40",
-        "ref": "primitive.layout.l40"
-      }
+  "variantAxes": {
+    "theme": [
+      "light",
+      "dark"
     ]
+  },
+  "props": {},
+  "slots": [],
+  "variantCount": 2,
+  "variants": {
+    "theme=light": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        "Action/Icon Button": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/secondary-bg",
+            "ref": "semantic.*.action.secondary-bg",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff24"
+          }
+        },
+        "Action/Icon Button/icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "theme=dark": {
+      "size": {
+        "width": 48,
+        "height": 48
+      },
+      "tokens": {
+        "Action/Icon Button": {
+          "width": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "height": {
+            "token": "Size/Button lg",
+            "ref": "primitive.size.button-lg",
+            "type": "dimension",
+            "value": "48px"
+          },
+          "radius": {
+            "token": "Radius/Round",
+            "ref": "primitive.radius.round",
+            "type": "dimension",
+            "value": "9999px"
+          },
+          "bg": {
+            "token": "action/secondary-bg",
+            "ref": "semantic.*.action.secondary-bg",
+            "type": "color",
+            "light": "#0000000a",
+            "dark": "#ffffff24"
+          }
+        },
+        "Action/Icon Button/icon/Vector": {
+          "fg": {
+            "token": "action/secondary-fg",
+            "ref": "semantic.*.action.secondary-fg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    }
   }
 }

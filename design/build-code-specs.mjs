@@ -4,7 +4,12 @@
  *   node design/build-code-specs.mjs        (or: npm run specs)
  *
  * design/build.mjs reads Figma and emits a spec per component set. The content
- * components in CODE_ONLY below have no Figma set: their contracts are things a
+ * components in CODE_ONLY below have no Figma set. A component that later gains
+ * one must be removed from this list, or both generators write the same file
+ * and whichever runs second wins silently. Chrome/Theme Toggle did exactly that
+ * and was removed on 2026-08-04.
+ *
+ * Their contracts are things a variant cannot express: their contracts are things a
  * variant cannot express. Metrics requires a `source`, Explorations requires a
  * `why` per item, and both are enforced by the type system rather than by
  * convention. Building them in Figma to satisfy the pipeline would freeze their
@@ -32,8 +37,7 @@ const CODE_ONLY = [
   { name: 'Content/Hindsight', base: 'Hindsight' },
   { name: 'Content/Contribution', base: 'Contribution' },
   { name: 'Content/Case Study Tile', base: 'CaseStudyTile' },
-  { name: 'Content/Parallax', base: 'Parallax' },
-  { name: 'Chrome/Theme Toggle', base: 'ThemeToggle' }
+  { name: 'Content/Parallax', base: 'Parallax' }
 ];
 
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

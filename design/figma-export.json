@@ -23,7 +23,9 @@
                 "cross",
                 "envelope",
                 "chevron-up",
-                "link"
+                "link",
+                "moon",
+                "sun"
               ]
             }
           },
@@ -106,6 +108,20 @@
               "t": 0
             },
             "name=link": {
+              "size": [
+                24,
+                24
+              ],
+              "t": 0
+            },
+            "name=moon": {
+              "size": [
+                24,
+                24
+              ],
+              "t": 0
+            },
+            "name=sun": {
               "size": [
                 24,
                 24
@@ -937,6 +953,34 @@
                 477
               ],
               "t": 66
+            }
+          }
+        },
+        "Chrome/Theme Toggle": {
+          "description": "Flips the site between light and dark, and remembers the choice. Fixed to the bottom right of the viewport.\n\nIt is an instance of Action/Icon Button with the icon swapped, not a new shape. The two variants document which icon shows at which resolved theme; they are not states a designer picks.\n\nThe button shows the theme you will get, not the one you are in: moon while light, sun while dark.\n\nThree things live only in code, because Figma has no equivalent. Which icon shows is resolved in CSS using the same cascade tokens.css uses, so the correct one is painted on the first frame rather than after hydration. A blocking inline script in the document head applies a remembered choice before the first paint, without which the page paints in the system theme and visibly flips. And the accessible name is state independent, \"Switch colour theme\", so it stays true in both directions without a script keeping it accurate.\n\nrevolut.com has no theme toggle. This is a deliberate departure: the whole system is dual-theme by construction and this is the only way a reader can see that.",
+          "props": {
+            "theme": {
+              "type": "VARIANT",
+              "values": [
+                "light",
+                "dark"
+              ]
+            }
+          },
+          "variants": {
+            "theme=light": {
+              "size": [
+                48,
+                48
+              ],
+              "t": 67
+            },
+            "theme=dark": {
+              "size": [
+                48,
+                48
+              ],
+              "t": 67
             }
           }
         }
@@ -1950,6 +1994,17 @@
       },
       "inner/bottom/Action/Arrow Link/trailing/Vector": {
         "fg": "fg/link"
+      }
+    },
+    {
+      "Action/Icon Button": {
+        "width": "Size/Button lg",
+        "height": "Size/Button lg",
+        "radius": "Radius/Round",
+        "bg": "action/secondary-bg"
+      },
+      "Action/Icon Button/icon/Vector": {
+        "fg": "action/secondary-fg"
       }
     }
   ]

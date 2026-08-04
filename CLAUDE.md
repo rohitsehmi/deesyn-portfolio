@@ -112,11 +112,11 @@ Machine-readable, same pattern as banding: `page.getSharedPluginData('motion', '
 
 Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Variant props are **lowercase** (`variant=primary, size=lg`), booleans kebab-case, slot names lowercase nouns.
 
-**92 variants across 11 sets, split across three pages:**
+**96 variants across 12 sets, split across three pages:**
 
-- **Icons** (`icons/`) — `Icon` (12). Real Revolut assets, filled paths, verbatim from `assets.revolut.com`. `arrow-up-right` is `ArrowThinRight` rotated +45°; Revolut ships no diagonal arrow and no plain `ArrowRight` either.
+- **Icons** (`icons/`) — `Icon` (14). Real Revolut assets, filled paths, verbatim from `assets.revolut.com`. `arrow-up-right` is `ArrowThinRight` rotated +45°; Revolut ships no diagonal arrow and no plain `ArrowRight` either.
 - **Marks** (`marks/`) — `Brand/Logo` (2). `wordmark` is now the **Ro × Revolut lockup** (233×48), `mark` is Rohit's disc alone (48×48). Both exported from Figma node `21:4229` into `src/components/logo-paths.ts`; the RS text stand-in is gone. The disc is a single `evenodd` path with the script cut out rather than drawn on top, which is what lets the whole thing take `fill: currentColor` and still read on an inverse band. Variant names are kept from the Figma set even though `lockup` would now be more accurate than `wordmark`.
-- **Components** (`components/`) — `Action/Button` (27), `Action/Icon Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2).
+- **Components** (`components/`) — `Action/Button` (27), `Action/Icon Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2), `Chrome/Theme Toggle` (2).
 
 `Layout/Band` (12) stays on the Banding page — a page-layout primitive with adjacency rules, not a UI component.
 
@@ -150,9 +150,9 @@ node design/verify-css.mjs        # every var(--*) in src/ resolves; type bound 
 node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 ```
 
-`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-03: `4183560310`, 127 entries. See `design/README.md`.
+`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-04: `4097978953`, 132 entries. See `design/README.md`.
 
-**Three checksums, three sources.** Tokens `4115829316`. Figma components `4183560310`. Banding spec `2118911321`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-04). Code-only specs print `491558520` but have no Figma counterpart to match, by definition.
+**Three checksums, three sources.** Tokens `4115829316`. Figma components `4097978953`. Banding spec `2118911321`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-04). Code-only specs print `3037882434` but have no Figma counterpart to match, by definition.
 
 **Six components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. 17 React components, 17 specs.
 

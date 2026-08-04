@@ -116,6 +116,17 @@
       ],
       "spec": "components/specs/chrome-footer.json",
       "doc": "components/specs/chrome-footer.md"
+    },
+    {
+      "name": "Chrome/Theme Toggle",
+      "slug": "chrome-theme-toggle",
+      "variants": 2,
+      "axes": [
+        "theme"
+      ],
+      "slots": [],
+      "spec": "components/specs/chrome-theme-toggle.json",
+      "doc": "components/specs/chrome-theme-toggle.md"
     }
   ]
 }

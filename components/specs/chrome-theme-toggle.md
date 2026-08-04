@@ -1,38 +1,22 @@
 # Chrome/Theme Toggle
 
-Flips the site between light and dark, and remembers the choice.
+Flips the site between light and dark, and remembers the choice. Fixed to the bottom right of the viewport.
 
-Which icon shows is decided in CSS, not JavaScript, using the same cascade
-tokens.css uses to resolve the theme: `[data-theme]` when a choice has been
-made, `prefers-color-scheme` when it has not. That means the correct icon is
-painted before any script runs and there is no hydration mismatch to work
-around. The button shows where you are going, not where you are.
+It is an instance of Action/Icon Button with the icon swapped, not a new shape. The two variants document which icon shows at which resolved theme; they are not states a designer picks.
 
-The accessible name is state independent on purpose. "Switch colour theme"
-is true in both directions, so it needs no JavaScript to stay accurate, and
-a screen reader user is told what the control does rather than what the
-page currently looks like.
+The button shows the theme you will get, not the one you are in: moon while light, sun while dark.
 
-The no-flash script lives in Base.astro and has to run before first paint,
-so it cannot live here.
+Three things live only in code, because Figma has no equivalent. Which icon shows is resolved in CSS using the same cascade tokens.css uses, so the correct one is painted on the first frame rather than after hydration. A blocking inline script in the document head applies a remembered choice before the first paint, without which the page paints in the system theme and visibly flips. And the accessible name is state independent, "Switch colour theme", so it stays true in both directions without a script keeping it accurate.
 
-revolut.com has no theme toggle, so this is a deliberate departure. It earns
-its place on this site because the whole system is dual-theme by
-construction and this is the only way a reader can see that.
+revolut.com has no theme toggle. This is a deliberate departure: the whole system is dual-theme by construction and this is the only way a reader can see that.
 
-**Code only.** No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.
+Figma: page **Components**, set `Chrome/Theme Toggle` — 2 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
-Implementation: `src/components/ThemeToggle.tsx` and `src/components/ThemeToggle.css`.
+## Variant axes
 
-## Properties
-
-| Property | Type | Required |
-|---|---|---|
-| `size` | `'sm' | 'md' | 'lg'` | no |
-
-### Property notes
-
-- `size` sm 32, md 44, lg 48. Marketing minimum is 48.
+| Axis | Values |
+|---|---|
+| `theme` | `light` · `dark` |
 
 ## Don't
 
@@ -43,13 +27,14 @@ Implementation: `src/components/ThemeToggle.tsx` and `src/components/ThemeToggle
 
 ## Token contract
 
-Every value is a token reference, not a literal. Verified by `design/verify-css.mjs`.
+Every value is a token reference, not a literal. `.` is the component root.
 
-| Selector | Property | Token |
+### theme=light · theme=dark
+
+| Node | Property | Token |
 |---|---|---|
-| `.theme-toggle` | right | `primitive.space.sp600` |
-| `.theme-toggle` | bottom | `primitive.space.sp600` |
-| `.theme-toggle` | z-index | `--z-fab` (local property, not a token) |
-| `.theme-toggle` | border | `semantic.*.border.subtle` |
-| `@media (min-width: 768px) { .theme-toggle }` | right | `primitive.layout.l40` |
-| `@media (min-width: 768px) { .theme-toggle }` | bottom | `primitive.layout.l40` |
+| `Action/Icon Button` | width | `Size/Button lg` |
+| `Action/Icon Button` | height | `Size/Button lg` |
+| `Action/Icon Button` | radius | `Radius/Round` |
+| `Action/Icon Button` | bg | `action/secondary-bg` |
+| `Action/Icon Button/icon/Vector` | fg | `action/secondary-fg` |
