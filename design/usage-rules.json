@@ -95,6 +95,12 @@
       "Do not drive it from a scroll handler. A scroll-driven CSS animation runs off the main thread and keeps the page shipping no JavaScript; a listener drops frames on exactly the busy pages where it matters.",
       "Do not raise the drift past about 100px. It reads as depth at small values and as a bug at large ones.",
       "Do not use it on a small image inside the measure. The effect only works full bleed, where the window edge is the band edge and there is nothing beside it to reveal the movement as a trick."
+    ],
+    "Chrome/Theme Toggle": [
+      "Do not decide the icon in JavaScript. Resolving it in CSS, with the same cascade tokens.css uses, means the right icon is painted on the first frame instead of after hydration.",
+      "Do not drop the blocking inline script in the document head. Without it the page paints in the system theme and then visibly flips to the remembered one, which is worse than having no toggle.",
+      "Do not make the accessible name describe the current theme. It describes the action, so it stays true in both directions and needs no script to keep it accurate.",
+      "Do not add a third state to the button. Light and dark is what a single control can carry; if following the system needs to be reachable again, that is a separate control, not a longer cycle."
     ]
   }
 }

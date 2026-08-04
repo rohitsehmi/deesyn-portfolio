@@ -1,0 +1,61 @@
+{
+  "name": "Chrome/Theme Toggle",
+  "slug": "chrome-theme-toggle",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/ThemeToggle.tsx",
+    "styles": "src/components/ThemeToggle.css"
+  },
+  "description": "Flips the site between light and dark, and remembers the choice.\n\nWhich icon shows is decided in CSS, not JavaScript, using the same cascade\ntokens.css uses to resolve the theme: `[data-theme]` when a choice has been\nmade, `prefers-color-scheme` when it has not. That means the correct icon is\npainted before any script runs and there is no hydration mismatch to work\naround. The button shows where you are going, not where you are.\n\nThe accessible name is state independent on purpose. \"Switch colour theme\"\nis true in both directions, so it needs no JavaScript to stay accurate, and\na screen reader user is told what the control does rather than what the\npage currently looks like.\n\nThe no-flash script lives in Base.astro and has to run before first paint,\nso it cannot live here.\n\nrevolut.com has no theme toggle, so this is a deliberate departure. It earns\nits place on this site because the whole system is dual-theme by\nconstruction and this is the only way a reader can see that.",
+  "donts": [
+    "Do not decide the icon in JavaScript. Resolving it in CSS, with the same cascade tokens.css uses, means the right icon is painted on the first frame instead of after hydration.",
+    "Do not drop the blocking inline script in the document head. Without it the page paints in the system theme and then visibly flips to the remembered one, which is worse than having no toggle.",
+    "Do not make the accessible name describe the current theme. It describes the action, so it stays true in both directions and needs no script to keep it accurate.",
+    "Do not add a third state to the button. Light and dark is what a single control can carry; if following the system needs to be reachable again, that is a separate control, not a longer cycle."
+  ],
+  "props": {
+    "size": {
+      "type": "'sm' | 'md' | 'lg'",
+      "required": false,
+      "note": "sm 32, md 44, lg 48. Marketing minimum is 48."
+    }
+  },
+  "tokens": {
+    ".theme-toggle": [
+      {
+        "property": "right",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "bottom",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "z-index",
+        "var": "--z-fab",
+        "local": "--z-fab"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-border-subtle",
+        "ref": "semantic.*.border.subtle"
+      }
+    ],
+    "@media (min-width: 768px) { .theme-toggle }": [
+      {
+        "property": "right",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      },
+      {
+        "property": "bottom",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      }
+    ]
+  }
+}

@@ -19,3 +19,4 @@ export { Explorations, type Exploration } from './Explorations';
 export { Hindsight } from './Hindsight';
 export { Contribution, type ContributionItem } from './Contribution';
 export { CaseStudyTile } from './CaseStudyTile';
+export { ThemeToggle } from './ThemeToggle';

@@ -1,0 +1,43 @@
+/*
+  Fixed bottom right. Borrows the icon-button classes so its geometry, hover
+  and press cannot drift from the real component.
+*/
+.theme-toggle {
+  position: fixed;
+  right: var(--primitive-space-sp600);
+  bottom: var(--primitive-space-sp600);
+  z-index: var(--z-fab);
+  border: 1px solid var(--semantic-border-subtle);
+}
+@media (min-width: 768px) {
+  .theme-toggle {
+    right: var(--primitive-layout-l40);
+    bottom: var(--primitive-layout-l40);
+  }
+}
+
+/*
+  Which icon shows is resolved in CSS, mirroring the cascade in tokens.css:
+  an explicit [data-theme] wins, otherwise the system preference decides. Doing
+  it here rather than in JavaScript means the right icon is painted on the
+  first frame, before any script has run.
+
+  The button shows the theme you will get, not the one you are in.
+*/
+.theme-toggle__icon { display: none; line-height: 0; }
+
+/* No choice made, system is light: offer dark. */
+.theme-toggle__icon[data-shows='dark'] { display: block; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .theme-toggle__icon[data-shows='dark'] { display: none; }
+  :root:not([data-theme='light']) .theme-toggle__icon[data-shows='light'] { display: block; }
+}
+
+/* An explicit choice overrides the system in both directions. */
+[data-theme='dark'] .theme-toggle__icon[data-shows='dark']  { display: none; }
+[data-theme='dark'] .theme-toggle__icon[data-shows='light'] { display: block; }
+[data-theme='light'] .theme-toggle__icon[data-shows='dark']  { display: block; }
+[data-theme='light'] .theme-toggle__icon[data-shows='light'] { display: none; }
+
+@media print { .theme-toggle { display: none; } }

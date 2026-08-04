@@ -1,6 +1,7 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
+import { ThemeToggle } from '../components/ThemeToggle';
 interface Props { title: string; description?: string; }
 const { title, description = 'Product design work by Rohit Sehmi.' } = Astro.props;
 ---
@@ -11,11 +12,24 @@ const { title, description = 'Product design work by Rohit Sehmi.' } = Astro.pro
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {/*
+      Applies a remembered theme before the first paint. It has to be inline
+      and blocking: a module script, or anything React does after hydration,
+      runs after the page has already painted in the system theme, so the page
+      would visibly flip. Deliberately tiny for the same reason.
+    */}
+    <script is:inline>
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <slot />
+    <ThemeToggle client:load />
     <style is:global>
       .skip {
         position: absolute; left: -9999px;

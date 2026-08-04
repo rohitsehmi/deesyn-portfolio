@@ -4,6 +4,7 @@
    order is a code concern and Figma has no equivalent. */
 :root {
   --z-sticky: 100;
+  --z-fab: 150;
   --z-dropdown: 200;
   --z-overlay: 300;
   --z-modal: 400;

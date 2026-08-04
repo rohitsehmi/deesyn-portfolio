@@ -32,7 +32,8 @@ const CODE_ONLY = [
   { name: 'Content/Hindsight', base: 'Hindsight' },
   { name: 'Content/Contribution', base: 'Contribution' },
   { name: 'Content/Case Study Tile', base: 'CaseStudyTile' },
-  { name: 'Content/Parallax', base: 'Parallax' }
+  { name: 'Content/Parallax', base: 'Parallax' },
+  { name: 'Chrome/Theme Toggle', base: 'ThemeToggle' }
 ];
 
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
