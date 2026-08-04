@@ -1,0 +1,59 @@
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp600);
+  text-decoration: none;
+  color: inherit;
+}
+
+.tile__media {
+  border-radius: var(--primitive-radius-r20);
+  overflow: hidden;
+}
+/* The image lifts, not the tile. No shadow: revolut.com has none. */
+.tile__media .media__frame {
+  transition: transform var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover .tile__media .media__frame { transform: scale(1.02); }
+}
+.tile:active .tile__media .media__frame { transform: scale(0.99); }
+
+.tile:focus-visible {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 4px;
+  border-radius: var(--primitive-radius-r20);
+}
+
+.tile__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp200);
+}
+
+.tile__discipline {
+  margin: 0;
+  font: var(--type-emphasis-2);
+  letter-spacing: var(--type-emphasis-2-tracking);
+  color: var(--semantic-fg-accent);
+}
+
+.tile__title {
+  margin: 0;
+  font: var(--type-heading-m);
+  letter-spacing: var(--type-heading-m-tracking);
+  color: var(--semantic-fg-primary);
+  text-wrap: balance;
+}
+@media (min-width: 768px) {
+  .tile__title { font: var(--type-heading-l); letter-spacing: var(--type-heading-l-tracking); }
+}
+
+.tile__summary {
+  margin: 0;
+  max-width: 46ch;
+  font: var(--type-body-l);
+  letter-spacing: var(--type-body-l-tracking);
+  color: var(--semantic-fg-secondary);
+  text-wrap: pretty;
+}

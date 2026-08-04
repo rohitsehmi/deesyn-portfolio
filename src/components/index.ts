@@ -18,3 +18,4 @@ export { Metrics, type Metric } from './Metrics';
 export { Explorations, type Exploration } from './Explorations';
 export { Hindsight } from './Hindsight';
 export { Contribution, type ContributionItem } from './Contribution';
+export { CaseStudyTile } from './CaseStudyTile';

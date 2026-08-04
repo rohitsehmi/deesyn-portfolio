@@ -3,11 +3,10 @@ import Base from '../layouts/Base.astro';
 import { Nav } from '../components/Nav';
 import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
-import { Button } from '../components/Button';
+import { CaseStudyTile } from '../components/CaseStudyTile';
+import { studies, studyPath } from '../data/studies';
 
-// Placeholder until the two case studies are chosen. The band rhythm is
-// deliberately not settled here — see docs/banding-system.md §7.
-const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/' }];
+const links = [{ label: 'Work', href: '/', current: true }];
 ---
 <Base title="Rohit Sehmi · Product Design">
   {/* Not in a band: a base nav above a base hero stacks padding at a seam with
@@ -19,19 +18,26 @@ const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/' }];
     <Band role="base" scale="feature">
       <h1 class="home-hero__title">Product design, end to end.</h1>
       <p class="home-hero__standfirst">
-        Two case studies are being written. The design system they will be built
-        from is already here: tokens, bands, and components, all verified against Figma.
+        Two case studies. One on the design system work, one on the product work.
       </p>
-      <Button client:visible variant="primary" size="lg" iconTrailing="arrow-thin-right" href="/">
-        Work in progress
-      </Button>
     </Band>
 
-    <Band role="inverse" scale="default">
-      <p class="home-claim">
-        Nothing in this band declares its own colour. The band re-declares the
-        semantic properties for everything inside it.
-      </p>
+    {/* default, not feature: the hero above is already feature, and rule 7
+        forbids two adjacent bands at the same weight. */}
+    <Band role="sunken" scale="default">
+      <ul class="work">
+        {studies.map((s) => (
+          <li>
+            <CaseStudyTile
+              title={s.title}
+              summary={s.summary}
+              discipline={s.discipline}
+              href={studyPath(s)}
+              image={{ alt: `Cover image for ${s.title}` }}
+            />
+          </li>
+        ))}
+      </ul>
     </Band>
   </main>
 
@@ -58,23 +64,28 @@ const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/' }];
   }
 
   .home-hero__standfirst {
-    margin: 0 0 var(--primitive-space-sp800);
+    margin: 0;
     max-width: 60ch;
     font: var(--type-body-l);
     letter-spacing: var(--type-body-l-tracking);
     color: var(--semantic-fg-secondary);
     text-wrap: pretty;
   }
+  @media (min-width: 768px) {
+    .home-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
+  }
 
-  .home-claim {
+  /* Two studies, two cells. The count is exact by construction: the grid is
+     built from the list, so it can never end on a blank tile. */
+  .work {
+    list-style: none;
     margin: 0;
-    max-width: 52ch;
-    font: var(--type-heading-m);
-    letter-spacing: var(--type-heading-m-tracking);
-    color: var(--semantic-fg-primary);
-    text-wrap: balance;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--primitive-layout-l64);
   }
   @media (min-width: 768px) {
-    .home-claim { font: var(--type-heading-l); letter-spacing: var(--type-heading-l-tracking); }
+    .work { grid-template-columns: repeat(2, 1fr); gap: var(--primitive-layout-l48); }
   }
 </style>

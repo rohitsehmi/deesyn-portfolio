@@ -3,19 +3,19 @@
  *
  *   node design/build-code-specs.mjs        (or: npm run specs)
  *
- * design/build.mjs reads Figma and emits a spec per component set. Six content
- * components have no Figma set: their contracts are things a variant cannot
- * express. Metrics requires a `source`, Explorations requires a `why` per item,
- * and both are enforced by the type system rather than by convention. Building
- * them in Figma to satisfy the pipeline would freeze their shape before the
- * case studies are written, and would document them less precisely than the
- * code already does.
+ * design/build.mjs reads Figma and emits a spec per component set. The content
+ * components in CODE_ONLY below have no Figma set: their contracts are things a
+ * variant cannot express. Metrics requires a `source`, Explorations requires a
+ * `why` per item, and both are enforced by the type system rather than by
+ * convention. Building them in Figma to satisfy the pipeline would freeze their
+ * shape before the case studies are written, and would document them less
+ * precisely than the code already does.
  *
  * So they are measured from source instead. Props come from the TypeScript
- * declarations via the compiler API, not a regex, so an optional prop cannot be
- * recorded as required. Tokens come from the component's own stylesheet. The
- * only authored part is `donts`, which lives in design/usage-rules.json with
- * every other component's, keeping measured and authored separable.
+ * declarations, so an optional prop cannot be recorded as required. Tokens come
+ * from the component's own stylesheet. The only authored part is `donts`, which
+ * lives in design/usage-rules.json with every other component's, keeping
+ * measured and authored separable.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { hash } from './hash.mjs';
@@ -30,7 +30,8 @@ const CODE_ONLY = [
   { name: 'Content/Metrics', base: 'Metrics' },
   { name: 'Content/Explorations', base: 'Explorations' },
   { name: 'Content/Hindsight', base: 'Hindsight' },
-  { name: 'Content/Contribution', base: 'Contribution' }
+  { name: 'Content/Contribution', base: 'Contribution' },
+  { name: 'Content/Case Study Tile', base: 'CaseStudyTile' }
 ];
 
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

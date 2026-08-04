@@ -83,6 +83,11 @@
     "Content/Contribution": [
       "Do not merge what you owned with what the team owned. A combined answer reads as a claim on other people work, which is the opposite of the intended signal.",
       "Do not give a role without scope. Lead Designer on its own says nothing about what you actually decided."
+    ],
+    "Content/Case Study Tile": [
+      "Do not add a read more link. The whole tile is already the link, and a second affordance for the same intent splits the click.",
+      "Do not put the discipline label on as an eyebrow in uppercase tracked type. It is metadata a reader is scanning for, not a decorative category heading.",
+      "Do not write a summary that restates the title. The line has one job: say what the problem was, well enough to earn the click."
     ]
   }
 }

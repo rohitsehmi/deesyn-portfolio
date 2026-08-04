@@ -3,6 +3,8 @@ import Base from './Base.astro';
 import { Nav } from '../components/Nav';
 import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
+import { CaseStudyTile } from '../components/CaseStudyTile';
+import { nextStudy, studyPath } from '../data/studies';
 
 /**
  * The case-study shell.
@@ -25,17 +27,22 @@ interface Props {
   title: string;
   standfirst: string;
   description?: string;
+  /** Which study this is, so the layout can offer the other one at the foot. */
+  slug: string;
 }
-const { title, standfirst, description } = Astro.props;
+const { title, standfirst, description, slug } = Astro.props;
 
-const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/about' }];
+const links = [{ label: 'Work', href: '/' }];
+
+// Offered by the layout rather than repeated on every page, and read from the
+// one list in src/data/studies.ts so it cannot disagree with the index.
+const next = nextStudy(slug);
 
 /**
  * Rule 1 says no two consecutive bands share a fill, so the footer's role
- * depends on whether the optional `next` band is above it.
+ * depends on whether the next-study band is above it.
  */
-const hasNext = Astro.slots.has('next');
-const footerRole = hasNext ? 'base' : 'sunken';
+const footerRole = next ? 'base' : 'sunken';
 ---
 
 <Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst}>
@@ -79,11 +86,17 @@ const footerRole = hasNext ? 'base' : 'sunken';
       <slot name="hindsight" />
     </Band>
 
-    {/* Omitted entirely when unfilled. An empty band is not neutral: it renders
-        as a stripe of padding that reads as a layout bug. */}
-    {hasNext && (
-      <Band role="sunken" scale="compact">
-        <slot name="next" />
+    {/* Omitted entirely when there is nothing to offer. An empty band is not
+        neutral: it renders as a stripe of padding that reads as a layout bug. */}
+    {next && (
+      <Band role="sunken" scale="default">
+        <p class="cs-next__label">Next</p>
+        <CaseStudyTile
+          title={next.title}
+          summary={next.summary}
+          discipline={next.discipline}
+          href={studyPath(next)}
+        />
       </Band>
     )}
   </main>
@@ -116,6 +129,13 @@ const footerRole = hasNext ? 'base' : 'sunken';
   }
   @media (min-width: 1024px) {
     .cs-hero__title { font: var(--type-display-l); letter-spacing: var(--type-display-l-tracking); }
+  }
+
+  .cs-next__label {
+    margin: 0 0 var(--primitive-space-sp600);
+    font: var(--type-emphasis-2);
+    letter-spacing: var(--type-emphasis-2-tracking);
+    color: var(--semantic-fg-secondary);
   }
 
   .cs-hero__standfirst {

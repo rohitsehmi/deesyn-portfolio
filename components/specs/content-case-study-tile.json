@@ -1,0 +1,152 @@
+{
+  "name": "Content/Case Study Tile",
+  "slug": "content-case-study-tile",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/CaseStudyTile.tsx",
+    "styles": "src/components/CaseStudyTile.css"
+  },
+  "description": "The whole tile is the link, so there is no separate \"read more\" affordance\ncompeting with it for the same intent.\n\nThe discipline label is the one piece of metadata that earns its place: with\nonly two studies, which discipline each argues for is the thing a reader is\nscanning for. It is not an eyebrow and there is no second one.",
+  "donts": [
+    "Do not add a read more link. The whole tile is already the link, and a second affordance for the same intent splits the click.",
+    "Do not put the discipline label on as an eyebrow in uppercase tracked type. It is metadata a reader is scanning for, not a decorative category heading.",
+    "Do not write a summary that restates the title. The line has one job: say what the problem was, well enough to earn the click."
+  ],
+  "props": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "summary": {
+      "type": "string",
+      "required": true,
+      "note": "One line that says what the problem was. It has to earn the click."
+    },
+    "discipline": {
+      "type": "string",
+      "required": true,
+      "note": "The discipline this study argues for. Two studies, two disciplines."
+    },
+    "href": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "{ src?: string; alt: string; ratio?: MediaRatio }",
+      "required": false,
+      "note": "Plain data rather than a ReactNode slot: JSX written inside an `.astro` expression produces an Astro template object, not a React element."
+    }
+  },
+  "tokens": {
+    ".tile": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".tile__media": [
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r20",
+        "ref": "primitive.radius.r20"
+      }
+    ],
+    ".tile__media .media__frame": [
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".tile:focus-visible": [
+      {
+        "property": "outline",
+        "var": "--semantic-border-focus",
+        "ref": "semantic.*.border.focus"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r20",
+        "ref": "primitive.radius.r20"
+      }
+    ],
+    ".tile__body": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      }
+    ],
+    ".tile__discipline": [
+      {
+        "property": "font",
+        "var": "--type-emphasis-2",
+        "ref": "typography.emphasis.2"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-2-tracking",
+        "ref": "typography.emphasis.2"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      }
+    ],
+    ".tile__title": [
+      {
+        "property": "font",
+        "var": "--type-heading-m",
+        "ref": "typography.heading.m"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-m-tracking",
+        "ref": "typography.heading.m"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    "@media (min-width: 768px) { .tile__title }": [
+      {
+        "property": "font",
+        "var": "--type-heading-l",
+        "ref": "typography.heading.l"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-l-tracking",
+        "ref": "typography.heading.l"
+      }
+    ],
+    ".tile__summary": [
+      {
+        "property": "font",
+        "var": "--type-body-l",
+        "ref": "typography.body.l"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-l-tracking",
+        "ref": "typography.body.l"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ]
+  }
+}
