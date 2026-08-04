@@ -90,19 +90,14 @@
   are IconButton's own, so the two cannot diverge: background on hover, and
   scale(0.97) over duration/press with easing/out on press.
 
-  The arrow nudges with the hover. It is the one addition beyond IconButton,
-  and it is what makes the whole card feel like the target rather than the
-  circle inside it.
+  The arrow itself does not move. Checked against the live site: only the
+  circle responds, and a nudging arrow reads as a second thing happening in a
+  place where one is enough.
 */
-.tile__cue .icon {
-  transition: transform var(--semantic-duration-press) var(--semantic-easing-out);
-}
 @media (hover: hover) and (pointer: fine) {
   .tile:hover .tile__cue[data-variant='secondary'] { background: var(--semantic-action-secondary-bg-hover); }
-  .tile:hover .tile__cue .icon { transform: translateX(2px); }
 }
 .tile:active .tile__cue { transform: scale(0.97); }
-.tile:active .tile__cue .icon { transform: none; }
 
 /* ---- card variant -------------------------------------------------------
    A surface and a border instead of spacing. With no shadow available this

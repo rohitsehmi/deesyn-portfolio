@@ -66,8 +66,6 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.tile__summary` | letter-spacing | `typography.body.l` |
 | `.tile__summary` | color | `semantic.*.fg.secondary` |
 | `.tile__cue-slot` | padding-block-start | `primitive.space.sp600` |
-| `.tile__cue .icon` | transition | `semantic.*.duration.press` |
-| `.tile__cue .icon` | transition | `semantic.*.easing.out` |
 | `@media (hover: hover) and (pointer: fine) { .tile:hover .tile__cue[data-variant='secondary'] }` | background | `semantic.*.action.secondary-bg-hover` |
 | `.tile[data-variant='card']` | background | `semantic.*.bg.surface` |
 | `.tile[data-variant='card']` | border | `semantic.*.border.subtle` |

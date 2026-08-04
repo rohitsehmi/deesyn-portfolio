@@ -160,18 +160,6 @@
         "ref": "primitive.space.sp600"
       }
     ],
-    ".tile__cue .icon": [
-      {
-        "property": "transition",
-        "var": "--semantic-duration-press",
-        "ref": "semantic.*.duration.press"
-      },
-      {
-        "property": "transition",
-        "var": "--semantic-easing-out",
-        "ref": "semantic.*.easing.out"
-      }
-    ],
     "@media (hover: hover) and (pointer: fine) { .tile:hover .tile__cue[data-variant='secondary'] }": [
       {
         "property": "background",
