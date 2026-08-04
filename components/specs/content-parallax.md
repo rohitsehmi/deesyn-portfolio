@@ -2,13 +2,17 @@
 
 A full-bleed image that drifts against the scroll, with content laid over it.
 
-Driven by a scroll-driven CSS animation, not a scroll handler. The equivalent
-on revolut.com sets `transform: translateY(-22.8333px)` inline from
-JavaScript on every scroll event; doing it in CSS runs it off the main
-thread, survives a busy page, and keeps the page shipping zero JS.
+Driven by a scroll-driven CSS animation wherever one is available, which runs
+off the main thread and survives a busy page. The equivalent on revolut.com
+sets `transform: translateY(-22.8333px)` inline from JavaScript on every
+scroll event, which is the path this takes only as a fallback.
 
-Where scroll-driven animations are unsupported the image sits still, which
-is where `prefers-reduced-motion` lands too. One fallback, not two.
+The CSS path needs `overflow: clip` rather than `hidden` on the section.
+`hidden` creates a scroll container, and `view()` resolves against the
+nearest one, so the drift would be measured against a box that never
+scrolls and the image would sit perfectly still.
+
+Reduced motion stops it in both paths.
 
 The timing function is `linear` and must stay that way. Scroll position is
 the timeline, so easing would decouple the image from the reader's finger.

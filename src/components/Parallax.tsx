@@ -1,6 +1,55 @@
-import type { ReactNode, CSSProperties } from 'react';
+import { useEffect, useRef, type ReactNode, type CSSProperties } from 'react';
 import type { BandRole } from './Band';
 import './Parallax.css';
+
+/**
+ * Drives the drift where `animation-timeline` is unsupported.
+ *
+ * Does nothing at all in browsers that have it, which is the point: the CSS
+ * path stays primary and runs off the main thread, and this only exists so the
+ * effect is not silently absent everywhere else. Also bails on reduced motion,
+ * matching the CSS.
+ */
+function useScrollFallback(ref: React.RefObject<HTMLElement | null>, drift: string) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof CSS !== 'undefined' && CSS.supports?.('animation-timeline', 'view()')) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const layer = el.querySelector<HTMLElement>('.parallax__image-layer');
+    if (!layer) return;
+
+    // Resolve the drift once, in pixels, rather than per frame.
+    const probe = document.createElement('div');
+    probe.style.cssText = `position:absolute;visibility:hidden;height:${drift}`;
+    el.appendChild(probe);
+    const distance = probe.getBoundingClientRect().height;
+    probe.remove();
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const r = el.getBoundingClientRect();
+      // 0 when the section's top edge is at the viewport bottom, 1 when its
+      // bottom edge is at the viewport top: the same span as `cover`.
+      const span = window.innerHeight + r.height;
+      const progress = Math.min(1, Math.max(0, (window.innerHeight - r.top) / span));
+      layer.style.transform = `translateY(${-progress * distance}px)`;
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (frame) cancelAnimationFrame(frame);
+      layer.style.transform = '';
+    };
+  }, [ref, drift]);
+}
 
 export interface ParallaxProps {
   src: string;
@@ -45,13 +94,17 @@ export interface ParallaxProps {
 /**
  * A full-bleed image that drifts against the scroll, with content laid over it.
  *
- * Driven by a scroll-driven CSS animation, not a scroll handler. The equivalent
- * on revolut.com sets `transform: translateY(-22.8333px)` inline from
- * JavaScript on every scroll event; doing it in CSS runs it off the main
- * thread, survives a busy page, and keeps the page shipping zero JS.
+ * Driven by a scroll-driven CSS animation wherever one is available, which runs
+ * off the main thread and survives a busy page. The equivalent on revolut.com
+ * sets `transform: translateY(-22.8333px)` inline from JavaScript on every
+ * scroll event, which is the path this takes only as a fallback.
  *
- * Where scroll-driven animations are unsupported the image sits still, which
- * is where `prefers-reduced-motion` lands too. One fallback, not two.
+ * The CSS path needs `overflow: clip` rather than `hidden` on the section.
+ * `hidden` creates a scroll container, and `view()` resolves against the
+ * nearest one, so the drift would be measured against a box that never
+ * scrolls and the image would sit perfectly still.
+ *
+ * Reduced motion stops it in both paths.
  *
  * The timing function is `linear` and must stay that way. Scroll position is
  * the timeline, so easing would decouple the image from the reader's finger.
@@ -71,8 +124,12 @@ export function Parallax({
   priority = false,
   children
 }: ParallaxProps) {
+  const ref = useRef<HTMLElement>(null);
+  useScrollFallback(ref, drift);
+
   return (
     <section
+      ref={ref}
       className="parallax"
       data-band={band}
       data-scrim={scrim ? 'true' : undefined}

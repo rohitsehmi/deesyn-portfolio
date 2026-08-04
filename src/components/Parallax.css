@@ -1,6 +1,15 @@
 .parallax {
   position: relative;
-  overflow: hidden;                  /* the window the image drifts inside */
+  /*
+    clip, not hidden. `overflow: hidden` creates a scroll container, and
+    `animation-timeline: view()` resolves against the nearest scroll container
+    ancestor: the drift would be measured against this box, which never
+    scrolls, so progress never advances and the image sits still.
+
+    `overflow: clip` clips the same way without creating one, so the timeline
+    resolves against the page. This is the whole effect working or not.
+  */
+  overflow: clip;
   min-height: var(--parallax-min-height, min(78vh, 720px));
   display: flex;
   align-items: flex-end;             /* content sits low, in the scrimmed area */
@@ -76,9 +85,19 @@
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .parallax__image-layer {
-      animation: parallax-drift linear both;
+      /*
+        Longhands, not the `animation` shorthand. The minifier folds the
+        shorthand and `animation-timeline` together into
+        `animation: linear both parallax-drift view()`, and the timeline inside
+        the shorthand is far less well supported than the longhand, so the
+        built stylesheet can stop working where the source would have run.
+      */
+      animation-name: parallax-drift;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: view();
-      animation-range: entry 0% exit 100%;
+      /* cover: the whole time the section overlaps the viewport. */
+      animation-range: cover 0% cover 100%;
     }
   }
 }
