@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import type { BandRole } from './Band';
 import { Logo } from './Logo';
 import { Button } from './Button';
 import { IconButton } from './IconButton';
@@ -15,6 +16,18 @@ export interface NavProps {
    * drives its own state, so `state` becomes the value before the first scroll.
    */
   sticky?: boolean;
+  /**
+   * The band the nav floats over before it scrolls.
+   *
+   * At `state=top` the nav is transparent, so it needs the foreground of what
+   * is beneath it. It sits outside the band stack, so it cannot inherit that:
+   * over a dark hero it would render dark text on a dark image. Setting this
+   * re-declares the band's semantic properties on the nav itself.
+   *
+   * Dropped the moment it scrolls, because a scrolled nav takes bg/canvas and
+   * needs the page's own foreground again.
+   */
+  overBand?: BandRole;
 }
 
 /**
@@ -25,7 +38,7 @@ export interface NavProps {
  *
  * Nav links are ghost buttons — real hit area, real press feedback.
  */
-export function Nav({ links = [], actions, state = 'top', sticky = false }: NavProps) {
+export function Nav({ links = [], actions, state = 'top', sticky = false, overBand }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -41,7 +54,12 @@ export function Nav({ links = [], actions, state = 'top', sticky = false }: NavP
   const resolved = sticky ? (scrolled ? 'scrolled' : 'top') : state;
 
   return (
-    <header className="nav" data-state={resolved} data-sticky={sticky ? 'true' : undefined}>
+    <header
+      className="nav"
+      data-state={resolved}
+      data-sticky={sticky ? 'true' : undefined}
+      data-band={resolved === 'top' ? overBand : undefined}
+    >
       <div className="nav__inner">
         <a className="nav__logo" href="/" aria-label="Home"><Logo height={22} /></a>
         <nav className="nav__links" aria-label="Primary">

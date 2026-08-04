@@ -28,7 +28,17 @@ const TOKENS = 'tokens/tokens.json';
 const SKIP_FILES = ['src/styles/tokens.css', 'src/styles/base.css'];
 
 const PROPS = ['font', 'font-size', 'font-weight', 'font-family', 'line-height', 'letter-spacing'];
-const DECL = new RegExp(`(?<![-\\w])(${PROPS.join('|')})\\s*:\\s*([^;{}"']+)`, 'g');
+
+/**
+ * Matches a font declaration in CSS (`font: var(--type-body-l);`) and in a JSX
+ * style object (`font: 'var(--type-display-m)',`). The quoted form has to be
+ * handled explicitly: reading to the first quote captures an empty value and
+ * reports a bound declaration as unbound.
+ */
+const DECL = new RegExp(
+  `(?<![-\\w])(${PROPS.join('|')})\\s*:\\s*(?:'([^']*)'|"([^"]*)"|([^;{}]+))`, 'g'
+);
+const declValue = (m) => (m[2] ?? m[3] ?? m[4] ?? '').trim();
 const VAR_REF = /var\(\s*(--[a-z0-9-]+)/g;
 
 /** Values that carry no scale information and so cannot drift. */
@@ -128,8 +138,9 @@ for (const [rel, text] of sources) {
     }
 
     const allowed = line.includes(ALLOW_MARKER) || (lines[i - 1] ?? '').includes(ALLOW_MARKER);
-    for (const [, prop, rawValue] of line.matchAll(DECL)) {
-      const value = rawValue.trim();
+    for (const m of line.matchAll(DECL)) {
+      const prop = m[1];
+      const value = declValue(m);
       if (value.includes('var(--type-') || ALLOWED.test(value) || allowed) continue;
       problems.push({ ...at, kind: `unbound ${prop}`, detail: value });
     }

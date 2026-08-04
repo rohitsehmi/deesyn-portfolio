@@ -11,37 +11,36 @@ import { linksFor } from '../data/nav';
 const links = linksFor(Astro.url.pathname);
 ---
 <Base title="Rohit Sehmi · Product Design">
-  {/* Not in a band: a base nav above a base hero stacks padding at a seam with
-      no colour step, which rule 1 forbids. Nav is transparent at state=top and
-      inherits the band beneath it. */}
-  <Nav client:load sticky links={links} />
+  {/*
+    Sits over the hero rather than in a band of its own. `overBand` gives it the
+    hero's foreground while it is transparent, because it is outside the band
+    stack and would otherwise render dark text on a dark image. It drops back to
+    the page's own foreground the moment it takes bg/canvas.
+  */}
+  <Nav client:load sticky overBand="inverse" links={links} />
 
   <main id="main">
-    <Band role="base" scale="feature">
+    {/*
+      The hero sets the tonal key and, per the hero note in the banding spec, is
+      content-led rather than a band scale and does not count toward the
+      alternation. inverse is not a style choice here: it resolves bg/scrim to
+      70% black, which is what makes white text over this photograph clear AA.
+    */}
+    <Parallax
+      src="/media/hero-parallax.png"
+      alt="[NEEDS: replace with your own imagery. This is a Revolut marketing asset, used here to build the effect against.]"
+      band="inverse"
+      underNav
+      priority
+      drift="80px"
+    >
       <h1 class="home-hero__title">Product design, end to end.</h1>
       <p class="home-hero__standfirst">
         Two case studies. One on the design system work, one on the product work.
       </p>
-    </Band>
+    </Parallax>
 
-    {/*
-      Full-bleed imagery is the one seam treatment the banding rules permit
-      (rule 6), so this runs edge to edge rather than sitting inside the
-      measure. sunken because the hero above is base and the work below is
-      base: no two consecutive bands may share a fill.
-    */}
-    <Band role="sunken" scale="compact" bleed>
-      <Parallax
-        src="/media/hero-parallax.png"
-        alt="[NEEDS: replace with your own imagery. This is a Revolut marketing asset, used here to build the effect against.]"
-        ratio="16-9"
-        drift="80px"
-        priority
-      />
-    </Band>
-
-    {/* base, because the band above is sunken. default, because the hero is
-        already feature and rule 7 forbids two adjacent bands at one weight. */}
+    {/* base, because the hero above resolves dark. */}
     <Band role="base" scale="default">
       <ul class="work" data-count={liveStudies.length}>
         {liveStudies.map((s) => (
@@ -84,7 +83,7 @@ const links = linksFor(Astro.url.pathname);
 
   .home-hero__standfirst {
     margin: 0;
-    max-width: 60ch;
+    max-width: 52ch;
     font: var(--type-body-l);
     letter-spacing: var(--type-body-l-tracking);
     color: var(--semantic-fg-secondary);
@@ -94,9 +93,7 @@ const links = linksFor(Astro.url.pathname);
     .home-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
   }
 
-  /* Columns follow the item count, so the last row is never ragged. Three
-     studies in a two-column grid would leave a hole beside the third, which is
-     the same failure as pasting a blank tile. */
+  /* Columns follow the item count, so the last row is never ragged. */
   .work {
     list-style: none;
     margin: 0;
@@ -111,7 +108,6 @@ const links = linksFor(Astro.url.pathname);
       gap: var(--primitive-layout-l48);
     }
   }
-  /* Three stays single-column until there is room for all three side by side. */
   @media (min-width: 1024px) {
     .work[data-count='3'] {
       grid-template-columns: repeat(3, 1fr);

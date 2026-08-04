@@ -1,21 +1,29 @@
 .parallax {
   position: relative;
-  overflow: hidden;                     /* the window the image drifts inside */
-  border-radius: var(--primitive-radius-r20);
-  background: var(--semantic-bg-subtle); /* holds the space before the image lands */
+  overflow: hidden;                  /* the window the image drifts inside */
+  min-height: var(--parallax-min-height, min(78vh, 720px));
+  display: flex;
+  align-items: flex-end;             /* content sits low, in the scrimmed area */
+  isolation: isolate;                /* keeps the layers off the page stack */
 }
-.parallax[data-ratio='16-9'] { aspect-ratio: 16 / 9; }
-.parallax[data-ratio='4-3']  { aspect-ratio: 4 / 3; }
-.parallax[data-ratio='1-1']  { aspect-ratio: 1 / 1; }
-.parallax[data-ratio='3-4']  { aspect-ratio: 3 / 4; }
 
-/* Exactly `drift` taller than the window, which is what guarantees the window
-   stays covered from one end of the range to the other. */
-.parallax__inner {
+/*
+  Exactly `drift` taller than the section, which is what guarantees the section
+  stays covered from one end of the range to the other rather than relying on a
+  number that happens to work.
+*/
+.parallax__image-layer {
   position: absolute;
   inset: 0;
   height: calc(100% + var(--parallax-drift, 80px));
+  z-index: 0;
   will-change: transform;
+}
+
+/* Starts at the top of the page so the transparent nav floats over the image
+   rather than sitting on a band above it. */
+.parallax[data-under-nav='true'] {
+  margin-block-start: calc(var(--primitive-size-nav) * -1);
 }
 
 .parallax__image {
@@ -27,17 +35,47 @@
 }
 
 /*
+  Full strength across the lower 60%, fading out above it. Content is bottom
+  aligned so it always sits in the covered part.
+
+  bg/scrim is 40% black on a light band and 70% on a dark one. Under the inverse
+  band a hero over photography should be using, it resolves to 70%, which is
+  what carries the contrast. Measured on this project's hero image: 7.99:1 for
+  the brightest 1% of the text area, 4.57:1 at the single brightest pixel.
+*/
+.parallax[data-scrim='true'] .parallax__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    var(--semantic-bg-scrim) 0%,
+    var(--semantic-bg-scrim) 60%,
+    transparent 100%
+  );
+}
+
+.parallax__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-block: var(--primitive-layout-l64);
+}
+@media (min-width: 768px)  { .parallax__content { padding-block: var(--primitive-layout-l96); } }
+@media (min-width: 1024px) { .parallax__content { padding-block: var(--primitive-layout-l128); } }
+
+/*
   Scroll-driven, so it runs off the main thread. `linear` is not a default here,
   it is the point: scroll position is the timeline, and any easing would make
-  the image lag or lead the reader's finger.
+  the image lead or lag the reader's finger.
 
-  The range runs from the moment the band starts entering the viewport to the
-  moment it has fully left, so the drift is spread across the whole time the
-  image is visible rather than finishing early.
+  The range runs from the moment the section starts entering the viewport to the
+  moment it has fully left, so the drift spreads across the whole time the image
+  is on screen rather than finishing early.
 */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .parallax__inner {
+    .parallax__image-layer {
       animation: parallax-drift linear both;
       animation-timeline: view();
       animation-range: entry 0% exit 100%;
