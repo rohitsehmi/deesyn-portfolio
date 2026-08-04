@@ -44,6 +44,11 @@
       "required": false,
       "note": "Darkens the lower part of the image so content over it clears AA. Measured against this project's hero image: unscrimmed, the brightest 1% of the text area gives white 3.27:1, which fails. At `bg/scrim` under an inverse band, 70% black, it is 7.99:1, and even the single brightest pixel is 4.57:1. That is why the tonal key below is not optional."
     },
+    "topOfPage": {
+      "type": "boolean",
+      "required": false,
+      "note": "Set when this is the first thing on the page. A rubber-band scroll past the top opens a gap above the document, and whatever the canvas is painted with shows through it. On a dark hero that is a pale seam appearing above the image. This continues the section's own surface upward instead, so the hero reads as staying put while the page bounces."
+    },
     "priority": {
       "type": "boolean",
       "required": false,
@@ -60,6 +65,13 @@
         "property": "min-height",
         "var": "--parallax-min-height",
         "local": "--parallax-min-height"
+      }
+    ],
+    ".parallax__overscroll": [
+      {
+        "property": "background",
+        "var": "--semantic-band-base",
+        "ref": "semantic.*.band.base"
       }
     ],
     ".parallax__image-layer": [

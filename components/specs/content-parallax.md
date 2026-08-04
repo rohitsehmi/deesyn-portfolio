@@ -41,6 +41,7 @@ Implementation: `src/components/Parallax.tsx` and `src/components/Parallax.css`.
 | `minHeight` | `string` | no |
 | `range` | `'cover' | 'exit'` | no |
 | `scrim` | `boolean` | no |
+| `topOfPage` | `boolean` | no |
 | `priority` | `boolean` | no |
 | `children` | `ReactNode` | no |
 
@@ -50,6 +51,7 @@ Implementation: `src/components/Parallax.tsx` and `src/components/Parallax.css`.
 - `minHeight` Content-led height, per the hero note in the banding spec.
 - `range` Which stretch of scrolling the drift is spread across. `cover` is the whole time the section overlaps the viewport, which is right for a section in the middle of a page. `exit` runs from the section's top edge leaving the viewport top to its bottom edge doing the same. Use it at the top of a page: there, `cover` begins before the reader can scroll at all, so on a 78vh hero more than half the range is unreachable and the drift looks like a fraction of what was asked for.
 - `scrim` Darkens the lower part of the image so content over it clears AA. Measured against this project's hero image: unscrimmed, the brightest 1% of the text area gives white 3.27:1, which fails. At `bg/scrim` under an inverse band, 70% black, it is 7.99:1, and even the single brightest pixel is 4.57:1. That is why the tonal key below is not optional.
+- `topOfPage` Set when this is the first thing on the page. A rubber-band scroll past the top opens a gap above the document, and whatever the canvas is painted with shows through it. On a dark hero that is a pale seam appearing above the image. This continues the section's own surface upward instead, so the hero reads as staying put while the page bounces.
 - `priority` The LCP element on any page it opens. Should not lazy-load.
 
 ## Don't
@@ -66,6 +68,7 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | Selector | Property | Token |
 |---|---|---|
 | `.parallax` | min-height | `--parallax-min-height` (local property, not a token) |
+| `.parallax__overscroll` | background | `semantic.*.band.base` |
 | `.parallax__image-layer` | height | `--parallax-drift` (local property, not a token) |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
