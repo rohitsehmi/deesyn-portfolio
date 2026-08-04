@@ -4,7 +4,7 @@ import { Nav } from '../components/Nav';
 import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
-import { studies, studyPath } from '../data/studies';
+import { liveStudies, studyPath } from '../data/studies';
 import { linksFor } from '../data/nav';
 
 const links = linksFor(Astro.url.pathname);
@@ -26,8 +26,8 @@ const links = linksFor(Astro.url.pathname);
     {/* default, not feature: the hero above is already feature, and rule 7
         forbids two adjacent bands at the same weight. */}
     <Band role="sunken" scale="default">
-      <ul class="work" data-count={studies.length}>
-        {studies.map((s) => (
+      <ul class="work" data-count={liveStudies.length}>
+        {liveStudies.map((s) => (
           <li>
             <CaseStudyTile
               title={s.title}
