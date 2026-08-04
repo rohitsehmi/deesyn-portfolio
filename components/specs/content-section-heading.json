@@ -1,0 +1,134 @@
+{
+  "name": "Content/Section Heading",
+  "slug": "content-section-heading",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/SectionHeading.tsx",
+    "styles": "src/components/SectionHeading.css"
+  },
+  "description": "A case-study section header.\n\nThere is deliberately no `eyebrow` prop. An eyebrow above every section is\nthe clearest tell that a page was generated rather than written, and a\nsection's position already categorises it. If one is genuinely needed, it is\na one-off in the page, not an affordance the component hands out.\n\n`standfirst` stacks below the heading. The split-header pattern (big heading\nleft, small paragraph right) is banned as a default.",
+  "donts": [
+    "Do not add an eyebrow above the heading. The component offers no such prop on purpose: an eyebrow over every section is the clearest tell that a page was generated, and the section position already categorises it.",
+    "Do not put the standfirst beside the heading. Stacked is the only layout. A big heading left with a small explainer right is banned as a default.",
+    "Do not skip a heading level to get a size. Level is document structure; size comes from the scale and the breakpoint."
+  ],
+  "props": {
+    "level": {
+      "type": "2 | 3",
+      "required": false
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "standfirst": {
+      "type": "ReactNode",
+      "required": false,
+      "note": "Optional supporting line. Stacked under the heading, never beside it."
+    },
+    "id": {
+      "type": "string",
+      "required": false
+    }
+  },
+  "tokens": {
+    ".section-heading": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "margin-block-end",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      }
+    ],
+    ".section-heading__title": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".section-heading[data-level='2'] .section-heading__title": [
+      {
+        "property": "font",
+        "var": "--type-heading-l",
+        "ref": "typography.heading.l"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-l-tracking",
+        "ref": "typography.heading.l"
+      }
+    ],
+    ".section-heading[data-level='3'] .section-heading__title": [
+      {
+        "property": "font",
+        "var": "--type-heading-s",
+        "ref": "typography.heading.s"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-s-tracking",
+        "ref": "typography.heading.s"
+      }
+    ],
+    "@media (min-width: 768px) { .section-heading[data-level='2'] .section-heading__title }": [
+      {
+        "property": "font",
+        "var": "--type-display-s",
+        "ref": "typography.display.s"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-display-s-tracking",
+        "ref": "typography.display.s"
+      }
+    ],
+    "@media (min-width: 768px) { .section-heading[data-level='3'] .section-heading__title }": [
+      {
+        "property": "font",
+        "var": "--type-heading-m",
+        "ref": "typography.heading.m"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-m-tracking",
+        "ref": "typography.heading.m"
+      }
+    ],
+    ".section-heading__standfirst": [
+      {
+        "property": "font",
+        "var": "--type-body-l",
+        "ref": "typography.body.l"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-l-tracking",
+        "ref": "typography.body.l"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    "@media (min-width: 768px) { .section-heading__standfirst }": [
+      {
+        "property": "font",
+        "var": "--type-body-xl",
+        "ref": "typography.body.xl"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-xl-tracking",
+        "ref": "typography.body.xl"
+      }
+    ]
+  }
+}

@@ -12,8 +12,9 @@ Started 2026-07-31. **Stack: Astro + React.** Astro for the site and MDX case st
 npm run dev          # Astro dev server
 npm run storybook    # component workshop
 npm run tokens       # tokens.json -> src/styles/tokens.css
-npm run specs        # Figma export -> <domain>/specs/
-npm run verify       # token + component integrity, exits non-zero on failure
+npm run specs        # Figma export + code-only components -> <domain>/specs/
+npm run verify       # token, component and CSS integrity, exits non-zero on failure
+npm run verify:bands # band adjacency, linted off built HTML (run after build)
 npm run chromatic    # visual regression (needs CHROMATIC_PROJECT_TOKEN)
 ```
 
@@ -142,11 +143,24 @@ The spec lives **on each component set**, not in a page-level blob: `set.getShar
 Mirrored in the repo under `icons/specs/`, `marks/specs/`, `components/specs/` — one JSON + one Markdown per component, generated from the nodes' *bound variables*, not from plugin data or prose.
 
 ```bash
-node design/build.mjs    # regenerate every <domain>/specs/
-node design/verify.mjs   # integrity + no-literals + checksum
+node design/build.mjs             # Figma-backed specs
+node design/build-code-specs.mjs  # code-only component specs
+node design/verify.mjs            # integrity + no-literals + checksum
+node design/verify-css.mjs        # every var(--*) in src/ resolves; type bound to the scale
+node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 ```
 
 `design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-03: `4183560310`, 127 entries. See `design/README.md`.
+
+**Three checksums, three sources.** Tokens `4115829316`. Figma components `4183560310`. Banding spec `2118911321`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-04). Code-only specs print `491558520` but have no Figma counterpart to match, by definition.
+
+**Six components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. 17 React components, 17 specs.
+
+`design/verify-css.mjs` covers what was written by hand rather than measured off Figma: **every `var(--*)` in `src/` must resolve against `tokens.json`**, and every font value must bind to `var(--type-*)`. A typo'd custom property is not a CSS error, it renders as an inherited default and looks deliberate, and nothing else in the repo catches it.
+
+`design/verify-bands.mjs` reads its rules from `design/banding-export.json`, measured off the Figma page rather than transcribed. **Every rule id in the spec must have a check or an explicit "covered elsewhere" declaration**, so adding a rule in Figma fails the build until someone implements it.
+
+**Responsive type steps between two styles on the scale at a breakpoint; it never clamps.** A clamp renders sizes that exist in no design file. The case-study hero runs `display.s -> display.m -> display.l`.
 
 **Measured vs authored, kept apart.** `design/figma-export.json` is read off the nodes — nobody wrote it, so it cannot flatter the system. `design/usage-rules.json` is authored: the failure modes someone would actually hit (ghost is not a primary action; never ship an icon-only button without `aria-label`; never fake a product UI out of rectangles). `build.mjs` merges them into each spec; the files stay separate so it is obvious which is which. Same split in Figma: `getSharedPluginData('spec','contract')` measured, `…'donts'` authored.
 

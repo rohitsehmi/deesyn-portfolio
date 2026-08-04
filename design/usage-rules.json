@@ -54,6 +54,35 @@
       "Do not recolour it. The fill binds to fg/primary, mirroring var(--rui-color-foreground) — it flips on its own.",
       "Do not rescale the wordmark off its aspect. 145x32 is the real asset's natural size.",
       "Decide what the site presents as. Nav and Footer currently instance the Revolut wordmark as the site identity."
+    ],
+    "Content/Section Heading": [
+      "Do not add an eyebrow above the heading. The component offers no such prop on purpose: an eyebrow over every section is the clearest tell that a page was generated, and the section position already categorises it.",
+      "Do not put the standfirst beside the heading. Stacked is the only layout. A big heading left with a small explainer right is banned as a default.",
+      "Do not skip a heading level to get a size. Level is document structure; size comes from the scale and the breakpoint."
+    ],
+    "Content/Prose": [
+      "Do not set type on anything inside prose. It owns measure and rhythm, and a paragraph that overrides them stops matching the rest of the study.",
+      "Do not widen past the measure by nesting a wider element. Past 75ch reading speed drops and the page reads as a wall.",
+      "Do not use Prose for a single line of text. It is for running argument, not for a caption or a label."
+    ],
+    "Content/Metrics": [
+      "Never ship a metric without a source. The prop is required for exactly this reason: an unsourced number is a credibility failure, not a design one.",
+      "Do not invent precision. A figure the work does not actually claim will be the first thing a reviewer probes.",
+      "Do not show more than four. Past four it reads as a data dump rather than an argument, and the strongest number gets buried.",
+      "Do not present adoption numbers where outcome numbers were asked for. How many teams used it is not how much better the experience got."
+    ],
+    "Content/Explorations": [
+      "Never show an exploration without saying why it was rejected. The why is the scored content; without it the item is a picture.",
+      "Do not rebuild the artefact out of rectangles. A real wireframe photograph beats a tidy fake, and a fake is the single clearest portfolio tell.",
+      "Do not show only the direction that shipped. The rejected ones are the reason this section exists."
+    ],
+    "Content/Hindsight": [
+      "Do not write that you would have done more user testing. It is the answer every candidate gives and it names no cost that was actually paid.",
+      "Do not pair it with a section heading that says the same thing. The callout carries its own heading, so the page would state the point twice."
+    ],
+    "Content/Contribution": [
+      "Do not merge what you owned with what the team owned. A combined answer reads as a claim on other people work, which is the opposite of the intended signal.",
+      "Do not give a role without scope. Lead Designer on its own says nothing about what you actually decided."
     ]
   }
 }

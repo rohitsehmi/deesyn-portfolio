@@ -1,0 +1,102 @@
+{
+  "name": "Content/Hindsight",
+  "slug": "content-hindsight",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/Hindsight.tsx",
+    "styles": "src/components/Hindsight.css"
+  },
+  "description": "What you would change if you ran the project again.\n\nNamed on a reader as something the team actively looks for, and cheap to\nwrite, which makes leaving it out the expensive choice. It reads as\nself-awareness only when it names a real cost. \"More user testing\" is the\nanswer everyone gives and scores nothing.",
+  "donts": [
+    "Do not write that you would have done more user testing. It is the answer every candidate gives and it names no cost that was actually paid.",
+    "Do not pair it with a section heading that says the same thing. The callout carries its own heading, so the page would state the point twice."
+  ],
+  "props": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "note": "Override only if the project needs a more specific framing."
+    },
+    "level": {
+      "type": "2 | 3",
+      "required": false,
+      "note": "The callout carries its own heading, so it is its section's header by default. Pair it with a SectionHeading saying the same thing and the page states the point twice."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": false
+    }
+  },
+  "tokens": {
+    ".hindsight": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp1000",
+        "ref": "primitive.space.sp1000"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r20",
+        "ref": "primitive.radius.r20"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-bg-subtle",
+        "ref": "semantic.*.bg.subtle"
+      },
+      {
+        "property": "border-inline-start",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      }
+    ],
+    ".hindsight__title": [
+      {
+        "property": "font",
+        "var": "--type-heading-s",
+        "ref": "typography.heading.s"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-s-tracking",
+        "ref": "typography.heading.s"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".hindsight__body > * + *": [
+      {
+        "property": "margin-block-start",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      }
+    ],
+    ".hindsight__body p": [
+      {
+        "property": "font",
+        "var": "--type-body-1",
+        "ref": "typography.body.1"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-1-tracking",
+        "ref": "typography.body.1"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ]
+  }
+}

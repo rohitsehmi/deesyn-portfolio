@@ -1,0 +1,157 @@
+{
+  "name": "Content/Prose",
+  "slug": "content-prose",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/Prose.tsx",
+    "styles": "src/components/Prose.css"
+  },
+  "description": "The running text of a case study. Owns measure and vertical rhythm so no\npage has to restate them, and so line length stays inside 65-75ch where\nreading speed holds up.",
+  "donts": [
+    "Do not set type on anything inside prose. It owns measure and rhythm, and a paragraph that overrides them stops matching the rest of the study.",
+    "Do not widen past the measure by nesting a wider element. Past 75ch reading speed drops and the page reads as a wall.",
+    "Do not use Prose for a single line of text. It is for running argument, not for a caption or a label."
+  ],
+  "props": {
+    "measure": {
+      "type": "'default' | 'narrow'",
+      "required": false,
+      "note": "`narrow` caps at 62ch for dense argument, `default` at 68ch."
+    },
+    "lead": {
+      "type": "boolean",
+      "required": false,
+      "note": "Raises size and weight for a single opening paragraph."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": false
+    }
+  },
+  "tokens": {
+    ".prose": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "font-family",
+        "var": "--type-body-l-family",
+        "ref": "typography.body.l"
+      }
+    ],
+    ".prose > * + *": [
+      {
+        "property": "margin-block-start",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".prose p": [
+      {
+        "property": "font",
+        "var": "--type-body-l",
+        "ref": "typography.body.l"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-l-tracking",
+        "ref": "typography.body.l"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    ".prose[data-lead='true'] > p:first-child": [
+      {
+        "property": "font",
+        "var": "--type-body-xl",
+        "ref": "typography.body.xl"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-xl-tracking",
+        "ref": "typography.body.xl"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".prose strong": [
+      {
+        "property": "font-weight",
+        "var": "--type-emphasis-1-weight",
+        "ref": "typography.emphasis.1"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".prose a": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-link",
+        "ref": "semantic.*.fg.link"
+      }
+    ],
+    ".prose a:hover": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-link-hover",
+        "ref": "semantic.*.fg.link-hover"
+      }
+    ],
+    ".prose ul, .prose ol": [
+      {
+        "property": "padding-inline-start",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".prose li": [
+      {
+        "property": "font",
+        "var": "--type-body-l",
+        "ref": "typography.body.l"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-l-tracking",
+        "ref": "typography.body.l"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    ".prose li + li": [
+      {
+        "property": "margin-block-start",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      }
+    ],
+    ".prose hr": [
+      {
+        "property": "border-top",
+        "var": "--semantic-border-subtle",
+        "ref": "semantic.*.border.subtle"
+      },
+      {
+        "property": "margin-block",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      }
+    ]
+  }
+}

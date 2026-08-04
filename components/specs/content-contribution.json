@@ -1,0 +1,80 @@
+{
+  "name": "Content/Contribution",
+  "slug": "content-contribution",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/Contribution.tsx",
+    "styles": "src/components/Contribution.css"
+  },
+  "description": "Who did what. Grouped pairs with one rule per row group rather than a\nhairline under every line, which is the spec-table tell.",
+  "donts": [
+    "Do not merge what you owned with what the team owned. A combined answer reads as a claim on other people work, which is the opposite of the intended signal.",
+    "Do not give a role without scope. Lead Designer on its own says nothing about what you actually decided."
+  ],
+  "props": {
+    "items": {
+      "type": "ContributionItem[]",
+      "required": true,
+      "note": "Role, scope, team, duration. Keep \"what I owned\" and \"what the team owned\" as separate entries: a reader asks what your specific role was, and a combined answer reads as a claim on other people's work."
+    }
+  },
+  "tokens": {
+    ".contribution": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".contribution__row": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp100",
+        "ref": "primitive.space.sp100"
+      }
+    ],
+    "@media (min-width: 640px) { .contribution__row }": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".contribution__term": [
+      {
+        "property": "font",
+        "var": "--type-emphasis-1",
+        "ref": "typography.emphasis.1"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-1-tracking",
+        "ref": "typography.emphasis.1"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".contribution__detail": [
+      {
+        "property": "font",
+        "var": "--type-body-1",
+        "ref": "typography.body.1"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-1-tracking",
+        "ref": "typography.body.1"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ]
+  }
+}

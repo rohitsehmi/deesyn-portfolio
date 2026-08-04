@@ -1,0 +1,148 @@
+{
+  "name": "Content/Metrics",
+  "slug": "content-metrics",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/Metrics.tsx",
+    "styles": "src/components/Metrics.css"
+  },
+  "description": "Impact tiles. Display scale, no table, no filled progress tracks, no\ncomparison bars. The number carries the argument on its own.\n\nCell count always equals item count, so a grid never ends on a blank tile.",
+  "donts": [
+    "Never ship a metric without a source. The prop is required for exactly this reason: an unsourced number is a credibility failure, not a design one.",
+    "Do not invent precision. A figure the work does not actually claim will be the first thing a reviewer probes.",
+    "Do not show more than four. Past four it reads as a data dump rather than an argument, and the strongest number gets buried.",
+    "Do not present adoption numbers where outcome numbers were asked for. How many teams used it is not how much better the experience got."
+  ],
+  "props": {
+    "items": {
+      "type": "Metric[]",
+      "required": true,
+      "note": "Two to four. Past four this is a data dump, not an argument."
+    },
+    "source": {
+      "type": "string",
+      "required": true,
+      "note": "Where the numbers come from: instrument, window, sample size. Required, not optional. An unsourced number in a case study is a credibility failure rather than a design one, and this is the one prop a reviewer will check hardest. If the provenance is genuinely unavailable, say so here in words rather than leaving it blank."
+    }
+  },
+  "tokens": {
+    ".metrics": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp800",
+        "ref": "primitive.space.sp800"
+      }
+    ],
+    ".metrics__grid": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp800",
+        "ref": "primitive.space.sp800"
+      }
+    ],
+    ".metrics__item": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      },
+      {
+        "property": "padding-block-start",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "border-top",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      }
+    ],
+    ".metrics__value": [
+      {
+        "property": "font",
+        "var": "--type-display-s",
+        "ref": "typography.display.s"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-display-s-tracking",
+        "ref": "typography.display.s"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    "@media (min-width: 1024px) { .metrics__value }": [
+      {
+        "property": "font",
+        "var": "--type-display-l",
+        "ref": "typography.display.l"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-display-l-tracking",
+        "ref": "typography.display.l"
+      }
+    ],
+    ".metrics__label": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp100",
+        "ref": "primitive.space.sp100"
+      },
+      {
+        "property": "font",
+        "var": "--type-body-1",
+        "ref": "typography.body.1"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-1-tracking",
+        "ref": "typography.body.1"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    ".metrics__from": [
+      {
+        "property": "font",
+        "var": "--type-body-2",
+        "ref": "typography.body.2"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-2-tracking",
+        "ref": "typography.body.2"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    ".metrics__source": [
+      {
+        "property": "font",
+        "var": "--type-body-2",
+        "ref": "typography.body.2"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-2-tracking",
+        "ref": "typography.body.2"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ]
+  }
+}

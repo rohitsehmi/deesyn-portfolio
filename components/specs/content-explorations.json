@@ -1,0 +1,94 @@
+{
+  "name": "Content/Explorations",
+  "slug": "content-explorations",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/Explorations.tsx",
+    "styles": "src/components/Explorations.css"
+  },
+  "description": "The paths that were considered and rejected.\n\nThis is the section most portfolios skip and the one a case study weights\nhardest, so `why` is required on every item. An exploration without a stated\nreason for its rejection is a picture, and pictures score nothing here.",
+  "donts": [
+    "Never show an exploration without saying why it was rejected. The why is the scored content; without it the item is a picture.",
+    "Do not rebuild the artefact out of rectangles. A real wireframe photograph beats a tidy fake, and a fake is the single clearest portfolio tell.",
+    "Do not show only the direction that shipped. The rejected ones are the reason this section exists."
+  ],
+  "props": {
+    "items": {
+      "type": "Exploration[]",
+      "required": true
+    }
+  },
+  "tokens": {
+    ".explorations": [
+      {
+        "property": "gap",
+        "var": "--primitive-layout-l48",
+        "ref": "primitive.layout.l48"
+      }
+    ],
+    "@media (min-width: 768px) { .explorations }": [
+      {
+        "property": "gap",
+        "var": "--primitive-layout-l64",
+        "ref": "primitive.layout.l64"
+      }
+    ],
+    ".explorations__item": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".explorations__media": [
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r20",
+        "ref": "primitive.radius.r20"
+      }
+    ],
+    ".explorations__text": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      }
+    ],
+    ".explorations__title": [
+      {
+        "property": "font",
+        "var": "--type-heading-s",
+        "ref": "typography.heading.s"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-s-tracking",
+        "ref": "typography.heading.s"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".explorations__why": [
+      {
+        "property": "font",
+        "var": "--type-body-1",
+        "ref": "typography.body.1"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-1-tracking",
+        "ref": "typography.body.1"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ]
+  }
+}
