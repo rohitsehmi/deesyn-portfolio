@@ -51,9 +51,10 @@
       "Do not use arrow-right or arrow-left. They do not exist: the thin arrow IS Revolut's arrow."
     ],
     "Brand/Logo": [
-      "Do not recolour it. The fill binds to fg/primary, mirroring var(--rui-color-foreground) — it flips on its own.",
-      "Do not rescale the wordmark off its aspect. 145x32 is the real asset's natural size.",
-      "Decide what the site presents as. Nav and Footer currently instance the Revolut wordmark as the site identity."
+      "Do not recolour it. The fill binds to fg/primary, mirroring var(--rui-color-foreground), so it flips on its own. The disc is one evenodd path with the script cut out of it, which is what makes the script read as the band showing through rather than staying dark on an inverse band.",
+      "Do not rescale the lockup off its aspect. 233x48 is the artwork natural size, and the mark is 48x48 square.",
+      "Do not use the lockup anywhere it could imply a commercial relationship. An x lockup reads as a partnership. Sent to Revolut as an application it says the right thing; on an open URL it claims something that is not true yet.",
+      "Do not separate the parts and use Revolut wordmark on its own. The whole point of the lockup is that it says work made for Revolut rather than work by Revolut."
     ],
     "Content/Section Heading": [
       "Do not add an eyebrow above the heading. The component offers no such prop on purpose: an eyebrow over every section is the clearest tell that a page was generated, and the section position already categorises it.",

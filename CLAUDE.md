@@ -115,7 +115,7 @@ Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Varia
 **92 variants across 11 sets, split across three pages:**
 
 - **Icons** (`icons/`) — `Icon` (12). Real Revolut assets, filled paths, verbatim from `assets.revolut.com`. `arrow-up-right` is `ArrowThinRight` rotated +45°; Revolut ships no diagonal arrow and no plain `ArrowRight` either.
-- **Marks** (`marks/`) — `Brand/Logo` (2). `wordmark` is Revolut's real wordmark, fill bound to `fg/primary` (the equivalent of `var(--rui-color-foreground)`). `mark` is a stand-in; Rohit's logo is in the **CV-Build** file, which needs the Desktop Bridge plugin open *in it* before the asset can be pulled across.
+- **Marks** (`marks/`) — `Brand/Logo` (2). `wordmark` is now the **Ro × Revolut lockup** (233×48), `mark` is Rohit's disc alone (48×48). Both exported from Figma node `21:4229` into `src/components/logo-paths.ts`; the RS text stand-in is gone. The disc is a single `evenodd` path with the script cut out rather than drawn on top, which is what lets the whole thing take `fill: currentColor` and still read on an inverse band. Variant names are kept from the Figma set even though `lockup` would now be more accurate than `wordmark`.
 - **Components** (`components/`) — `Action/Button` (27), `Action/Icon Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2).
 
 `Layout/Band` (12) stays on the Banding page — a page-layout primitive with adjacency rules, not a UI component.
@@ -124,7 +124,7 @@ Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Varia
 
 `Action/Icon Button` is square: one size token drives both axes, so `Radius/Round` is a true circle at 32/44/48. Separate from `Action/Button` because the shape contract differs *and* **`aria-label` is required, not optional**.
 
-**Open question:** Nav and Footer instance `variant=wordmark`, so the site chrome currently presents Revolut's wordmark as the site's own identity. Fine in a private design-system file; a decision before anything is published.
+**Resolved 2026-08-04.** The chrome used to present Revolut's wordmark alone, which read as claiming their identity. It now uses the lockup, which says work made *for* Revolut. One thing still to settle before anything is published openly: an `×` lockup conventionally reads as a partnership. Sent to Revolut as an application it is exactly right; on an open URL it implies an engagement that does not exist.
 
 `src/components/` holds the React implementation — one file plus one CSS file per component, consuming tokens as CSS custom properties. `src/components/Band.tsx` implements the banding system: `data-band` re-declares the semantic properties for its subtree, which is the CSS equivalent of Figma's mode override.
 
@@ -177,7 +177,7 @@ npm run storybook     # dev
 npm run chromatic     # publish a build (needs CHROMATIC_PROJECT_TOKEN)
 ```
 
-**Published Storybooks are access-controlled**, inherited from the private GitHub repo — an unauthenticated request returns `401`. To share, invite people in Chromatic → Manage → Collaborate. **Do not make it public yet:** it currently contains Revolut's wordmark used as the site's own identity plus their real icon assets. Sent to Revolut that reads as close study; on an open URL it is their trademark on an artefact that is not theirs. Resolve `Brand/Logo`'s `mark` first.
+**Published Storybooks are access-controlled**, inherited from the private GitHub repo — an unauthenticated request returns `401`. To share, invite people in Chromatic → Manage → Collaborate. **Do not make it public yet:** it contains Revolut's real icon assets and, in the lockup, their wordmark. Sent to Revolut that reads as close study; on an open URL it is their trademark on an artefact that is not theirs.
 
 Build URLs are per-build. Anything you send out should use the project permalink, not the URL a run prints.
 

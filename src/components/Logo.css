@@ -1,11 +1,4 @@
+/* The artwork is a single fill bound to currentColor, so the band it sits in
+   colours it. There is nothing else to style: the previous rules were for the
+   text stand-in that the real mark has replaced. */
 .logo { display: block; flex: none; color: var(--semantic-fg-primary); }
-/* Size stays relative: the mark scales with the `height` prop, so it is the one
-   place a fixed step off the scale would be wrong. Everything else binds. */
-.logo--mark {
-  font-family: var(--type-heading-s-family);
-  font-weight: var(--type-heading-s-weight);
-  line-height: var(--type-heading-s-line);
-  letter-spacing: var(--type-heading-s-tracking);
-  /* type-lint-allow: inherits the `height` prop, so it must stay relative. */
-  font-size: 1em;
-}
