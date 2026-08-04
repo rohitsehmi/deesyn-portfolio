@@ -1,0 +1,32 @@
+---
+import Page from '../layouts/Page.astro';
+import { Prose } from '../components/Prose';
+import { Contribution } from '../components/Contribution';
+
+/**
+ * STUB. Decide the shape before filling it: either this page carries the CV as
+ * content, or it is a short page whose job is to hand over a PDF. Both work.
+ * A page that half does each does not.
+ */
+---
+<Page
+  title="CV"
+  standfirst="[NEEDS: decide the shape. Either the CV lives on this page, or this page hands over a file.]"
+>
+  <Contribution
+    items={[
+      { term: 'Now', detail: '[NEEDS: current role or availability]' },
+      { term: '2021 to 2026', detail: 'Expedia Group Design System. [NEEDS: titles and dates]' },
+      { term: '2016 to 2021', detail: 'Hotels.com, mobile product design. [NEEDS: titles and dates]' },
+      { term: 'Before', detail: '[NEEDS: as much as earns its place, and no more]' }
+    ]}
+  />
+  <Prose>
+    <p>
+      [NEEDS: if this page is going to hand over a PDF, it needs the file and a
+      download link, and the list above becomes a summary rather than the
+      content. If the CV lives here instead, this becomes the full history and
+      the file is not needed at all.]
+    </p>
+  </Prose>
+</Page>

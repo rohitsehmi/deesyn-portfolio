@@ -1,0 +1,67 @@
+---
+import Base from './Base.astro';
+import { Nav } from '../components/Nav';
+import { Band } from '../components/Band';
+import { Footer } from '../components/Footer';
+import { linksFor } from '../data/nav';
+
+/**
+ * The shell for standard content pages: about, cv, contact.
+ *
+ * Simpler than CaseStudy.astro on purpose. A case study has a fixed section
+ * order because the reader dictates one; these pages do not, so they take a
+ * single slot.
+ */
+interface Props {
+  title: string;
+  standfirst?: string;
+  description?: string;
+}
+const { title, standfirst, description } = Astro.props;
+const links = linksFor(Astro.url.pathname);
+---
+
+<Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst}>
+  <Nav client:load sticky links={links} />
+
+  <main id="main">
+    <Band role="base" scale="feature">
+      <h1 class="page-hero__title">{title}</h1>
+      {standfirst && <p class="page-hero__standfirst">{standfirst}</p>}
+    </Band>
+
+    <Band role="sunken" scale="default">
+      <slot />
+    </Band>
+  </main>
+
+  <Band role="base" scale="compact">
+    <Footer scale="compact" />
+  </Band>
+</Base>
+
+<style is:global>
+  .page-hero__title {
+    margin: 0 0 var(--primitive-space-sp600);
+    max-width: 18ch;
+    font: var(--type-display-s);
+    letter-spacing: var(--type-display-s-tracking);
+    color: var(--semantic-fg-primary);
+    text-wrap: balance;
+  }
+  @media (min-width: 768px) {
+    .page-hero__title { font: var(--type-display-m); letter-spacing: var(--type-display-m-tracking); }
+  }
+
+  .page-hero__standfirst {
+    margin: 0;
+    max-width: 60ch;
+    font: var(--type-body-l);
+    letter-spacing: var(--type-body-l-tracking);
+    color: var(--semantic-fg-secondary);
+    text-wrap: pretty;
+  }
+  @media (min-width: 768px) {
+    .page-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
+  }
+</style>

@@ -5,6 +5,7 @@ import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
 import { nextStudy, studyPath } from '../data/studies';
+import { linksFor } from '../data/nav';
 
 /**
  * The case-study shell.
@@ -32,7 +33,7 @@ interface Props {
 }
 const { title, standfirst, description, slug } = Astro.props;
 
-const links = [{ label: 'Work', href: '/' }];
+const links = linksFor(Astro.url.pathname);
 
 // Offered by the layout rather than repeated on every page, and read from the
 // one list in src/data/studies.ts so it cannot disagree with the index.

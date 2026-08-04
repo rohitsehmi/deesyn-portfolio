@@ -30,15 +30,15 @@ export const studies: Study[] = [
     summary: 'The Hotels.com app showed search results in a card framework nothing could be varied inside. Rebuilding it as dynamic cards turned the app\'s most valuable screen into one the team could learn from.',
     discipline: 'Product design',
     draft: true
+  },
+  {
+    slug: 'scaling-a-system',
+    title: 'Consolidating four design systems into one',
+    summary: 'A brand consolidation meant collapsing several independent design systems into a single platform, without flattening the brands that depended on them.',
+    discipline: 'Design systems',
+    draft: true
   }
 ];
-
-/**
- * Not listed: work/scaling-a-system, the Expedia design system consolidation.
- * It stays in the repo but off the site. Two design-system studies argue one
- * claim, and it is the weaker of the two: 2021-2023, no user testing, and
- * adoption metrics where a reader asks for outcomes.
- */
 
 export const studyPath = (s: Study) => `/work/${s.slug}`;
 

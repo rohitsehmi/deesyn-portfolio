@@ -5,8 +5,9 @@ import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
 import { studies, studyPath } from '../data/studies';
+import { linksFor } from '../data/nav';
 
-const links = [{ label: 'Work', href: '/', current: true }];
+const links = linksFor(Astro.url.pathname);
 ---
 <Base title="Rohit Sehmi · Product Design">
   {/* Not in a band: a base nav above a base hero stacks padding at a seam with
@@ -25,7 +26,7 @@ const links = [{ label: 'Work', href: '/', current: true }];
     {/* default, not feature: the hero above is already feature, and rule 7
         forbids two adjacent bands at the same weight. */}
     <Band role="sunken" scale="default">
-      <ul class="work">
+      <ul class="work" data-count={studies.length}>
         {studies.map((s) => (
           <li>
             <CaseStudyTile
@@ -75,8 +76,9 @@ const links = [{ label: 'Work', href: '/', current: true }];
     .home-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
   }
 
-  /* Two studies, two cells. The count is exact by construction: the grid is
-     built from the list, so it can never end on a blank tile. */
+  /* Columns follow the item count, so the last row is never ragged. Three
+     studies in a two-column grid would leave a hole beside the third, which is
+     the same failure as pasting a blank tile. */
   .work {
     list-style: none;
     margin: 0;
@@ -86,6 +88,16 @@ const links = [{ label: 'Work', href: '/', current: true }];
     gap: var(--primitive-layout-l64);
   }
   @media (min-width: 768px) {
-    .work { grid-template-columns: repeat(2, 1fr); gap: var(--primitive-layout-l48); }
+    .work[data-count='2'], .work[data-count='4'] {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--primitive-layout-l48);
+    }
+  }
+  /* Three stays single-column until there is room for all three side by side. */
+  @media (min-width: 1024px) {
+    .work[data-count='3'] {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--primitive-layout-l48);
+    }
   }
 </style>

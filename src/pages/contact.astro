@@ -1,0 +1,27 @@
+---
+import Page from '../layouts/Page.astro';
+import { Prose } from '../components/Prose';
+import { Link } from '../components/Link';
+
+/**
+ * STUB. Deliberately a list of links rather than a form: a form on a portfolio
+ * needs a backend, validation, and a full state cycle to be worth having, and a
+ * mailto link works today.
+ */
+---
+<Page
+  title="Contact"
+  standfirst="[NEEDS: one line. The best way to reach you, and what you are open to.]"
+>
+  <Prose>
+    <p>
+      Email <Link href="mailto:rohit.sehmi@gmail.com">rohit.sehmi@gmail.com</Link>.
+    </p>
+    <p>
+      [NEEDS: confirm that is the address you want on a page you send to
+      Revolut, and add LinkedIn if you want it here. Anything else on this page
+      should earn its place: a portfolio contact page is a list of ways to reach
+      someone, not a section.]
+    </p>
+  </Prose>
+</Page>
