@@ -1,0 +1,27 @@
+/* Set apart by surface and a single accent rule, not by a shadow. There are no
+   shadows anywhere in site chrome. */
+.hindsight {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+  padding: var(--primitive-space-sp1000);
+  border-radius: var(--primitive-radius-r20);
+  background: var(--semantic-bg-subtle);
+  border-inline-start: 3px solid var(--semantic-fg-accent);
+  max-width: 72ch;
+}
+
+.hindsight__title {
+  margin: 0;
+  font: 500 20px/1.25 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  color: var(--semantic-fg-primary);
+}
+
+.hindsight__body > * { margin-block: 0; }
+.hindsight__body > * + * { margin-block-start: var(--primitive-space-sp400); }
+.hindsight__body p {
+  font: 400 16px/1.6 Inter, system-ui, sans-serif;
+  color: var(--semantic-fg-secondary);
+  text-wrap: pretty;
+}

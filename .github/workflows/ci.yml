@@ -35,6 +35,12 @@ jobs:
 
       - run: npx astro build
 
+      # Lints the built pages against the adjacency rules in
+      # docs/banding-system.md §3, on the output rather than the source so
+      # conditionally rendered bands are checked too.
+      - name: Bands — adjacency rules
+        run: node design/verify-bands.mjs
+
   chromatic:
     name: Visual regression
     runs-on: ubuntu-latest

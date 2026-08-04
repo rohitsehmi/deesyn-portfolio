@@ -1,0 +1,122 @@
+---
+import Base from './Base.astro';
+import { Nav } from '../components/Nav';
+import { Band } from '../components/Band';
+import { Footer } from '../components/Footer';
+
+/**
+ * The case-study shell.
+ *
+ * The section order is what a case study has to answer, in the order the reader states
+ * it: problem and insight, then process, then interface, then impact, then
+ * hindsight. It is deliberately not the structure of the old Expedia page,
+ * which was organised around what the system contained and therefore had
+ * nowhere to put rejected explorations, testing trade-offs, or hindsight.
+ *
+ * Slots are named rather than a single default slot so a study cannot quietly
+ * ship without its heaviest sections. An empty slot renders nothing and is
+ * visible as a gap in review.
+ *
+ * Band rhythm: one inverse band, on impact. The adjacency rules cap inverse at
+ * two per page (docs/banding-system.md, rule 4), so a second is available and
+ * deliberately unspent until the content says where it earns its place.
+ */
+interface Props {
+  title: string;
+  standfirst: string;
+  description?: string;
+}
+const { title, standfirst, description } = Astro.props;
+
+const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/about' }];
+
+/**
+ * Rule 1 says no two consecutive bands share a fill, so the footer's role
+ * depends on whether the optional `next` band is above it.
+ */
+const hasNext = Astro.slots.has('next');
+const footerRole = hasNext ? 'base' : 'sunken';
+---
+
+<Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst}>
+  {/*
+    Nav sits in flow, not in a band. `state=top` is transparent and inherits the
+    foreground beneath it, and the component carries its own height and measure.
+    Giving it a `base` band above a `base` hero would stack two lots of padding
+    at a seam with no colour step, which is exactly what rule 1 forbids.
+  */}
+  <Nav client:load state="top" links={links} />
+
+  <main id="main">
+    {/* Hero. Two text elements and no CTA: the reader arrived here on purpose. */}
+    <Band role="base" scale="feature">
+      <div class="cs-hero">
+        <h1 class="cs-hero__title">{title}</h1>
+        <p class="cs-hero__standfirst">{standfirst}</p>
+        <slot name="contribution" />
+      </div>
+    </Band>
+
+    <Band role="sunken" scale="default">
+      <slot name="problem" />
+    </Band>
+
+    {/* The longest band on the page. This is the one the reader weights hardest. */}
+    <Band role="base" scale="feature">
+      <slot name="process" />
+    </Band>
+
+    <Band role="sunken" scale="default">
+      <slot name="interface" />
+    </Band>
+
+    <Band role="inverse" scale="feature">
+      <slot name="impact" />
+    </Band>
+
+    {/* Rule 5: come out of inverse into base, never into sunken. */}
+    <Band role="base" scale="default">
+      <slot name="hindsight" />
+    </Band>
+
+    {/* Omitted entirely when unfilled. An empty band is not neutral: it renders
+        as a stripe of padding that reads as a layout bug. */}
+    {hasNext && (
+      <Band role="sunken" scale="compact">
+        <slot name="next" />
+      </Band>
+    )}
+  </main>
+
+  <Band role={footerRole} scale="compact">
+    <Footer scale="compact" />
+  </Band>
+</Base>
+
+<style is:global>
+  .cs-hero {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-space-sp800);
+  }
+  /* Each element caps its own measure. The container stays full width so the
+     contribution block below can use the band's grid. */
+  .cs-hero__title {
+    margin: 0;
+    max-width: 18ch;
+    font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+    font-size: clamp(40px, 7vw, 64px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.0156em;
+    color: var(--semantic-fg-primary);
+    text-wrap: balance;
+  }
+  .cs-hero__standfirst {
+    margin: 0;
+    max-width: 60ch;
+    font: 400 clamp(18px, 2vw, 22px)/1.5 Inter, system-ui, sans-serif;
+    color: var(--semantic-fg-secondary);
+    text-wrap: pretty;
+  }
+</style>

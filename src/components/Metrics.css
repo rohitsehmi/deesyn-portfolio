@@ -1,0 +1,53 @@
+.metrics { display: flex; flex-direction: column; gap: var(--primitive-space-sp800); }
+
+.metrics__grid {
+  display: grid;
+  gap: var(--primitive-space-sp800);
+  margin: 0;
+  grid-template-columns: 1fr;                       /* mobile: one per row */
+}
+@media (min-width: 640px) {
+  .metrics__grid[data-count='2'], .metrics__grid[data-count='4'] { grid-template-columns: repeat(2, 1fr); }
+  .metrics__grid[data-count='3'] { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1024px) {
+  .metrics__grid[data-count='4'] { grid-template-columns: repeat(4, 1fr); }
+}
+
+.metrics__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp200);
+  padding-block-start: var(--primitive-space-sp400);
+  border-top: 1px solid var(--semantic-border-default);   /* one rule, top only */
+}
+
+.metrics__value {
+  margin: 0;
+  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  font-size: clamp(40px, 5.5vw, 64px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--semantic-fg-primary);
+}
+
+.metrics__label {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp100);
+  font: 400 15px/1.45 Inter, system-ui, sans-serif;
+  color: var(--semantic-fg-secondary);
+  max-width: 32ch;
+}
+.metrics__from { color: var(--semantic-fg-secondary); opacity: 0.85; }
+
+/* Provenance, set quietly but at full contrast. fg/tertiary would fail AA. */
+.metrics__source {
+  margin: 0;
+  max-width: 68ch;
+  font: 400 14px/1.5 Inter, system-ui, sans-serif;
+  color: var(--semantic-fg-secondary);
+}

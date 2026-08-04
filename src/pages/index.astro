@@ -10,9 +10,10 @@ import { Button } from '../components/Button';
 const links = [{ label: 'Work', href: '/' }, { label: 'About', href: '/' }];
 ---
 <Base title="Rohit Sehmi — Product Design">
-  <Band role="base" scale="compact">
-    <Nav client:load state="top" links={links} />
-  </Band>
+  {/* Not in a band: a base nav above a base hero stacks padding at a seam with
+      no colour step, which rule 1 forbids. Nav is transparent at state=top and
+      inherits the band beneath it. */}
+  <Nav client:load state="top" links={links} />
 
   <main id="main">
     <Band role="base" scale="feature">
