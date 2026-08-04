@@ -109,17 +109,36 @@ lines.push('[data-theme="dark"] [data-band="inverse-raised"] {');
 lines.push(asBlock(lightDecls, '  '));
 lines.push('}', '');
 
-// ---- type styles as classes ----------------------------------------------
-lines.push('/* Text styles. Every one from Figma; use the class, never raw font values. */');
-for (const [name, node] of flatten(t.typography, [])) {
+// ---- type styles ----------------------------------------------------------
+// Emitted twice, from the same source, for two different consumers.
+//
+// Custom properties are what component CSS uses. A class cannot be composed
+// inside a rule, and responsive type here means stepping between two styles on
+// the scale at a breakpoint rather than clamping to an off-scale value, which
+// needs the longhands available as properties.
+//
+// The classes stay for markup that takes a whole style as-is.
+const typeStyles = flatten(t.typography, []);
+const family = (f) => (f === 'Inter' ? 'Inter, system-ui, sans-serif' : `'${f}', Inter, system-ui, sans-serif`);
+
+lines.push('/* Text styles as properties. Component CSS binds to these, never to raw values. */');
+lines.push(':root {');
+for (const [name, node] of typeStyles) {
   const v = node.$value;
-  lines.push(`.type-${name} {`);
-  lines.push(`  font-family: ${v.fontFamily === 'Inter' ? 'Inter, system-ui, sans-serif' : `'${v.fontFamily}', Inter, system-ui, sans-serif`};`);
-  lines.push(`  font-weight: ${v.fontWeight};`);
-  lines.push(`  font-size: ${v.fontSize};`);
-  lines.push(`  line-height: ${v.lineHeight};`);
-  lines.push(`  letter-spacing: ${v.letterSpacing};`);
-  lines.push('}');
+  lines.push(`  --type-${name}-family: ${family(v.fontFamily)};`);
+  lines.push(`  --type-${name}-weight: ${v.fontWeight};`);
+  lines.push(`  --type-${name}-size: ${v.fontSize};`);
+  lines.push(`  --type-${name}-line: ${v.lineHeight};`);
+  lines.push(`  --type-${name}-tracking: ${v.letterSpacing};`);
+  // Shorthand for the common case. letter-spacing is not part of `font`, so it
+  // is always applied separately.
+  lines.push(`  --type-${name}: ${v.fontWeight} ${v.fontSize}/${v.lineHeight} ${family(v.fontFamily)};`);
+}
+lines.push('}', '');
+
+lines.push('/* The same styles as classes, for markup that takes one whole. */');
+for (const [name] of typeStyles) {
+  lines.push(`.type-${name} { font: var(--type-${name}); letter-spacing: var(--type-${name}-tracking); }`);
 }
 
 mkdirSync(join(root, 'src', 'styles'), { recursive: true });

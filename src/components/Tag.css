@@ -3,8 +3,8 @@
   align-items: center;
   border-radius: var(--primitive-radius-round);
   padding: var(--primitive-space-sp150) var(--primitive-space-sp400);
-  font: 600 12px/1.5 Inter, system-ui, sans-serif;
-  letter-spacing: 0.01em;
+  font: var(--type-emphasis-3);
+  letter-spacing: var(--type-emphasis-3-tracking);
 }
 .tag[data-variant='neutral'] { background: var(--semantic-bg-widget); color: var(--semantic-fg-secondary); }
 .tag[data-variant='accent']  { background: var(--semantic-action-accent-bg); color: var(--semantic-action-accent-fg); }

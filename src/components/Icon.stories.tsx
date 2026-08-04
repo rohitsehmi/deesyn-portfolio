@@ -15,7 +15,7 @@ export const All: S = {
       {iconNames.map((name) => (
         <div key={name} style={{ display: 'grid', gap: 8, justifyItems: 'center', width: 110 }}>
           <Icon name={name} />
-          <span style={{ font: '400 11px/1.3 Inter, sans-serif', color: 'var(--semantic-fg-secondary)' }}>{name}</span>
+          <span className="type-body-3" style={{ color: 'var(--semantic-fg-secondary)' }}>{name}</span>
         </div>
       ))}
     </div>

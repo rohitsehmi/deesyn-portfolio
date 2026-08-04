@@ -18,9 +18,15 @@
 .button[data-size='md'] { height: var(--primitive-size-button-md); padding-inline: var(--primitive-space-sp600); gap: var(--primitive-space-sp300); }
 .button[data-size='lg'] { height: var(--primitive-size-button-lg); padding-inline: var(--primitive-space-sp800); gap: var(--primitive-space-sp300); }
 
-.button[data-size='sm'] .button__label { font: 600 14px/1.43 Inter, system-ui, sans-serif; }
+.button[data-size='sm'] .button__label {
+  font: var(--type-emphasis-2);
+  letter-spacing: var(--type-emphasis-2-tracking);
+}
 .button[data-size='md'] .button__label,
-.button[data-size='lg'] .button__label { font: 600 16px/1.5 Inter, system-ui, sans-serif; }
+.button[data-size='lg'] .button__label {
+  font: var(--type-emphasis-1);
+  letter-spacing: var(--type-emphasis-1-tracking);
+}
 
 /* Variants. Every colour is a semantic token, so a band flips them for free. */
 .button[data-variant='primary']   { background: var(--semantic-action-primary-bg);   color: var(--semantic-action-primary-fg); }

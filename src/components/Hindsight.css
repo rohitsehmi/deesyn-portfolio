@@ -13,15 +13,16 @@
 
 .hindsight__title {
   margin: 0;
-  font: 500 20px/1.25 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  letter-spacing: -0.01em;
+  font: var(--type-heading-s);
+  letter-spacing: var(--type-heading-s-tracking);
   color: var(--semantic-fg-primary);
 }
 
 .hindsight__body > * { margin-block: 0; }
 .hindsight__body > * + * { margin-block-start: var(--primitive-space-sp400); }
 .hindsight__body p {
-  font: 400 16px/1.6 Inter, system-ui, sans-serif;
+  font: var(--type-body-1);
+  letter-spacing: var(--type-body-1-tracking);
   color: var(--semantic-fg-secondary);
   text-wrap: pretty;
 }

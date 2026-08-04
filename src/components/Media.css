@@ -7,4 +7,4 @@
 .media[data-ratio='3-4']  .media__frame { aspect-ratio: 3 / 4; }
 .media__frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .media__placeholder { display: block; width: 100%; height: 100%; }
-.media__caption { color: var(--semantic-fg-secondary); font: 400 12px/1.5 Inter, system-ui, sans-serif; letter-spacing: 0.015em; }
+.media__caption { color: var(--semantic-fg-secondary); font: var(--type-body-3); letter-spacing: var(--type-body-3-tracking); }

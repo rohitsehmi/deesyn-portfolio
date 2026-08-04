@@ -15,7 +15,8 @@
   gap: var(--primitive-space-sp200);
   color: var(--semantic-fg-link);
   text-decoration: none;
-  font: 600 16px/1.5 Inter, system-ui, sans-serif;
+  font: var(--type-emphasis-1);
+  letter-spacing: var(--type-emphasis-1-tracking);
   transition: color var(--semantic-duration-press) var(--semantic-easing-out);
 }
 .arrow-link__icon {

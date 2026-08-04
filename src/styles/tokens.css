@@ -443,165 +443,169 @@
   --semantic-easing-linear: var(--primitive-easing-linear);
 }
 
-/* Text styles. Every one from Figma; use the class, never raw font values. */
-.type-display-xl {
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 88px;
-  line-height: 1;
-  letter-spacing: -0.0236em;
+/* Text styles as properties. Component CSS binds to these, never to raw values. */
+:root {
+  --type-display-xl-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-display-xl-weight: 500;
+  --type-display-xl-size: 88px;
+  --type-display-xl-line: 1;
+  --type-display-xl-tracking: -0.0236em;
+  --type-display-xl: 500 88px/1 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-display-l-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-display-l-weight: 500;
+  --type-display-l-size: 64px;
+  --type-display-l-line: 1;
+  --type-display-l-tracking: -0.0156em;
+  --type-display-l: 500 64px/1 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-display-m-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-display-m-weight: 500;
+  --type-display-m-size: 52px;
+  --type-display-m-line: 1;
+  --type-display-m-tracking: -0.0115em;
+  --type-display-m: 500 52px/1 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-display-s-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-display-s-weight: 500;
+  --type-display-s-size: 40px;
+  --type-display-s-line: 1.05;
+  --type-display-s-tracking: -0.011em;
+  --type-display-s: 500 40px/1.05 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-heading-l-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-heading-l-weight: 500;
+  --type-heading-l-size: 32px;
+  --type-heading-l-line: 1.12;
+  --type-heading-l-tracking: -0.01em;
+  --type-heading-l: 500 32px/1.12 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-heading-m-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-heading-m-weight: 500;
+  --type-heading-m-size: 24px;
+  --type-heading-m-line: 1.3;
+  --type-heading-m-tracking: -0.01em;
+  --type-heading-m: 500 24px/1.3 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-heading-s-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-heading-s-weight: 500;
+  --type-heading-s-size: 20px;
+  --type-heading-s-line: 1.3;
+  --type-heading-s-tracking: -0.01em;
+  --type-heading-s: 500 20px/1.3 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-lead-l-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-lead-l-weight: 400;
+  --type-lead-l-size: 18px;
+  --type-lead-l-line: 1.5;
+  --type-lead-l-tracking: 0;
+  --type-lead-l: 400 18px/1.5 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-lead-m-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-lead-m-weight: 500;
+  --type-lead-m-size: 16px;
+  --type-lead-m-line: 1.5;
+  --type-lead-m-tracking: 0;
+  --type-lead-m: 500 16px/1.5 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  --type-body-1-family: Inter, system-ui, sans-serif;
+  --type-body-1-weight: 400;
+  --type-body-1-size: 16px;
+  --type-body-1-line: 1.5;
+  --type-body-1-tracking: -0.01em;
+  --type-body-1: 400 16px/1.5 Inter, system-ui, sans-serif;
+  --type-body-2-family: Inter, system-ui, sans-serif;
+  --type-body-2-weight: 400;
+  --type-body-2-size: 14px;
+  --type-body-2-line: 1.43;
+  --type-body-2-tracking: -0.005em;
+  --type-body-2: 400 14px/1.43 Inter, system-ui, sans-serif;
+  --type-body-3-family: Inter, system-ui, sans-serif;
+  --type-body-3-weight: 400;
+  --type-body-3-size: 12px;
+  --type-body-3-line: 1.5;
+  --type-body-3-tracking: 0.015em;
+  --type-body-3: 400 12px/1.5 Inter, system-ui, sans-serif;
+  --type-body-xl-family: Inter, system-ui, sans-serif;
+  --type-body-xl-weight: 400;
+  --type-body-xl-size: 20px;
+  --type-body-xl-line: 1.5;
+  --type-body-xl-tracking: 0;
+  --type-body-xl: 400 20px/1.5 Inter, system-ui, sans-serif;
+  --type-body-l-family: Inter, system-ui, sans-serif;
+  --type-body-l-weight: 400;
+  --type-body-l-size: 18px;
+  --type-body-l-line: 1.55;
+  --type-body-l-tracking: 0;
+  --type-body-l: 400 18px/1.55 Inter, system-ui, sans-serif;
+  --type-emphasis-1-family: Inter, system-ui, sans-serif;
+  --type-emphasis-1-weight: 600;
+  --type-emphasis-1-size: 16px;
+  --type-emphasis-1-line: 1.5;
+  --type-emphasis-1-tracking: 0;
+  --type-emphasis-1: 600 16px/1.5 Inter, system-ui, sans-serif;
+  --type-emphasis-2-family: Inter, system-ui, sans-serif;
+  --type-emphasis-2-weight: 600;
+  --type-emphasis-2-size: 14px;
+  --type-emphasis-2-line: 1.43;
+  --type-emphasis-2-tracking: 0;
+  --type-emphasis-2: 600 14px/1.43 Inter, system-ui, sans-serif;
+  --type-emphasis-3-family: Inter, system-ui, sans-serif;
+  --type-emphasis-3-weight: 600;
+  --type-emphasis-3-size: 12px;
+  --type-emphasis-3-line: 1.5;
+  --type-emphasis-3-tracking: 0.01em;
+  --type-emphasis-3: 600 12px/1.5 Inter, system-ui, sans-serif;
+  --type-emphasis-4-family: Inter, system-ui, sans-serif;
+  --type-emphasis-4-weight: 700;
+  --type-emphasis-4-size: 11px;
+  --type-emphasis-4-line: 1.27;
+  --type-emphasis-4-tracking: 0.015em;
+  --type-emphasis-4: 700 11px/1.27 Inter, system-ui, sans-serif;
+  --type-ui-heading-1-family: Inter, system-ui, sans-serif;
+  --type-ui-heading-1-weight: 800;
+  --type-ui-heading-1-size: 22px;
+  --type-ui-heading-1-line: 1.36;
+  --type-ui-heading-1-tracking: 0;
+  --type-ui-heading-1: 800 22px/1.36 Inter, system-ui, sans-serif;
+  --type-ui-heading-2-family: Inter, system-ui, sans-serif;
+  --type-ui-heading-2-weight: 800;
+  --type-ui-heading-2-size: 20px;
+  --type-ui-heading-2-line: 1.3;
+  --type-ui-heading-2-tracking: 0;
+  --type-ui-heading-2: 800 20px/1.3 Inter, system-ui, sans-serif;
+  --type-ui-heading-3-family: Inter, system-ui, sans-serif;
+  --type-ui-heading-3-weight: 800;
+  --type-ui-heading-3-size: 18px;
+  --type-ui-heading-3-line: 1.33;
+  --type-ui-heading-3-tracking: 0;
+  --type-ui-heading-3: 800 18px/1.33 Inter, system-ui, sans-serif;
+  --type-ui-subheader-family: Inter, system-ui, sans-serif;
+  --type-ui-subheader-weight: 700;
+  --type-ui-subheader-size: 16px;
+  --type-ui-subheader-line: 1.38;
+  --type-ui-subheader-tracking: 0;
+  --type-ui-subheader: 700 16px/1.38 Inter, system-ui, sans-serif;
+  --type-ui-body-family: Inter, system-ui, sans-serif;
+  --type-ui-body-weight: 500;
+  --type-ui-body-size: 15px;
+  --type-ui-body-line: 1.33;
+  --type-ui-body-tracking: 0;
+  --type-ui-body: 500 15px/1.33 Inter, system-ui, sans-serif;
 }
-.type-display-l {
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 64px;
-  line-height: 1;
-  letter-spacing: -0.0156em;
-}
-.type-display-m {
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 52px;
-  line-height: 1;
-  letter-spacing: -0.0115em;
-}
-.type-display-s {
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 40px;
-  line-height: 1.05;
-  letter-spacing: -0.011em;
-}
-.type-heading-l {
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 1.12;
-  letter-spacing: -0.01em;
-}
-.type-heading-m {
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-}
-.type-heading-s {
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-}
-.type-lead-l {
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 1.5;
-  letter-spacing: 0;
-}
-.type-lead-m {
-  font-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 1.5;
-  letter-spacing: 0;
-}
-.type-body-1 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.5;
-  letter-spacing: -0.01em;
-}
-.type-body-2 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.43;
-  letter-spacing: -0.005em;
-}
-.type-body-3 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 1.5;
-  letter-spacing: 0.015em;
-}
-.type-body-xl {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 1.5;
-  letter-spacing: 0;
-}
-.type-body-l {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 1.55;
-  letter-spacing: 0;
-}
-.type-emphasis-1 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 1.5;
-  letter-spacing: 0;
-}
-.type-emphasis-2 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 1.43;
-  letter-spacing: 0;
-}
-.type-emphasis-3 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 1.5;
-  letter-spacing: 0.01em;
-}
-.type-emphasis-4 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  line-height: 1.27;
-  letter-spacing: 0.015em;
-}
-.type-ui-heading-1 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 800;
-  font-size: 22px;
-  line-height: 1.36;
-  letter-spacing: 0;
-}
-.type-ui-heading-2 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 1.3;
-  letter-spacing: 0;
-}
-.type-ui-heading-3 {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 1.33;
-  letter-spacing: 0;
-}
-.type-ui-subheader {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 1.38;
-  letter-spacing: 0;
-}
-.type-ui-body {
-  font-family: Inter, system-ui, sans-serif;
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 1.33;
-  letter-spacing: 0;
-}
+
+/* The same styles as classes, for markup that takes one whole. */
+.type-display-xl { font: var(--type-display-xl); letter-spacing: var(--type-display-xl-tracking); }
+.type-display-l { font: var(--type-display-l); letter-spacing: var(--type-display-l-tracking); }
+.type-display-m { font: var(--type-display-m); letter-spacing: var(--type-display-m-tracking); }
+.type-display-s { font: var(--type-display-s); letter-spacing: var(--type-display-s-tracking); }
+.type-heading-l { font: var(--type-heading-l); letter-spacing: var(--type-heading-l-tracking); }
+.type-heading-m { font: var(--type-heading-m); letter-spacing: var(--type-heading-m-tracking); }
+.type-heading-s { font: var(--type-heading-s); letter-spacing: var(--type-heading-s-tracking); }
+.type-lead-l { font: var(--type-lead-l); letter-spacing: var(--type-lead-l-tracking); }
+.type-lead-m { font: var(--type-lead-m); letter-spacing: var(--type-lead-m-tracking); }
+.type-body-1 { font: var(--type-body-1); letter-spacing: var(--type-body-1-tracking); }
+.type-body-2 { font: var(--type-body-2); letter-spacing: var(--type-body-2-tracking); }
+.type-body-3 { font: var(--type-body-3); letter-spacing: var(--type-body-3-tracking); }
+.type-body-xl { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
+.type-body-l { font: var(--type-body-l); letter-spacing: var(--type-body-l-tracking); }
+.type-emphasis-1 { font: var(--type-emphasis-1); letter-spacing: var(--type-emphasis-1-tracking); }
+.type-emphasis-2 { font: var(--type-emphasis-2); letter-spacing: var(--type-emphasis-2-tracking); }
+.type-emphasis-3 { font: var(--type-emphasis-3); letter-spacing: var(--type-emphasis-3-tracking); }
+.type-emphasis-4 { font: var(--type-emphasis-4); letter-spacing: var(--type-emphasis-4-tracking); }
+.type-ui-heading-1 { font: var(--type-ui-heading-1); letter-spacing: var(--type-ui-heading-1-tracking); }
+.type-ui-heading-2 { font: var(--type-ui-heading-2); letter-spacing: var(--type-ui-heading-2-tracking); }
+.type-ui-heading-3 { font: var(--type-ui-heading-3); letter-spacing: var(--type-ui-heading-3-tracking); }
+.type-ui-subheader { font: var(--type-ui-subheader); letter-spacing: var(--type-ui-subheader-tracking); }
+.type-ui-body { font: var(--type-ui-body); letter-spacing: var(--type-ui-body-tracking); }
