@@ -1,0 +1,136 @@
+---
+import { readFileSync, readdirSync } from 'node:fs';
+import Page from '../layouts/Page.astro';
+import { Prose } from '../components/Prose';
+import { SectionHeading } from '../components/SectionHeading';
+import { Contribution } from '../components/Contribution';
+import { ArrowLink } from '../components/Link';
+import { hash } from '../../design/hash.mjs';
+
+/**
+ * Every number on this page is computed here, at build time, from the files it
+ * describes. Nothing is typed in. If the system shrinks, the page says so.
+ *
+ * That is the point: the case study argues for a specification machines can
+ * read, and a page about it that had to be hand-updated would be arguing
+ * against itself.
+ */
+const tokens = JSON.parse(readFileSync('tokens/tokens.json', 'utf8'));
+const banding = JSON.parse(readFileSync('design/banding-export.json', 'utf8'));
+
+const leaves = (node: any): number =>
+  Object.entries(node).reduce((n, [k, v]: [string, any]) => {
+    if (k.startsWith('$')) return n;
+    if (v && v.$value !== undefined) return n + 1;
+    return v && typeof v === 'object' ? n + leaves(v) : n;
+  }, 0);
+
+const specDirs = ['components/specs', 'icons/specs', 'marks/specs'];
+const specCount = specDirs.reduce(
+  (n, d) => n + readdirSync(d).filter((f) => f.endsWith('.json')).length, 0);
+
+const componentCount = readdirSync('src/components')
+  .filter((f) => f.endsWith('.tsx') && !f.endsWith('.stories.tsx')).length;
+
+const storyCount = readdirSync('src/components')
+  .filter((f) => f.endsWith('.stories.tsx'))
+  .reduce((n, f) => n + (readFileSync(`src/components/${f}`, 'utf8').match(/export const /g)?.length ?? 0), 0);
+
+/** Recomputed here rather than quoted, using the same hash the verifiers use. */
+const canonical = (v: any): string => {
+  if (Array.isArray(v)) return `[${v.map(canonical).join(',')}]`;
+  if (v && typeof v === 'object') {
+    return `{${Object.keys(v).filter((k) => !k.startsWith('_')).sort()
+      .map((k) => `${k}:${canonical(v[k])}`).join(',')}}`;
+  }
+  return JSON.stringify(v);
+};
+
+const facts = [
+  { term: 'Design tokens', detail: `${leaves(tokens.primitive)} primitives and ${leaves(tokens.semantic.light)} semantic tokens per theme, exported from Figma and checksum verified against it.` },
+  { term: 'Text styles', detail: `${leaves(tokens.typography)}, each emitted as CSS custom properties. Responsive type steps between two of them at a breakpoint rather than clamping, so every size on screen exists in the design file.` },
+  { term: 'Components', detail: `${componentCount} in code, ${specCount} with a published contract. The ones with no Figma counterpart have their specs generated from their own TypeScript and stylesheets.` },
+  { term: 'Stories', detail: `${storyCount}, every one rendered inside a band so the zero override property is checked the same way it is asserted in Figma. Each is snapshotted light and dark.` },
+  { term: 'Layout rules', detail: `${banding.rules.length} band adjacency rules, read from the Figma page rather than transcribed. Checksum ${hash(canonical(banding))}.` }
+];
+---
+
+<Page
+  title="How this was built"
+  standfirst="A design system where Figma, the code and the build agree, and where the build refuses to ship if they stop agreeing."
+>
+  <Prose lead>
+    <p>
+      The first case study on this site argues for a single written
+      specification that designers, engineers and language models can all build
+      from. That project ended before it reached production, so this site is the
+      smallest complete version of the same idea: not a description of the
+      approach, but the approach running, on something you can open.
+    </p>
+    <p>
+      None of the numbers below were typed in. They are computed when this page
+      is built, from the files they describe.
+    </p>
+  </Prose>
+
+  <div class="hb-block">
+    <Contribution items={facts} />
+  </div>
+
+  <div class="hb-block">
+    <SectionHeading level={3}>What the build refuses to ship</SectionHeading>
+    <Prose>
+      <p>
+        Four checks run on every push. Each exists because something got through
+        without it.
+      </p>
+      <ul>
+        <li>
+          <strong>Tokens.</strong> Every alias resolves, and the export
+          checksum matches the one Figma reproduces from inside the file. A
+          renamed variable fails the build instead of silently rendering nothing.
+        </li>
+        <li>
+          <strong>Components.</strong> Every value in every spec is a token
+          reference. Zero literals, asserted rather than reviewed.
+        </li>
+        <li>
+          <strong>CSS.</strong> Every custom property in the source resolves to
+          a real token, and every font value binds to the type scale. A typo
+          like <code>fg-secondry</code> is not a CSS error: it renders as an
+          inherited default and looks deliberate, so nothing else would catch it.
+        </li>
+        <li>
+          <strong>Bands.</strong> The built pages are linted against the layout
+          rules, and those rules are read from Figma rather than copied. Adding
+          a rule there fails the build here until someone implements it.
+        </li>
+      </ul>
+    </Prose>
+  </div>
+
+  <div class="hb-block">
+    <SectionHeading level={3}>What it does not do</SectionHeading>
+    <Prose>
+      <p>
+        It does not check whether the design is any good. It checks that the
+        design and the code are the same thing, which is a narrower claim and
+        the only one worth automating. Taste is still done by looking.
+      </p>
+      <p>
+        Three things live only in code, because Figma cannot express them:
+        state, which is a CSS concern rather than a variant axis; press
+        feedback; and required properties, where the type system enforces what a
+        variant never could.
+      </p>
+    </Prose>
+  </div>
+
+  <div class="hb-block">
+    <ArrowLink href="/work/machine-readable-components">Read the case study this came from</ArrowLink>
+  </div>
+</Page>
+
+<style is:global>
+  .hb-block + .hb-block { margin-block-start: var(--primitive-layout-l64); }
+</style>

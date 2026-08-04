@@ -3,17 +3,30 @@ import { Logo } from './Logo';
 import { ArrowLink } from './Link';
 import './Footer.css';
 
-export interface FooterProps { scale?: 'compact' | 'full'; columns?: ReactNode; email?: string; }
+export interface FooterProps {
+  scale?: 'compact' | 'full';
+  columns?: ReactNode;
+  /**
+   * The single link in the footer bottom row.
+   *
+   * It is not a contact address. Contact already has a nav item, so a mailto
+   * here would be a second affordance for an intent that is already served,
+   * and the footer's one link is worth more pointing somewhere the reader
+   * cannot get to otherwise.
+   */
+  link?: { label: string; href: string };
+}
 
 /**
  * Transparent by design — the band it sits in owns the surface, so the footer
  * inherits foreground with no override. Setting a fill would break the inverse
  * case.
- *
- * Contact is a mailto, not a form: no backend to run, and a portfolio form
- * converts worse than an address you can copy.
  */
-export function Footer({ scale = 'full', columns, email = 'rohit.sehmi@gmail.com' }: FooterProps) {
+export function Footer({
+  scale = 'full',
+  columns,
+  link = { label: 'How this was built', href: '/how-this-was-built' }
+}: FooterProps) {
   return (
     <footer className="footer" data-scale={scale}>
       <div className="measure footer__inner">
@@ -29,7 +42,7 @@ export function Footer({ scale = 'full', columns, email = 'rohit.sehmi@gmail.com
         <div className="footer__bottom">
           {scale === 'compact' && <Logo height={20} />}
           <p className="footer__copy">© {new Date().getFullYear()} Rohit Sehmi</p>
-          <ArrowLink href={`mailto:${email}`}>{email}</ArrowLink>
+          <ArrowLink href={link.href}>{link.label}</ArrowLink>
         </div>
       </div>
     </footer>
