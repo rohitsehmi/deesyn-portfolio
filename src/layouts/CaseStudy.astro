@@ -46,7 +46,7 @@ const next = nextStudy(slug);
 const footerRole = next ? 'base' : 'sunken';
 ---
 
-<Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst}>
+<Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst} pageEnd={footerRole}>
   {/*
     Nav sits in flow, not in a band. `state=top` is transparent and inherits the
     foreground beneath it, and the component carries its own height and measure.

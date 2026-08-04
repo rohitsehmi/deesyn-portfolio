@@ -56,6 +56,16 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, onMedi
   const resolved = sticky ? (scrolled ? 'scrolled' : 'top') : state;
 
   return (
+    <>
+    {/*
+      Fixed, not sticky. A sticky element stays in the document flow, so when
+      the browser rubber-bands past the top of the page the header travels down
+      with it. Fixed anchors it to the viewport and lets the page bounce
+      underneath, which is the part that should move.
+
+      Out of flow means it reserves no space, so anything that is not
+      deliberately sitting under it needs the spacer below.
+    */}
     <header
       className="nav"
       data-state={resolved}
@@ -77,5 +87,9 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, onMedi
         </div>
       </div>
     </header>
+    {/* Reserves the height the fixed header no longer occupies. Omitted when
+        the nav deliberately overlays what is beneath it. */}
+    {sticky && !onMedia && <div className="nav__spacer" aria-hidden="true" />}
+    </>
   );
 }

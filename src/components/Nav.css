@@ -8,13 +8,20 @@
   border-bottom: 1px solid transparent;
 }
 
-/* Sticky is opt-in. The band beneath keeps its full height, so nothing shifts
-   when the nav pins: it was already in flow at the top of the page. */
+/*
+  Fixed rather than sticky. Sticky keeps the header in flow, so a rubber-band
+  scroll past the top of the page carries the header down with the document.
+  Fixed anchors it to the viewport and lets the page bounce underneath it.
+*/
 .nav[data-sticky='true'] {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
   z-index: var(--z-sticky);
 }
+
+/* Holds the height the fixed header gives up. */
+.nav__spacer { height: var(--primitive-size-nav); }
 
 .nav[data-state='top'] { background: transparent; }
 .nav[data-state='scrolled'] {

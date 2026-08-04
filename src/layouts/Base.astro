@@ -2,11 +2,19 @@
 import '../styles/tokens.css';
 import '../styles/base.css';
 import { ThemeToggle } from '../components/ThemeToggle';
-interface Props { title: string; description?: string; }
-const { title, description = 'Product design work by Rohit Sehmi.' } = Astro.props;
+interface Props {
+  title: string;
+  description?: string;
+  /**
+   * The band the page ends on. Painted onto <html> so a rubber-band scroll
+   * past the bottom continues that band rather than cutting to the canvas.
+   */
+  pageEnd?: 'base' | 'sunken';
+}
+const { title, description = 'Product design work by Rohit Sehmi.', pageEnd = 'base' } = Astro.props;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-page-end={pageEnd}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -21,7 +21,7 @@ const { title, standfirst, description } = Astro.props;
 const links = linksFor(Astro.url.pathname);
 ---
 
-<Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst}>
+<Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst} pageEnd="base">
   <Nav client:load sticky links={links} />
 
   <main id="main">

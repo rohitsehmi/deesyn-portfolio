@@ -87,13 +87,6 @@ export interface ParallaxProps {
    * is 4.57:1. That is why the tonal key below is not optional.
    */
   scrim?: boolean;
-  /**
-   * Pulls the section up under a transparent nav so the image starts at the top
-   * of the page and the nav floats over it, which is the whole point of the
-   * pattern. Pair with `Nav overBand` so the nav takes this section's
-   * foreground while it is still transparent.
-   */
-  underNav?: boolean;
   /** The LCP element on any page it opens. Should not lazy-load. */
   priority?: boolean;
   children?: ReactNode;
@@ -134,7 +127,6 @@ export function Parallax({
   minHeight = 'min(78vh, 720px)',
   range = 'cover',
   scrim = true,
-  underNav = false,
   priority = false,
   children
 }: ParallaxProps) {
@@ -148,7 +140,6 @@ export function Parallax({
       data-on-media="true"
       data-range={range}
       data-scrim={scrim ? 'true' : undefined}
-      data-under-nav={underNav ? 'true' : undefined}
       style={{ '--parallax-drift': drift, '--parallax-min-height': minHeight } as CSSProperties}
     >
       <div className="parallax__image-layer">

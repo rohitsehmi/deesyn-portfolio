@@ -14,6 +14,12 @@ scrolls and the image would sit perfectly still.
 
 Reduced motion stops it in both paths.
 
+The section carries `data-on-media`, not a band role. Bands are relative:
+`inverse` means this band in the other theme, so it flips with the theme.
+A photograph does not. Over media the foreground has to be absolute or it
+inverts in one of the two themes, which is white text in light mode and
+dark text in dark mode over the same dark image.
+
 The timing function is `linear` and must stay that way. Scroll position is
 the timeline, so easing would decouple the image from the reader's finger.
 
@@ -35,8 +41,6 @@ Implementation: `src/components/Parallax.tsx` and `src/components/Parallax.css`.
 | `minHeight` | `string` | no |
 | `range` | `'cover' | 'exit'` | no |
 | `scrim` | `boolean` | no |
-| `band` | `BandRole` | no |
-| `underNav` | `boolean` | no |
 | `priority` | `boolean` | no |
 | `children` | `ReactNode` | no |
 
@@ -46,8 +50,6 @@ Implementation: `src/components/Parallax.tsx` and `src/components/Parallax.css`.
 - `minHeight` Content-led height, per the hero note in the banding spec.
 - `range` Which stretch of scrolling the drift is spread across. `cover` is the whole time the section overlaps the viewport, which is right for a section in the middle of a page. `exit` runs from the section's top edge leaving the viewport top to its bottom edge doing the same. Use it at the top of a page: there, `cover` begins before the reader can scroll at all, so on a 78vh hero more than half the range is unreachable and the drift looks like a fraction of what was asked for.
 - `scrim` Darkens the lower part of the image so content over it clears AA. Measured against this project's hero image: unscrimmed, the brightest 1% of the text area gives white 3.27:1, which fails. At `bg/scrim` under an inverse band, 70% black, it is 7.99:1, and even the single brightest pixel is 4.57:1. That is why the tonal key below is not optional.
-- `band` The tonal key this section sets. Applied as `data-band` without a scale, because a hero is content-led and does not count toward the band alternation. See the `hero` note in design/banding-export.json.
-- `underNav` Pulls the section up under a transparent nav so the image starts at the top of the page and the nav floats over it, which is the whole point of the pattern. Pair with `Nav overBand` so the nav takes this section's foreground while it is still transparent.
 - `priority` The LCP element on any page it opens. Should not lazy-load.
 
 ## Don't
@@ -65,7 +67,6 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 |---|---|---|
 | `.parallax` | min-height | `--parallax-min-height` (local property, not a token) |
 | `.parallax__image-layer` | height | `--parallax-drift` (local property, not a token) |
-| `.parallax[data-under-nav='true']` | margin-block-start | `primitive.size.nav` |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
 | `.parallax__content` | padding-block | `primitive.layout.l64` |

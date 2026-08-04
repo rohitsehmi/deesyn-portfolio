@@ -10,7 +10,7 @@ import { linksFor } from '../data/nav';
 
 const links = linksFor(Astro.url.pathname);
 ---
-<Base title="Rohit Sehmi · Product Design">
+<Base title="Rohit Sehmi · Product Design" pageEnd="sunken">
   {/*
     Sits over the hero rather than in a band of its own. `overBand` gives it the
     hero's foreground while it is transparent, because it is outside the band
@@ -30,7 +30,6 @@ const links = linksFor(Astro.url.pathname);
     <Parallax
       src="/media/hero-parallax.png"
       alt="[NEEDS: replace with your own imagery. This is a Revolut marketing asset, used here to build the effect against.]"
-      underNav
       priority
       client:visible
       range="exit"

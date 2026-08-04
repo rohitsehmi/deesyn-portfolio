@@ -29,12 +29,6 @@
   will-change: transform;
 }
 
-/* Starts at the top of the page so the transparent nav floats over the image
-   rather than sitting on a band above it. */
-.parallax[data-under-nav='true'] {
-  margin-block-start: calc(var(--primitive-size-nav) * -1);
-}
-
 .parallax__image {
   width: 100%;
   height: 100%;
