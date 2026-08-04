@@ -65,14 +65,8 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.tile__summary` | font | `typography.body.l` |
 | `.tile__summary` | letter-spacing | `typography.body.l` |
 | `.tile__summary` | color | `semantic.*.fg.secondary` |
-| `.tile__cue` | gap | `primitive.space.sp200` |
-| `.tile__cue` | margin-block-start | `primitive.space.sp300` |
-| `.tile__cue` | font | `typography.emphasis.1` |
-| `.tile__cue` | letter-spacing | `typography.emphasis.1` |
-| `.tile__cue` | color | `semantic.*.fg.link` |
-| `.tile__cue .icon` | transition | `semantic.*.duration.dropdown` |
-| `.tile__cue .icon` | transition | `semantic.*.easing.out` |
-| `@media (hover: hover) and (pointer: fine) { .tile:hover .tile__cue }` | color | `semantic.*.fg.link-hover` |
+| `.tile__cue-slot` | padding-block-start | `primitive.space.sp600` |
+| `@media (hover: hover) and (pointer: fine) { .tile:hover .tile__cue[data-variant='secondary'] }` | background | `semantic.*.action.secondary-bg-hover` |
 | `.tile[data-variant='card']` | background | `semantic.*.bg.surface` |
 | `.tile[data-variant='card']` | border | `semantic.*.border.subtle` |
 | `.tile[data-variant='card']` | border-radius | `primitive.radius.r20` |

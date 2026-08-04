@@ -60,10 +60,19 @@ export function CaseStudyTile({
           <a className="tile__link" href={href}>{title}</a>
         </h3>
         <p className="tile__summary">{summary}</p>
-        <span className="tile__cue" aria-hidden="true">
-          Read the case study
-          <Icon name="arrow-thin-right" size={16} />
-        </span>
+        {/*
+          Looks like an IconButton and is deliberately not one. The whole tile
+          is already a link, and a real button here would be interactive content
+          nested inside an anchor: invalid, and it puts a second stop in the tab
+          order for something that does nothing the title link does not already
+          do. It borrows the icon-button classes so the visual cannot drift from
+          the real component, and is hidden from assistive tech.
+        */}
+        <div className="tile__cue-slot">
+          <span className="tile__cue icon-button" data-variant="secondary" data-size="md" aria-hidden="true">
+            <Icon name="arrow-thin-right" size={20} />
+          </span>
+        </div>
       </div>
     </article>
   );

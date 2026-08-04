@@ -51,6 +51,7 @@ const links = linksFor(Astro.url.pathname);
               summary={s.summary}
               discipline={s.discipline}
               href={studyPath(s)}
+              variant="card"
               image={{ alt: `Cover image for ${s.title}` }}
             />
           </li>

@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--primitive-space-sp600);
+  height: 100%;                        /* equal heights, so the cues line up */
 }
 
 .tile__media {
@@ -22,6 +23,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--primitive-space-sp200);
+  flex: 1;                             /* lets the cue sit at the bottom */
 }
 
 .tile__discipline {
@@ -64,23 +66,26 @@
   The affordance at rest. Without it the only signal a tile is clickable is a
   hover transform, which says nothing on touch and nothing before the pointer
   arrives.
+
+  Pinned to the bottom left, so a row of tiles with summaries of different
+  lengths still lines its arrows up.
 */
-.tile__cue {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--primitive-space-sp200);
-  margin-block-start: var(--primitive-space-sp300);
-  font: var(--type-emphasis-1);
-  letter-spacing: var(--type-emphasis-1-tracking);
-  color: var(--semantic-fg-link);
+/* The slot does the positioning so the cue itself keeps IconButton's own
+   geometry, including its `padding: 0`, rather than fighting it. */
+.tile__cue-slot {
+  margin-block-start: auto;
+  padding-block-start: var(--primitive-space-sp600);
 }
-.tile__cue .icon {
-  transition: transform var(--semantic-duration-dropdown) var(--semantic-easing-out);
-}
+.tile__cue { flex: none; }
+
+/*
+  The cue is not hovered itself, so the tile drives its states. Same values as
+  IconButton's own hover and press.
+*/
 @media (hover: hover) and (pointer: fine) {
-  .tile:hover .tile__cue { color: var(--semantic-fg-link-hover); }
-  .tile:hover .tile__cue .icon { transform: translateX(2px); }
+  .tile:hover .tile__cue[data-variant='secondary'] { background: var(--semantic-action-secondary-bg-hover); }
 }
+.tile:active .tile__cue { transform: scale(0.97); }
 
 /* ---- card variant -------------------------------------------------------
    A surface and a border instead of spacing. With no shadow available this

@@ -10,7 +10,7 @@ const grid = (variant: 'bare' | 'card') => (
   <ul style={{
     listStyle: 'none', margin: 0, padding: 0,
     display: 'grid', gridTemplateColumns: `repeat(${studies.length}, 1fr)`,
-    gap: 'var(--primitive-layout-l48)', alignItems: 'start'
+    gap: 'var(--primitive-layout-l48)'
   }}>
     {studies.map((s) => (
       <li key={s.slug}>

@@ -153,50 +153,18 @@
         "ref": "semantic.*.fg.secondary"
       }
     ],
-    ".tile__cue": [
+    ".tile__cue-slot": [
       {
-        "property": "gap",
-        "var": "--primitive-space-sp200",
-        "ref": "primitive.space.sp200"
-      },
-      {
-        "property": "margin-block-start",
-        "var": "--primitive-space-sp300",
-        "ref": "primitive.space.sp300"
-      },
-      {
-        "property": "font",
-        "var": "--type-emphasis-1",
-        "ref": "typography.emphasis.1"
-      },
-      {
-        "property": "letter-spacing",
-        "var": "--type-emphasis-1-tracking",
-        "ref": "typography.emphasis.1"
-      },
-      {
-        "property": "color",
-        "var": "--semantic-fg-link",
-        "ref": "semantic.*.fg.link"
+        "property": "padding-block-start",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
       }
     ],
-    ".tile__cue .icon": [
+    "@media (hover: hover) and (pointer: fine) { .tile:hover .tile__cue[data-variant='secondary'] }": [
       {
-        "property": "transition",
-        "var": "--semantic-duration-dropdown",
-        "ref": "semantic.*.duration.dropdown"
-      },
-      {
-        "property": "transition",
-        "var": "--semantic-easing-out",
-        "ref": "semantic.*.easing.out"
-      }
-    ],
-    "@media (hover: hover) and (pointer: fine) { .tile:hover .tile__cue }": [
-      {
-        "property": "color",
-        "var": "--semantic-fg-link-hover",
-        "ref": "semantic.*.fg.link-hover"
+        "property": "background",
+        "var": "--semantic-action-secondary-bg-hover",
+        "ref": "semantic.*.action.secondary-bg-hover"
       }
     ],
     ".tile[data-variant='card']": [
