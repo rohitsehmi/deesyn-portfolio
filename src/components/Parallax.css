@@ -1,0 +1,51 @@
+.parallax {
+  position: relative;
+  overflow: hidden;                     /* the window the image drifts inside */
+  border-radius: var(--primitive-radius-r20);
+  background: var(--semantic-bg-subtle); /* holds the space before the image lands */
+}
+.parallax[data-ratio='16-9'] { aspect-ratio: 16 / 9; }
+.parallax[data-ratio='4-3']  { aspect-ratio: 4 / 3; }
+.parallax[data-ratio='1-1']  { aspect-ratio: 1 / 1; }
+.parallax[data-ratio='3-4']  { aspect-ratio: 3 / 4; }
+
+/* Exactly `drift` taller than the window, which is what guarantees the window
+   stays covered from one end of the range to the other. */
+.parallax__inner {
+  position: absolute;
+  inset: 0;
+  height: calc(100% + var(--parallax-drift, 80px));
+  will-change: transform;
+}
+
+.parallax__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/*
+  Scroll-driven, so it runs off the main thread. `linear` is not a default here,
+  it is the point: scroll position is the timeline, and any easing would make
+  the image lag or lead the reader's finger.
+
+  The range runs from the moment the band starts entering the viewport to the
+  moment it has fully left, so the drift is spread across the whole time the
+  image is visible rather than finishing early.
+*/
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .parallax__inner {
+      animation: parallax-drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+
+@keyframes parallax-drift {
+  from { transform: translateY(0); }
+  to   { transform: translateY(calc(var(--parallax-drift, 80px) * -1)); }
+}

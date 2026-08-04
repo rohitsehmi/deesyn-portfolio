@@ -4,6 +4,7 @@ import { Nav } from '../components/Nav';
 import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
+import { Parallax } from '../components/Parallax';
 import { liveStudies, studyPath } from '../data/studies';
 import { linksFor } from '../data/nav';
 
@@ -23,9 +24,25 @@ const links = linksFor(Astro.url.pathname);
       </p>
     </Band>
 
-    {/* default, not feature: the hero above is already feature, and rule 7
-        forbids two adjacent bands at the same weight. */}
-    <Band role="sunken" scale="default">
+    {/*
+      Full-bleed imagery is the one seam treatment the banding rules permit
+      (rule 6), so this runs edge to edge rather than sitting inside the
+      measure. sunken because the hero above is base and the work below is
+      base: no two consecutive bands may share a fill.
+    */}
+    <Band role="sunken" scale="compact" bleed>
+      <Parallax
+        src="/media/hero-parallax.png"
+        alt="[NEEDS: replace with your own imagery. This is a Revolut marketing asset, used here to build the effect against.]"
+        ratio="16-9"
+        drift="80px"
+        priority
+      />
+    </Band>
+
+    {/* base, because the band above is sunken. default, because the hero is
+        already feature and rule 7 forbids two adjacent bands at one weight. */}
+    <Band role="base" scale="default">
       <ul class="work" data-count={liveStudies.length}>
         {liveStudies.map((s) => (
           <li>
@@ -42,7 +59,8 @@ const links = linksFor(Astro.url.pathname);
     </Band>
   </main>
 
-  <Band role="base" scale="compact">
+  {/* sunken: the work band above is base. */}
+  <Band role="sunken" scale="compact">
     <Footer scale="compact" />
   </Band>
 </Base>

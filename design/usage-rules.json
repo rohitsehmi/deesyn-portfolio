@@ -88,6 +88,12 @@
       "Do not add a read more link. The whole tile is already the link, and a second affordance for the same intent splits the click.",
       "Do not put the discipline label on as an eyebrow in uppercase tracked type. It is metadata a reader is scanning for, not a decorative category heading.",
       "Do not write a summary that restates the title. The line has one job: say what the problem was, well enough to earn the click."
+    ],
+    "Content/Parallax": [
+      "Do not ease it. Scroll position is the timeline, so any curve makes the image lead or lag the readers finger, which is the one thing that makes parallax feel broken rather than deep.",
+      "Do not drive it from a scroll handler. A scroll-driven CSS animation runs off the main thread and keeps the page shipping no JavaScript; a listener drops frames on exactly the busy pages where it matters.",
+      "Do not raise the drift past about 100px. It reads as depth at small values and as a bug at large ones.",
+      "Do not use it on a small image inside the measure. The effect only works full bleed, where the window edge is the band edge and there is nothing beside it to reveal the movement as a trick."
     ]
   }
 }

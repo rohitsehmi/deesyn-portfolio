@@ -1,0 +1,71 @@
+{
+  "name": "Content/Parallax",
+  "slug": "content-parallax",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/Parallax.tsx",
+    "styles": "src/components/Parallax.css"
+  },
+  "description": "An image that drifts against the scroll, so the band it sits in gains depth\nwithout anything moving on its own.\n\nDriven by a scroll-driven CSS animation rather than a scroll handler. The\neffect on revolut.com sets `transform: translateY(50.3333px)` inline from\nJavaScript on every scroll event; doing it in CSS runs it off the main\nthread, survives a busy page, and keeps this component shipping zero JS.\n\nWhere scroll-driven animations are unsupported the image simply sits still,\nwhich is the same place `prefers-reduced-motion` lands. Nothing is lost but\nthe depth.\n\nThe timing function is `linear` and must stay that way. Scroll position is\nthe timeline, so easing would decouple the image from the reader's finger.",
+  "donts": [
+    "Do not ease it. Scroll position is the timeline, so any curve makes the image lead or lag the readers finger, which is the one thing that makes parallax feel broken rather than deep.",
+    "Do not drive it from a scroll handler. A scroll-driven CSS animation runs off the main thread and keeps the page shipping no JavaScript; a listener drops frames on exactly the busy pages where it matters.",
+    "Do not raise the drift past about 100px. It reads as depth at small values and as a bug at large ones.",
+    "Do not use it on a small image inside the measure. The effect only works full bleed, where the window edge is the band edge and there is nothing beside it to reveal the movement as a trick."
+  ],
+  "props": {
+    "src": {
+      "type": "string",
+      "required": true
+    },
+    "alt": {
+      "type": "string",
+      "required": true
+    },
+    "ratio": {
+      "type": "MediaRatio",
+      "required": false,
+      "note": "The window's shape. The image is covered into it and drifts inside."
+    },
+    "drift": {
+      "type": "string",
+      "required": false,
+      "note": "How far the image travels across its whole time on screen. The inner column is exactly this much taller than the window, so the window is covered at every point in the range and can never show a gap. Keep it small. This reads as depth, not as movement; past about 100px it stops looking like parallax and starts looking like a bug."
+    },
+    "priority": {
+      "type": "boolean",
+      "required": false,
+      "note": "Full-bleed heroes should not lazy-load: this is usually the LCP element."
+    }
+  },
+  "tokens": {
+    ".parallax": [
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r20",
+        "ref": "primitive.radius.r20"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-bg-subtle",
+        "ref": "semantic.*.bg.subtle"
+      }
+    ],
+    ".parallax__inner": [
+      {
+        "property": "height",
+        "var": "--parallax-drift",
+        "local": "--parallax-drift"
+      }
+    ],
+    "@keyframes parallax-drift { to }": [
+      {
+        "property": "transform",
+        "var": "--parallax-drift",
+        "local": "--parallax-drift"
+      }
+    ]
+  }
+}

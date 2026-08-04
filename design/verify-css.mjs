@@ -61,18 +61,15 @@ function validProperties() {
   walk(t.shadow, ['shadow'], add);
   walk(t.gradient, ['gradient'], add);
   walk(t.typography, ['type'], (n) => TYPE_SUFFIXES.forEach((s) => out.add(`--${n}${s}`)));
-
-  /**
-   * Stacking order is a code concern: Figma has no z-index, so these cannot
-   * come from tokens.json. They are read from where they are declared rather
-   * than allowed by prefix, so `var(--z-stikcy)` still fails.
-   */
-  const base = readFileSync('src/styles/base.css', 'utf8');
-  for (const [, name] of base.matchAll(/(--z-[a-z0-9-]+)\s*:/g)) out.add(name);
-
   return out;
 }
-const VALID = validProperties();
+
+/** The namespaces tokens.json owns. Nothing in src/ may declare into them. */
+const TOKEN_NAMESPACES = ['--primitive-', '--semantic-', '--type-', '--shadow-', '--gradient-'];
+/** Matches `--x:` in CSS and `'--x':` in a JSX style object. */
+const DECLARATION = /(--[a-z0-9-]+)['"]?\s*:/g;
+
+const TOKENS_SET = validProperties();
 
 function files(dir) {
   return readdirSync(dir).flatMap((entry) => {
@@ -82,15 +79,35 @@ function files(dir) {
   });
 }
 
+const sources = files(ROOT).sort().map((f) => [relative('.', f), readFileSync(f, 'utf8')]);
+
+/**
+ * Custom properties a component declares for itself: `--parallax-drift`,
+ * `--z-sticky`. They parameterise a component or name a stacking layer, and
+ * neither has a Figma equivalent, so they cannot come from tokens.json.
+ *
+ * Collected from where they are declared rather than allowed by prefix, so a
+ * reference to something never declared anywhere still fails. Declarations
+ * inside a token namespace are rejected below: redefining `--semantic-*`
+ * locally is the exact drift this file exists to prevent.
+ */
+const locals = new Set();
+for (const [rel, text] of sources) {
+  if (rel === 'src/styles/tokens.css') continue;
+  for (const [, name] of text.matchAll(DECLARATION)) {
+    if (!TOKEN_NAMESPACES.some((ns) => name.startsWith(ns))) locals.add(name);
+  }
+}
+const VALID = new Set([...TOKENS_SET, ...locals]);
+
 const problems = [];
 let checked = 0;
 
-for (const file of files(ROOT).sort()) {
-  const rel = relative('.', file);
+for (const [rel, text] of sources) {
   if (SKIP_FILES.includes(rel)) continue;
   checked += 1;
 
-  const lines = readFileSync(file, 'utf8').split('\n');
+  const lines = text.split('\n');
 
   lines.forEach((line, i) => {
     // Comments do not ship. They also legitimately name other people's tokens,
@@ -100,7 +117,14 @@ for (const file of files(ROOT).sort()) {
     const at = { file: rel, line: i + 1 };
 
     for (const [, ref] of line.matchAll(VAR_REF)) {
-      if (!VALID.has(ref)) problems.push({ ...at, kind: 'unknown token', detail: `var(${ref})` });
+      if (!VALID.has(ref)) problems.push({ ...at, kind: 'unknown property', detail: `var(${ref})` });
+    }
+
+    // tokens.json owns these namespaces. Redeclaring one locally is drift.
+    for (const [, name] of line.matchAll(DECLARATION)) {
+      if (TOKEN_NAMESPACES.some((ns) => name.startsWith(ns))) {
+        problems.push({ ...at, kind: 'redeclares a token', detail: `${name} is owned by tokens.json` });
+      }
     }
 
     const allowed = line.includes(ALLOW_MARKER) || (lines[i - 1] ?? '').includes(ALLOW_MARKER);

@@ -31,7 +31,8 @@ const CODE_ONLY = [
   { name: 'Content/Explorations', base: 'Explorations' },
   { name: 'Content/Hindsight', base: 'Hindsight' },
   { name: 'Content/Contribution', base: 'Contribution' },
-  { name: 'Content/Case Study Tile', base: 'CaseStudyTile' }
+  { name: 'Content/Case Study Tile', base: 'CaseStudyTile' },
+  { name: 'Content/Parallax', base: 'Parallax' }
 ];
 
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -66,14 +67,26 @@ function buildTokenMap() {
 }
 const TOKEN_MAP = buildTokenMap();
 
-function tokenRef(cssVar) {
+/** tokens.json owns these prefixes; anything else is the component's own. */
+const TOKEN_NAMESPACES = ['--primitive-', '--semantic-', '--type-', '--shadow-', '--gradient-'];
+
+/**
+ * A reference is either a design token or a local property the component
+ * declares for itself, such as `--parallax-drift`. Locals are part of the
+ * contract, so they are recorded, but they are not tokens and are not claimed
+ * to be. Anything inside a token namespace that does not resolve is a bug.
+ */
+function resolveRef(cssVar) {
   // Longhands of a text style resolve to the style itself; the CSS property
   // already records which part of it is being used.
   const base = TYPE_SUFFIXES.reduce(
     (v, s) => (v.startsWith('--type-') && v.endsWith(s) ? v.slice(0, -s.length) : v), cssVar);
   const ref = TOKEN_MAP.get(base);
-  if (!ref) throw new Error(`${cssVar} resolves to no token in tokens.json`);
-  return ref;
+  if (ref) return { ref };
+  if (TOKEN_NAMESPACES.some((ns) => cssVar.startsWith(ns))) {
+    throw new Error(`${cssVar} is in a token namespace but resolves to no token in tokens.json`);
+  }
+  return { local: cssVar };
 }
 
 /**
@@ -105,14 +118,33 @@ function readProps(file, base) {
   if (end === -1) throw new Error(`${file}: unterminated interface ${wanted}`);
   const body = src.slice(open + 1, end);
 
-  // Split members on semicolons that are not inside a nested type.
+  // Split members on semicolons that are not inside a nested type and not
+  // inside a comment. Prose in a doc comment contains semicolons, and splitting
+  // on one cuts a member in half.
   const members = [];
-  let buf = '', d = 0;
-  for (const ch of body) {
+  let buf = '', d = 0, i = 0;
+  while (i < body.length) {
+    const two = body.slice(i, i + 2);
+    if (two === '/*') {
+      const close = body.indexOf('*/', i + 2);
+      const stop = close === -1 ? body.length : close + 2;
+      buf += body.slice(i, stop);
+      i = stop;
+      continue;
+    }
+    if (two === '//') {
+      const nl = body.indexOf('\n', i);
+      const stop = nl === -1 ? body.length : nl;
+      buf += body.slice(i, stop);
+      i = stop;
+      continue;
+    }
+    const ch = body[i];
     if ('{<('.includes(ch)) d++;
     else if ('}>)'.includes(ch)) d--;
-    if (ch === ';' && d === 0) { members.push(buf); buf = ''; continue; }
+    if (ch === ';' && d === 0) { members.push(buf); buf = ''; i++; continue; }
     buf += ch;
+    i++;
   }
   if (buf.trim()) members.push(buf);
 
@@ -166,7 +198,7 @@ function readTokens(file) {
         const found = [];
         for (const [, prop, value] of buffer.matchAll(/([a-z-]+)\s*:\s*([^;]+)/g)) {
           for (const [, cssVar] of value.matchAll(/var\(\s*(--[a-z0-9-]+)/g)) {
-            found.push({ property: prop.trim(), var: cssVar, ref: tokenRef(cssVar) });
+            found.push({ property: prop.trim(), var: cssVar, ...resolveRef(cssVar) });
           }
         }
         if (found.length) out[key] = (out[key] ?? []).concat(found);
@@ -210,7 +242,10 @@ function markdown(spec) {
   l.push('Every value is a token reference, not a literal. Verified by `design/verify-css.mjs`.', '');
   l.push('| Selector | Property | Token |', '|---|---|---|');
   for (const [selector, entries] of Object.entries(spec.tokens)) {
-    for (const e of entries) l.push(`| \`${selector}\` | ${e.property} | \`${e.ref}\` |`);
+    for (const e of entries) {
+      const value = e.ref ? `\`${e.ref}\`` : `\`${e.local}\` (local property, not a token)`;
+      l.push(`| \`${selector}\` | ${e.property} | ${value} |`);
+    }
   }
   l.push('');
   return l.join('\n');
@@ -247,7 +282,7 @@ const canonical = specs.map((s) =>
   [
     `C|${s.name}`,
     ...Object.entries(s.props).map(([n, p]) => `P|${n}|${p.type}|${p.required ? 'req' : 'opt'}`),
-    ...Object.entries(s.tokens).flatMap(([sel, es]) => es.map((e) => `T|${sel}|${e.property}|${e.ref}`))
+    ...Object.entries(s.tokens).flatMap(([sel, es]) => es.map((e) => `T|${sel}|${e.property}|${e.ref ?? e.local}`))
   ].join('\n')
 ).join('\n');
 
