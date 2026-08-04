@@ -2,13 +2,11 @@
   height: var(--primitive-size-nav);
   display: flex;
   align-items: center;
-  padding-inline: var(--primitive-space-sp600);
   transition:
     background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
     border-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
   border-bottom: 1px solid transparent;
 }
-@media (min-width: 1024px) { .nav { padding-inline: var(--primitive-layout-l48); } }
 
 /* Sticky is opt-in. The band beneath keeps its full height, so nothing shifts
    when the nav pins: it was already in flow at the top of the page. */
@@ -24,13 +22,12 @@
   border-bottom-color: var(--semantic-border-subtle);
 }
 
+/* Layout only. Width and gutters come from `.measure`, which is what keeps the
+   header logo in line with the footer logo. */
 .nav__inner {
   display: flex;
   align-items: center;
   gap: var(--primitive-space-sp600);
-  width: 100%;
-  max-width: var(--primitive-size-max-width);
-  margin-inline: auto;
 }
 .nav__logo { display: inline-flex; color: var(--semantic-fg-primary); margin-right: auto; }
 .nav__logo:focus-visible { outline: 2px solid var(--semantic-border-focus); outline-offset: 4px; border-radius: 4px; }

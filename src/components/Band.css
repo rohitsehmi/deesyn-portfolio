@@ -17,11 +17,6 @@
   .band[data-scale='feature'] { padding-block: var(--primitive-layout-l200); }
 }
 
-/* Measure: 1000px, measured off the live site. The fill is always full width. */
-.band__measure {
-  max-width: var(--primitive-size-max-width);
-  margin-inline: auto;
-  padding-inline: var(--primitive-space-sp600);
-}
-@media (min-width: 768px)  { .band__measure { padding-inline: var(--primitive-space-sp1000); } }
-@media (min-width: 1024px) { .band__measure { padding-inline: var(--primitive-layout-l40); } }
+/* The measure lives in base.css as `.measure`, because the nav, the footer and
+   content over a full-bleed image all have to line up with it. The fill is
+   always full width. */

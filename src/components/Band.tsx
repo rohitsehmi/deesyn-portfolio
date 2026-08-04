@@ -24,7 +24,7 @@ export interface BandProps {
 export function Band({ role = 'base', scale = 'default', bleed = false, children }: BandProps) {
   return (
     <section className="band" data-band={role} data-scale={scale}>
-      {bleed ? children : <div className="band__measure">{children}</div>}
+      {bleed ? children : <div className="measure">{children}</div>}
     </section>
   );
 }

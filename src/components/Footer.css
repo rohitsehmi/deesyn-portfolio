@@ -1,10 +1,10 @@
-.footer { background: transparent; padding-inline: var(--primitive-layout-l48); }
+.footer { background: transparent; }
 .footer[data-scale='compact'] { padding-block: var(--primitive-layout-l48); }
 .footer[data-scale='full']    { padding-block: var(--primitive-layout-l80); }
 
+/* Layout only. Width and gutters come from `.measure`. */
 .footer__inner {
   display: flex; flex-direction: column; gap: var(--primitive-layout-l48);
-  max-width: var(--primitive-size-max-width); margin-inline: auto;
 }
 .footer__top { display: flex; gap: var(--primitive-layout-l48); align-items: flex-start; }
 .footer__columns { margin-left: auto; display: flex; gap: var(--primitive-layout-l48); }

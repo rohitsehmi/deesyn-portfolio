@@ -24,8 +24,8 @@ import { join, relative } from 'node:path';
 const ROOT = 'src';
 const TOKENS = 'tokens/tokens.json';
 
-/** Generated, or a reset that deliberately inherits. */
-const SKIP_FILES = ['src/styles/tokens.css', 'src/styles/base.css'];
+/** Generated. Everything else in src/ is checked, including base.css. */
+const SKIP_FILES = ['src/styles/tokens.css'];
 
 const PROPS = ['font', 'font-size', 'font-weight', 'font-family', 'line-height', 'letter-spacing'];
 

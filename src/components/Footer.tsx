@@ -16,7 +16,7 @@ export interface FooterProps { scale?: 'compact' | 'full'; columns?: ReactNode; 
 export function Footer({ scale = 'full', columns, email = 'rohit.sehmi@gmail.com' }: FooterProps) {
   return (
     <footer className="footer" data-scale={scale}>
-      <div className="footer__inner">
+      <div className="measure footer__inner">
         {scale === 'full' && (
           <>
             <div className="footer__top">

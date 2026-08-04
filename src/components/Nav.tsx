@@ -60,7 +60,7 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, overBa
       data-sticky={sticky ? 'true' : undefined}
       data-band={resolved === 'top' ? overBand : undefined}
     >
-      <div className="nav__inner">
+      <div className="measure nav__inner">
         <a className="nav__logo" href="/" aria-label="Home"><Logo height={22} /></a>
         <nav className="nav__links" aria-label="Primary">
           {links.map((l) => (

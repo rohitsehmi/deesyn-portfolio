@@ -12,12 +12,30 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+
+/*
+  The measure: 1000px, measured off the live site, with responsive gutters.
+
+  One definition, used by every element that has to line up with another: the
+  band, the nav, the footer, and content laid over a full-bleed image. It lives
+  here rather than in a component because three components previously each had
+  their own version of it, and the footer logo ended up 88px right of the header
+  logo. If it is declared twice it will drift again.
+*/
+.measure {
+  width: 100%;
+  max-width: var(--primitive-size-max-width);
+  margin-inline: auto;
+  padding-inline: var(--primitive-space-sp600);
+}
+@media (min-width: 768px)  { .measure { padding-inline: var(--primitive-space-sp1000); } }
+@media (min-width: 1024px) { .measure { padding-inline: var(--primitive-layout-l40); } }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--semantic-bg-canvas);
   color: var(--semantic-fg-primary);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: var(--type-body-1-family);
   -webkit-font-smoothing: antialiased;
 }
 :where(button, input, select, textarea) { font: inherit; color: inherit; }

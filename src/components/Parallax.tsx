@@ -149,7 +149,7 @@ export function Parallax({
       {scrim && <div className="parallax__scrim" aria-hidden="true" />}
       {children && (
         <div className="parallax__content">
-          <div className="band__measure">{children}</div>
+          <div className="measure">{children}</div>
         </div>
       )}
     </section>
