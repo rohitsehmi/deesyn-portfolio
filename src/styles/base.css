@@ -1,4 +1,16 @@
 /* Minimal base. Everything else comes from tokens.css. */
+
+/* Named layers, so nothing ever reaches for 999. Not in tokens.json: stacking
+   order is a code concern and Figma has no equivalent. */
+:root {
+  --z-sticky: 100;
+  --z-dropdown: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {

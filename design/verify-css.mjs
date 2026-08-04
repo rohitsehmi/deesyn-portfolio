@@ -61,6 +61,15 @@ function validProperties() {
   walk(t.shadow, ['shadow'], add);
   walk(t.gradient, ['gradient'], add);
   walk(t.typography, ['type'], (n) => TYPE_SUFFIXES.forEach((s) => out.add(`--${n}${s}`)));
+
+  /**
+   * Stacking order is a code concern: Figma has no z-index, so these cannot
+   * come from tokens.json. They are read from where they are declared rather
+   * than allowed by prefix, so `var(--z-stikcy)` still fails.
+   */
+  const base = readFileSync('src/styles/base.css', 'utf8');
+  for (const [, name] of base.matchAll(/(--z-[a-z0-9-]+)\s*:/g)) out.add(name);
+
   return out;
 }
 const VALID = validProperties();

@@ -10,6 +10,14 @@
 }
 @media (min-width: 1024px) { .nav { padding-inline: var(--primitive-layout-l48); } }
 
+/* Sticky is opt-in. The band beneath keeps its full height, so nothing shifts
+   when the nav pins: it was already in flow at the top of the page. */
+.nav[data-sticky='true'] {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
 .nav[data-state='top'] { background: transparent; }
 .nav[data-state='scrolled'] {
   background: var(--semantic-bg-canvas);

@@ -21,7 +21,18 @@ export function Media({ src, alt, ratio = '16-9', fit = 'inset', caption }: Medi
   return (
     <figure className="media" data-ratio={ratio} data-fit={fit}>
       <div className="media__frame">
-        {src ? <img src={src} alt={alt} loading="lazy" decoding="async" /> : <span className="media__placeholder" role="img" aria-label={alt} />}
+        {src ? (
+          <img src={src} alt={alt} loading="lazy" decoding="async" />
+        ) : (
+          // A slot with nothing in it should say so. An invisible placeholder
+          // reads as a finished section that happens to have a gap, which is
+          // how images end up missing at the point someone else looks.
+          <div className="media__placeholder">
+            <span className="media__placeholder-kind">Image needed</span>
+            <span className="media__placeholder-alt">{alt}</span>
+            <span className="media__placeholder-meta">{ratio.replace('-', ':')}</span>
+          </div>
+        )}
       </div>
       {caption && <figcaption className="media__caption">{caption}</figcaption>}
     </figure>

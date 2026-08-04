@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Logo } from './Logo';
 import { Button } from './Button';
 import { IconButton } from './IconButton';
@@ -9,6 +9,12 @@ export interface NavProps {
   actions?: ReactNode;
   /** top is transparent and sits over the band; scrolled takes the canvas. */
   state?: 'top' | 'scrolled';
+  /**
+   * Code-only prop, with no Figma counterpart: sticking is a scroll behaviour
+   * and Figma has no scroll position. When set, the nav pins to the top and
+   * drives its own state, so `state` becomes the value before the first scroll.
+   */
+  sticky?: boolean;
 }
 
 /**
@@ -19,9 +25,23 @@ export interface NavProps {
  *
  * Nav links are ghost buttons — real hit area, real press feedback.
  */
-export function Nav({ links = [], actions, state = 'top' }: NavProps) {
+export function Nav({ links = [], actions, state = 'top', sticky = false }: NavProps) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!sticky) return;
+    // Threshold rather than zero: at exactly 0 a rubber-band scroll on iOS
+    // flickers the background on and off.
+    const read = () => setScrolled(window.scrollY > 8);
+    read();
+    window.addEventListener('scroll', read, { passive: true });
+    return () => window.removeEventListener('scroll', read);
+  }, [sticky]);
+
+  const resolved = sticky ? (scrolled ? 'scrolled' : 'top') : state;
+
   return (
-    <header className="nav" data-state={state}>
+    <header className="nav" data-state={resolved} data-sticky={sticky ? 'true' : undefined}>
       <div className="nav__inner">
         <a className="nav__logo" href="/" aria-label="Home"><Logo height={22} /></a>
         <nav className="nav__links" aria-label="Primary">

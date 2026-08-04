@@ -12,7 +12,7 @@ const links = [{ label: 'Work', href: '/', current: true }];
   {/* Not in a band: a base nav above a base hero stacks padding at a seam with
       no colour step, which rule 1 forbids. Nav is transparent at state=top and
       inherits the band beneath it. */}
-  <Nav client:load state="top" links={links} />
+  <Nav client:load sticky links={links} />
 
   <main id="main">
     <Band role="base" scale="feature">

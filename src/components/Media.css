@@ -6,5 +6,36 @@
 .media[data-ratio='1-1']  .media__frame { aspect-ratio: 1 / 1; }
 .media[data-ratio='3-4']  .media__frame { aspect-ratio: 3 / 4; }
 .media__frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.media__placeholder { display: block; width: 100%; height: 100%; }
+/* Deliberately unfinished-looking. This is scaffolding, and it should be
+   obvious on the page that an asset is missing rather than merely absent. */
+.media__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--primitive-space-sp200);
+  width: 100%;
+  height: 100%;
+  padding: var(--primitive-space-sp600);
+  text-align: center;
+  border: 1px dashed var(--semantic-border-strong);
+  border-radius: inherit;
+  color: var(--semantic-fg-secondary);
+}
+.media__placeholder-kind {
+  font: var(--type-emphasis-3);
+  letter-spacing: var(--type-emphasis-3-tracking);
+  color: var(--semantic-fg-accent);
+}
+.media__placeholder-alt {
+  max-width: 40ch;
+  font: var(--type-body-2);
+  letter-spacing: var(--type-body-2-tracking);
+  text-wrap: pretty;
+}
+.media__placeholder-meta {
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  font-variant-numeric: tabular-nums;
+}
 .media__caption { color: var(--semantic-fg-secondary); font: var(--type-body-3); letter-spacing: var(--type-body-3-tracking); }

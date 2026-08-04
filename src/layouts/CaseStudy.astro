@@ -52,7 +52,7 @@ const footerRole = next ? 'base' : 'sunken';
     Giving it a `base` band above a `base` hero would stack two lots of padding
     at a seam with no colour step, which is exactly what rule 1 forbids.
   */}
-  <Nav client:load state="top" links={links} />
+  <Nav client:load sticky links={links} />
 
   <main id="main">
     {/* Hero. Two text elements and no CTA: the reader arrived here on purpose. */}
