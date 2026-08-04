@@ -60,11 +60,8 @@ export function canonical(s) {
   }
   return parts.join('\n');
 }
-export function hash(str) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) h = (Math.imul(h, 31) + str.charCodeAt(i)) >>> 0;
-  return h;
-}
+export { hash } from './hash.mjs';
+import { hash } from './hash.mjs';
 
 const str = canonical(src);
 for (const [domain, d] of Object.entries(src.domains)) {

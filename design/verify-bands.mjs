@@ -1,84 +1,104 @@
 /**
- * Lints built pages against the band adjacency rules in docs/banding-system.md §3.
+ * Lints built pages against the band adjacency rules.
  *
- * The doc says a page built from bands can be linted rather than checked by eye.
- * This is that lint. It exists because the rules were broken twice in one
- * sitting: the placeholder index page stacked a base nav above a base hero, and
- * the first case-study layout ran three `feature` bands in a row.
+ * The rules are not written here. They are read from design/banding-export.json,
+ * which is measured off page.getSharedPluginData('banding','spec') in Figma.
+ * An earlier version transcribed the rules into JavaScript, which meant they
+ * existed in two places that never checked each other: changing a rule in Figma
+ * would have left this passing on the old one.
  *
- * Reads the built HTML rather than the source, so it checks what actually
- * ships, including bands rendered conditionally.
+ * The property that makes it hold: every rule id in the spec must have a check
+ * here, or be explicitly declared as covered elsewhere with a reason. Add a rule
+ * in Figma and this fails until someone implements it. Silence is not an option
+ * the script offers.
  *
- * Rule 6 (no borders or shadows on a seam) is not checked here: it is a CSS
- * property, covered by the no-literals assertion in design/verify.mjs.
+ * Reads built HTML rather than source, so conditionally rendered bands count.
  *
  * Usage: node design/verify-bands.mjs   (run after `npm run build`)
  */
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { hash } from './hash.mjs';
 
 const DIST = 'dist';
+const SPEC = 'design/banding-export.json';
 const BAND = /data-band="([a-z-]+)"\s+data-scale="([a-z]+)"/g;
+
+const spec = JSON.parse(readFileSync(SPEC, 'utf8'));
+
+/** Deterministic serialisation. Metadata keys are excluded so re-exporting on a
+ *  different day does not change the checksum. */
+function canonical(value) {
+  if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
+  if (value && typeof value === 'object') {
+    return `{${Object.keys(value).filter((k) => !k.startsWith('_')).sort()
+      .map((k) => `${k}:${canonical(value[k])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+/** One implementation per rule id. Each returns a list of failures. */
+const CHECKS = {
+  1: (b) => b.flatMap((band, i) =>
+    i > 0 && b[i - 1].role === band.role ? [`bands ${i} and ${i + 1} are both "${band.role}"`] : []),
+
+  3: (b) => b.flatMap((band, i) => {
+    if (band.role !== 'inverse-raised') return [];
+    const touches = [b[i - 1], b[i + 1]].filter(Boolean);
+    return touches.some((n) => n.role === 'inverse')
+      ? [] : [`band ${i + 1} is inverse-raised but touches no inverse band`];
+  }),
+
+  4: (b) => {
+    const n = b.filter((x) => x.role === 'inverse').length;
+    const max = spec.roles.inverse.use.match(/max (\d+) per page/)?.[1];
+    return n > Number(max ?? 2) ? [`${n} inverse bands, limit is ${max ?? 2}`] : [];
+  },
+
+  5: (b) => b.flatMap((band, i) => {
+    const next = b[i + 1];
+    return band.role === 'inverse' && next && next.role !== 'base'
+      ? [`band ${i + 2} follows an inverse band with "${next.role}"`] : [];
+  }),
+
+  7: (b) => b.flatMap((band, i) =>
+    i > 0 && b[i - 1].scale === 'feature' && band.scale === 'feature'
+      ? [`bands ${i} and ${i + 1} are both "feature"`] : [])
+};
+
+/** Rules this script deliberately does not check, each with the reason. */
+const COVERED_ELSEWHERE = {
+  2: 'subsumed by rule 1: two inverse bands in a row are two consecutive bands sharing a fill',
+  6: 'a CSS property, not a markup one. Covered by the no-literals assertion in design/verify.mjs'
+};
+
+// ---- the anti-drift check -------------------------------------------------
+const specIds = spec.rules.map((r) => r.id);
+const unimplemented = specIds.filter((id) => !(id in CHECKS) && !(id in COVERED_ELSEWHERE));
+const orphaned = Object.keys(CHECKS).map(Number).filter((id) => !specIds.includes(id));
+
+if (unimplemented.length || orphaned.length) {
+  for (const id of unimplemented) {
+    const r = spec.rules.find((x) => x.id === id);
+    console.error(`rule ${id} is in the Figma spec but has no check here: "${r.rule}"`);
+  }
+  for (const id of orphaned) {
+    console.error(`rule ${id} is checked here but no longer exists in the Figma spec`);
+  }
+  console.error('\nThe spec and the linter have drifted. Implement or remove the check.');
+  process.exit(1);
+}
+
+if (!existsSync(DIST)) {
+  console.error(`no ${DIST}/ directory. Run \`npm run build\` first.`);
+  process.exit(1);
+}
 
 function htmlFiles(dir) {
   return readdirSync(dir).flatMap((entry) => {
     const path = join(dir, entry);
     return statSync(path).isDirectory() ? htmlFiles(path) : path.endsWith('.html') ? [path] : [];
   });
-}
-
-/** Every rule takes the ordered band list and returns a list of failures. */
-const rules = [
-  {
-    id: 1,
-    text: 'No two consecutive bands share a fill',
-    check: (b) => b.flatMap((band, i) =>
-      i > 0 && b[i - 1].role === band.role
-        ? [`bands ${i} and ${i + 1} are both "${band.role}"`]
-        : [])
-  },
-  {
-    id: 3,
-    text: 'inverse-raised may only touch inverse',
-    check: (b) => b.flatMap((band, i) => {
-      if (band.role !== 'inverse-raised') return [];
-      const touches = [b[i - 1], b[i + 1]].filter(Boolean);
-      return touches.some((n) => n.role === 'inverse')
-        ? []
-        : [`band ${i + 1} is inverse-raised but touches no inverse band`];
-    })
-  },
-  {
-    id: 4,
-    text: 'At most two inverse bands per page',
-    check: (b) => {
-      const n = b.filter((x) => x.role === 'inverse').length;
-      return n > 2 ? [`${n} inverse bands`] : [];
-    }
-  },
-  {
-    id: 5,
-    text: 'After an inverse band, return to base',
-    check: (b) => b.flatMap((band, i) => {
-      const next = b[i + 1];
-      return band.role === 'inverse' && next && next.role !== 'base'
-        ? [`band ${i + 2} follows an inverse band with "${next.role}"`]
-        : [];
-    })
-  },
-  {
-    id: 7,
-    text: 'Two adjacent bands never both take feature',
-    check: (b) => b.flatMap((band, i) =>
-      i > 0 && b[i - 1].scale === 'feature' && band.scale === 'feature'
-        ? [`bands ${i} and ${i + 1} are both "feature"`]
-        : [])
-  }
-];
-
-if (!existsSync(DIST)) {
-  console.error(`no ${DIST}/ directory. Run \`npm run build\` first.`);
-  process.exit(1);
 }
 
 let failures = 0;
@@ -90,9 +110,12 @@ for (const file of htmlFiles(DIST).sort()) {
   if (bands.length === 0) continue;
   pages += 1;
 
-  const problems = rules.flatMap((rule) =>
-    rule.check(bands).map((detail) => `rule ${rule.id} (${rule.text}): ${detail}`)
-  );
+  const unknown = bands.filter((b) => !(b.role in spec.roles)).map((b) => b.role);
+  const problems = [
+    ...unknown.map((r) => `role "${r}" is not in the spec`),
+    ...Object.entries(CHECKS).flatMap(([id, check]) =>
+      check(bands).map((detail) => `rule ${id} (${spec.rules.find((r) => r.id === Number(id)).rule}): ${detail}`))
+  ];
 
   const route = file.replace(`${DIST}/`, '/').replace(/index\.html$/, '');
   if (problems.length === 0) {
@@ -104,9 +127,13 @@ for (const file of htmlFiles(DIST).sort()) {
   }
 }
 
-console.log(`\npages checked: ${pages}`);
+console.log(`\nspec       : ${SPEC} (Figma page "${spec._page}")`);
+console.log(`rules      : ${specIds.length} (${Object.keys(CHECKS).length} checked here, ${Object.keys(COVERED_ELSEWHERE).length} covered elsewhere)`);
+console.log(`checksum   : ${hash(canonical(spec))}`);
+console.log(`pages      : ${pages}`);
+
 if (failures > 0) {
-  console.error(`band adjacency failures: ${failures}`);
+  console.error(`\nband adjacency failures: ${failures}`);
   process.exit(1);
 }
 console.log('band adjacency: all rules pass');
