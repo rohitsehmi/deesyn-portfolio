@@ -1,6 +1,15 @@
 .parallax {
   position: relative;
+  /*
+    clip, not hidden. `overflow: hidden` creates a scroll container, and
+    `animation-timeline: view()` resolves against the nearest scroll container
+    ancestor: the drift would be measured against this box, which never
+    scrolls, so progress never advances and the image sits still.
 
+    `overflow: clip` clips the same way without creating one, so the timeline
+    resolves against the page. This is the whole effect working or not.
+  */
+  overflow: clip;
   min-height: var(--parallax-min-height, min(78vh, 720px));
   display: flex;
   align-items: flex-end;             /* content sits low, in the scrimmed area */
@@ -8,44 +17,8 @@
 }
 
 /*
-  The clipping window. clip, not hidden: `overflow: hidden` creates a scroll
-  container, and `animation-timeline: view()` resolves against the nearest one,
-  so the drift would be measured against a box that never scrolls and the image
-  would sit perfectly still. `clip` clips the same way without creating one.
-
-  It lives on this wrapper rather than the section so the overscroll fill can
-  reach above the section without being cut off.
-*/
-.parallax__viewport {
-  position: absolute;
-  inset: 0;
-  overflow: clip;
-  z-index: 0;
-}
-
-/*
-  Holds the hero still while a rubber-band scroll pulls the page off it.
-
-  Fixed rather than absolute: the strip an overscroll opens is above the
-  document origin, and Chrome paints the root background there rather than any
-  content positioned into it. Only fixed elements hold their place.
-
-  Height matches the image layer below, drift included, so the two frame the
-  image identically and coincide exactly at rest. Behind everything, so it is
-  invisible until the page moves off it.
-*/
-.parallax__overscroll {
-  position: fixed;
-  inset-block-start: 0;
-  inset-inline: 0;
-  height: calc(var(--parallax-min-height, min(78vh, 720px)) + var(--parallax-drift, 80px));
-  z-index: -1;
-  pointer-events: none;
-}
-
-/*
-  Exactly `drift` taller than the window, which is what guarantees it stays
-  covered from one end of the range to the other rather than relying on a
+  Exactly `drift` taller than the section, which is what guarantees the section
+  stays covered from one end of the range to the other rather than relying on a
   number that happens to work.
 */
 .parallax__image-layer {

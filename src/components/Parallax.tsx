@@ -87,16 +87,6 @@ export interface ParallaxProps {
    * is 4.57:1. That is why the tonal key below is not optional.
    */
   scrim?: boolean;
-  /**
-   * Set when this is the first thing on the page.
-   *
-   * A rubber-band scroll past the top opens a gap above the document, and
-   * whatever the canvas is painted with shows through it. On a dark hero that
-   * is a pale seam appearing above the image. This continues the section's own
-   * surface upward instead, so the hero reads as staying put while the page
-   * bounces.
-   */
-  topOfPage?: boolean;
   /** The LCP element on any page it opens. Should not lazy-load. */
   priority?: boolean;
   children?: ReactNode;
@@ -137,7 +127,6 @@ export function Parallax({
   minHeight = 'min(78vh, 720px)',
   range = 'cover',
   scrim = true,
-  topOfPage = false,
   priority = false,
   children
 }: ParallaxProps) {
@@ -153,23 +142,7 @@ export function Parallax({
       data-scrim={scrim ? 'true' : undefined}
       style={{ '--parallax-drift': drift, '--parallax-min-height': minHeight } as CSSProperties}
     >
-      {/*
-        Fixed, not absolute. A rubber-band scroll does not reveal content
-        positioned above the document origin: Chrome paints the root background
-        there and nothing else. Fixed elements are the ones that hold still
-        while the page is pulled, which is the same reason the header stopped
-        bouncing.
-
-        Geometry matches the image layer below exactly, so at rest the two
-        coincide and the seam is invisible; the page slides off it.
-      */}
-      {topOfPage && (
-        <div className="parallax__overscroll" aria-hidden="true">
-          <img className="parallax__image" src={src} alt="" decoding="async" />
-        </div>
-      )}
-      <div className="parallax__viewport">
-        <div className="parallax__image-layer">
+      <div className="parallax__image-layer">
         <img
           className="parallax__image"
           src={src}
@@ -177,8 +150,7 @@ export function Parallax({
           loading={priority ? 'eager' : 'lazy'}
           decoding="async"
           {...(priority ? { fetchPriority: 'high' as const } : {})}
-          />
-        </div>
+        />
       </div>
       {scrim && <div className="parallax__scrim" aria-hidden="true" />}
       {children && (
