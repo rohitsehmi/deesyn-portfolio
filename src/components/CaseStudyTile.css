@@ -1,9 +1,8 @@
 .tile {
+  position: relative;                  /* anchors the stretched link */
   display: flex;
   flex-direction: column;
   gap: var(--primitive-space-sp600);
-  text-decoration: none;
-  color: inherit;
 }
 
 .tile__media {
@@ -18,12 +17,6 @@
   .tile:hover .tile__media .media__frame { transform: scale(1.02); }
 }
 .tile:active .tile__media .media__frame { transform: scale(0.99); }
-
-.tile:focus-visible {
-  outline: 2px solid var(--semantic-border-focus);
-  outline-offset: 4px;
-  border-radius: var(--primitive-radius-r20);
-}
 
 .tile__body {
   display: flex;
@@ -49,6 +42,15 @@
   .tile__title { font: var(--type-heading-l); letter-spacing: var(--type-heading-l-tracking); }
 }
 
+/* The whole tile is the click target; the accessible name is the title alone. */
+.tile__link { color: inherit; text-decoration: none; }
+.tile__link::after { content: ''; position: absolute; inset: 0; }
+.tile:has(.tile__link:focus-visible) {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 4px;
+  border-radius: var(--primitive-radius-r20);
+}
+
 .tile__summary {
   margin: 0;
   max-width: 46ch;
@@ -57,3 +59,46 @@
   color: var(--semantic-fg-secondary);
   text-wrap: pretty;
 }
+
+/*
+  The affordance at rest. Without it the only signal a tile is clickable is a
+  hover transform, which says nothing on touch and nothing before the pointer
+  arrives.
+*/
+.tile__cue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-space-sp200);
+  margin-block-start: var(--primitive-space-sp300);
+  font: var(--type-emphasis-1);
+  letter-spacing: var(--type-emphasis-1-tracking);
+  color: var(--semantic-fg-link);
+}
+.tile__cue .icon {
+  transition: transform var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover .tile__cue { color: var(--semantic-fg-link-hover); }
+  .tile:hover .tile__cue .icon { transform: translateX(2px); }
+}
+
+/* ---- card variant -------------------------------------------------------
+   A surface and a border instead of spacing. With no shadow available this
+   reads as a flat outlined box rather than a raised object, which is the
+   trade-off to look at. */
+.tile[data-variant='card'] {
+  gap: 0;
+  background: var(--semantic-bg-surface);
+  border: 1px solid var(--semantic-border-subtle);
+  border-radius: var(--primitive-radius-r20);
+  overflow: hidden;
+  transition: background-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tile[data-variant='card']:hover { background: var(--semantic-bg-surface-raised); }
+}
+/* Media bleeds to the card edge, so the radius lives on the card. */
+.tile[data-variant='card'] .tile__media { border-radius: 0; }
+.tile[data-variant='card'] .tile__body { padding: var(--primitive-space-sp1000); }
+/* The image no longer lifts: inside a clipped card it just crops. */
+.tile[data-variant='card']:hover .tile__media .media__frame { transform: none; }
