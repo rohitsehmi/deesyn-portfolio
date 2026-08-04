@@ -152,7 +152,7 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 
 `design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-04: `4097978953`, 132 entries. See `design/README.md`.
 
-**Three checksums, three sources.** Tokens `4115829316`. Figma components `4097978953`. Banding spec `2118911321`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-04). Code-only specs print `3037882434` but have no Figma counterpart to match, by definition.
+**Three checksums, three sources.** Tokens `4115829316`. Figma components `4097978953`. Banding spec `611136477`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-04). Code-only specs print `3037882434` but have no Figma counterpart to match, by definition.
 
 **Six components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. 17 React components, 17 specs.
 
@@ -195,7 +195,7 @@ Bands are **relative, not absolute**: a band declares a tonal role and the mode 
 
 Don't reach for `bg/inverse` when you mean a band — it's `#191c1f`, the app surface, not band black.
 
-**Bands are relative. Media is absolute.** `inverse` means *this band in the other theme*, so it flips when the theme flips. That is right for a band whose fill is a token and wrong over a photograph, which is dark in both themes: the foreground goes white in light mode and dark in dark mode over the same image, and `bg/scrim` weakens from 70% to 40% at the same moment. Content over media carries **`data-on-media`** instead, which `tokens/css.mjs` emits last and unconditionally from the dark-mode values. Used by `Parallax` and by `Nav onMedia` while it is transparent over the hero.
+**Bands are relative. Media is absolute.** `inverse` means *this band in the other theme*, so it flips when the theme flips. That is right for a band whose fill is a token and wrong over a photograph, which is dark in both themes: the foreground goes white in light mode and dark in dark mode over the same image, and `bg/scrim` weakens from 70% to 40% at the same moment. Content over media carries **`data-on-media`** instead, which `tokens/css.mjs` emits last and unconditionally from the dark-mode values. Recorded in the Figma spec as its own `media` key, deliberately not in `rules[]`: it is not an adjacency constraint, and the band linter demands an implementation for every rule id it finds there. Used by `Parallax` and by `Nav onMedia` while it is transparent over the hero.
 
 **The spec is machine-readable**: `page.getSharedPluginData('banding', 'spec')` returns the whole rule set as JSON, and every band node carries `getPluginData('band')` → `{role, scale}`. A page built from bands can be linted against the adjacency rules rather than checked by eye.
 
@@ -214,5 +214,5 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
 
 ## Next up
 
-1. **The three case studies** — which three, and what each is *for*. Recommended first: components built before the content is known tend to get built twice. Also gates the band *rhythm* (§7 of the banding doc).
+1. **The three case studies** — which three, and what each is *for*. Recommended first: components built before the content is known tend to get built twice. Also gates the band *rhythm* (§8 of the banding doc).
 2. **Components** — button (48px pill, replacing `Demo / Button (stand-in)`), input (56px), nav (56px), card at r20, case-study tile, footer.

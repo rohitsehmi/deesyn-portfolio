@@ -110,7 +110,19 @@ Content measure is **1000px, measured** (25 `max-width` declarations on the live
 
 Gutters are a decision, not measured. **Heroes and photography run full-bleed past the measure — measured.** Anything full-bleed opts out of the content column explicitly; it is not the default.
 
-## 6. Where this is built
+## 6. Content over media
+
+Bands are **relative**. `inverse` means *this band in the other theme*, so it flips when the theme flips. That is correct for a band whose fill is a token.
+
+A photograph is not relative. It is dark in both themes, so a band role sends the foreground the wrong way in one of them: white text in light mode and dark text in dark mode, over the same image. `bg/scrim` weakens from 70% to 40% at the same moment, so the contrast drops exactly where it was doing the most work.
+
+Content over a full-bleed image carries **`data-on-media`** instead. It resolves to the dark-mode values unconditionally, whatever the page theme is, because the surface underneath it does not change. `tokens/css.mjs` emits it last so it wins over the theme blocks.
+
+Like the hero, it is **not a band role** and does not count toward the alternation. In the machine-readable spec it is a `media` key of its own rather than an entry in `rules[]`, because it is not an adjacency constraint.
+
+Used by the hero image, and by the nav while it is transparent over one.
+
+## 7. Where this is built
 
 Figma file **Revolut**, page **Banding**. Six sections:
 
@@ -137,7 +149,7 @@ Every individual band node also carries `getPluginData('band')` → `{role, scal
 
 `Demo / Button (stand-in)` exists only to prove foreground inheritance. The real button is a separate task and should replace it.
 
-## 7. What's still open
+## 8. What's still open
 
 The **rhythm** — which specific band is which role, in what order, on which page — is deliberately not specified here, because it's downstream of the three case studies. Two things it will decide:
 

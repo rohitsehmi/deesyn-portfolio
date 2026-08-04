@@ -7,33 +7,116 @@
   "measure": {
     "max": 1000,
     "token": "Size/Max Width",
-    "gutters": { "<768": 20, "768-1023": 32, ">=1024": 40 }
+    "gutters": {
+      "<768": 20,
+      "768-1023": 32,
+      ">=1024": 40
+    }
   },
-  "breakpoints": { "mobile": 425, "tablet": 768, "laptop": 1024, "desktop": 1440 },
+  "breakpoints": {
+    "mobile": 425,
+    "tablet": 768,
+    "laptop": 1024,
+    "desktop": 1440
+  },
   "roles": {
-    "base": { "fill": "band/base", "inverted": false, "use": "default; most bands" },
-    "sunken": { "fill": "band/sunken", "inverted": false, "use": "quiet alternate; one luminance step from base" },
-    "inverse": { "fill": "band/base", "inverted": true, "use": "punctuation; max 2 per page" },
-    "inverse-raised": { "fill": "band/sunken", "inverted": true, "use": "internal step within a dark passage; only adjacent to inverse" }
+    "base": {
+      "fill": "band/base",
+      "inverted": false,
+      "use": "default; most bands"
+    },
+    "sunken": {
+      "fill": "band/sunken",
+      "inverted": false,
+      "use": "quiet alternate; one luminance step from base"
+    },
+    "inverse": {
+      "fill": "band/base",
+      "inverted": true,
+      "use": "punctuation; max 2 per page"
+    },
+    "inverse-raised": {
+      "fill": "band/sunken",
+      "inverted": true,
+      "use": "internal step within a dark passage; only adjacent to inverse"
+    }
   },
   "scales": {
-    "compact": { "<768": 40, "768-1023": 64, ">=1024": 80, "tokens": ["Layout/l40", "Layout/l64", "Layout/l80"] },
-    "default": { "<768": 64, "768-1023": 96, ">=1024": 128, "tokens": ["Layout/l64", "Layout/l96", "Layout/l128"] },
-    "feature": { "<768": 80, "768-1023": 128, ">=1024": 200, "tokens": ["Layout/l80", "Layout/l128", "Layout/l200"] }
+    "compact": {
+      "<768": 40,
+      "768-1023": 64,
+      ">=1024": 80,
+      "tokens": [
+        "Layout/l40",
+        "Layout/l64",
+        "Layout/l80"
+      ]
+    },
+    "default": {
+      "<768": 64,
+      "768-1023": 96,
+      ">=1024": 128,
+      "tokens": [
+        "Layout/l64",
+        "Layout/l96",
+        "Layout/l128"
+      ]
+    },
+    "feature": {
+      "<768": 80,
+      "768-1023": 128,
+      ">=1024": 200,
+      "tokens": [
+        "Layout/l80",
+        "Layout/l128",
+        "Layout/l200"
+      ]
+    }
   },
   "rules": [
-    { "id": 1, "rule": "No two consecutive bands share a fill", "fix": "Merge into one band; do not stack padding" },
-    { "id": 2, "rule": "Never two inverse bands in a row", "fix": "Use inverse then inverse-raised" },
-    { "id": 3, "rule": "inverse-raised may only touch inverse" },
-    { "id": 4, "rule": "At most two inverse bands per page; base/sunken is the default rhythm" },
-    { "id": 5, "rule": "After an inverse band, return to base, not sunken" },
-    { "id": 6, "rule": "No borders, rules or shadows on a band seam", "note": "revolut.com has zero box-shadow (measured). Full-bleed imagery is the only permitted seam treatment." },
-    { "id": 7, "rule": "Two adjacent bands never both take feature", "fix": "One of the two steps down to default" }
+    {
+      "id": 1,
+      "rule": "No two consecutive bands share a fill",
+      "fix": "Merge into one band; do not stack padding"
+    },
+    {
+      "id": 2,
+      "rule": "Never two inverse bands in a row",
+      "fix": "Use inverse then inverse-raised"
+    },
+    {
+      "id": 3,
+      "rule": "inverse-raised may only touch inverse"
+    },
+    {
+      "id": 4,
+      "rule": "At most two inverse bands per page; base/sunken is the default rhythm"
+    },
+    {
+      "id": 5,
+      "rule": "After an inverse band, return to base, not sunken"
+    },
+    {
+      "id": 6,
+      "rule": "No borders, rules or shadows on a band seam",
+      "note": "revolut.com has zero box-shadow (measured). Full-bleed imagery is the only permitted seam treatment."
+    },
+    {
+      "id": 7,
+      "rule": "Two adjacent bands never both take feature",
+      "fix": "One of the two steps down to default"
+    }
   ],
   "foreground": {
     "mechanism": "inverted bands set an explicit mode on the 02 Semantic collection; all descendants inherit",
     "note": "action/accent-bg does not flip: white on #0666eb is 5.11:1 and passes on every band. fg/link does flip: #0666eb on black is 4.11:1, #6fa0ff is 8.15:1."
   },
   "hero": "Not a band scale. Content-led with a min-height; sets the tonal key and does not count toward the alternation.",
-  "open": "Band rhythm (which band is which role, in what order) is downstream of the three case studies."
+  "open": "Band rhythm (which band is which role, in what order) is downstream of the three case studies.",
+  "media": {
+    "mechanism": "content over a full-bleed image carries data-on-media, which resolves to the dark mode values unconditionally",
+    "why": "bands are relative, so inverse flips with the theme. A photograph does not: it is dark in both, and a relative role sends the foreground the wrong way in one of them while bg/scrim weakens from 70% to 40%",
+    "counted": false,
+    "note": "not a band role, and like the hero it does not count toward the alternation"
+  }
 }
