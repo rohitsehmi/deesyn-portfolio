@@ -24,17 +24,22 @@
 }
 
 /*
-  Fills the strip a rubber-band scroll opens above the page. A viewport tall,
-  so it still covers however far the page is pulled. band/base resolves through
-  data-on-media on the section, so it is the dark value in both themes and the
-  hero reads as continuing rather than cutting to a pale seam.
+  Holds the hero still while a rubber-band scroll pulls the page off it.
+
+  Fixed rather than absolute: the strip an overscroll opens is above the
+  document origin, and Chrome paints the root background there rather than any
+  content positioned into it. Only fixed elements hold their place.
+
+  Height matches the image layer below, drift included, so the two frame the
+  image identically and coincide exactly at rest. Behind everything, so it is
+  invisible until the page moves off it.
 */
 .parallax__overscroll {
-  position: absolute;
+  position: fixed;
+  inset-block-start: 0;
   inset-inline: 0;
-  bottom: 100%;
-  height: 100vh;
-  background: var(--semantic-band-base);
+  height: calc(var(--parallax-min-height, min(78vh, 720px)) + var(--parallax-drift, 80px));
+  z-index: -1;
   pointer-events: none;
 }
 

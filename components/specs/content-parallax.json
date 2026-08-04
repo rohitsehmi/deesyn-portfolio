@@ -69,9 +69,14 @@
     ],
     ".parallax__overscroll": [
       {
-        "property": "background",
-        "var": "--semantic-band-base",
-        "ref": "semantic.*.band.base"
+        "property": "height",
+        "var": "--parallax-min-height",
+        "local": "--parallax-min-height"
+      },
+      {
+        "property": "height",
+        "var": "--parallax-drift",
+        "local": "--parallax-drift"
       }
     ],
     ".parallax__image-layer": [

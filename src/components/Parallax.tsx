@@ -153,11 +153,21 @@ export function Parallax({
       data-scrim={scrim ? 'true' : undefined}
       style={{ '--parallax-drift': drift, '--parallax-min-height': minHeight } as CSSProperties}
     >
-      {/* Reaches a viewport above the section, so however far the page is
-          pulled down the revealed strip is still this surface. Outside the
-          clipping wrapper below, which is why the section itself must not
-          clip. */}
-      {topOfPage && <div className="parallax__overscroll" aria-hidden="true" />}
+      {/*
+        Fixed, not absolute. A rubber-band scroll does not reveal content
+        positioned above the document origin: Chrome paints the root background
+        there and nothing else. Fixed elements are the ones that hold still
+        while the page is pulled, which is the same reason the header stopped
+        bouncing.
+
+        Geometry matches the image layer below exactly, so at rest the two
+        coincide and the seam is invisible; the page slides off it.
+      */}
+      {topOfPage && (
+        <div className="parallax__overscroll" aria-hidden="true">
+          <img className="parallax__image" src={src} alt="" decoding="async" />
+        </div>
+      )}
       <div className="parallax__viewport">
         <div className="parallax__image-layer">
         <img

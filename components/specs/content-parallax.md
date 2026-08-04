@@ -68,7 +68,8 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | Selector | Property | Token |
 |---|---|---|
 | `.parallax` | min-height | `--parallax-min-height` (local property, not a token) |
-| `.parallax__overscroll` | background | `semantic.*.band.base` |
+| `.parallax__overscroll` | height | `--parallax-min-height` (local property, not a token) |
+| `.parallax__overscroll` | height | `--parallax-drift` (local property, not a token) |
 | `.parallax__image-layer` | height | `--parallax-drift` (local property, not a token) |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
