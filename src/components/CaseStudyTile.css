@@ -67,25 +67,42 @@
   hover transform, which says nothing on touch and nothing before the pointer
   arrives.
 
-  Pinned to the bottom left, so a row of tiles with summaries of different
+  Bottom right, and pinned there, so a row of tiles with summaries of different
   lengths still lines its arrows up.
+
+  48px, not 44px. docs/revolut-design-foundations.md, measured off the live
+  site: buttons are 28 / 32 / 44 in the product and 48px minimum on marketing.
+  A case study index is marketing.
+
+  The slot does the positioning so the cue keeps IconButton's own geometry,
+  including its `padding: 0`, rather than fighting it.
 */
-/* The slot does the positioning so the cue itself keeps IconButton's own
-   geometry, including its `padding: 0`, rather than fighting it. */
 .tile__cue-slot {
   margin-block-start: auto;
   padding-block-start: var(--primitive-space-sp600);
+  display: flex;
+  justify-content: flex-end;
 }
 .tile__cue { flex: none; }
 
 /*
-  The cue is not hovered itself, so the tile drives its states. Same values as
-  IconButton's own hover and press.
+  The cue is never hovered or pressed itself, so the tile drives both. Values
+  are IconButton's own, so the two cannot diverge: background on hover, and
+  scale(0.97) over duration/press with easing/out on press.
+
+  The arrow nudges with the hover. It is the one addition beyond IconButton,
+  and it is what makes the whole card feel like the target rather than the
+  circle inside it.
 */
+.tile__cue .icon {
+  transition: transform var(--semantic-duration-press) var(--semantic-easing-out);
+}
 @media (hover: hover) and (pointer: fine) {
   .tile:hover .tile__cue[data-variant='secondary'] { background: var(--semantic-action-secondary-bg-hover); }
+  .tile:hover .tile__cue .icon { transform: translateX(2px); }
 }
 .tile:active .tile__cue { transform: scale(0.97); }
+.tile:active .tile__cue .icon { transform: none; }
 
 /* ---- card variant -------------------------------------------------------
    A surface and a border instead of spacing. With no shadow available this

@@ -69,8 +69,8 @@ export function CaseStudyTile({
           the real component, and is hidden from assistive tech.
         */}
         <div className="tile__cue-slot">
-          <span className="tile__cue icon-button" data-variant="secondary" data-size="md" aria-hidden="true">
-            <Icon name="arrow-thin-right" size={20} />
+          <span className="tile__cue icon-button" data-variant="secondary" data-size="lg" aria-hidden="true">
+            <Icon name="arrow-thin-right" size={24} />
           </span>
         </div>
       </div>
