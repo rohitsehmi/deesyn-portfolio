@@ -33,14 +33,14 @@ export function Footer({
         {scale === 'full' && (
           <>
             <div className="footer__top">
-              <Logo height={24} />
+              <Logo height={32} />
               <div className="footer__columns">{columns}</div>
             </div>
             <hr className="footer__rule" />
           </>
         )}
         <div className="footer__bottom">
-          {scale === 'compact' && <Logo height={20} />}
+          {scale === 'compact' && <Logo height={32} />}
           <p className="footer__copy">© {new Date().getFullYear()} Rohit Sehmi</p>
           <ArrowLink href={link.href}>{link.label}</ArrowLink>
         </div>

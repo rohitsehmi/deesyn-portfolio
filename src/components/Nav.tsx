@@ -61,7 +61,7 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, overBa
       data-band={resolved === 'top' ? overBand : undefined}
     >
       <div className="measure nav__inner">
-        <a className="nav__logo" href="/" aria-label="Home"><Logo height={22} /></a>
+        <a className="nav__logo" href="/" aria-label="Home"><Logo height={32} /></a>
         <nav className="nav__links" aria-label="Primary">
           {links.map((l) => (
             <Button key={l.href} variant="ghost" size="sm" href={l.href} aria-current={l.current ? 'page' : undefined}>

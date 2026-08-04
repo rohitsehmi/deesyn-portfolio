@@ -29,7 +29,11 @@
   align-items: center;
   gap: var(--primitive-space-sp600);
 }
+/* The lockup's letterforms occupy y 7..39 of its 48px artwork, so at a given
+   box height they render at two thirds of it. 32 puts them at 21px, which is
+   where the wordmark alone used to sit at height 22. */
 .nav__logo { display: inline-flex; color: var(--semantic-fg-primary); margin-right: auto; }
+.nav__logo .logo { height: var(--primitive-size-s32); width: auto; }
 .nav__logo:focus-visible { outline: 2px solid var(--semantic-border-focus); outline-offset: 4px; border-radius: 4px; }
 .nav__links { display: none; gap: var(--primitive-space-sp200); }
 .nav__actions { display: none; }
