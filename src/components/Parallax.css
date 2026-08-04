@@ -99,6 +99,12 @@
       /* cover: the whole time the section overlaps the viewport. */
       animation-range: cover 0% cover 100%;
     }
+    /* exit: from the top edge leaving the viewport top to the bottom edge doing
+       the same. At the top of a page this is the only reachable stretch, so it
+       is what makes the drift visible rather than theoretical. */
+    .parallax[data-range='exit'] .parallax__image-layer {
+      animation-range: exit 0% exit 100%;
+    }
   }
 }
 

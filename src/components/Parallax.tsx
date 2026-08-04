@@ -10,7 +10,7 @@ import './Parallax.css';
  * effect is not silently absent everywhere else. Also bails on reduced motion,
  * matching the CSS.
  */
-function useScrollFallback(ref: React.RefObject<HTMLElement | null>, drift: string) {
+function useScrollFallback(ref: React.RefObject<HTMLElement | null>, drift: string, range: 'cover' | 'exit') {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -31,10 +31,12 @@ function useScrollFallback(ref: React.RefObject<HTMLElement | null>, drift: stri
     const update = () => {
       frame = 0;
       const r = el.getBoundingClientRect();
-      // 0 when the section's top edge is at the viewport bottom, 1 when its
-      // bottom edge is at the viewport top: the same span as `cover`.
-      const span = window.innerHeight + r.height;
-      const progress = Math.min(1, Math.max(0, (window.innerHeight - r.top) / span));
+      // Mirrors the CSS ranges exactly, or the two paths disagree.
+      const progress = range === 'exit'
+        // 0 with the top edge at the viewport top, 1 with the bottom edge there.
+        ? Math.min(1, Math.max(0, -r.top / r.height))
+        // 0 with the top edge at the viewport bottom, 1 with the bottom edge at the top.
+        : Math.min(1, Math.max(0, (window.innerHeight - r.top) / (window.innerHeight + r.height)));
       layer.style.transform = `translateY(${-progress * distance}px)`;
     };
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
@@ -48,7 +50,7 @@ function useScrollFallback(ref: React.RefObject<HTMLElement | null>, drift: stri
       if (frame) cancelAnimationFrame(frame);
       layer.style.transform = '';
     };
-  }, [ref, drift]);
+  }, [ref, drift, range]);
 }
 
 export interface ParallaxProps {
@@ -64,6 +66,19 @@ export interface ParallaxProps {
   drift?: string;
   /** Content-led height, per the hero note in the banding spec. */
   minHeight?: string;
+  /**
+   * Which stretch of scrolling the drift is spread across.
+   *
+   * `cover` is the whole time the section overlaps the viewport, which is
+   * right for a section in the middle of a page.
+   *
+   * `exit` runs from the section's top edge leaving the viewport top to its
+   * bottom edge doing the same. Use it at the top of a page: there, `cover`
+   * begins before the reader can scroll at all, so on a 78vh hero more than
+   * half the range is unreachable and the drift looks like a fraction of what
+   * was asked for.
+   */
+  range?: 'cover' | 'exit';
   /**
    * Darkens the lower part of the image so content over it clears AA.
    *
@@ -118,6 +133,7 @@ export function Parallax({
   alt,
   drift = '80px',
   minHeight = 'min(78vh, 720px)',
+  range = 'cover',
   scrim = true,
   band,
   underNav = false,
@@ -125,13 +141,14 @@ export function Parallax({
   children
 }: ParallaxProps) {
   const ref = useRef<HTMLElement>(null);
-  useScrollFallback(ref, drift);
+  useScrollFallback(ref, drift, range);
 
   return (
     <section
       ref={ref}
       className="parallax"
       data-band={band}
+      data-range={range}
       data-scrim={scrim ? 'true' : undefined}
       data-under-nav={underNav ? 'true' : undefined}
       style={{ '--parallax-drift': drift, '--parallax-min-height': minHeight } as CSSProperties}

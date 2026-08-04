@@ -33,6 +33,7 @@ Implementation: `src/components/Parallax.tsx` and `src/components/Parallax.css`.
 | `alt` | `string` | **yes** |
 | `drift` | `string` | no |
 | `minHeight` | `string` | no |
+| `range` | `'cover' | 'exit'` | no |
 | `scrim` | `boolean` | no |
 | `band` | `BandRole` | no |
 | `underNav` | `boolean` | no |
@@ -43,6 +44,7 @@ Implementation: `src/components/Parallax.tsx` and `src/components/Parallax.css`.
 
 - `drift` How far the image travels across its whole time on screen. The image layer is exactly this much taller than the section, so the section is covered at every point in the range and can never show a gap. Keep it small. This reads as depth, not as movement.
 - `minHeight` Content-led height, per the hero note in the banding spec.
+- `range` Which stretch of scrolling the drift is spread across. `cover` is the whole time the section overlaps the viewport, which is right for a section in the middle of a page. `exit` runs from the section's top edge leaving the viewport top to its bottom edge doing the same. Use it at the top of a page: there, `cover` begins before the reader can scroll at all, so on a 78vh hero more than half the range is unreachable and the drift looks like a fraction of what was asked for.
 - `scrim` Darkens the lower part of the image so content over it clears AA. Measured against this project's hero image: unscrimmed, the brightest 1% of the text area gives white 3.27:1, which fails. At `bg/scrim` under an inverse band, 70% black, it is 7.99:1, and even the single brightest pixel is 4.57:1. That is why the tonal key below is not optional.
 - `band` The tonal key this section sets. Applied as `data-band` without a scale, because a hero is content-led and does not count toward the band alternation. See the `hero` note in design/banding-export.json.
 - `underNav` Pulls the section up under a transparent nav so the image starts at the top of the page and the nav floats over it, which is the whole point of the pattern. Pair with `Nav overBand` so the nav takes this section's foreground while it is still transparent.

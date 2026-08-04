@@ -34,6 +34,11 @@
       "required": false,
       "note": "Content-led height, per the hero note in the banding spec."
     },
+    "range": {
+      "type": "'cover' | 'exit'",
+      "required": false,
+      "note": "Which stretch of scrolling the drift is spread across. `cover` is the whole time the section overlaps the viewport, which is right for a section in the middle of a page. `exit` runs from the section's top edge leaving the viewport top to its bottom edge doing the same. Use it at the top of a page: there, `cover` begins before the reader can scroll at all, so on a 78vh hero more than half the range is unreachable and the drift looks like a fraction of what was asked for."
+    },
     "scrim": {
       "type": "boolean",
       "required": false,
