@@ -1,0 +1,44 @@
+/* Ordered because exploration has a sequence, and the sequence is the argument.
+   The numbers are not rendered: the reader can count, and "01 / 4" labels are
+   decoration. The <ol> is there for assistive tech. */
+.explorations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--primitive-layout-l48);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .explorations { grid-template-columns: repeat(2, 1fr); gap: var(--primitive-layout-l64); }
+}
+
+.explorations__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp600);
+}
+
+.explorations__media { border-radius: var(--primitive-radius-r20); overflow: hidden; }
+
+.explorations__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp300);
+}
+
+.explorations__title {
+  margin: 0;
+  font: 500 20px/1.25 'Hanken Grotesk', Inter, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  color: var(--semantic-fg-primary);
+  text-wrap: balance;
+}
+
+.explorations__why {
+  margin: 0;
+  max-width: 52ch;
+  font: 400 16px/1.55 Inter, system-ui, sans-serif;
+  color: var(--semantic-fg-secondary);
+  text-wrap: pretty;
+}

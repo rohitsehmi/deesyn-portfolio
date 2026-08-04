@@ -10,3 +10,11 @@ export { Media } from './Media';
 export { Card } from './Card';
 export { Nav } from './Nav';
 export { Footer } from './Footer';
+
+/* Case-study content. Shaped by what a case study has to answer, not by the old page. */
+export { SectionHeading } from './SectionHeading';
+export { Prose } from './Prose';
+export { Metrics, type Metric } from './Metrics';
+export { Explorations, type Exploration } from './Explorations';
+export { Hindsight } from './Hindsight';
+export { Contribution, type ContributionItem } from './Contribution';

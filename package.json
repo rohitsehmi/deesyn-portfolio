@@ -10,6 +10,7 @@
     "tokens": "node tokens/build.mjs && node tokens/css.mjs",
     "specs": "node design/build.mjs",
     "verify": "node tokens/verify.mjs && node design/verify.mjs",
+    "verify:bands": "node design/verify-bands.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "npm run tokens && storybook build",
     "chromatic": "chromatic --exit-zero-on-changes"

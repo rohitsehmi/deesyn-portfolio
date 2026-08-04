@@ -1,0 +1,142 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import { SectionHeading } from '../../components/SectionHeading';
+import { Prose } from '../../components/Prose';
+import { Metrics } from '../../components/Metrics';
+import { Explorations } from '../../components/Explorations';
+import { Hindsight } from '../../components/Hindsight';
+import { Contribution } from '../../components/Contribution';
+import { Media } from '../../components/Media';
+
+/**
+ * DRAFT. Everything marked [NEEDS: …] is a hole the reader scores and the
+ * source page does not fill. They are rendered visibly on purpose: a gap you
+ * can see in the browser gets closed, a gap in a comment does not.
+ *
+ * Facts carried over from heeranmaster.com/home/scaling-a-system are real.
+ * Nothing here is invented, and no metric has been added that the source did
+ * not state.
+ */
+---
+
+<CaseStudy
+  title="Consolidating four design systems into one"
+  standfirst="Expedia Group merged its brands to cut duplication. That meant collapsing several independent design systems into a single platform without flattening the brands that depended on them."
+>
+  <Contribution
+    slot="contribution"
+    items={[
+      { term: 'Role', detail: 'Lead Designer, Expedia Group Design System, moving across from Hotels.com' },
+      { term: 'What I owned', detail: '[NEEDS: the specific surface or component area you personally led, separated from what the squad delivered]' },
+      { term: 'What the team owned', detail: 'A design system community working in squads, grouped by component family' },
+      { term: 'Duration', detail: '2021 to 2023' }
+    ]}
+  />
+
+  <div slot="problem">
+    <SectionHeading standfirst="A reorganisation set the mandate. It did not explain why the existing systems could not simply coexist.">
+      The problem
+    </SectionHeading>
+    <Prose lead>
+      <p>
+        The group consolidated its brands to eliminate duplication and reduce
+        cost. For the design systems teams that meant centralising several
+        systems into one platform, then getting it adopted across products,
+        teams and brands that had not asked for it.
+      </p>
+      <p>
+        [NEEDS: the insight. A mandate is a reason the company acted, not a
+        reason the work was hard or interesting. What did you find when you
+        audited the four systems that changed how you approached the merge?
+        A number here beats a sentence: duplicate component counts, divergence
+        between brands, time lost to rebuilding the same thing.]
+      </p>
+    </Prose>
+  </div>
+
+  <div slot="process">
+    <SectionHeading standfirst="Auditing four systems, choosing one to build on, and graduating components onto it.">
+      How the merge was worked out
+    </SectionHeading>
+    <Prose>
+      <p>
+        We audited the design systems already running across the organisation
+        and moved knowledge between the teams that owned them. We built on
+        Expedia's UDS because of its token setup, which let us map each brand's
+        values into different token levels and keep its look intact rather than
+        averaging the brands together.
+      </p>
+      <p>
+        Refactoring a component onto the new platform was called graduating it:
+        bringing it up to standard for accessibility, dark mode, cross platform
+        use and localisation before it could ship.
+      </p>
+      <p>
+        The original April 2022 date was not reachable from a November 2021
+        start. We descoped capability in the short term and reorganised into
+        squads working on related components, so consolidation decisions could
+        be made once across a family instead of case by case.
+      </p>
+    </Prose>
+
+    <SectionHeading level={3}>Directions we did not take</SectionHeading>
+    <Explorations
+      items={[
+        {
+          title: 'Consolidating Scrollable and Carousel',
+          why: '[NEEDS: what the two components did differently, which one won, and what evidence decided it. This is the one place the source page shows the messy middle, and it is currently an example rather than a decision.]',
+          image: { alt: 'Discovery diagram comparing the Scrollable and Carousel components' }
+        },
+        {
+          title: '[NEEDS: a direction that was explored and rejected]',
+          why: '[NEEDS: what killed it. A reader asks for alternative solutions considered, the trade-offs made based on testing, and why paths were rejected. This section is worth more than the finished screens.]',
+          image: { alt: 'Placeholder for a rejected exploration' }
+        }
+      ]}
+    />
+  </div>
+
+  <div slot="interface">
+    <SectionHeading standfirst="One component set, themed per brand through token levels rather than forked per brand.">
+      What shipped
+    </SectionHeading>
+    <Media
+      alt="Foundation colour ramps and semantic token specifications from the design system"
+      ratio="16-9"
+      caption="[NEEDS: real exports. The reader asks to see complex flows untangled into simple UI, so at least one screen sequence should appear here, not only foundations.]"
+    />
+    <Prose>
+      <p>
+        [NEEDS: this section currently argues that a system exists. A reader
+        asks to see a complex flow made simple. If there is a screen flow you
+        designed on top of this system, it belongs here and it may be the
+        stronger case study on its own.]
+      </p>
+    </Prose>
+  </div>
+
+  <div slot="impact">
+    <SectionHeading standfirst="Adoption held across the organisation. What it did for the people using the products is the part still missing.">
+      Impact
+    </SectionHeading>
+    <Metrics
+      items={[
+        { value: '55', label: 'components graduated to brand theming, accessibility, dark mode, native and localisation' },
+        { value: '1,000+', label: 'active users of the system across the organisation' }
+      ]}
+      source="Figures as published on the original case study. Both measure adoption of the system, not outcomes for end users. [NEEDS: at least one outcome metric, and the measurement window for all of them.]"
+    />
+  </div>
+
+  <div slot="hindsight">
+    <Hindsight>
+      <p>
+        [NEEDS: written from scratch. The source page has no reflection at all,
+        and a reader calls this out as something the team actively looks for.
+        Name a real cost you paid. The descoping decision in early 2022 is the
+        obvious candidate: what did shipping less cost later, and would you make
+        the same call again?]
+      </p>
+    </Hindsight>
+  </div>
+</CaseStudy>
