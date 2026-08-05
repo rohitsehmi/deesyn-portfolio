@@ -3,10 +3,11 @@ import { Button } from './Button';
 import './ButtonGlow.stories.css';
 
 /**
- * EXPERIMENT — not shipped. A rotating conic-gradient border, the `@property`
- * technique, applied to the one button the site actually wants pressed.
+ * The comparison that decided the nav CTA. `OnHover` is what shipped — it lives
+ * in `Nav.css` as `.nav__cta`, not here; this file is the reasoning kept next
+ * to the alternative it was chosen over.
  *
- * Two versions, because the technique is not the question. Where it runs is.
+ * The technique was never the question. Where it runs is.
  *
  * The motion spec on Figma page "Foundations — Revolut" opens with "Frequency
  * decides before taste does", and its gate reads:
@@ -62,11 +63,11 @@ export const AlwaysOn: S = {
   )
 };
 
-/** The same effect, spent where it is earned. */
+/** The same effect, spent where it is earned. This is what shipped. */
 export const OnHover: S = {
   render: () => (
     <Stage
-      label="On hover — recommended"
+      label="On hover — shipped, as .nav__cta"
       note="Identical treatment, triggered by intent instead of by a clock. Idle it costs nothing and adds no motion to a page someone is reading; on hover it is the most alive thing on the site. Hover me."
     >
       <span className="glow" data-mode="hover">

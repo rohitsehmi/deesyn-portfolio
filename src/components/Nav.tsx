@@ -85,17 +85,26 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, onMedi
             Ghost is not a primary action — it exists for exactly this, the
             tertiary links that sit around the one thing worth doing.
           */}
-          {links.map((l) => (
-            <Button
-              key={l.href}
-              variant={l.cta ? 'primary' : 'ghost'}
-              size="sm"
-              href={l.href}
-              aria-current={l.current ? 'page' : undefined}
-            >
-              {l.label}
-            </Button>
-          ))}
+          {links.map((l) => {
+            const button = (
+              <Button
+                variant={l.cta ? 'primary' : 'ghost'}
+                size="sm"
+                href={l.href}
+                aria-current={l.current ? 'page' : undefined}
+              >
+                {l.label}
+              </Button>
+            );
+            /*
+              The CTA gets a wrapper because Button owns its own className and
+              the glow needs a pseudo-element behind the pill rather than on it.
+              Presentational only — it adds no semantics and no tab stop.
+            */
+            return l.cta
+              ? <span key={l.href} className="nav__cta">{button}</span>
+              : <span key={l.href} className="nav__link">{button}</span>;
+          })}
         </nav>
         <div className="nav__actions">{actions}</div>
         <div className="nav__menu">

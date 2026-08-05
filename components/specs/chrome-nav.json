@@ -8,7 +8,7 @@
     "set": "Chrome/Nav",
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
-  "description": "Height binds to Size/Nav (56). The inner container caps at Size/Max Width (1000) via maxWidth, so the bar spans full-bleed while its content stays on the measure.\n\nstate=top is transparent and sits over whatever band is beneath it, which is how it inherits that band's foreground for free. state=scrolled takes bg/canvas plus a 1px border/subtle hairline — no shadow, per the banding system.\n\nNav links are ghost buttons. That is what the ghost variant exists for: a low-emphasis action that is still a real button, with real hit area and real press feedback.\n\nCode-only props: href per link, aria-current, skip-to-content target.\n\nThe actions slot is 140x56 and fills vertically. A SLOT cannot hug on either axis — it is FIXED or FILL — so it needs an explicit size and its content needs positioning inside it.",
+  "description": "Height binds to Size/Nav (56). The inner container caps at Size/Max Width (1000) via maxWidth, so the bar spans full-bleed while its content stays on the measure.\n\nstate=top is transparent and sits over whatever band is beneath it, which is how it inherits that band's foreground for free. state=scrolled takes bg/canvas plus a 1px border/subtle hairline — no shadow, per the banding system.\n\nOne link is primary and the rest are ghost. Three ghost links gave Contact the same weight as CV, which left the page with no opinion about what it wanted the reader to do. There can only be one: a second would put the hierarchy straight back. Ghost is what the other links are for — a low-emphasis action that is still a real button, with real hit area and real press feedback.\n\nCODE-ONLY, AND DELIBERATE: the primary link carries a rotating conic ring on hover and focus. It cannot be a variant here — it is an animation, and it is bound to a pointer state Figma cannot express. Hover-only is the design, not a limitation: the motion gate rates a fixed nav at 100+/day, which resolves to none, while hovering Contact is rare and rare earns delight. A ring rather than a bloom, because site chrome carries no box-shadow.\n\nCode-only props: href per link, aria-current, cta on the one primary link, skip-to-content target.\n\nThe actions slot is 140x56 and fills vertically. A SLOT cannot hug on either axis — it is FIXED or FILL — so it needs an explicit size and its content needs positioning inside it.",
   "donts": [
     "Do not give state=top a fill. Transparent is the point — it inherits whatever band it sits over.",
     "Never add a shadow to state=scrolled. The hairline is the seam; revolut.com has zero box-shadow.",
@@ -103,15 +103,22 @@
             "ref": "primitive.space.sp200",
             "type": "dimension",
             "value": "6px"
+          },
+          "bg": {
+            "token": "action/primary-bg",
+            "ref": "semantic.*.action.primary-bg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
           }
         },
         "inner/links/Action/Button/leading/Vector": {
           "fg": {
-            "token": "action/secondary-fg",
-            "ref": "semantic.*.action.secondary-fg",
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#ffffff",
+            "dark": "#191c1f"
           }
         },
         "inner/links/Action/Button/label": {
@@ -125,20 +132,20 @@
             "letterSpacing": "0"
           },
           "fg": {
-            "token": "action/secondary-fg",
-            "ref": "semantic.*.action.secondary-fg",
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#ffffff",
+            "dark": "#191c1f"
           }
         },
         "inner/links/Action/Button/trailing/Vector": {
           "fg": {
-            "token": "action/secondary-fg",
-            "ref": "semantic.*.action.secondary-fg",
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#ffffff",
+            "dark": "#191c1f"
           }
         }
       }
@@ -226,15 +233,22 @@
             "ref": "primitive.space.sp200",
             "type": "dimension",
             "value": "6px"
+          },
+          "bg": {
+            "token": "action/primary-bg",
+            "ref": "semantic.*.action.primary-bg",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
           }
         },
         "inner/links/Action/Button/leading/Vector": {
           "fg": {
-            "token": "action/secondary-fg",
-            "ref": "semantic.*.action.secondary-fg",
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#ffffff",
+            "dark": "#191c1f"
           }
         },
         "inner/links/Action/Button/label": {
@@ -248,20 +262,20 @@
             "letterSpacing": "0"
           },
           "fg": {
-            "token": "action/secondary-fg",
-            "ref": "semantic.*.action.secondary-fg",
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#ffffff",
+            "dark": "#191c1f"
           }
         },
         "inner/links/Action/Button/trailing/Vector": {
           "fg": {
-            "token": "action/secondary-fg",
-            "ref": "semantic.*.action.secondary-fg",
+            "token": "action/primary-fg",
+            "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#ffffff",
+            "dark": "#191c1f"
           }
         }
       }

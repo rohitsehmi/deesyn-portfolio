@@ -4,9 +4,11 @@ Height binds to Size/Nav (56). The inner container caps at Size/Max Width (1000)
 
 state=top is transparent and sits over whatever band is beneath it, which is how it inherits that band's foreground for free. state=scrolled takes bg/canvas plus a 1px border/subtle hairline — no shadow, per the banding system.
 
-Nav links are ghost buttons. That is what the ghost variant exists for: a low-emphasis action that is still a real button, with real hit area and real press feedback.
+One link is primary and the rest are ghost. Three ghost links gave Contact the same weight as CV, which left the page with no opinion about what it wanted the reader to do. There can only be one: a second would put the hierarchy straight back. Ghost is what the other links are for — a low-emphasis action that is still a real button, with real hit area and real press feedback.
 
-Code-only props: href per link, aria-current, skip-to-content target.
+CODE-ONLY, AND DELIBERATE: the primary link carries a rotating conic ring on hover and focus. It cannot be a variant here — it is an animation, and it is bound to a pointer state Figma cannot express. Hover-only is the design, not a limitation: the motion gate rates a fixed nav at 100+/day, which resolves to none, while hovering Contact is rare and rare earns delight. A ring rather than a bloom, because site chrome carries no box-shadow.
+
+Code-only props: href per link, aria-current, cta on the one primary link, skip-to-content target.
 
 The actions slot is 140x56 and fills vertically. A SLOT cannot hug on either axis — it is FIXED or FILL — so it needs an explicit size and its content needs positioning inside it.
 
@@ -52,10 +54,11 @@ Every value is a token reference, not a literal. `.` is the component root.
 | `inner/links/Action/Button` | radius | `Radius/Round` |
 | `inner/links/Action/Button` | paddingX | `Space/sp500` |
 | `inner/links/Action/Button` | gap | `Space/sp200` |
-| `inner/links/Action/Button/leading/Vector` | fg | `action/secondary-fg` |
+| `inner/links/Action/Button` | bg | `action/primary-bg` |
+| `inner/links/Action/Button/leading/Vector` | fg | `action/primary-fg` |
 | `inner/links/Action/Button/label` | textStyle | `Emphasis/2` |
-| `inner/links/Action/Button/label` | fg | `action/secondary-fg` |
-| `inner/links/Action/Button/trailing/Vector` | fg | `action/secondary-fg` |
+| `inner/links/Action/Button/label` | fg | `action/primary-fg` |
+| `inner/links/Action/Button/trailing/Vector` | fg | `action/primary-fg` |
 
 ### layout=desktop, state=scrolled
 
@@ -72,10 +75,11 @@ Every value is a token reference, not a literal. `.` is the component root.
 | `inner/links/Action/Button` | radius | `Radius/Round` |
 | `inner/links/Action/Button` | paddingX | `Space/sp500` |
 | `inner/links/Action/Button` | gap | `Space/sp200` |
-| `inner/links/Action/Button/leading/Vector` | fg | `action/secondary-fg` |
+| `inner/links/Action/Button` | bg | `action/primary-bg` |
+| `inner/links/Action/Button/leading/Vector` | fg | `action/primary-fg` |
 | `inner/links/Action/Button/label` | textStyle | `Emphasis/2` |
-| `inner/links/Action/Button/label` | fg | `action/secondary-fg` |
-| `inner/links/Action/Button/trailing/Vector` | fg | `action/secondary-fg` |
+| `inner/links/Action/Button/label` | fg | `action/primary-fg` |
+| `inner/links/Action/Button/trailing/Vector` | fg | `action/primary-fg` |
 
 ### layout=mobile, state=top
 

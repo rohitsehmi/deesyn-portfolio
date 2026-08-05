@@ -51,3 +51,70 @@
   .nav__links, .nav__actions { display: inline-flex; align-items: center; }
   .nav__menu { display: none; }
 }
+
+.nav__link, .nav__cta { display: inline-flex; }
+
+/* ---- the CTA's glow --------------------------------------------------------
+
+  A rotating conic ring behind the one primary action, on hover and focus only.
+
+  Hover-only is the whole design, not a compromise. The motion spec opens with
+  "frequency decides before taste does", and its gate rates a fixed nav — on
+  every page of every visit — at 100+/day, which resolves to `none`. A ring
+  looping there sits beside whatever someone is trying to read for as long as
+  they read it. Hovering Contact is the other end of that table: it happens
+  once, if at all, at the moment someone decides to get in touch. `rare` earns
+  `delight`.
+
+  Two departures from the version this came from, both from the same rule set.
+  It is a ring rather than a bloom, because there is no box-shadow in site
+  chrome — depth is banding and luminance. And it runs on the site's own accent
+  rather than a rainbow, because a rainbow is someone else's brand.
+
+  One rule it genuinely bends: "animate transform and opacity only". This
+  interpolates an angle that drives a background, so it repaints rather than
+  composites. On one small element, only while pointed at, that is a cost worth
+  paying — but it is why this does not become a pattern.
+*/
+@property --nav-cta-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.nav__cta { position: relative; border-radius: var(--primitive-radius-round); isolation: isolate; }
+
+.nav__cta::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--nav-cta-angle),
+    transparent 0deg,
+    var(--semantic-action-accent-bg) 60deg,
+    var(--semantic-fg-link) 120deg,
+    transparent 200deg
+  );
+  opacity: 0;
+  transition: opacity var(--semantic-duration-press) var(--semantic-easing-out);
+}
+
+@keyframes nav-cta-spin { to { --nav-cta-angle: 360deg; } }
+
+/*
+  :focus-within, not just :hover — a keyboard user gets the same affordance.
+  The motion rule against animating keyboard-initiated actions is about the
+  action itself; this is the target advertising that it is focused, and it is
+  the same treatment the pointer gets.
+*/
+@media (hover: hover) and (pointer: fine) {
+  .nav__cta:hover::before { opacity: 1; animation: nav-cta-spin 3s linear infinite; }
+}
+.nav__cta:focus-within::before { opacity: 1; animation: nav-cta-spin 3s linear infinite; }
+
+/* Keep the opacity, drop the movement. */
+@media (prefers-reduced-motion: reduce) {
+  .nav__cta::before { animation: none !important; }
+}
