@@ -23,13 +23,18 @@ export interface NavProps {
    * over a dark hero it would otherwise render dark text on a dark image.
    *
    * Absolute rather than a band role, for the same reason the hero itself is:
-   * a photograph is dark in both themes, so a relative role would send the nav
-   * the wrong way in one of them.
+   * a photograph does not flip with the theme, so a relative role would send
+   * the nav the wrong way in one of them.
+   *
+   * Takes the image's tonality, which must match the `tone` on the media it
+   * floats over — `true` is shorthand for the dark default. They are two
+   * components reading one property of one image, and nothing but a person
+   * looking at the picture can tell them what it is.
    *
    * Dropped the moment it scrolls, because a scrolled nav takes bg/canvas and
    * needs the page's own foreground again.
    */
-  onMedia?: boolean;
+  onMedia?: boolean | 'dark' | 'light';
 }
 
 /**
@@ -70,7 +75,7 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, onMedi
       className="nav"
       data-state={resolved}
       data-sticky={sticky ? 'true' : undefined}
-      data-on-media={onMedia && resolved === 'top' ? 'true' : undefined}
+      data-on-media={onMedia && resolved === 'top' ? (onMedia === 'light' ? 'light' : 'true') : undefined}
     >
       <div className="measure nav__inner">
         <a className="nav__logo" href="/" aria-label="Home"><Logo height={32} /></a>

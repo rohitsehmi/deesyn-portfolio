@@ -7,8 +7,41 @@ import { CaseStudyTile } from '../components/CaseStudyTile';
 import { Parallax } from '../components/Parallax';
 import { liveStudies, studyPath } from '../data/studies';
 import { linksFor } from '../data/nav';
+import { getImage } from 'astro:assets';
+import heroSource from '../assets/hero-parallax.png';
 
 const links = linksFor(Astro.url.pathname);
+
+/*
+  Rohit's own image, generated to reader rather than licensed or borrowed: an
+  abstract composition standing for design systems and product design together,
+  which is what the two case studies are. The Aa tile, the ruled card and the
+  repeated forms are the design-system half; nothing in it depicts a real
+  product, which is what keeps it clear of the "fake screenshot" failure mode.
+  It replaces a Revolut marketing asset that was only ever scaffolding to build
+  the parallax against.
+
+  The hero is the LCP element, so it is the one image on the site whose weight
+  is worth this. It lives in src/assets/, not public/, which is the whole point:
+  public/ is copied byte for byte, src/assets/ goes through the build. Astro
+  emits WebP at each width and hashes the filenames, so they cache immutably.
+  1.5MB of source PNG becomes 38kB at the largest width actually served.
+
+  The list runs past the source's own width on purpose. Astro will not upscale,
+  so it silently drops the widths above it — keeping them means a larger image
+  starts using them the day it is dropped in, rather than the list quietly
+  capping a better source at this one's dimensions.
+
+  Do not pass heroSource.width/height into the markup. That reference is what
+  pulls the unoptimised original into dist/; without it Astro prunes it, and
+  the image layer is absolutely positioned so intrinsic size reserves nothing.
+*/
+const hero = await getImage({
+  src: heroSource,
+  format: 'webp',
+  widths: [640, 960, 1280, 1600, 1920, 2560],
+  sizes: '100vw'
+});
 ---
 <Base title="Rohit Sehmi · Product Design" pageEnd="sunken">
   {/*
@@ -17,19 +50,44 @@ const links = linksFor(Astro.url.pathname);
     stack and would otherwise render dark text on a dark image. It drops back to
     the page's own foreground the moment it takes bg/canvas.
   */}
-  <Nav client:load sticky onMedia links={links} />
+  <Nav client:load sticky onMedia="light" links={links} />
 
   <main id="main">
     {/*
       The hero is content-led and does not count toward the band alternation,
       per the hero note in the banding spec. It carries data-on-media rather
       than a band role: bands are relative and flip with the theme, and a
-      photograph does not. Absolute is also what keeps bg/scrim at 70% in both
-      themes, which is what makes white text over this image clear AA.
+      photograph does not.
+
+      tone="light" because this image is pale, which turns off the scrim. The
+      alternative was measured and rejected: white text over it needs the full
+      70% black scrim to clear AA — 60% fails the standfirst at 3.93:1 — and at
+      70% the image reads as a grey wash with none of the quality it was chosen
+      for. Dark text on the same image, unscrimmed, is 9.48:1.
+
+      Re-measure with `node design/measure-media-contrast.mjs` if the image
+      changes. Without a scrim the contrast comes from the composition, so it is
+      a property of this file rather than of the component.
+
+      objectPosition is left, and on a phone that is the whole ballgame: cover
+      crops this 1.87:1 image to about a third of its width at 390px. Centred,
+      that third is the busy middle and 31% of glyph pixels fail. Every
+      alternative was measured against this image and lost — 20% center leaves
+      0.1% failing with the blue arc running straight through "product work",
+      and the white-scrim variants that pass do so by washing the picture out.
+      Left is nearly empty wall on a phone, which is the honest cost: this is a
+      1.87:1 composition with its subject on the right, and no portrait crop of
+      it can show the subject and carry the type at the same time. Fixing that
+      properly means a second, taller crop of the image, not a different value
+      here.
     */}
     <Parallax
-      src="/media/hero-parallax.png"
-      alt="[NEEDS: replace with your own imagery. This is a Revolut marketing asset, used here to build the effect against.]"
+      src={hero.src}
+      srcSet={hero.srcSet.attribute}
+      sizes="100vw"
+      tone="light"
+      objectPosition="left center"
+      alt="An abstract still life in cream, off-white and deep blue: a large disc behind a frosted glass panel, a tile lettered Aa, a card of ruled placeholder lines, a sphere and a ribbed panel, arranged on pale steps with a thin blue line curving through them."
       priority
       client:visible
       range="exit"
@@ -83,12 +141,26 @@ const links = linksFor(Astro.url.pathname);
     .home-hero__title { font: var(--type-display-l); letter-spacing: var(--type-display-l-tracking); }
   }
 
+  /*
+    32ch, not the usual 52ch, and fg/primary rather than fg/secondary. Both are
+    forced by the unscrimmed hero and both were measured, glyph by glyph:
+
+    - fg/secondary is #717173 in this tonality, a grey built for 4.87:1 on pure
+      white. The image's wall is not pure white, so it fails AA on 100% of its
+      glyph pixels at every width tested. There is no width that rescues it.
+    - At 52ch the line runs off the plain wall into the frosted square and the
+      navy behind it: 12.4% of glyph pixels fail even at fg/primary. 40ch still
+      fails 4.5%. 32ch is the first clean width, at 8.92:1.
+
+    Hierarchy comes from size here instead of colour, which is the trade a
+    scrimless hero makes.
+  */
   .home-hero__standfirst {
     margin: 0;
-    max-width: 52ch;
+    max-width: 32ch;
     font: var(--type-body-l);
     letter-spacing: var(--type-body-l-tracking);
-    color: var(--semantic-fg-secondary);
+    color: var(--semantic-fg-primary);
     text-wrap: pretty;
   }
   @media (min-width: 768px) {

@@ -56,6 +56,27 @@ export interface ParallaxProps {
   src: string;
   alt: string;
   /**
+   * Responsive candidates for `src`, as an `img` srcset string.
+   *
+   * This component stays a plain React component so Storybook and Chromatic
+   * treat it like any other, which means it cannot import Astro's image
+   * pipeline. The page does that and passes the result down: `getImage()` in
+   * `index.astro` emits the WebP widths, this renders them.
+   *
+   * Without it the browser gets one file at one size. The source hero is a
+   * 3840x2400 PNG, and it is the LCP element on the page it opens.
+   */
+  srcSet?: string;
+  /** How wide the image renders. Full-bleed here, so `100vw`. */
+  sizes?: string;
+  /*
+    Deliberately no width/height. There is nothing for them to reserve: the
+    image layer is `position: absolute; inset: 0`, so it is out of flow and the
+    section's height comes from `min-height` and its content. The intrinsic size
+    cannot move anything, and passing it means reading it off the source file —
+    which is what pulls the unoptimised original into the build output.
+  */
+  /**
    * How far the image travels across its whole time on screen. The image layer
    * is exactly this much taller than the section, so the section is covered at
    * every point in the range and can never show a gap.
@@ -79,12 +100,40 @@ export interface ParallaxProps {
    */
   range?: 'cover' | 'exit';
   /**
+   * The tonality of the image, which is a property of the file and not of the
+   * theme. `dark` puts the light foreground over it, `light` the dark one.
+   *
+   * This is the half of "media is absolute" that the first version left
+   * implicit. Absolute is not the same as dark: the rule is that the image does
+   * not flip with the theme, not that every image is a dark photograph. Get it
+   * wrong on a pale image and the only way back to AA is a scrim heavy enough
+   * to destroy the thing it is protecting — measured on this project's hero,
+   * white text needed the full 70% black, and at 70% the image is gone.
+   */
+  tone?: 'dark' | 'light';
+  /**
+   * `object-position` for the image, as plain CSS.
+   *
+   * Matters far more than it looks. The section is full-bleed and the image is
+   * `object-fit: cover`, so a narrow viewport crops it hard on the horizontal —
+   * at 390px this project's hero loses about two thirds of its width. Centred,
+   * the part it keeps is the middle, and if the image's quiet area is off to
+   * one side the text lands on the busiest region of the picture at exactly the
+   * width where there is least room to recover.
+   *
+   * Measured here: centred, the pale hero failed AA on 33% of glyph pixels at
+   * 390px while passing comfortably at 1440px. Anchoring left fixed it and
+   * changed nothing on desktop, where the image is not cropped horizontally at
+   * all.
+   */
+  objectPosition?: string;
+  /**
    * Darkens the lower part of the image so content over it clears AA.
    *
-   * Measured against this project's hero image: unscrimmed, the brightest 1%
-   * of the text area gives white 3.27:1, which fails. At `bg/scrim` under an
-   * inverse band, 70% black, it is 7.99:1, and even the single brightest pixel
-   * is 4.57:1. That is why the tonal key below is not optional.
+   * Defaults to on for a dark image and off for a light one, because a black
+   * scrim under a dark foreground actively removes contrast rather than adding
+   * it. A pale image earns legibility from composition instead — see the
+   * measured quiet-zone widths in `design/measure-media-contrast.mjs`.
    */
   scrim?: boolean;
   /** The LCP element on any page it opens. Should not lazy-load. */
@@ -113,6 +162,10 @@ export interface ParallaxProps {
  * inverts in one of the two themes, which is white text in light mode and
  * dark text in dark mode over the same dark image.
  *
+ * `tone` picks which absolute. It is a property of the image file, not of the
+ * page, and it is the one thing here that cannot be inferred: only a person
+ * looking at the picture knows whether it is dark or pale.
+ *
  * The timing function is `linear` and must stay that way. Scroll position is
  * the timeline, so easing would decouple the image from the reader's finger.
  *
@@ -123,10 +176,14 @@ export interface ParallaxProps {
 export function Parallax({
   src,
   alt,
+  srcSet,
+  sizes,
   drift = '80px',
   minHeight = 'min(78vh, 720px)',
   range = 'cover',
-  scrim = true,
+  tone = 'dark',
+  objectPosition = 'center',
+  scrim = tone === 'dark',
   priority = false,
   children
 }: ParallaxProps) {
@@ -137,15 +194,17 @@ export function Parallax({
     <section
       ref={ref}
       className="parallax"
-      data-on-media="true"
+      data-on-media={tone === 'light' ? 'light' : 'true'}
       data-range={range}
       data-scrim={scrim ? 'true' : undefined}
-      style={{ '--parallax-drift': drift, '--parallax-min-height': minHeight } as CSSProperties}
+      style={{ '--parallax-drift': drift, '--parallax-min-height': minHeight, '--parallax-object-position': objectPosition } as CSSProperties}
     >
       <div className="parallax__image-layer">
         <img
           className="parallax__image"
           src={src}
+          srcSet={srcSet}
+          sizes={sizes}
           alt={alt}
           loading={priority ? 'eager' : 'lazy'}
           decoding="async"

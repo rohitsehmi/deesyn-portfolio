@@ -20,6 +20,10 @@ A photograph does not. Over media the foreground has to be absolute or it
 inverts in one of the two themes, which is white text in light mode and
 dark text in dark mode over the same dark image.
 
+`tone` picks which absolute. It is a property of the image file, not of the
+page, and it is the one thing here that cannot be inferred: only a person
+looking at the picture knows whether it is dark or pale.
+
 The timing function is `linear` and must stay that way. Scroll position is
 the timeline, so easing would decouple the image from the reader's finger.
 
@@ -37,19 +41,27 @@ Implementation: `src/components/Parallax.tsx` and `src/components/Parallax.css`.
 |---|---|---|
 | `src` | `string` | **yes** |
 | `alt` | `string` | **yes** |
+| `srcSet` | `string` | no |
+| `sizes` | `string` | no |
 | `drift` | `string` | no |
 | `minHeight` | `string` | no |
 | `range` | `'cover' | 'exit'` | no |
+| `tone` | `'dark' | 'light'` | no |
+| `objectPosition` | `string` | no |
 | `scrim` | `boolean` | no |
 | `priority` | `boolean` | no |
 | `children` | `ReactNode` | no |
 
 ### Property notes
 
+- `srcSet` Responsive candidates for `src`, as an `img` srcset string. This component stays a plain React component so Storybook and Chromatic treat it like any other, which means it cannot import Astro's image pipeline. The page does that and passes the result down: `getImage()` in `index.astro` emits the WebP widths, this renders them. Without it the browser gets one file at one size. The source hero is a 3840x2400 PNG, and it is the LCP element on the page it opens.
+- `sizes` How wide the image renders. Full-bleed here, so `100vw`.
 - `drift` How far the image travels across its whole time on screen. The image layer is exactly this much taller than the section, so the section is covered at every point in the range and can never show a gap. Keep it small. This reads as depth, not as movement.
 - `minHeight` Content-led height, per the hero note in the banding spec.
 - `range` Which stretch of scrolling the drift is spread across. `cover` is the whole time the section overlaps the viewport, which is right for a section in the middle of a page. `exit` runs from the section's top edge leaving the viewport top to its bottom edge doing the same. Use it at the top of a page: there, `cover` begins before the reader can scroll at all, so on a 78vh hero more than half the range is unreachable and the drift looks like a fraction of what was asked for.
-- `scrim` Darkens the lower part of the image so content over it clears AA. Measured against this project's hero image: unscrimmed, the brightest 1% of the text area gives white 3.27:1, which fails. At `bg/scrim` under an inverse band, 70% black, it is 7.99:1, and even the single brightest pixel is 4.57:1. That is why the tonal key below is not optional.
+- `tone` The tonality of the image, which is a property of the file and not of the theme. `dark` puts the light foreground over it, `light` the dark one. This is the half of "media is absolute" that the first version left implicit. Absolute is not the same as dark: the rule is that the image does not flip with the theme, not that every image is a dark photograph. Get it wrong on a pale image and the only way back to AA is a scrim heavy enough to destroy the thing it is protecting — measured on this project's hero, white text needed the full 70% black, and at 70% the image is gone.
+- `objectPosition` `object-position` for the image, as plain CSS. Matters far more than it looks. The section is full-bleed and the image is `object-fit: cover`, so a narrow viewport crops it hard on the horizontal — at 390px this project's hero loses about two thirds of its width. Centred, the part it keeps is the middle, and if the image's quiet area is off to one side the text lands on the busiest region of the picture at exactly the width where there is least room to recover. Measured here: centred, the pale hero failed AA on 33% of glyph pixels at 390px while passing comfortably at 1440px. Anchoring left fixed it and changed nothing on desktop, where the image is not cropped horizontally at all.
+- `scrim` Darkens the lower part of the image so content over it clears AA. Defaults to on for a dark image and off for a light one, because a black scrim under a dark foreground actively removes contrast rather than adding it. A pale image earns legibility from composition instead — see the measured quiet-zone widths in `design/measure-media-contrast.mjs`.
 - `priority` The LCP element on any page it opens. Should not lazy-load.
 
 ## Don't
@@ -67,6 +79,7 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 |---|---|---|
 | `.parallax` | min-height | `--parallax-min-height` (local property, not a token) |
 | `.parallax__image-layer` | height | `--parallax-drift` (local property, not a token) |
+| `.parallax__image` | object-position | `--parallax-object-position` (local property, not a token) |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
 | `.parallax__content` | padding-block | `primitive.layout.l64` |

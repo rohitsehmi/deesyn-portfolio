@@ -119,12 +119,23 @@ lines.push('}', '');
 // weakens from 70% to 40% at the same moment, so the contrast drops exactly
 // where it was already doing the most work.
 //
-// This is absolute. It always resolves to the dark-mode values, whatever the
-// page theme is, because the surface underneath it does not change. Emitted
-// last so it wins over the theme blocks above.
-lines.push('/* Content over media. Absolute, not relative: the image is dark in both themes. */');
+// This is absolute. It always resolves to one mode's values, whatever the page
+// theme is, because the surface underneath it does not change. Emitted last so
+// it wins over the theme blocks above.
+//
+// Two tonalities, because "absolute" is not the same as "dark". The default
+// assumes a dark photograph and emits the dark-mode values. A pale image needs
+// the light-mode values emitted just as unconditionally — otherwise the only
+// way to make text legible on it is a scrim heavy enough to destroy it.
+// Measured on the pale hero: white text needed 70% black to clear AA, which is
+// the point at which the image is gone.
+lines.push('/* Content over media. Absolute, not relative: the image does not flip with the theme. */');
 lines.push('[data-on-media] {');
 lines.push(asBlock(Object.entries(darkPairs), '  '));
+lines.push('}', '');
+lines.push('/* A pale image. Same absolute rule, the other tonality. */');
+lines.push('[data-on-media="light"] {');
+lines.push(asBlock(lightDecls, '  '));
 lines.push('}', '');
 
 // ---- type styles ----------------------------------------------------------

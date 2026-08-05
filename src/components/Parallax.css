@@ -29,11 +29,21 @@
   will-change: transform;
 }
 
+/*
+  object-position is set by the component, not fixed here, because which part of
+  an image survives the crop is a property of that image.
+
+  Full-bleed plus `cover` means the horizontal crop grows as the viewport
+  narrows — at 390px this project's hero keeps about a third of its width. If
+  the image's quiet area is off to one side, centring throws it away exactly
+  where the text has least room, which is how a hero that measures clean on a
+  desktop fails a third of its glyph pixels on a phone.
+*/
 .parallax__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: var(--parallax-object-position, center);
   display: block;
 }
 
@@ -41,10 +51,14 @@
   Full strength across the lower 60%, fading out above it. Content is bottom
   aligned so it always sits in the covered part.
 
-  bg/scrim is 40% black on a light band and 70% on a dark one. Under the inverse
-  band a hero over photography should be using, it resolves to 70%, which is
-  what carries the contrast. Measured on this project's hero image: 7.99:1 for
-  the brightest 1% of the text area, 4.57:1 at the single brightest pixel.
+  Only for a dark image. bg/scrim is black, so under `tone="light"` it would be
+  subtracting contrast from a dark foreground rather than adding it — which is
+  why `scrim` defaults to off there rather than being merely discouraged.
+
+  On a dark image it is not optional and there is no headroom in it: measured on
+  the pale hero, white text needed the full 70% to clear AA and failed the
+  standfirst at 60% (3.93:1). A scrim is what you use when the image cannot
+  carry the type on its own, and at that strength the image is mostly gone.
 */
 .parallax[data-scrim='true'] .parallax__scrim {
   position: absolute;

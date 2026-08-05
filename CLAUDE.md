@@ -13,7 +13,8 @@ npm run dev          # Astro dev server
 npm run storybook    # component workshop
 npm run tokens       # tokens.json -> src/styles/tokens.css
 npm run specs        # Figma export + code-only components -> <domain>/specs/
-npm run verify       # token, component and CSS integrity, exits non-zero on failure
+npm run typecheck    # tsc --noEmit; nothing else in the repo reads TypeScript
+npm run verify       # typecheck + token, component and CSS integrity, exits non-zero on failure
 npm run verify:bands # band adjacency, linted off built HTML (run after build)
 npm run chromatic    # visual regression (needs CHROMATIC_PROJECT_TOKEN)
 ```
@@ -154,7 +155,7 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 
 `design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-04: `4097978953`, 132 entries. See `design/README.md`.
 
-**Three checksums, three sources.** Tokens `4115829316`. Figma components `4097978953`. Banding spec `611136477`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-04). Code-only specs print `1319375170` but have no Figma counterpart to match, by definition.
+**Three checksums, three sources.** Tokens `4115829316`. Figma components `4097978953`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `2296338865` but have no Figma counterpart to match, by definition.
 
 **Six components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. 17 React components, 17 specs.
 
@@ -162,11 +163,23 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 
 `design/verify-bands.mjs` reads its rules from `design/banding-export.json`, measured off the Figma page rather than transcribed. **Every rule id in the spec must have a check or an explicit "covered elsewhere" declaration**, so adding a rule in Figma fails the build until someone implements it.
 
+**`npm run typecheck` is part of `verify`, added 2026-08-05, because nothing else in the repo read TypeScript.** `astro build` transpiles without checking and Storybook renders a story whose props no longer exist rather than failing — which is how three stale `band="inverse"` props on `Parallax` survived the change that removed the prop, and five stories sat un-typechecked besides. `tsc` covers `.ts`/`.tsx`; it does not read `.astro`, which would need `@astrojs/check`.
+
 **Responsive type steps between two styles on the scale at a breakpoint; it never clamps.** A clamp renders sizes that exist in no design file. The case-study hero runs `display.s -> display.m -> display.l`.
 
 **Measured vs authored, kept apart.** `design/figma-export.json` is read off the nodes — nobody wrote it, so it cannot flatter the system. `design/usage-rules.json` is authored: the failure modes someone would actually hit (ghost is not a primary action; never ship an icon-only button without `aria-label`; never fake a product UI out of rectangles). `build.mjs` merges them into each spec; the files stay separate so it is obvious which is which. Same split in Figma: `getSharedPluginData('spec','contract')` measured, `…'donts'` authored.
 
 **Each component section on canvas carries** its reasoning (rendered from the set's own `description`, one source), its don't-rules, a readable contract table, and an in-context usage example in both a base and an inverse band. The raw contract JSON is deliberately *not* on canvas — a 12,000px JSON wall is documentation theatre. Machines read it from plugin data and the repo.
+
+## Images
+
+**Images go in `src/assets/`, not `public/`.** `public/` is copied byte for byte; `src/assets/` goes through the build, so `getImage()` emits WebP at each width with hashed, immutably cacheable filenames. The hero was a 7.6MB 3840×2400 PNG served as-is and is the LCP element; it is now six WebP widths from 16kB to 265kB, and a typical desktop pulls 137kB.
+
+`Parallax` stays a plain React component so Storybook and Chromatic treat it like any other, which means it cannot import Astro's image pipeline. The page calls `getImage()` and passes `srcSet` and `sizes` down. Storybook imports the same file with Vite's **`?url` suffix** — a bare `.png` import is typed `ImageMetadata` by Astro but resolves to a URL string under plain Vite, and the suffix makes both agree.
+
+**Never pass the source image's `width`/`height` into rendered output.** Referencing `heroSource.width` is what pulls the unoptimised 7.6MB original into `dist/`; drop it and Astro prunes the original. It buys nothing here anyway — `.parallax__image-layer` is `position: absolute`, so intrinsic size cannot move anything.
+
+Storybook still ships the full-size PNG, deliberately: the scrim-contrast stories need the real image, and Chromatic is access-controlled and not a performance surface.
 
 ## Storybook and Chromatic
 
@@ -197,7 +210,20 @@ Bands are **relative, not absolute**: a band declares a tonal role and the mode 
 
 Don't reach for `bg/inverse` when you mean a band — it's `#191c1f`, the app surface, not band black.
 
-**Bands are relative. Media is absolute.** `inverse` means *this band in the other theme*, so it flips when the theme flips. That is right for a band whose fill is a token and wrong over a photograph, which is dark in both themes: the foreground goes white in light mode and dark in dark mode over the same image, and `bg/scrim` weakens from 70% to 40% at the same moment. Content over media carries **`data-on-media`** instead, which `tokens/css.mjs` emits last and unconditionally from the dark-mode values. Recorded in the Figma spec as its own `media` key, deliberately not in `rules[]`: it is not an adjacency constraint, and the band linter demands an implementation for every rule id it finds there. Used by `Parallax` and by `Nav onMedia` while it is transparent over the hero.
+**Bands are relative. Media is absolute.** `inverse` means *this band in the other theme*, so it flips when the theme flips. That is right for a band whose fill is a token and wrong over a photograph, which does not change with the theme: the foreground would go white in light mode and dark in dark mode over the same image, and `bg/scrim` would weaken from 70% to 40% at the same moment. Content over media carries **`data-on-media`** instead, which `tokens/css.mjs` emits last and unconditionally. Recorded in the Figma spec as its own `media` key, deliberately not in `rules[]`: it is not an adjacency constraint, and the band linter demands an implementation for every rule id it finds there. Used by `Parallax` and by `Nav onMedia` while it is transparent over the hero.
+
+**Absolute is not the same as dark — added 2026-08-05.** The first version of the rule emitted the dark-mode values and stopped there, which quietly assumed every image is a dark photograph. A pale image needs the light-mode values emitted just as unconditionally, so there are two tonalities: `data-on-media` (dark, the default) and `data-on-media="light"`. `Parallax` takes `tone`, `Nav` takes `onMedia="light"`, and the two must agree — they are reading one property of one image, and nothing but a person looking at the picture can tell them what it is.
+
+Getting it wrong is not a visible bug, which is why it needs a prop rather than a convention: a pale image treated as dark still *passes AA*. It just needs a scrim heavy enough to destroy it. Measured on the current hero — white text needs the full 70% black (60% fails the standfirst at 3.93:1), and at 70% an airy composition reads as a grey wash. Dark text on the same image unscrimmed is 14.75:1 median.
+
+**A scrimless hero moves the contrast burden onto the picture**, so two things stop being cosmetic:
+
+- **`object-position`.** Full-bleed plus `cover` crops hard on the horizontal as the viewport narrows — at 390px the current hero keeps about a third of its width. Centred, that third was the busiest part of the image and **33% of glyph pixels failed AA at 390px while the same page passed comfortably at 1440px**. `objectPosition="left center"` fixed it and changed nothing above 1440, where there is no horizontal crop at all.
+- **Measure and colour.** The homepage standfirst runs at 32ch, not 52ch, and takes `fg/primary` rather than `fg/secondary`. `fg/secondary` is `#717173` here, a grey built for 4.87:1 on *pure white*; over this image it fails 100% of its glyph pixels at every width. At 52ch the line leaves the plain wall and 12.4% fail even at `fg/primary`; 32ch is the first clean width.
+
+**`design/measure-media-contrast.mjs` is the check.** Everything else in `design/` verifies that a value came from a token; none of it can tell you whether type is legible on a photograph, because that is a property of the picture. Run it against a preview server after changing a hero image. Two traps it avoids, both of which flatter the result: measuring a text node's *bounding box* scores the gaps between words and the ragged right edge of a heading, and measuring one frame misses the drift moving the image under the type. It builds a real glyph mask instead — render the text forced white, then forced black, over an identical backdrop, so `a = (W − B) / 255` exactly — and samples across the scroll range. Deliberately **not** in `verify`: it needs a preview server and a real browser.
+
+**The Figma spec was updated to match, 2026-08-05** — in Figma, via `design/banding-media-update.snippet.js`, then re-exported, because `banding-export.json` is measured rather than authored and hand-editing it would make the file agree with the code while disagreeing with its own source. The `media` key now carries both tonalities and the contrast note. Banding checksum moved `611136477` → `2143010685`.
 
 **The spec is machine-readable**: `page.getSharedPluginData('banding', 'spec')` returns the whole rule set as JSON, and every band node carries `getPluginData('band')` → `{role, scale}`. A page built from bands can be linted against the adjacency rules rather than checked by eye.
 

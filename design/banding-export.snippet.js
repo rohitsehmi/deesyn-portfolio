@@ -2,7 +2,12 @@
  * Run inside Figma (Desktop Bridge plugin console, file "Revolut") to reproduce
  * design/banding-export.json and its checksum from the live plugin data.
  *
- * Matched 2026-08-04: checksum 611136477, 7 rules, canonical length 2385.
+ * Matched 2026-08-05: checksum 2143010685, 7 rules, canonical length 3193.
+ *
+ * The four `_`-prefixed keys at the top of banding-export.json are added when
+ * the export lands in the repo — they are not in Figma's stored spec. canonical()
+ * skips them, which is why re-exporting on a new date does not move the number.
+ * Put them back after pasting, or verify-bands prints the page name as undefined.
  *
  * If the number this prints differs from what `node design/verify-bands.mjs`
  * prints, Figma and the repo have drifted. Re-export rather than editing the

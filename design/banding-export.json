@@ -1,6 +1,6 @@
 {
   "_comment": "MEASURED. Read off page.getSharedPluginData('banding','spec') on the Figma page \"Banding\". Nobody wrote this by hand, so it cannot flatter the system. Regenerate with design/banding-export.snippet.js; verify with design/verify-bands.mjs.",
-  "_exported": "2026-08-04",
+  "_exported": "2026-08-05",
   "_page": "Banding",
   "_file": "UnybX8G5sQIEhLLZN2YFl6",
   "version": 1,
@@ -114,8 +114,13 @@
   "hero": "Not a band scale. Content-led with a min-height; sets the tonal key and does not count toward the alternation.",
   "open": "Band rhythm (which band is which role, in what order) is downstream of the three case studies.",
   "media": {
-    "mechanism": "content over a full-bleed image carries data-on-media, which resolves to the dark mode values unconditionally",
-    "why": "bands are relative, so inverse flips with the theme. A photograph does not: it is dark in both, and a relative role sends the foreground the wrong way in one of them while bg/scrim weakens from 70% to 40%",
+    "mechanism": "content over a full-bleed image carries data-on-media, which resolves to one mode's values unconditionally. Two tonalities: data-on-media is the dark default, data-on-media=\"light\" is for a pale image",
+    "why": "bands are relative, so inverse flips with the theme. An image does not, so the foreground over it has to be absolute or it inverts in one of the two themes. Absolute is not the same as dark: treating a pale image as dark still passes AA, but only with a scrim heavy enough to destroy the image, which no contrast check reports",
+    "tones": {
+      "dark": "the default. Emits the dark-mode values, so the foreground is light and bg/scrim is 70% black. The scrim is not optional on a dark photograph",
+      "light": "emits the light-mode values, so the foreground is dark and the scrim is off — a black scrim under a dark foreground subtracts contrast rather than adding it"
+    },
+    "contrast": "a scrimless hero puts the contrast burden on the composition, so object-position and measure stop being cosmetic. Verified with design/measure-media-contrast.mjs, which measures glyph coverage rather than text bounding boxes and samples across the drift range",
     "counted": false,
     "note": "not a band role, and like the hero it does not count toward the alternation"
   }

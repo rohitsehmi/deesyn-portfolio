@@ -443,7 +443,7 @@
   --semantic-easing-linear: var(--primitive-easing-linear);
 }
 
-/* Content over media. Absolute, not relative: the image is dark in both themes. */
+/* Content over media. Absolute, not relative: the image does not flip with the theme. */
 [data-on-media] {
   --semantic-bg-canvas: var(--primitive-neutral-black);
   --semantic-bg-subtle: var(--primitive-neutral-900);
@@ -483,6 +483,57 @@
   --semantic-status-warning: var(--primitive-status-warning);
   --semantic-status-danger: var(--primitive-status-danger);
   --semantic-status-info: var(--primitive-accent-blue);
+  --semantic-duration-instant: var(--primitive-duration-d100);
+  --semantic-duration-press: var(--primitive-duration-d160);
+  --semantic-duration-tooltip: var(--primitive-duration-d200);
+  --semantic-duration-dropdown: var(--primitive-duration-d250);
+  --semantic-duration-overlay: var(--primitive-duration-d400);
+  --semantic-easing-out: var(--primitive-easing-out);
+  --semantic-easing-in-out: var(--primitive-easing-in-out);
+  --semantic-easing-drawer: var(--primitive-easing-drawer);
+  --semantic-easing-linear: var(--primitive-easing-linear);
+}
+
+/* A pale image. Same absolute rule, the other tonality. */
+[data-on-media="light"] {
+  --semantic-bg-canvas: var(--primitive-neutral-white);
+  --semantic-bg-subtle: var(--primitive-neutral-20);
+  --semantic-bg-surface: var(--primitive-neutral-white);
+  --semantic-bg-surface-raised: var(--primitive-neutral-50);
+  --semantic-bg-overlay: var(--primitive-neutral-white);
+  --semantic-bg-inverse: var(--primitive-neutral-850);
+  --semantic-bg-widget: var(--primitive-alpha-black-4);
+  --semantic-bg-widget-hover: var(--primitive-alpha-black-15);
+  --semantic-bg-scrim: var(--primitive-alpha-black-40);
+  --semantic-band-base: var(--primitive-neutral-white);
+  --semantic-band-sunken: var(--primitive-neutral-20);
+  --semantic-fg-primary: var(--primitive-neutral-850);
+  --semantic-fg-secondary: var(--primitive-neutral-500);
+  --semantic-fg-tertiary: var(--primitive-neutral-200);
+  --semantic-fg-inverse: var(--primitive-neutral-white);
+  --semantic-fg-accent: var(--primitive-brand-action-blue);
+  --semantic-fg-on-accent: var(--primitive-neutral-white);
+  --semantic-fg-link: var(--primitive-brand-action-blue);
+  --semantic-fg-link-hover: var(--primitive-brand-blue-deep);
+  --semantic-border-subtle: var(--primitive-alpha-black-4);
+  --semantic-border-default: var(--primitive-neutral-100);
+  --semantic-border-strong: var(--primitive-neutral-200);
+  --semantic-border-focus: var(--primitive-brand-action-blue);
+  --semantic-action-primary-bg: var(--primitive-neutral-850);
+  --semantic-action-primary-fg: var(--primitive-neutral-white);
+  --semantic-action-accent-bg: var(--primitive-brand-action-blue);
+  --semantic-action-accent-fg: var(--primitive-neutral-white);
+  --semantic-action-secondary-bg: var(--primitive-alpha-black-4);
+  --semantic-action-secondary-fg: var(--primitive-neutral-850);
+  --semantic-action-disabled-bg: var(--primitive-neutral-50);
+  --semantic-action-disabled-fg: var(--primitive-neutral-200);
+  --semantic-action-primary-bg-hover: var(--primitive-neutral-700);
+  --semantic-action-secondary-bg-hover: var(--primitive-alpha-black-15);
+  --semantic-action-ghost-bg-hover: var(--primitive-alpha-black-4);
+  --semantic-status-success: var(--primitive-status-success);
+  --semantic-status-warning: var(--primitive-status-warning);
+  --semantic-status-danger: var(--primitive-status-danger);
+  --semantic-status-info: var(--primitive-brand-action-blue);
   --semantic-duration-instant: var(--primitive-duration-d100);
   --semantic-duration-press: var(--primitive-duration-d160);
   --semantic-duration-tooltip: var(--primitive-duration-d200);
