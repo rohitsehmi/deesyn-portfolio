@@ -87,6 +87,24 @@ try {
     await page.goto(URL, { waitUntil: 'networkidle' });
     await page.waitForTimeout(500);
 
+    // Assert this is a built preview, not a dev server. `astro preview` exits
+    // quietly if the port is taken, so a stale `astro dev` left running from a
+    // previous day silently answers every request instead — with a 200, which
+    // is why curl does not catch it. Worse, the dev image endpoint serves
+    // /_image?href=<path>&w=&h=&f=, a URL keyed on the path and dimensions
+    // rather than the bytes, under cache-control: max-age=31536000. Replace an
+    // image in place with one of the same dimensions and every browser holding
+    // that URL keeps the old picture for a year.
+    const served = await page.evaluate(() => document.querySelector('.parallax__image')?.currentSrc ?? '');
+    if (served.includes('/_image?href=')) {
+      throw new Error(
+        `${URL} is an astro dev server, not a built preview.\n` +
+        '  Run `npm run build`, then `npx astro preview` — and check it actually bound to the port.\n' +
+        '  Measurements against dev are usually right but are not what ships, and the dev image\n' +
+        '  endpoint caches by URL rather than by content.'
+      );
+    }
+
     // The real colours, before anything is forced, and the hero's own box.
     const colours = await page.evaluate((TARGETS) => Object.fromEntries(
       TARGETS.map(({ sel }) => [sel, getComputedStyle(document.querySelector(sel)).color])
