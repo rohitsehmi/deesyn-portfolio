@@ -4,7 +4,9 @@ Standalone call-to-action link. Never underlined; the arrow carries the affordan
 
 Hover translates the arrow 4px right over duration/press with easing/out. Like Button press, that transform is documented rather than drawn.
 
-Code-only props: href, target, rel, aria-label, analytics-id.
+Code-only props: href, target, rel, aria-label, analytics-id, and icon.
+
+icon picks the direction: the thin arrow for somewhere else on this site, arrow-up-right for somewhere off it. Not a variant, because it would double this set to document a choice that is made once per link and never changes at runtime. The hover travel follows the glyph — right for the thin arrow, up and right for the diagonal.
 
 Figma: page **Components**, set `Action/Arrow Link` — 2 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 

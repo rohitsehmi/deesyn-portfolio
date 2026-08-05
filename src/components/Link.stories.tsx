@@ -25,3 +25,22 @@ export const InProse: S = {
 export const Arrow: S = {
   render: () => <ArrowLink href="#">Read the case study</ArrowLink>
 };
+
+/**
+ * The two directions, and the rule for picking one: the thin arrow for
+ * somewhere else on this site, the diagonal for somewhere off it.
+ *
+ * The hover travel follows the glyph — right for the thin arrow, up and right
+ * for the diagonal. A diagonal arrow sliding flat sideways reads as a mistake
+ * in a way that is hard to name and easy to see. Hover both.
+ */
+export const Directions: S = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 'var(--primitive-layout-l40)', justifyItems: 'start' }}>
+      <ArrowLink href="#">Read the case study</ArrowLink>
+      <ArrowLink href="#" icon="arrow-up-right" target="_blank" rel="noopener noreferrer">
+        linkedin.com/in/rohitsehmi
+      </ArrowLink>
+    </div>
+  )
+};

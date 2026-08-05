@@ -8,7 +8,7 @@
     "set": "Action/Arrow Link",
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
-  "description": "Standalone call-to-action link. Never underlined; the arrow carries the affordance.\n\nHover translates the arrow 4px right over duration/press with easing/out. Like Button press, that transform is documented rather than drawn.\n\nCode-only props: href, target, rel, aria-label, analytics-id.",
+  "description": "Standalone call-to-action link. Never underlined; the arrow carries the affordance.\n\nHover translates the arrow 4px right over duration/press with easing/out. Like Button press, that transform is documented rather than drawn.\n\nCode-only props: href, target, rel, aria-label, analytics-id, and icon.\n\nicon picks the direction: the thin arrow for somewhere else on this site, arrow-up-right for somewhere off it. Not a variant, because it would double this set to document a choice that is made once per link and never changes at runtime. The hover travel follows the glyph — right for the thin arrow, up and right for the diagonal.",
   "donts": [
     "Never underline it. The arrow is the affordance; both together is noise.",
     "Do not use it inside a sentence. It is standalone; inline links are Action/Link."

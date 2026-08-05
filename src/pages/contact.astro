@@ -1,27 +1,87 @@
 ---
 import Page from '../layouts/Page.astro';
-import { Prose } from '../components/Prose';
-import { Link } from '../components/Link';
+import { ArrowLink } from '../components/Link';
 
 /**
- * STUB. Deliberately a list of links rather than a form: a form on a portfolio
- * needs a backend, validation, and a full state cycle to be worth having, and a
- * mailto link works today.
+ * Two links and a sentence. That is the whole page, on purpose.
+ *
+ * No form: one needs a backend, validation and a full state cycle to be worth
+ * having, and a portfolio contact form converts worse than an address someone
+ * can copy. No phone number either — it is on the CV PDF, which is handed to a
+ * person, rather than on a URL a scraper can read.
+ *
+ * This is where the nav's one primary action lands, so it should not feel like
+ * a page that ran out of content. It is short because it is finished.
  */
+const links = [
+  {
+    label: 'rohit.sehmi@gmail.com',
+    href: 'mailto:rohit.sehmi@gmail.com',
+    /* Screen readers get what happens, since the glyph only says "away". */
+    hint: 'Email Rohit Sehmi, opens your mail app'
+  },
+  {
+    label: 'linkedin.com/in/rohitsehmi',
+    href: 'https://www.linkedin.com/in/rohitsehmi',
+    external: true,
+    hint: 'LinkedIn profile, opens in a new tab'
+  }
+];
 ---
 <Page
   title="Contact"
-  standfirst="[NEEDS: one line. The best way to reach you, and what you are open to.]"
+  description="Get in touch with Rohit Sehmi — product and design systems designer, London."
+  standfirst="Open to discussing new and impactful design opportunities."
 >
-  <Prose>
-    <p>
-      Email <Link href="mailto:rohit.sehmi@gmail.com">rohit.sehmi@gmail.com</Link>.
-    </p>
-    <p>
-      [NEEDS: confirm that is the address you want on a page you send to
-      Revolut, and add LinkedIn if you want it here. Anything else on this page
-      should earn its place: a portfolio contact page is a list of ways to reach
-      someone, not a section.]
-    </p>
-  </Prose>
+  <ul class="contact">
+    {links.map((l) => (
+      <li class="contact__item">
+        {/*
+          arrow-up-right on both. It means "this leaves the page", which is true
+          of a mailto handing off to a mail client and of a profile opening in a
+          new tab. An envelope on one and an arrow on the other would suggest
+          the two behave differently, and they do not.
+        */}
+        <ArrowLink
+          href={l.href}
+          icon="arrow-up-right"
+          aria-label={l.hint}
+          {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
+          {l.label}
+        </ArrowLink>
+      </li>
+    ))}
+  </ul>
+
+  <p class="contact__where">Based in London, working remotely or hybrid.</p>
 </Page>
+
+<style is:global>
+  .contact { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--primitive-layout-l40); }
+
+  /*
+    Larger than a body link. These are the page — at inline size they would sit
+    in the middle of a mostly empty band looking like leftovers.
+  */
+  .contact__item .arrow-link {
+    font: var(--type-heading-s);
+    letter-spacing: var(--type-heading-s-tracking);
+    /* Breaks the address rather than the layout on a narrow screen. */
+    overflow-wrap: anywhere;
+  }
+  @media (min-width: 768px) {
+    .contact__item .arrow-link {
+      font: var(--type-heading-m);
+      letter-spacing: var(--type-heading-m-tracking);
+      overflow-wrap: normal;
+    }
+  }
+
+  .contact__where {
+    margin: var(--primitive-layout-l64) 0 0;
+    font: var(--type-body-2);
+    letter-spacing: var(--type-body-2-tracking);
+    color: var(--semantic-fg-secondary);
+  }
+</style>

@@ -26,5 +26,8 @@
 @media (hover: hover) and (pointer: fine) {
   .arrow-link:hover { color: var(--semantic-fg-link-hover); }
   .arrow-link:hover .arrow-link__icon { transform: translateX(4px); }
+  /* The travel follows the glyph. A diagonal arrow sliding flat right reads as
+     a mistake in a way that is hard to name but easy to see. */
+  .arrow-link[data-icon='arrow-up-right']:hover .arrow-link__icon { transform: translate(3px, -3px); }
 }
 .arrow-link:focus-visible { outline: 2px solid var(--semantic-border-focus); outline-offset: 2px; border-radius: 4px; }

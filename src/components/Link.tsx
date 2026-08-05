@@ -20,11 +20,24 @@ export function Link({ children, ...rest }: LinkProps) {
  * affordance, and translates 4px on hover — the motion Figma documented but
  * could not draw.
  */
-export function ArrowLink({ children, ...rest }: LinkProps) {
+export interface ArrowLinkProps extends LinkProps {
+  /**
+   * `arrow-thin-right` for somewhere else on this site, `arrow-up-right` for
+   * somewhere off it. The diagonal is the long-standing convention for leaving,
+   * and it is the reason that icon exists in the set at all — Revolut ships no
+   * diagonal arrow, so it is their thin arrow rotated.
+   *
+   * The hover translate follows the direction the glyph points, so the two
+   * cannot disagree.
+   */
+  icon?: 'arrow-thin-right' | 'arrow-up-right';
+}
+
+export function ArrowLink({ children, icon = 'arrow-thin-right', ...rest }: ArrowLinkProps) {
   return (
-    <a className="arrow-link" {...rest}>
+    <a className="arrow-link" data-icon={icon} {...rest}>
       <span>{children}</span>
-      <span className="arrow-link__icon"><Icon name="arrow-thin-right" size={20} /></span>
+      <span className="arrow-link__icon"><Icon name={icon} size={20} /></span>
     </a>
   );
 }
