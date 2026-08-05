@@ -24,6 +24,33 @@ import { roles, skills, education, awards, cvPdf } from '../data/cv';
   description="Rohit Sehmi — product and design systems designer. Fifteen years across design systems, mobile product and interactive TV."
   standfirst="Product and design systems designer. Component creation and governance, multi-brand token systems, and AI-assisted design-to-code pipelines — aimed at cross-platform consistency, accessibility and scale."
 >
+  {/*
+    The download sits under the description rather than at the foot of the
+    aside. Someone who arrives wanting the file can take it in one action, and
+    the page below is there for whoever would rather read it than open it —
+    which is the right way round. Buried at the bottom, the file was only
+    findable by people who had already decided not to need it.
+
+    `download` rather than opening a tab: the point of the file is to keep it.
+    Its accessible name gives the weight, because a link that silently starts a
+    1.2MB download on a phone has not asked permission — and it starts with the
+    visible label, because WCAG 2.5.3 requires the accessible name to contain
+    the visible text. "Download CV as PDF" read better and failed it.
+  */}
+  <Fragment slot="actions">
+    <Button
+      variant="primary"
+      size="md"
+      href={cvPdf.href}
+      download={cvPdf.filename}
+      iconTrailing="arrow-thin-down"
+      aria-label={`Download PDF, ${cvPdf.size}, opens as a file`}
+    >
+      Download PDF
+    </Button>
+    <p class="cv__note">PDF · {cvPdf.size} · updated {cvPdf.updated}</p>
+  </Fragment>
+
   <div class="cv">
     <div class="cv__main">
       <section class="cv__section" aria-labelledby="experience">
@@ -82,30 +109,6 @@ import { roles, skills, education, awards, cvPdf } from '../data/cv';
             <p class="cv__entry-detail">{a.detail}</p>
           </>
         ))}
-      </section>
-
-      <section class="cv__section" aria-labelledby="download">
-        <h2 class="cv__heading" id="download">Take it with you</h2>
-        {/*
-          `download` rather than a new tab: the point of the file is to keep it,
-          and a PDF opening in a viewer tab is a step away from that. The
-          accessible name says the weight, because a link that silently starts a
-          1.2MB download on a phone has not asked permission — and it *starts*
-          with the visible label, because WCAG 2.5.3 requires the accessible
-          name to contain the visible text. "Download CV as PDF" would have read
-          better and failed it.
-        */}
-        <Button
-          variant="secondary"
-          size="md"
-          href={cvPdf.href}
-          download={cvPdf.filename}
-          iconTrailing="arrow-thin-down"
-          aria-label={`Download PDF, ${cvPdf.size}, opens as a file`}
-        >
-          Download PDF
-        </Button>
-        <p class="cv__note">PDF · {cvPdf.size}</p>
       </section>
 
       <section class="cv__section" aria-labelledby="contact">

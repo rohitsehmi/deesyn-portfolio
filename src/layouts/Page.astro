@@ -28,6 +28,18 @@ const links = linksFor(Astro.url.pathname);
     <Band role="base" scale="feature">
       <h1 class="page-hero__title">{title}</h1>
       {standfirst && <p class="page-hero__standfirst">{standfirst}</p>}
+      {/*
+        Optional, and only rendered when something fills it — an empty wrapper
+        would still add its own top margin and open a gap under the standfirst
+        on every page that does not use it.
+
+        For the one action a page is for, sat directly under the sentence that
+        explains why you would want it. Anything further down is a second
+        chance, not the first one.
+      */}
+      {Astro.slots.has('actions') && (
+        <div class="page-hero__actions"><slot name="actions" /></div>
+      )}
     </Band>
 
     <Band role="sunken" scale="default">
@@ -63,5 +75,15 @@ const links = linksFor(Astro.url.pathname);
   }
   @media (min-width: 768px) {
     .page-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
+  }
+
+  /* Wraps rather than shrinks: on a narrow screen the note drops below the
+     button instead of squeezing it under its own label. */
+  .page-hero__actions {
+    margin-top: var(--primitive-layout-l40);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--primitive-space-sp500);
   }
 </style>

@@ -58,8 +58,8 @@ export const roles: Role[] = [
       'Delivered a large-scale rebrand with external agencies, defining design standards that improved consistency across the portfolio.'
     ]
   },
-  { company: 'Viasat (MTG)', title: 'Senior Designer', dates: 'August 2009 – August 2012', location: 'London' },
-  { company: 'Novarising', title: 'TV Interface Designer', dates: 'February 2009 – April 2012', location: 'London' },
+  { company: 'Viasat (MTG)', title: 'Senior Designer', dates: 'April 2009 – August 2012', location: 'London' },
+  { company: 'Novarising', title: 'TV Interface Designer', dates: 'February 2009 – April 2009', location: 'London' },
   { company: 'Chellomedia (UPC)', title: 'Interactive TV Designer', dates: 'August 2007 – December 2008', location: 'London' }
 ];
 
@@ -92,6 +92,13 @@ export const awards = [
 export const cvPdf = {
   href: '/Rohit-Sehmi-CV-2026.pdf',
   filename: 'Rohit-Sehmi-CV-2026.pdf',
-  /** Shown on the button. A download with an unknown size is a small act of rudeness. */
-  size: '1.2 MB'
+  /** Shown beside the button. A download with an unknown size is a small rudeness. */
+  size: '1.2 MB',
+  /**
+   * Shown too, because the one thing a reader cannot tell about a CV file is
+   * whether it is the current one. Bump it by hand when the PDF is replaced —
+   * a build date would say when the site deployed, which is a different fact
+   * and a misleading one.
+   */
+  updated: 'August 2026'
 };
