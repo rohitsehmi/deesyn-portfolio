@@ -5,7 +5,7 @@ import { IconButton } from './IconButton';
 import './Nav.css';
 
 export interface NavProps {
-  links?: { label: string; href: string; current?: boolean }[];
+  links?: { label: string; href: string; current?: boolean; cta?: boolean }[];
   actions?: ReactNode;
   /** top is transparent and sits over the band; scrolled takes the canvas. */
   state?: 'top' | 'scrolled';
@@ -80,8 +80,19 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, onMedi
       <div className="measure nav__inner">
         <a className="nav__logo" href="/" aria-label="Home"><Logo height={32} /></a>
         <nav className="nav__links" aria-label="Primary">
+          {/*
+            One link carries `cta` and renders primary; the rest stay ghost.
+            Ghost is not a primary action — it exists for exactly this, the
+            tertiary links that sit around the one thing worth doing.
+          */}
           {links.map((l) => (
-            <Button key={l.href} variant="ghost" size="sm" href={l.href} aria-current={l.current ? 'page' : undefined}>
+            <Button
+              key={l.href}
+              variant={l.cta ? 'primary' : 'ghost'}
+              size="sm"
+              href={l.href}
+              aria-current={l.current ? 'page' : undefined}
+            >
               {l.label}
             </Button>
           ))}

@@ -8,12 +8,22 @@
 export interface NavLink {
   label: string;
   href: string;
+  /**
+   * The one action the site is for. Renders as a primary button instead of a
+   * ghost one.
+   *
+   * There can only be one. Three ghost links gave Contact exactly the same
+   * weight as CV, which means the page had no opinion about what it wanted the
+   * reader to do — and the whole site exists to start one conversation. A
+   * second `cta` would put the hierarchy straight back where it was.
+   */
+  cta?: boolean;
 }
 
 export const navLinks: NavLink[] = [
   { label: 'About', href: '/about' },
   { label: 'CV', href: '/cv' },
-  { label: 'Contact', href: '/contact' }
+  { label: 'Contact', href: '/contact', cta: true }
 ];
 
 /** Marks the current page so the nav can render aria-current. */

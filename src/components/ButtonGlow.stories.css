@@ -1,0 +1,79 @@
+/*
+  EXPERIMENT — story-scoped, deliberately not in Button.css. Nothing ships from
+  this file; it exists so the effect can be judged next to the plain button
+  before any decision is made.
+
+  The technique: a custom property registered with @property so the browser
+  knows it is an <angle> and can interpolate it. Without the registration the
+  angle is just a string, transitions skip straight to the end, and nothing
+  moves — which is also the graceful degradation story for anything that does
+  not support it.
+*/
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.glow {
+  position: relative;
+  display: inline-flex;
+  border-radius: var(--primitive-radius-round);
+  isolation: isolate;
+}
+
+/*
+  A ring, not a bloom. The motion spec bans box-shadow in site chrome — depth
+  is banding and luminance — so this is a conic gradient behind the button,
+  inset by 2px, rather than a glow bleeding outwards.
+
+  The accent blue is the site's own; the second stop is transparent, so what
+  rotates is a single arc of colour rather than a rainbow. A rainbow would be
+  someone else's brand.
+*/
+.glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--glow-angle),
+    transparent 0deg,
+    var(--semantic-action-accent-bg) 60deg,
+    var(--semantic-fg-link) 120deg,
+    transparent 200deg
+  );
+  opacity: 0;
+  transition: opacity var(--semantic-duration-press) var(--semantic-easing-out);
+}
+
+@keyframes glow-spin {
+  to { --glow-angle: 360deg; }
+}
+
+/* Always on: the reel's version. Runs whether anyone is looking or not. */
+.glow[data-mode='loop']::before {
+  opacity: 1;
+  /* linear is correct here and only here — constant motion, per easing/linear. */
+  animation: glow-spin 3s linear infinite;
+}
+
+/*
+  On hover: the same rotation, started by intent. The opacity fade is what makes
+  it arrive rather than snap, and it is the part that survives reduced motion.
+*/
+.glow[data-mode='hover']:hover::before,
+.glow[data-mode='hover']:focus-within::before {
+  opacity: 1;
+  animation: glow-spin 3s linear infinite;
+}
+
+/*
+  "Every animation degrades under prefers-reduced-motion: keep opacity, drop
+  movement." So the ring still appears — it just stops turning.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .glow::before { animation: none !important; }
+  .glow[data-mode='loop']::before { opacity: 1; }
+}
