@@ -68,6 +68,8 @@ for (const [domain, d] of Object.entries(src.domains)) {
   const n = Object.values(d.components).reduce((a, c) => a + Object.keys(c.variants).length, 0);
   console.log(`${domain.padEnd(11)}: ${Object.keys(d.components).length} components, ${n} variants  (Figma page "${d.page}")`);
 }
+for (const d of src.deprecated ?? [])
+  console.log(`deprecated : ${d.name} (${d.variants} variants, ${d.domain}) — in Figma, out of the contract`);
 console.log('tokenSets  :', src.tokenSets.length);
 console.log('tokens used:', used.size);
 console.log('entries    :', str.split('\n').length);

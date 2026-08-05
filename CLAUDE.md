@@ -150,6 +150,8 @@ node design/verify-css.mjs        # every var(--*) in src/ resolves; type bound 
 node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 ```
 
+**Deprecating a component:** set `setSharedPluginData('spec', 'status', 'deprecated')` on the set in Figma and rename it out of the live namespace. It stays in the file and leaves the published contract; the export lists it under `deprecated` and `verify.mjs` prints it, so its absence is recorded rather than silent. `Deprecated/Brand Logo` (was `XX · Brand/Logo`) is the first.
+
 `design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-04: `4097978953`, 132 entries. See `design/README.md`.
 
 **Three checksums, three sources.** Tokens `4115829316`. Figma components `4097978953`. Banding spec `611136477`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-04). Code-only specs print `1319375170` but have no Figma counterpart to match, by definition.

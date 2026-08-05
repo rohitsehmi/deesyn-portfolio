@@ -18,6 +18,12 @@
  * This reads BOUND VARIABLES off the nodes. It does not trust plugin data or
  * anything hand-written — which is why verify.mjs also asserts no literals.
  *
+ * One exception: a set carrying setSharedPluginData('spec','status','deprecated')
+ * is left out of the contract and listed under `deprecated` instead. It stays
+ * in the Figma file; it just stops being part of what the repo publishes. That
+ * is also what resolves name collisions, since the export keys by set name and
+ * two sets sharing one silently overwrite each other.
+ *
  * Not imported by anything; reference text for code that runs inside Figma's
  * plugin sandbox, where `figma` is global.
  */
@@ -101,10 +107,18 @@ function contractFor(set) {
 // domains mirror Figma pages one-to-one
 const PAGES = { icons: 'Icons', marks: 'Marks', components: 'Components' };
 const domains = {};
+// Superseded sets stay in the file but leave the published contract. Recorded
+// rather than skipped in silence: a component vanishing from the export with
+// no trace is indistinguishable from one that was deleted by accident.
+const deprecated = [];
 for (const [domain, pageName] of Object.entries(PAGES)) {
   const page = figma.root.children.find(p => p.name === pageName);
   domains[domain] = { page: pageName, components: {} };
   for (const set of page.findAll(n => n.type === 'COMPONENT_SET')) {
+    if (set.getSharedPluginData('spec', 'status') === 'deprecated') {
+      deprecated.push({ domain, name: set.name, id: set.id, variants: set.children.length });
+      continue;
+    }
     const c = contractFor(set);
     domains[domain].components[set.name] = c;
     // the spec lives beside the component, not in a page-level blob
@@ -136,5 +150,5 @@ for (const [domain, name, c] of flat) {
 const str = parts.join('\n');
 let h = 0; for (let i = 0; i < str.length; i++) h = (Math.imul(h, 31) + str.charCodeAt(i)) >>> 0;
 
-return { domains, tokenSets: pool, entries: parts.length, length: str.length, checksum: h };
+return { domains, deprecated, tokenSets: pool, entries: parts.length, length: str.length, checksum: h };
 `;

@@ -220,189 +220,189 @@
                 78,
                 32
               ],
-              "t": 2
+              "t": 1
             },
             "variant=primary, size=sm, state=hover": {
               "size": [
                 78,
                 32
               ],
-              "t": 3
+              "t": 2
             },
             "variant=primary, size=sm, state=disabled": {
               "size": [
                 78,
                 32
               ],
-              "t": 4
+              "t": 3
             },
             "variant=primary, size=md, state=default": {
               "size": [
                 92,
                 44
               ],
-              "t": 5
+              "t": 4
             },
             "variant=primary, size=md, state=hover": {
               "size": [
                 92,
                 44
               ],
-              "t": 6
+              "t": 5
             },
             "variant=primary, size=md, state=disabled": {
               "size": [
                 92,
                 44
               ],
-              "t": 7
+              "t": 6
             },
             "variant=primary, size=lg, state=default": {
               "size": [
                 100,
                 48
               ],
-              "t": 8
+              "t": 7
             },
             "variant=primary, size=lg, state=hover": {
               "size": [
                 100,
                 48
               ],
-              "t": 9
+              "t": 8
             },
             "variant=primary, size=lg, state=disabled": {
               "size": [
                 100,
                 48
               ],
-              "t": 10
+              "t": 9
             },
             "variant=secondary, size=sm, state=default": {
               "size": [
                 78,
                 32
               ],
-              "t": 11
+              "t": 10
             },
             "variant=secondary, size=sm, state=hover": {
               "size": [
                 78,
                 32
               ],
-              "t": 12
+              "t": 11
             },
             "variant=secondary, size=sm, state=disabled": {
               "size": [
                 78,
                 32
               ],
-              "t": 4
+              "t": 3
             },
             "variant=secondary, size=md, state=default": {
               "size": [
                 92,
                 44
               ],
-              "t": 13
+              "t": 12
             },
             "variant=secondary, size=md, state=hover": {
               "size": [
                 92,
                 44
               ],
-              "t": 14
+              "t": 13
             },
             "variant=secondary, size=md, state=disabled": {
               "size": [
                 92,
                 44
               ],
-              "t": 7
+              "t": 6
             },
             "variant=secondary, size=lg, state=default": {
               "size": [
                 100,
                 48
               ],
-              "t": 15
+              "t": 14
             },
             "variant=secondary, size=lg, state=hover": {
               "size": [
                 100,
                 48
               ],
-              "t": 16
+              "t": 15
             },
             "variant=secondary, size=lg, state=disabled": {
               "size": [
                 100,
                 48
               ],
-              "t": 10
+              "t": 9
             },
             "variant=ghost, size=sm, state=default": {
               "size": [
                 78,
                 32
               ],
-              "t": 17
+              "t": 16
             },
             "variant=ghost, size=sm, state=hover": {
               "size": [
                 78,
                 32
               ],
-              "t": 18
+              "t": 17
             },
             "variant=ghost, size=sm, state=disabled": {
               "size": [
                 78,
                 32
               ],
-              "t": 19
+              "t": 18
             },
             "variant=ghost, size=md, state=default": {
               "size": [
                 92,
                 44
               ],
-              "t": 20
+              "t": 19
             },
             "variant=ghost, size=md, state=hover": {
               "size": [
                 92,
                 44
               ],
-              "t": 21
+              "t": 20
             },
             "variant=ghost, size=md, state=disabled": {
               "size": [
                 92,
                 44
               ],
-              "t": 22
+              "t": 21
             },
             "variant=ghost, size=lg, state=default": {
               "size": [
                 100,
                 48
               ],
-              "t": 23
+              "t": 22
             },
             "variant=ghost, size=lg, state=hover": {
               "size": [
                 100,
                 48
               ],
-              "t": 24
+              "t": 23
             },
             "variant=ghost, size=lg, state=disabled": {
               "size": [
                 100,
                 48
               ],
-              "t": 25
+              "t": 24
             }
           }
         },
@@ -443,189 +443,189 @@
                 32,
                 32
               ],
-              "t": 26
+              "t": 25
             },
             "variant=primary, size=sm, state=hover": {
               "size": [
                 32,
                 32
               ],
-              "t": 27
+              "t": 26
             },
             "variant=primary, size=sm, state=disabled": {
               "size": [
                 32,
                 32
               ],
-              "t": 28
+              "t": 27
             },
             "variant=primary, size=md, state=default": {
               "size": [
                 44,
                 44
               ],
-              "t": 29
+              "t": 28
             },
             "variant=primary, size=md, state=hover": {
               "size": [
                 44,
                 44
               ],
-              "t": 30
+              "t": 29
             },
             "variant=primary, size=md, state=disabled": {
               "size": [
                 44,
                 44
               ],
-              "t": 31
+              "t": 30
             },
             "variant=primary, size=lg, state=default": {
               "size": [
                 48,
                 48
               ],
-              "t": 32
+              "t": 31
             },
             "variant=primary, size=lg, state=hover": {
               "size": [
                 48,
                 48
               ],
-              "t": 33
+              "t": 32
             },
             "variant=primary, size=lg, state=disabled": {
               "size": [
                 48,
                 48
               ],
-              "t": 34
+              "t": 33
             },
             "variant=secondary, size=sm, state=default": {
               "size": [
                 32,
                 32
               ],
-              "t": 35
+              "t": 34
             },
             "variant=secondary, size=sm, state=hover": {
               "size": [
                 32,
                 32
               ],
-              "t": 36
+              "t": 35
             },
             "variant=secondary, size=sm, state=disabled": {
               "size": [
                 32,
                 32
               ],
-              "t": 28
+              "t": 27
             },
             "variant=secondary, size=md, state=default": {
               "size": [
                 44,
                 44
               ],
-              "t": 37
+              "t": 36
             },
             "variant=secondary, size=md, state=hover": {
               "size": [
                 44,
                 44
               ],
-              "t": 38
+              "t": 37
             },
             "variant=secondary, size=md, state=disabled": {
               "size": [
                 44,
                 44
               ],
-              "t": 31
+              "t": 30
             },
             "variant=secondary, size=lg, state=default": {
               "size": [
                 48,
                 48
               ],
-              "t": 39
+              "t": 38
             },
             "variant=secondary, size=lg, state=hover": {
               "size": [
                 48,
                 48
               ],
-              "t": 40
+              "t": 39
             },
             "variant=secondary, size=lg, state=disabled": {
               "size": [
                 48,
                 48
               ],
-              "t": 34
+              "t": 33
             },
             "variant=ghost, size=sm, state=default": {
               "size": [
                 32,
                 32
               ],
-              "t": 41
+              "t": 40
             },
             "variant=ghost, size=sm, state=hover": {
               "size": [
                 32,
                 32
               ],
-              "t": 42
+              "t": 41
             },
             "variant=ghost, size=sm, state=disabled": {
               "size": [
                 32,
                 32
               ],
-              "t": 43
+              "t": 42
             },
             "variant=ghost, size=md, state=default": {
               "size": [
                 44,
                 44
               ],
-              "t": 44
+              "t": 43
             },
             "variant=ghost, size=md, state=hover": {
               "size": [
                 44,
                 44
               ],
-              "t": 45
+              "t": 44
             },
             "variant=ghost, size=md, state=disabled": {
               "size": [
                 44,
                 44
               ],
-              "t": 46
+              "t": 45
             },
             "variant=ghost, size=lg, state=default": {
               "size": [
                 48,
                 48
               ],
-              "t": 47
+              "t": 46
             },
             "variant=ghost, size=lg, state=hover": {
               "size": [
                 48,
                 48
               ],
-              "t": 48
+              "t": 47
             },
             "variant=ghost, size=lg, state=disabled": {
               "size": [
                 48,
                 48
               ],
-              "t": 49
+              "t": 48
             }
           }
         },
@@ -650,14 +650,14 @@
                 152,
                 24
               ],
-              "t": 50
+              "t": 49
             },
             "state=hover": {
               "size": [
                 152,
                 24
               ],
-              "t": 51
+              "t": 50
             }
           }
         },
@@ -685,14 +685,14 @@
                 184,
                 24
               ],
-              "t": 52
+              "t": 51
             },
             "state=hover": {
               "size": [
                 184,
                 24
               ],
-              "t": 53
+              "t": 52
             }
           }
         },
@@ -717,14 +717,14 @@
                 159,
                 26
               ],
-              "t": 54
+              "t": 53
             },
             "variant=accent": {
               "size": [
                 159,
                 26
               ],
-              "t": 55
+              "t": 54
             }
           }
         },
@@ -762,56 +762,56 @@
                 400,
                 225
               ],
-              "t": 56
+              "t": 55
             },
             "ratio=16-9, fit=bleed": {
               "size": [
                 400,
                 225
               ],
-              "t": 57
+              "t": 56
             },
             "ratio=4-3, fit=inset": {
               "size": [
                 400,
                 300
               ],
-              "t": 56
+              "t": 55
             },
             "ratio=4-3, fit=bleed": {
               "size": [
                 400,
                 300
               ],
-              "t": 57
+              "t": 56
             },
             "ratio=1-1, fit=inset": {
               "size": [
                 400,
                 400
               ],
-              "t": 56
+              "t": 55
             },
             "ratio=1-1, fit=bleed": {
               "size": [
                 400,
                 400
               ],
-              "t": 57
+              "t": 56
             },
             "ratio=3-4, fit=inset": {
               "size": [
                 400,
                 533
               ],
-              "t": 56
+              "t": 55
             },
             "ratio=3-4, fit=bleed": {
               "size": [
                 400,
                 533
               ],
-              "t": 57
+              "t": 56
             }
           }
         },
@@ -848,28 +848,28 @@
                 400,
                 386
               ],
-              "t": 58
+              "t": 57
             },
             "variant=base, state=hover": {
               "size": [
                 400,
                 386
               ],
-              "t": 59
+              "t": 58
             },
             "variant=sunken, state=default": {
               "size": [
                 400,
                 386
               ],
-              "t": 60
+              "t": 59
             },
             "variant=sunken, state=hover": {
               "size": [
                 400,
                 386
               ],
-              "t": 58
+              "t": 57
             }
           }
         },
@@ -900,28 +900,28 @@
                 1440,
                 56
               ],
-              "t": 61
+              "t": 60
             },
             "layout=desktop, state=scrolled": {
               "size": [
                 1440,
                 56
               ],
-              "t": 62
+              "t": 61
             },
             "layout=mobile, state=top": {
               "size": [
                 375,
                 56
               ],
-              "t": 63
+              "t": 62
             },
             "layout=mobile, state=scrolled": {
               "size": [
                 375,
                 56
               ],
-              "t": 64
+              "t": 63
             }
           }
         },
@@ -945,14 +945,14 @@
                 1440,
                 196
               ],
-              "t": 65
+              "t": 64
             },
             "scale=full": {
               "size": [
                 1440,
                 477
               ],
-              "t": 66
+              "t": 65
             }
           }
         },
@@ -973,14 +973,14 @@
                 48,
                 48
               ],
-              "t": 67
+              "t": 66
             },
             "theme=dark": {
               "size": [
                 48,
                 48
               ],
-              "t": 67
+              "t": 66
             }
           }
         }
@@ -990,12 +990,6 @@
   "tokenSets": [
     {
       "Vector": {
-        "fg": "fg/primary"
-      }
-    },
-    {
-      "RS": {
-        "textStyle": "Heading/S",
         "fg": "fg/primary"
       }
     },
@@ -2006,6 +2000,14 @@
       "Action/Icon Button/icon/Vector": {
         "fg": "action/secondary-fg"
       }
+    }
+  ],
+  "deprecated": [
+    {
+      "domain": "marks",
+      "name": "Deprecated/Brand Logo",
+      "id": "8:1908",
+      "variants": 2
     }
   ]
 }
