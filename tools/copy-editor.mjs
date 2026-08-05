@@ -47,6 +47,15 @@ function setAt(obj, path, value) {
   if (node === null || typeof node !== 'object' || !(leaf in node)) return { ok: false, reason: `no such key: ${leaf}` };
   if (typeof node[leaf] !== 'string') return { ok: false, reason: `not a string: ${path}` };
   const before = node[leaf];
+  /*
+    Never blank a string that had content. An empty value is almost always a
+    select-all that lost its keystrokes, not a decision — and it destroys the
+    copy silently, because an empty paragraph looks like a layout gap rather
+    than like data loss. Emptying a field deliberately is a job for the JSON.
+  */
+  if (value.trim() === '' && before.trim() !== '') {
+    return { ok: false, reason: 'refusing to save an empty value over existing copy — edit the JSON if you mean it' };
+  }
   node[leaf] = value;
   return { ok: true, before };
 }
