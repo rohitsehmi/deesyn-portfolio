@@ -42,6 +42,11 @@
       "type": "{ src?: string; srcSet?: string; sizes?: string; alt: string; ratio?: MediaRatio }",
       "required": false,
       "note": "Plain data rather than a ReactNode slot: JSX written inside an `.astro` expression produces an Astro template object, not a React element."
+    },
+    "copyBase": {
+      "type": "string",
+      "required": false,
+      "note": "`<file>:<path>` into src/copy for this tile's strings; `.title`, `.summary` and `.discipline` are appended. Dev tooling only — inert in a build. The same tile renders on the index and as the next-study link at the foot of the other study, both pointing at one entry in src/copy/studies.json, so editing it in either place changes both."
     }
   },
   "tokens": {

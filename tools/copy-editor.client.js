@@ -26,6 +26,15 @@ style.textContent = `
   [data-copy][contenteditable] {
     outline: 1px dashed rgb(6 102 235 / .5); outline-offset: 3px; border-radius: 2px;
   }
+
+  /*
+    Parked links get their overlays switched off too. A case study tile is made
+    clickable by a stretched pseudo element on its title link, which covers the
+    summary — so removing the href stops the navigation but the overlay still
+    swallows the click, and the summary cannot be focused. data-copy-href is set
+    only on anchors this tool has parked, so this reaches exactly them.
+  */
+  [data-copy-href]::after, [data-copy-href]::before { pointer-events: none !important; }
   [data-copy][contenteditable]:focus { outline: 2px solid #0666eb; outline-offset: 3px; }
   [data-copy][data-copy-state='saving'] { outline-color: #b4870a; }
   [data-copy][data-copy-state='saved']  { outline-color: #128a4c; }
@@ -60,6 +69,21 @@ function targets() {
   return [...document.querySelectorAll('[data-copy]')];
 }
 
+/*
+  Links that contain editable text, or are editable text.
+
+  Some copy lives inside an anchor — a case study tile's title is a link, and
+  the whole tile is click-through via a stretched pseudo element on it. In edit
+  mode clicking to place a cursor would navigate away instead. Parking the href
+  while editing kills both the direct click and the stretched overlay, because
+  the overlay belongs to the same anchor.
+*/
+function links() {
+  return [...document.querySelectorAll('a')].filter(
+    (a) => a.matches('[data-copy]') || a.querySelector('[data-copy]')
+  );
+}
+
 function render() {
   bar.dataset.on = String(state.on);
   bar.innerHTML = `<span class="copy-edit-bar__dot"></span>Copy edit ${state.on ? 'on' : 'off'} <span style="opacity:.6">⌥E</span>`;
@@ -70,6 +94,14 @@ function render() {
     } else {
       el.removeAttribute('contenteditable');
       el.removeAttribute('data-copy-state');
+    }
+  }
+  for (const a of links()) {
+    if (state.on) {
+      if (a.href && !a.dataset.copyHref) { a.dataset.copyHref = a.getAttribute('href'); a.removeAttribute('href'); }
+    } else if (a.dataset.copyHref) {
+      a.setAttribute('href', a.dataset.copyHref);
+      delete a.dataset.copyHref;
     }
   }
 }

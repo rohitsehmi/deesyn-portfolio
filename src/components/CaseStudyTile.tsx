@@ -23,6 +23,15 @@ export interface CaseStudyTileProps {
    * expression produces an Astro template object, not a React element.
    */
   image?: { src?: string; srcSet?: string; sizes?: string; alt: string; ratio?: MediaRatio };
+  /**
+   * `<file>:<path>` into src/copy for this tile's strings; `.title`, `.summary`
+   * and `.discipline` are appended. Dev tooling only — inert in a build.
+   *
+   * The same tile renders on the index and as the next-study link at the foot
+   * of the other study, both pointing at one entry in src/copy/studies.json, so
+   * editing it in either place changes both.
+   */
+  copyBase?: string;
 }
 
 /**
@@ -45,7 +54,8 @@ export function CaseStudyTile({
   discipline,
   href,
   variant = 'bare',
-  image
+  image,
+  copyBase
 }: CaseStudyTileProps) {
   return (
     <article className="tile" data-variant={variant}>
@@ -55,11 +65,11 @@ export function CaseStudyTile({
         </div>
       )}
       <div className="tile__body">
-        <p className="tile__discipline">{discipline}</p>
+        <p className="tile__discipline" data-copy={copyBase && `${copyBase}.discipline`}>{discipline}</p>
         <h3 className="tile__title">
-          <a className="tile__link" href={href}>{title}</a>
+          <a className="tile__link" href={href} data-copy={copyBase && `${copyBase}.title`}>{title}</a>
         </h3>
-        <p className="tile__summary">{summary}</p>
+        <p className="tile__summary" data-copy={copyBase && `${copyBase}.summary`}>{summary}</p>
         {/*
           Looks like an IconButton and is deliberately not one. The whole tile
           is already a link, and a real button here would be interactive content

@@ -27,6 +27,7 @@ Implementation: `src/components/CaseStudyTile.tsx` and `src/components/CaseStudy
 | `href` | `string` | **yes** |
 | `variant` | `'bare' | 'card'` | no |
 | `image` | `{ src?: string; srcSet?: string; sizes?: string; alt: string; ratio?: MediaRatio }` | no |
+| `copyBase` | `string` | no |
 
 ### Property notes
 
@@ -34,6 +35,7 @@ Implementation: `src/components/CaseStudyTile.tsx` and `src/components/CaseStudy
 - `discipline` The discipline this study argues for. Two studies, two disciplines.
 - `variant` `bare` groups by image and spacing, the way revolut.com does. `card` puts it on a surface with a border. Cards are the lazy grouping: the band already separates this section, and with no shadows available in site chrome a card cannot do the one thing cards are for. Kept as an option because the affordance question is real.
 - `image` Plain data rather than a ReactNode slot: JSX written inside an `.astro` expression produces an Astro template object, not a React element.
+- `copyBase` `<file>:<path>` into src/copy for this tile's strings; `.title`, `.summary` and `.discipline` are appended. Dev tooling only — inert in a build. The same tile renders on the index and as the next-study link at the foot of the other study, both pointing at one entry in src/copy/studies.json, so editing it in either place changes both.
 
 ## Don't
 

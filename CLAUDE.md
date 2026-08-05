@@ -156,7 +156,7 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 
 `design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-05: `1567749477`, 132 entries. See `design/README.md`.
 
-**Three checksums, three sources.** Tokens `4115829316`. Figma components `2596963867`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `3873207522` but have no Figma counterpart to match, by definition.
+**Three checksums, three sources.** Tokens `4115829316`. Figma components `2596963867`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `2834059722` but have no Figma counterpart to match, by definition.
 
 **Six components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. 17 React components, 17 specs.
 
@@ -188,7 +188,11 @@ Writes are narrow on purpose — inside `src/copy` only, only replacing a string
 
 **`alt` text is not editable in the browser** — it is an attribute, not a text node. It lives in the same JSON and is edited there.
 
-Not in `src/copy`: `src/data/studies.ts` and `src/data/cv.ts`, which are already single readable files and carry structure the copy files do not.
+`src/data/studies.ts` keeps only **structure** — slug, cover image, archived — and reads its strings from `src/copy/studies.json`, keyed by the same slug. One file rather than per-study because the same tile renders twice, on the index and as the next-study link at the foot of the other study; edit it in either place and both change.
+
+**Links containing editable copy get parked while editing.** A tile's title is an anchor and the whole tile is click-through via a stretched pseudo element on it, so in edit mode clicking to place a cursor would navigate. The client moves the `href` to `data-copy-href` and turns off pointer events on that anchor's pseudo elements — removing the href alone stops the navigation but leaves the overlay swallowing clicks on the summary.
+
+Not moved: `src/data/cv.ts`, already a single readable file carrying structure the copy files do not.
 
 ## Favicon
 

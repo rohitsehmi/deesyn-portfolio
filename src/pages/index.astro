@@ -5,7 +5,7 @@ import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
 import { Parallax } from '../components/Parallax';
-import { liveStudies, studyPath } from '../data/studies';
+import { liveStudies, studyPath, studyCopyBase } from '../data/studies';
 import { linksFor } from '../data/nav';
 import copy from '../copy/home.json';
 import { getImage } from 'astro:assets';
@@ -127,6 +127,7 @@ const covers = new Map(
               discipline={s.discipline}
               href={studyPath(s)}
               variant="card"
+              copyBase={studyCopyBase(s)}
               image={{
                 src: covers.get(s.slug)?.src,
                 srcSet: covers.get(s.slug)?.srcSet.attribute,

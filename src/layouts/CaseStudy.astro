@@ -4,7 +4,7 @@ import { Nav } from '../components/Nav';
 import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
-import { nextStudy, studyPath } from '../data/studies';
+import { nextStudy, studyPath, studyCopyBase } from '../data/studies';
 import { linksFor } from '../data/nav';
 
 /**
@@ -103,6 +103,7 @@ const footerRole = next ? 'base' : 'sunken';
           title={next.title}
           summary={next.summary}
           discipline={next.discipline}
+          copyBase={studyCopyBase(next)}
           href={studyPath(next)}
         />
       </Band>
