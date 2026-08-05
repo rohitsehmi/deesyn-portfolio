@@ -38,10 +38,20 @@ export const studies: Study[] = [
     discipline: 'Product design'
   },
   {
+    /*
+      Archived 2026-08-05. A reader asks for one to two flows, and this is the
+      weaker of the two design-system studies: no user testing anywhere, and
+      adoption figures where a reader asks for outcomes. It is also 2021-2023
+      against a reader that says "recent".
+
+      Not deleted. It still builds, is still reachable at /work/scaling-a-system,
+      and can come back by removing one line.
+    */
     slug: 'scaling-a-system',
     title: 'Consolidating four design systems into one',
     summary: 'A brand consolidation meant collapsing several independent design systems into a single platform, without flattening the brands that depended on them.',
-    discipline: 'Design systems'
+    discipline: 'Design systems',
+    archived: true
   }
 ];
 
