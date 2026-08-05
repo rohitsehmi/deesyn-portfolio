@@ -1,7 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Link, ArrowLink } from './Link';
 
-const meta = { title: 'Action/Link', component: Link } satisfies Meta<typeof Link>;
+// Default args cover Link's required props, so the stories below can supply
+// everything through `render` without each one having to restate them.
+const meta = {
+  title: 'Action/Link',
+  component: Link,
+  args: { href: '#', children: 'Read the case study' }
+} satisfies Meta<typeof Link>;
 export default meta;
 type S = StoryObj<typeof meta>;
 

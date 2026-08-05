@@ -15,6 +15,13 @@ jobs:
         with: { node-version: 22, cache: npm }
       - run: npm ci
 
+      # Nothing else here reads TypeScript. `astro build` transpiles without
+      # checking, and Storybook renders a story whose props no longer exist
+      # rather than failing — which is how three stale `band` props on Parallax
+      # survived the change that removed the prop.
+      - name: Types
+        run: npm run typecheck
+
       # These are the checks that stop Figma and code drifting apart. Both exit
       # non-zero on failure, so a renamed or deleted token breaks the build
       # rather than quietly producing a component that references nothing.

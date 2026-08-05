@@ -2,7 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SectionHeading } from './SectionHeading';
 import { Prose } from './Prose';
 
-const meta = { title: 'Content/SectionHeading', component: SectionHeading } satisfies Meta<typeof SectionHeading>;
+// Default args cover the required `children`, so the stories below can supply
+// everything through `render` without each one having to restate it.
+const meta = {
+  title: 'Content/SectionHeading',
+  component: SectionHeading,
+  args: { children: 'Section heading' }
+} satisfies Meta<typeof SectionHeading>;
 export default meta;
 type S = StoryObj<typeof meta>;
 

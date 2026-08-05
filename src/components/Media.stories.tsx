@@ -1,7 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Media } from './Media';
 
-const meta = { title: 'Content/Media', component: Media } satisfies Meta<typeof Media>;
+// Default args cover Media's required `alt`, so the stories below can supply
+// everything through `render` without each one having to restate it.
+const meta = {
+  title: 'Content/Media',
+  component: Media,
+  args: { alt: 'Placeholder imagery' }
+} satisfies Meta<typeof Media>;
 export default meta;
 type S = StoryObj<typeof meta>;
 
