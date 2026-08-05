@@ -21,6 +21,17 @@ const { title, description = 'Product design work by Rohit Sehmi.', pageEnd = 'b
     <title>{title}</title>
     <meta name="description" content={description} />
     {/*
+      Rohit's own mark, generated from the same path data the Logo component
+      renders — see design/build-favicon.mjs. The SVG carries its own
+      prefers-color-scheme rule, which matters more here than on the page: a
+      favicon sits on the browser's tab strip rather than on the site, so a dark
+      mark would vanish into a dark tab. The PNGs are the fallback and cannot
+      flip, so they take the light fill.
+    */}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {/*
       Applies a remembered theme before the first paint. It has to be inline
       and blocking: a module script, or anything React does after hydration,
       runs after the page has already painted in the system theme, so the page

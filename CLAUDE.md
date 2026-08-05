@@ -12,7 +12,8 @@ Started 2026-07-31. **Stack: Astro + React.** Astro for the site and MDX case st
 npm run dev          # Astro dev server
 npm run storybook    # component workshop
 npm run tokens       # tokens.json -> src/styles/tokens.css
-npm run specs        # Figma export + code-only components -> <domain>/specs/
+npm run specs        # Figma export + code-only components -> <domain>/specs/, plus the favicon
+npm run favicon      # brand mark + tokens -> public/favicon.svg and the PNG fallbacks
 npm run typecheck    # tsc --noEmit; nothing else in the repo reads TypeScript
 npm run verify       # typecheck + token, component and CSS integrity, exits non-zero on failure
 npm run verify:bands # band adjacency, linted off built HTML (run after build)
@@ -170,6 +171,16 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 **Measured vs authored, kept apart.** `design/figma-export.json` is read off the nodes — nobody wrote it, so it cannot flatter the system. `design/usage-rules.json` is authored: the failure modes someone would actually hit (ghost is not a primary action; never ship an icon-only button without `aria-label`; never fake a product UI out of rectangles). `build.mjs` merges them into each spec; the files stay separate so it is obvious which is which. Same split in Figma: `getSharedPluginData('spec','contract')` measured, `…'donts'` authored.
 
 **Each component section on canvas carries** its reasoning (rendered from the set's own `description`, one source), its don't-rules, a readable contract table, and an in-context usage example in both a base and an inverse band. The raw contract JSON is deliberately *not* on canvas — a 12,000px JSON wall is documentation theatre. Machines read it from plugin data and the repo.
+
+## Favicon
+
+**Generated, never drawn** — `design/build-favicon.mjs` reads the same `MARK_PATHS` the `Logo` component renders and the same `semantic.fg.primary` from `tokens.json`, so it cannot drift from the brand mark the way a hand-traced copy would. Part of `npm run specs`, and `public/` is in CI's staleness check, so changing the logo and forgetting the favicon fails the build.
+
+The one thing it hardcodes is colour, and it resolves it from the token rather than typing it: a favicon is fetched outside the page, so it has no stylesheet and cannot use `var(--semantic-*)`.
+
+`favicon.svg` carries its own `prefers-color-scheme` rule. That matters more here than anywhere on the site — a favicon sits on the browser's **tab strip**, not on the page background, so a dark mark disappears into a dark tab. The PNG fallbacks can't flip and take the light fill.
+
+`public/` exists only for these files. It was briefly empty after the hero moved to `src/assets/`, and an empty directory holds no tracked files — git prunes it on checkout, so it vanished from fresh clones and `build-storybook` failed on its missing `staticDirs` entry everywhere but the machine with the stale folder. If it ever empties again, drop the `staticDirs` line with it rather than committing a `.gitkeep`.
 
 ## Images
 

@@ -39,7 +39,7 @@ jobs:
           npm run tokens
           npm run specs
           git diff --exit-code -- src/styles/tokens.css tokens/tokens.json \
-            icons/ marks/ components/ \
+            icons/ marks/ components/ public/ \
             || (echo "::error::Generated files are stale — run npm run tokens && npm run specs" && exit 1)
 
       - run: npx astro build

@@ -8,13 +8,14 @@
     "build": "npm run tokens && astro build",
     "preview": "astro preview",
     "tokens": "node tokens/build.mjs && node tokens/css.mjs",
-    "specs": "node design/build.mjs && node design/build-code-specs.mjs",
+    "specs": "node design/build.mjs && node design/build-code-specs.mjs && npm run favicon",
     "typecheck": "tsc --noEmit",
     "verify": "npm run typecheck && node tokens/verify.mjs && node design/verify.mjs && node design/verify-css.mjs",
     "verify:bands": "node design/verify-bands.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "npm run tokens && storybook build",
-    "chromatic": "chromatic --exit-zero-on-changes"
+    "chromatic": "chromatic --exit-zero-on-changes",
+    "favicon": "node design/build-favicon.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.2",
