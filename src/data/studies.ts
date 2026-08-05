@@ -10,10 +10,29 @@
  * final cut is a content decision to be made once all the material exists, and
  * deleting an entry removes the option before then.
  */
+/*
+  Covers live here rather than in the page so the list stays the one place a
+  study is described. Imported, not string paths: an import gives Astro's image
+  pipeline something to optimise, a path in public/ would ship the raw PNG.
+
+  These are index tiles only. They are deliberately *not* used inside the case
+  studies, where every Media slot is reserved for real exports of real work —
+  an abstract render in a section that promises to show the flow is worse than
+  the "Image needed" placeholder, because the placeholder is honest.
+*/
+import coverMachineReadable from '../assets/cover-machine-readable-components.png';
+import coverSearch from '../assets/cover-search-experience.png';
+
 export interface Study {
   slug: string;
   title: string;
   summary: string;
+  /**
+   * Index tile cover. Abstract by intent — it sets a tone and distinguishes one
+   * study from the other at a glance. It is not evidence and must never be
+   * mistaken for a screenshot of the work.
+   */
+  cover?: { src: ImageMetadata; alt: string };
   /**
    * The discipline this study argues for. Two studies arguing one discipline
    * means one of them is doing no work, which is visible on the index because
@@ -29,13 +48,21 @@ export const studies: Study[] = [
     slug: 'machine-readable-components',
     title: 'A component library a machine could read',
     summary: 'Expedia Group had three drifting implementations of every component. We rebuilt them against one written specification that designers, engineers and language models could all build from.',
-    discipline: 'Design systems'
+    discipline: 'Design systems',
+    cover: {
+      src: coverMachineReadable,
+      alt: 'An abstract still life in violet and off-white: frosted glass panels showing a component grid, a list, a card and a block of code, wired together by glowing cables into a central lit tile.'
+    }
   },
   {
     slug: 'search-experience',
     title: 'Search, rebuilt so it could be tested',
     summary: 'The Hotels.com app showed search results in a card framework nothing could be varied inside. Rebuilding it as dynamic cards turned the app\'s most valuable screen into one the team could learn from.',
-    discipline: 'Product design'
+    discipline: 'Product design',
+    cover: {
+      src: coverSearch,
+      alt: 'An abstract still life in sage green and off-white: frosted glass panels showing a search field over a list of results, a detail view, a set of filters and a bar chart, linked by glowing cables.'
+    }
   },
   {
     /*

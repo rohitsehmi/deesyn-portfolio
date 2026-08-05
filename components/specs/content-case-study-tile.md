@@ -26,7 +26,7 @@ Implementation: `src/components/CaseStudyTile.tsx` and `src/components/CaseStudy
 | `discipline` | `string` | **yes** |
 | `href` | `string` | **yes** |
 | `variant` | `'bare' | 'card'` | no |
-| `image` | `{ src?: string; alt: string; ratio?: MediaRatio }` | no |
+| `image` | `{ src?: string; srcSet?: string; sizes?: string; alt: string; ratio?: MediaRatio }` | no |
 
 ### Property notes
 

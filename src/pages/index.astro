@@ -42,6 +42,24 @@ const hero = await getImage({
   widths: [640, 960, 1280, 1600, 1920, 2560],
   sizes: '100vw'
 });
+
+/*
+  Tile covers, through the same pipeline. Narrower than the hero because they
+  are: the measure caps at 1000 and they sit two-up above 768, so the largest
+  one ever renders at is about 480 CSS pixels, 960 on a 2x display.
+
+  `sizes` has to describe that or the browser picks from the srcSet against a
+  100vw assumption and downloads the widest candidate for a half-width slot.
+*/
+const COVER_SIZES = '(min-width: 1024px) 480px, (min-width: 768px) 45vw, calc(100vw - 40px)';
+const covers = new Map(
+  await Promise.all(
+    liveStudies.filter((s) => s.cover).map(async (s) => [
+      s.slug,
+      await getImage({ src: s.cover!.src, format: 'webp', widths: [480, 720, 960, 1280], sizes: COVER_SIZES })
+    ] as const)
+  )
+);
 ---
 <Base title="Rohit Sehmi · Product Design" pageEnd="sunken">
   {/*
@@ -110,7 +128,12 @@ const hero = await getImage({
               discipline={s.discipline}
               href={studyPath(s)}
               variant="card"
-              image={{ alt: `Cover image for ${s.title}` }}
+              image={{
+                src: covers.get(s.slug)?.src,
+                srcSet: covers.get(s.slug)?.srcSet.attribute,
+                sizes: COVER_SIZES,
+                alt: s.cover?.alt ?? `Cover image for ${s.title}`
+              }}
             />
           </li>
         ))}

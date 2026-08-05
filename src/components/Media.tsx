@@ -3,6 +3,16 @@ export type MediaRatio = '16-9' | '4-3' | '1-1' | '3-4';
 
 export interface MediaProps {
   src?: string;
+  /**
+   * Responsive candidates for `src`, as an `img` srcset string.
+   *
+   * This stays a plain React component so Storybook and Chromatic treat it like
+   * any other, which means it cannot import Astro's image pipeline. The page
+   * calls `getImage()` and passes the result down.
+   */
+  srcSet?: string;
+  /** How wide the image renders, for picking from `srcSet`. */
+  sizes?: string;
   alt: string;
   ratio?: MediaRatio;
   /** bleed runs to the band edge and drops the radius; inset keeps r20. */
@@ -17,12 +27,12 @@ export interface MediaProps {
  * Caption sits below, outside the frame. No labels overlaid on the image, and
  * no decorative photo credits.
  */
-export function Media({ src, alt, ratio = '16-9', fit = 'inset', caption }: MediaProps) {
+export function Media({ src, srcSet, sizes, alt, ratio = '16-9', fit = 'inset', caption }: MediaProps) {
   return (
     <figure className="media" data-ratio={ratio} data-fit={fit}>
       <div className="media__frame">
         {src ? (
-          <img src={src} alt={alt} loading="lazy" decoding="async" />
+          <img src={src} srcSet={srcSet} sizes={sizes} alt={alt} loading="lazy" decoding="async" />
         ) : (
           // A slot with nothing in it should say so. An invisible placeholder
           // reads as a finished section that happens to have a gap, which is

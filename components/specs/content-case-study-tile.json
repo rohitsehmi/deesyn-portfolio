@@ -39,7 +39,7 @@
       "note": "`bare` groups by image and spacing, the way revolut.com does. `card` puts it on a surface with a border. Cards are the lazy grouping: the band already separates this section, and with no shadows available in site chrome a card cannot do the one thing cards are for. Kept as an option because the affordance question is real."
     },
     "image": {
-      "type": "{ src?: string; alt: string; ratio?: MediaRatio }",
+      "type": "{ src?: string; srcSet?: string; sizes?: string; alt: string; ratio?: MediaRatio }",
       "required": false,
       "note": "Plain data rather than a ReactNode slot: JSX written inside an `.astro` expression produces an Astro template object, not a React element."
     }

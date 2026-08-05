@@ -22,7 +22,7 @@ export interface CaseStudyTileProps {
    * Plain data rather than a ReactNode slot: JSX written inside an `.astro`
    * expression produces an Astro template object, not a React element.
    */
-  image?: { src?: string; alt: string; ratio?: MediaRatio };
+  image?: { src?: string; srcSet?: string; sizes?: string; alt: string; ratio?: MediaRatio };
 }
 
 /**
