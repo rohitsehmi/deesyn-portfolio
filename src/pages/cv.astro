@@ -1,32 +1,242 @@
 ---
 import Page from '../layouts/Page.astro';
-import { Prose } from '../components/Prose';
-import { Contribution } from '../components/Contribution';
+import { Button } from '../components/Button';
+import { Tag } from '../components/Tag';
+import { Link } from '../components/Link';
+import { roles, skills, education, awards, cvPdf } from '../data/cv';
 
 /**
- * STUB. Decide the shape before filling it: either this page carries the CV as
- * content, or it is a short page whose job is to hand over a PDF. Both work.
- * A page that half does each does not.
+ * The shape question the stub left open, answered: the CV lives here, and the
+ * PDF is offered alongside it.
+ *
+ * A page whose only job is to hand over a file asks the reader to leave the
+ * site and open a viewer before they learn anything, and a recruiter skimming
+ * on a phone often will not. So the content is the page. The PDF stays because
+ * it is the thing that gets forwarded internally, and that is a different job.
+ *
+ * Two columns above 900px — history on the left, the reference material on the
+ * right — collapsing to one below it, which mirrors the PDF without pretending
+ * a web page is A4.
  */
 ---
 <Page
   title="CV"
-  standfirst="[NEEDS: decide the shape. Either the CV lives on this page, or this page hands over a file.]"
+  description="Rohit Sehmi — product and design systems designer. Fifteen years across design systems, mobile product and interactive TV."
+  standfirst="Product and design systems designer. Component creation and governance, multi-brand token systems, and AI-assisted design-to-code pipelines — aimed at cross-platform consistency, accessibility and scale."
 >
-  <Contribution
-    items={[
-      { term: 'Now', detail: '[NEEDS: current role or availability]' },
-      { term: '2021 to 2026', detail: 'Expedia Group Design System. [NEEDS: titles and dates]' },
-      { term: '2016 to 2021', detail: 'Hotels.com, mobile product design. [NEEDS: titles and dates]' },
-      { term: 'Before', detail: '[NEEDS: as much as earns its place, and no more]' }
-    ]}
-  />
-  <Prose>
-    <p>
-      [NEEDS: if this page is going to hand over a PDF, it needs the file and a
-      download link, and the list above becomes a summary rather than the
-      content. If the CV lives here instead, this becomes the full history and
-      the file is not needed at all.]
-    </p>
-  </Prose>
+  <div class="cv">
+    <div class="cv__main">
+      <section class="cv__section" aria-labelledby="experience">
+        <h2 class="cv__heading" id="experience">Experience</h2>
+        <ol class="cv__roles">
+          {roles.map((r) => (
+            <li class="cv__role">
+              <h3 class="cv__role-title">
+                <span class="cv__company">{r.company}</span>
+                <span class="cv__sep" aria-hidden="true">·</span>
+                <span class="cv__job">{r.title}</span>
+              </h3>
+              <p class="cv__meta">{r.dates} · {r.location}</p>
+              {r.points && (
+                <ul class="cv__points">
+                  {r.points.map((p) => <li>{p}</li>)}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+
+    {/*
+      aside, not a second column of equal weight: skills, education and awards
+      support the history rather than competing with it. It reads after the
+      experience in source order too, which is the order it should be heard in.
+    */}
+    <aside class="cv__aside">
+      <section class="cv__section" aria-labelledby="skills">
+        <h2 class="cv__heading" id="skills">Skills and tools</h2>
+        {skills.map((g) => (
+          <div class="cv__skill-group">
+            <h3 class="cv__subheading">{g.group}</h3>
+            <ul class="cv__tags">
+              {g.items.map((s) => <li><Tag>{s}</Tag></li>)}
+            </ul>
+          </div>
+        ))}
+      </section>
+
+      <section class="cv__section" aria-labelledby="education">
+        <h2 class="cv__heading" id="education">Education</h2>
+        <p class="cv__entry-title">{education.institution}</p>
+        <p class="cv__meta">{education.dates}</p>
+        <p class="cv__entry-detail">{education.detail}</p>
+      </section>
+
+      <section class="cv__section" aria-labelledby="awards">
+        <h2 class="cv__heading" id="awards">Awards</h2>
+        {awards.map((a) => (
+          <>
+            <p class="cv__entry-title">{a.name}</p>
+            <p class="cv__meta">{a.dates}</p>
+            <p class="cv__entry-detail">{a.detail}</p>
+          </>
+        ))}
+      </section>
+
+      <section class="cv__section" aria-labelledby="download">
+        <h2 class="cv__heading" id="download">Take it with you</h2>
+        {/*
+          `download` rather than a new tab: the point of the file is to keep it,
+          and a PDF opening in a viewer tab is a step away from that. The
+          accessible name says the weight, because a link that silently starts a
+          1.2MB download on a phone has not asked permission — and it *starts*
+          with the visible label, because WCAG 2.5.3 requires the accessible
+          name to contain the visible text. "Download CV as PDF" would have read
+          better and failed it.
+        */}
+        <Button
+          variant="secondary"
+          size="md"
+          href={cvPdf.href}
+          download={cvPdf.filename}
+          iconTrailing="arrow-thin-down"
+          aria-label={`Download PDF, ${cvPdf.size}, opens as a file`}
+        >
+          Download PDF
+        </Button>
+        <p class="cv__note">PDF · {cvPdf.size}</p>
+      </section>
+
+      <section class="cv__section" aria-labelledby="contact">
+        <h2 class="cv__heading" id="contact">Get in touch</h2>
+        <ul class="cv__contact">
+          <li><Link href="mailto:rohit.sehmi@gmail.com">rohit.sehmi@gmail.com</Link></li>
+          <li><Link href="https://www.linkedin.com/in/rohitsehmi" rel="me noopener">linkedin.com/in/rohitsehmi</Link></li>
+        </ul>
+      </section>
+    </aside>
+  </div>
 </Page>
+
+<style is:global>
+  /*
+    Two columns from 900px. Not 768: at 768 the aside squeezes the experience
+    bullets to about 40 characters, which is below the comfortable measure and
+    makes the longest role unreadable in the name of matching a print layout.
+  */
+  .cv { display: grid; gap: var(--primitive-layout-l64); }
+  @media (min-width: 900px) {
+    .cv {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 17rem);
+      gap: var(--primitive-layout-l80);
+      align-items: start;
+    }
+  }
+
+  .cv__section + .cv__section { margin-top: var(--primitive-layout-l48); }
+  .cv__aside .cv__section + .cv__section { margin-top: var(--primitive-layout-l40); }
+
+  /* Small caps-ish label, the same treatment the case-study section headings use. */
+  .cv__heading {
+    margin: 0 0 var(--primitive-space-sp600);
+    padding-bottom: var(--primitive-space-sp400);
+    border-bottom: 1px solid var(--semantic-border-subtle);
+    font: var(--type-emphasis-3);
+    letter-spacing: var(--type-emphasis-3-tracking);
+    text-transform: uppercase;
+    color: var(--semantic-fg-secondary);
+  }
+
+  .cv__roles { list-style: none; margin: 0; padding: 0; }
+  .cv__role + .cv__role {
+    margin-top: var(--primitive-layout-l40);
+    padding-top: var(--primitive-layout-l40);
+    border-top: 1px solid var(--semantic-border-subtle);
+  }
+
+  .cv__role-title {
+    margin: 0 0 var(--primitive-space-sp200);
+    font: var(--type-heading-s);
+    letter-spacing: var(--type-heading-s-tracking);
+    color: var(--semantic-fg-primary);
+    text-wrap: balance;
+  }
+  /* The job title carries less weight than the company, without a second size. */
+  .cv__job { color: var(--semantic-fg-secondary); }
+  .cv__sep { color: var(--semantic-fg-secondary); margin-inline: var(--primitive-space-sp200); }
+
+  .cv__meta {
+    margin: 0;
+    font: var(--type-body-3);
+    letter-spacing: var(--type-body-3-tracking);
+    color: var(--semantic-fg-secondary);
+  }
+
+  /*
+    No bullet glyphs. The PDF uses a dash; on the web the indent and the rhythm
+    already say "list", and a disc in front of every line is decoration the
+    band separation has already provided.
+  */
+  .cv__points { list-style: none; margin: var(--primitive-space-sp600) 0 0; padding: 0; }
+  .cv__points li {
+    position: relative;
+    margin: 0 0 var(--primitive-space-sp400);
+    padding-inline-start: var(--primitive-space-sp600);
+    max-width: 68ch;
+    font: var(--type-body-2);
+    letter-spacing: var(--type-body-2-tracking);
+    color: var(--semantic-fg-primary);
+    text-wrap: pretty;
+  }
+  /*
+    A dash, mirroring the PDF. fg/tertiary would be the tempting token and is
+    the wrong one — it is 1.65:1 on white and would be near-invisible. This is a
+    rule, so it takes the token rules are made of.
+  */
+  .cv__points li::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0.7em;
+    inset-inline-start: 0;
+    width: var(--primitive-space-sp300);
+    height: 1px;
+    background: var(--semantic-fg-secondary);
+  }
+
+  .cv__subheading {
+    margin: 0 0 var(--primitive-space-sp400);
+    font: var(--type-emphasis-3);
+    letter-spacing: var(--type-emphasis-3-tracking);
+    color: var(--semantic-fg-secondary);
+  }
+  .cv__skill-group + .cv__skill-group { margin-top: var(--primitive-space-sp800); }
+
+  .cv__tags {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: var(--primitive-space-sp300);
+  }
+
+  .cv__entry-title {
+    margin: 0 0 var(--primitive-space-sp150);
+    font: var(--type-emphasis-1);
+    letter-spacing: var(--type-emphasis-1-tracking);
+    color: var(--semantic-fg-primary);
+  }
+  .cv__entry-detail {
+    margin: var(--primitive-space-sp300) 0 0;
+    font: var(--type-body-3);
+    letter-spacing: var(--type-body-3-tracking);
+    color: var(--semantic-fg-primary);
+  }
+
+  .cv__note {
+    margin: var(--primitive-space-sp400) 0 0;
+    font: var(--type-body-3);
+    letter-spacing: var(--type-body-3-tracking);
+    color: var(--semantic-fg-secondary);
+  }
+
+  .cv__contact { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--primitive-space-sp400); }
+  .cv__contact li { font: var(--type-body-2); letter-spacing: var(--type-body-2-tracking); }
+</style>
