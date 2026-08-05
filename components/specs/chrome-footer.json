@@ -8,7 +8,7 @@
     "set": "Chrome/Footer",
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
-  "description": "Transparent by design — the band it sits in owns the surface, so the footer inherits foreground with no override. Inner container caps at Size/Max Width (1000).\n\nContact is a mailto arrow link, not a form. No backend to run, and a portfolio contact form converts worse than an address you can copy.\n\ncompact drops the columns slot and the rule: logo, copyright, contact. Use it on case-study pages where the footer should not compete with the next-study link.\n\nCode-only props: href per column link, mailto address.\n\nThe columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.",
+  "description": "Transparent by design — the band it sits in owns the surface, so the footer inherits foreground with no override. Inner container caps at Size/Max Width (1000).\n\nThe copyright sits under the mark, not beside it. Side by side they read as two separate items with a gap between them; stacked, with their left edges aligned, they read as one block of attribution.\n\nThe single link is not a contact address. Contact already has a nav item, so a mailto here would be a second affordance for an intent that is already served, and the footer's one link is worth more pointing somewhere the reader cannot get to otherwise.\n\ncompact drops the columns slot and the rule: brand block, then the link. Use it on case-study pages where the footer should not compete with the next-study link. full moves the brand block up into the top row, which leaves the bottom row holding only the link — it justifies to the end rather than sitting alone on the left.\n\nCode-only props: href per column link, href on the arrow link.\n\nThe columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.",
   "donts": [
     "Do not give it a surface. It is transparent so the band owns the background; setting a fill breaks the inverse case.",
     "Contact is a mailto, not a form. No backend, and a portfolio form converts worse than a copyable address."
@@ -65,7 +65,7 @@
             "value": "20px"
           }
         },
-        "inner/bottom/Brand/Logo/Vector": {
+        "inner/bottom/brand/Brand/Logo/Vector": {
           "fg": {
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
@@ -74,7 +74,7 @@
             "dark": "#ffffff"
           }
         },
-        "inner/bottom/© 2026 Rohit Sehmi": {
+        "inner/bottom/brand/© 2026 Rohit Sehmi": {
           "textStyle": {
             "token": "Body/3",
             "ref": "typography.body.3",
@@ -165,13 +165,31 @@
             "value": "48px"
           }
         },
-        "inner/top/Brand/Logo/Vector": {
+        "inner/top/brand/Brand/Logo/Vector": {
           "fg": {
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
             "type": "color",
             "light": "#191c1f",
             "dark": "#ffffff"
+          }
+        },
+        "inner/top/brand/© 2026 Rohit Sehmi": {
+          "textStyle": {
+            "token": "Body/3",
+            "ref": "typography.body.3",
+            "fontFamily": "Inter",
+            "fontWeight": 400,
+            "fontSize": "12px",
+            "lineHeight": 1.5,
+            "letterSpacing": "0.015em"
+          },
+          "fg": {
+            "token": "fg/secondary",
+            "ref": "semantic.*.fg.secondary",
+            "type": "color",
+            "light": "#717173",
+            "dark": "#ffffffb2"
           }
         },
         "inner/rule": {
@@ -189,24 +207,6 @@
             "ref": "primitive.space.sp600",
             "type": "dimension",
             "value": "20px"
-          }
-        },
-        "inner/bottom/© 2026 Rohit Sehmi": {
-          "textStyle": {
-            "token": "Body/3",
-            "ref": "typography.body.3",
-            "fontFamily": "Inter",
-            "fontWeight": 400,
-            "fontSize": "12px",
-            "lineHeight": 1.5,
-            "letterSpacing": "0.015em"
-          },
-          "fg": {
-            "token": "fg/secondary",
-            "ref": "semantic.*.fg.secondary",
-            "type": "color",
-            "light": "#717173",
-            "dark": "#ffffffb2"
           }
         },
         "inner/bottom/Action/Arrow Link": {
