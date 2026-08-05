@@ -7,6 +7,7 @@ import { CaseStudyTile } from '../components/CaseStudyTile';
 import { Parallax } from '../components/Parallax';
 import { liveStudies, studyPath } from '../data/studies';
 import { linksFor } from '../data/nav';
+import copy from '../copy/home.json';
 import { getImage } from 'astro:assets';
 import heroSource from '../assets/hero-parallax.png';
 
@@ -111,10 +112,8 @@ const covers = new Map(
       range="exit"
       drift="140px"
     >
-      <h1 class="home-hero__title">Product design, end to end.</h1>
-      <p class="home-hero__standfirst">
-        Two case studies. One on the design system work, one on the product work.
-      </p>
+      <h1 class="home-hero__title" data-copy="home:heroTitle">{copy.heroTitle}</h1>
+      <p class="home-hero__standfirst" data-copy="home:heroStandfirst">{copy.heroStandfirst}</p>
     </Parallax>
 
     {/* base, because the hero above resolves dark. */}

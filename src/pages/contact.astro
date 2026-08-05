@@ -1,6 +1,7 @@
 ---
 import Page from '../layouts/Page.astro';
 import { ArrowLink } from '../components/Link';
+import copy from '../copy/contact.json';
 
 /**
  * Two links and a sentence. That is the whole page, on purpose.
@@ -13,15 +14,22 @@ import { ArrowLink } from '../components/Link';
  * This is where the nav's one primary action lands, so it should not feel like
  * a page that ran out of content. It is short because it is finished.
  */
+/*
+  Labels come from the copy file so they are editable in the browser; the hrefs
+  do not. An address you can retype in a live page is an address you can break
+  in a live page, and the label is the part that is ever a writing decision.
+*/
 const links = [
   {
-    label: 'rohit.sehmi@gmail.com',
+    key: 'email',
+    label: copy.email,
     href: 'mailto:rohit.sehmi@gmail.com',
     /* Screen readers get what happens, since the glyph only says "away". */
     hint: 'Email Rohit Sehmi, opens your mail app'
   },
   {
-    label: 'linkedin.com/in/rohitsehmi',
+    key: 'linkedin',
+    label: copy.linkedin,
     href: 'https://www.linkedin.com/in/rohitsehmi',
     external: true,
     hint: 'LinkedIn profile, opens in a new tab'
@@ -29,9 +37,10 @@ const links = [
 ];
 ---
 <Page
-  title="Contact"
+  title={copy.title}
   description="Get in touch with Rohit Sehmi — product and design systems designer, London."
-  standfirst="Open to discussing new and impactful design opportunities."
+  standfirst={copy.standfirst}
+  standfirstCopyRef="contact:standfirst"
 >
   <ul class="contact">
     {links.map((l) => (
@@ -46,6 +55,7 @@ const links = [
           href={l.href}
           icon="arrow-up-right"
           aria-label={l.hint}
+          copyRef={`contact:${l.key}`}
           {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         >
           {l.label}
@@ -54,7 +64,7 @@ const links = [
     ))}
   </ul>
 
-  <p class="contact__where">Based in London, working remotely or hybrid.</p>
+  <p class="contact__where" data-copy="contact:where">{copy.where}</p>
 </Page>
 
 <style is:global>

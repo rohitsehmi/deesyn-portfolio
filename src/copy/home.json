@@ -1,0 +1,5 @@
+{
+  "_comment": "Editable copy for the home page. Rendered with data-copy attributes so it can be edited in the browser under `npm run dev` — see tools/copy-editor.mjs. Case study titles and summaries are not here: they live in src/data/studies.ts, which is already one readable file and is shared with the next-study rotation.",
+  "heroTitle": "Product design, end to end.",
+  "heroStandfirst": "Two case studies. One on the design system work, one on the product work."
+}

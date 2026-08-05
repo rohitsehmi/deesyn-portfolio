@@ -31,12 +31,22 @@ export interface ArrowLinkProps extends LinkProps {
    * cannot disagree.
    */
   icon?: 'arrow-thin-right' | 'arrow-up-right';
+  /**
+   * `<file>:<path>` into src/copy, making the label editable in the browser
+   * while the dev server is running. Dev tooling only — it renders as a plain
+   * data attribute and does nothing in a production build.
+   *
+   * It lands on the label span rather than the anchor because the anchor also
+   * contains the icon, and an editable region that swallows an SVG is one
+   * backspace away from deleting it.
+   */
+  copyRef?: string;
 }
 
-export function ArrowLink({ children, icon = 'arrow-thin-right', ...rest }: ArrowLinkProps) {
+export function ArrowLink({ children, icon = 'arrow-thin-right', copyRef, ...rest }: ArrowLinkProps) {
   return (
     <a className="arrow-link" data-icon={icon} {...rest}>
-      <span>{children}</span>
+      <span data-copy={copyRef}>{children}</span>
       <span className="arrow-link__icon"><Icon name={icon} size={20} /></span>
     </a>
   );

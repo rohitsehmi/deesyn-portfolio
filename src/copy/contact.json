@@ -1,0 +1,8 @@
+{
+  "_comment": "Editable copy for /contact. Every value here is rendered with a data-copy attribute, so it can be edited in the browser while `npm run dev` is running — see tools/copy-editor.mjs. Keys are stable: renaming one silently orphans the string on the page, so rename in both places or not at all.",
+  "title": "Contact",
+  "standfirst": "Open to discussing new and impactful design opportunities.",
+  "email": "rohit.sehmi@gmail.com",
+  "linkedin": "linkedin.com/in/rohitsehmi",
+  "where": "Based in London, working remotely or hybrid."
+}
