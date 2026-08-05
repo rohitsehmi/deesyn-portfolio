@@ -10,7 +10,22 @@
 .footer__columns { margin-left: auto; display: flex; gap: var(--primitive-layout-l48); }
 .footer__rule { border: 0; height: 1px; background: var(--semantic-border-subtle); margin: 0; }
 .footer__bottom { display: flex; align-items: center; gap: var(--primitive-space-sp600); flex-wrap: wrap; }
-.footer__copy { margin: 0; margin-right: auto; color: var(--semantic-fg-secondary); font: var(--type-body-3); letter-spacing: var(--type-body-3-tracking); }
+
+/*
+  Mark and copyright stack. align-items rather than the default stretch, so the
+  copy sits at the logo's left edge instead of filling the column — the two
+  left edges lining up is the whole point of putting it underneath.
+*/
+.footer__brand {
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: var(--primitive-space-sp400);
+  margin-right: auto;
+}
+.footer__copy { margin: 0; color: var(--semantic-fg-secondary); font: var(--type-body-3); letter-spacing: var(--type-body-3-tracking); }
+
+/* At full scale the mark moved up into the top row, so the bottom row holds
+   only the link. Without this it would sit alone on the left. */
+.footer[data-scale='full'] .footer__bottom { justify-content: flex-end; }
 
 /* Same size as the nav, so the two lockups match down the page. */
 .footer .logo { height: var(--primitive-size-s32); width: auto; }

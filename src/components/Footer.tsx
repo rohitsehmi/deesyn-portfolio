@@ -27,21 +27,33 @@ export function Footer({
   columns,
   link = { label: 'How this was built', href: '/how-this-was-built' }
 }: FooterProps) {
+  /*
+    The copyright sits under the mark, not beside it, so the two read as one
+    block of attribution rather than as two separate items in a row. Written
+    once and placed in whichever row carries the logo: top at full scale,
+    bottom at compact.
+  */
+  const brand = (
+    <div className="footer__brand">
+      <Logo height={32} />
+      <p className="footer__copy">© {new Date().getFullYear()} Rohit Sehmi</p>
+    </div>
+  );
+
   return (
     <footer className="footer" data-scale={scale}>
       <div className="measure footer__inner">
         {scale === 'full' && (
           <>
             <div className="footer__top">
-              <Logo height={32} />
+              {brand}
               <div className="footer__columns">{columns}</div>
             </div>
             <hr className="footer__rule" />
           </>
         )}
         <div className="footer__bottom">
-          {scale === 'compact' && <Logo height={32} />}
-          <p className="footer__copy">© {new Date().getFullYear()} Rohit Sehmi</p>
+          {scale === 'compact' && brand}
           <ArrowLink href={link.href}>{link.label}</ArrowLink>
         </div>
       </div>
