@@ -30,8 +30,15 @@ interface Props {
   description?: string;
   /** Which study this is, so the layout can offer the other one at the foot. */
   slug: string;
+  /**
+   * `<file>:<path>` into src/copy for the heading and standfirst, making them
+   * editable in the browser under `npm run dev`. Dev tooling only; they render
+   * as plain data attributes and do nothing in a build.
+   */
+  titleCopyRef?: string;
+  standfirstCopyRef?: string;
 }
-const { title, standfirst, description, slug } = Astro.props;
+const { title, standfirst, description, slug, titleCopyRef, standfirstCopyRef } = Astro.props;
 
 const links = linksFor(Astro.url.pathname);
 
@@ -59,8 +66,8 @@ const footerRole = next ? 'base' : 'sunken';
     {/* Hero. Two text elements and no CTA: the reader arrived here on purpose. */}
     <Band role="base" scale="feature">
       <div class="cs-hero">
-        <h1 class="cs-hero__title">{title}</h1>
-        <p class="cs-hero__standfirst">{standfirst}</p>
+        <h1 class="cs-hero__title" data-copy={titleCopyRef}>{title}</h1>
+        <p class="cs-hero__standfirst" data-copy={standfirstCopyRef}>{standfirst}</p>
         <slot name="contribution" />
       </div>
     </Band>

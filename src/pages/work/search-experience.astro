@@ -7,9 +7,14 @@ import { Explorations } from '../../components/Explorations';
 import { Hindsight } from '../../components/Hindsight';
 import { Contribution } from '../../components/Contribution';
 import { Media } from '../../components/Media';
+import c from '../../copy/search-experience.json';
 
 /**
  * DRAFT. Study two of two: the Product Design discipline.
+ *
+ * Every word lives in src/copy/search-experience.json, in reading order, so the
+ * whole voice can be read in one file and edited in the browser while
+ * `npm run dev` runs. This file is the arrangement; that file is the writing.
  *
  * Extracted from rohitsehmi.com/apps, which covered five separate initiatives
  * on one page. This takes the Search Experience work only, and picks up the
@@ -23,174 +28,114 @@ import { Media } from '../../components/Media';
  * truthful. If they were unrelated pieces of work that happen to share a
  * surface, they become two sections rather than one story.
  */
+const F = 'search-experience';
 ---
 
 <CaseStudy
-  title="Search, rebuilt so it could be tested"
+  title={c.title}
   slug="search-experience"
-  standfirst="The Hotels.com app showed search results in a card framework nothing could be varied inside. Rebuilding it as dynamic cards turned the most valuable screen in the app into one the team could actually learn from."
+  standfirst={c.standfirst}
+  titleCopyRef={`${F}:title`}
+  standfirstCopyRef={`${F}:standfirst`}
 >
-  <Contribution
-    slot="contribution"
-    items={[
-      { term: 'Role', detail: 'Senior Product Designer, mobile' },
-      { term: 'What I owned', detail: '[NEEDS: your specific scope. The Apps page credits Product, Developers and Analytics as collaborators but does not say what you personally decided. On the search work: did you own the layout system, the test design, the hypotheses, or all three?]' },
-      { term: 'The team', detail: 'Product, engineering and analytics, running a continuous multivariate testing programme' },
-      { term: 'When', detail: '2018 and 2019, with the same surface revisited in 2025' }
-    ]}
-  />
+  <Contribution slot="contribution" items={c.contribution} copyBase={`${F}:contribution`} />
 
   <div slot="problem">
-    <SectionHeading standfirst="A layout that cannot vary cannot be tested, and search results are the screen where testing matters most.">
-      The problem
+    <SectionHeading
+      standfirst={c.problem.standfirst}
+      copyRef={`${F}:problem.heading`}
+      standfirstCopyRef={`${F}:problem.standfirst`}
+    >
+      {c.problem.heading}
     </SectionHeading>
     <Prose lead>
-      <p>
-        Search results were built on a static card framework. Every property
-        appeared in the same fixed arrangement, which meant that any question
-        about what a traveller actually needed to see in order to choose was
-        unanswerable. There was no way to put a different amount of content in
-        front of someone and find out.
-      </p>
-      <p>
-        Refactoring to dynamic cards was not a visual exercise. It was about
-        making the results page capable of holding more content, in more
-        arrangements, so the team could run real tests on the highest traffic
-        screen in the app.
-      </p>
-      <p>
-        [NEEDS: the insight, and this is the gap that matters most. What did you
-        know about how travellers were failing on this screen? Drop-off between
-        results and property page, scroll depth before the first tap, how many
-        results people compared before choosing, complaints about missing
-        information. One finding turns this from a technical refactor into a
-        user problem, and a reader scores it as the first thing it looks for.]
-      </p>
+      {c.problem.paras.map((p, i) => <p data-copy={`${F}:problem.paras.${i}`}>{p}</p>)}
     </Prose>
   </div>
 
   <div slot="process">
-    <SectionHeading standfirst="Three layouts, tested against each other, inside a continuous programme rather than as a one-off launch.">
-      How it was worked out
+    <SectionHeading
+      standfirst={c.process.standfirst}
+      copyRef={`${F}:process.heading`}
+      standfirstCopyRef={`${F}:process.standfirst`}
+    >
+      {c.process.heading}
     </SectionHeading>
     <Prose>
+      <p data-copy={`${F}:process.openingPara`}>{c.process.openingPara}</p>
+      {/*
+        Three spans rather than one string, because the middle is emphasised and
+        editing is plain text: a <strong> inside a single editable string would
+        be stripped the first time anyone touched it.
+      */}
       <p>
-        Three adaptive layouts were built and tested against each other. The work
-        sat inside an ongoing multivariate testing programme run jointly by
-        product, design, engineering and analytics, so a change did not ship on
-        judgement and then get defended. It shipped as a hypothesis and either
-        survived contact with real traffic or did not.
+        <span data-copy={`${F}:process.principle.before`}>{c.process.principle.before}</span>
+        <strong data-copy={`${F}:process.principle.quote`}>{c.process.principle.quote}</strong>
+        <span data-copy={`${F}:process.principle.after`}>{c.process.principle.after}</span>
       </p>
-      <p>
-        The operating principle, in your words at the time: <strong>create a
-        hypothesis to give us an opportunity to learn, not to predict.</strong>
-        That distinction is what makes a losing test useful rather than
-        embarrassing, and it is why the one below was kept rather than deleted.
-      </p>
-      <p>
-        [NEEDS: what the three layouts actually were, and what separated them.
-        Density, image size, how much price and review content each carried?
-        The reviewer wants to see the alternatives, not be told there were three.]
-      </p>
+      <p data-copy={`${F}:process.closingPara`}>{c.process.closingPara}</p>
     </Prose>
 
-    <SectionHeading level={3}>What was tested, and what lost</SectionHeading>
+    <SectionHeading level={3} copyRef={`${F}:process.explorationsHeading`}>
+      {c.process.explorationsHeading}
+    </SectionHeading>
     <Explorations
-      items={[
-        {
-          title: 'A search recap carrying check in details',
-          why: 'Lost. It had a negative impact on conversion, so it went back out and was retested without the check in details. Showing a traveller a summary of what they had already told us cost more attention than it returned.',
-          image: { alt: 'The search recap variant that carried check in details' }
-        },
-        {
-          title: 'A sign in module in the results stream',
-          why: '[NEEDS: the Apps page records this as an ongoing test, which means it never resolved before you left the team. Say that plainly if so. An unresolved test is honest; a test quietly dropped from the write-up is not.]',
-          image: { alt: 'The sign in module placed within the results stream' }
-        },
-        {
-          title: '[NEEDS: the third adaptive layout, and why it was not the one]',
-          why: '[NEEDS: three layouts were tested and only the outcome is recorded. Which two lost, and what did each get wrong? This section is the one a reader weights hardest, and it is currently one real entry deep.]',
-          image: { alt: 'Placeholder for the rejected adaptive layout' }
-        }
-      ]}
+      copyBase={`${F}:process.explorations`}
+      items={c.process.explorations.map((e) => ({
+        title: e.title,
+        why: e.why,
+        image: { alt: e.imageAlt }
+      }))}
     />
   </div>
 
   <div slot="interface">
-    <SectionHeading standfirst="Dynamic cards in 2019. In 2025 the same journey again, this time the movement between the two screens rather than the screens themselves.">
-      The flow, twice
+    <SectionHeading
+      standfirst={c.interface.standfirst}
+      copyRef={`${F}:interface.heading`}
+      standfirstCopyRef={`${F}:interface.standfirst`}
+    >
+      {c.interface.heading}
     </SectionHeading>
     <Media
-      alt="The three adaptive search result layouts side by side, showing how card content varies between them"
+      alt={c.interface.mediaAlt}
       ratio="16-9"
-      caption="The dynamic card framework. Each layout carries a different amount of content in the same slot, which is what made the results page testable."
+      caption={c.interface.mediaCaption}
+      captionCopyRef={`${F}:interface.mediaCaption`}
     />
     <Prose>
-      <p>
-        Moving from static to dynamic cards changed what the card was. Instead of
-        a fixed arrangement of a fixed set of fields, it became a container the
-        team could vary: more content where it earned attention, less where it
-        did not, and different arrangements for different result positions.
-      </p>
-      <p>
-        In 2025 I came back to the same journey from the other side, prototyping
-        the app shell transitions in Principle: search results into the property
-        page, the loading state on results, and the movement into trips. A card
-        that expands into the page it belongs to keeps the traveller oriented in
-        a way a page swap does not, and on the highest traffic path in the app
-        that orientation is the difference between comparing properties and
-        starting over.
-      </p>
-      <p>
-        [NEEDS: the transitions themselves, as video or as frame sequences.
-        Motion described in prose is the one thing that genuinely does not
-        survive the page. If the Principle files still exist, exports of the SRP
-        to PDP transition and the results loading state would carry this whole
-        section.]
-      </p>
+      {c.interface.paras.map((p, i) => <p data-copy={`${F}:interface.paras.${i}`}>{p}</p>)}
     </Prose>
     <Media
-      alt="The search results to property page transition, prototyped in Principle"
+      alt={c.interface.motionMediaAlt}
       ratio="16-9"
-      caption="[NEEDS: replace with a real capture. A still cannot carry this; a short loop can.]"
+      caption={c.interface.motionMediaCaption}
+      captionCopyRef={`${F}:interface.motionMediaCaption`}
     />
   </div>
 
   <div slot="impact">
-    <SectionHeading standfirst="The dynamic card framework outlived the redesign that introduced it. It is what everything after it was tested inside.">
-      Impact
+    <SectionHeading
+      standfirst={c.impact.standfirst}
+      copyRef={`${F}:impact.heading`}
+      standfirstCopyRef={`${F}:impact.standfirst`}
+    >
+      {c.impact.heading}
     </SectionHeading>
     <Metrics
-      items={[
-        { value: '[NEEDS]', label: 'increase in customers returning within 30 days' },
-        { value: '[NEEDS]', label: 'increase in shortlisting, the behaviour that precedes a booking' },
-        { value: '3', label: 'adaptive layouts tested against each other on the app\'s highest traffic screen' }
-      ]}
-      source="[NEEDS: the numbers behind the two directional claims. Your own write-up records an overall strong positive result driven by US point of sale, with increased returning customers within 30 days and increased shortlisting. Those were measured, so the percentages exist somewhere. Directional claims without figures are exactly what a case study says does not pass.]"
+      items={c.impact.metrics}
+      source={c.impact.metricsSource}
+      copyBase={`${F}:impact.metrics`}
+      sourceCopyRef={`${F}:impact.metricsSource`}
     />
     <Prose>
-      <p>
-        [NEEDS: this is the decision that shapes the whole study. The hard
-        numbers on the Apps page belong to the contextual home work, not to
-        search: +5% conversion, +25% engagement, +20% sign ins, +85% account
-        creation. Search's own results are recorded as directional only. Either
-        recover search's percentages, or we should talk about whether contextual
-        home is the better subject for this slot despite the weaker flow story.]
-      </p>
+      {c.impact.paras.map((p, i) => <p data-copy={`${F}:impact.paras.${i}`}>{p}</p>)}
     </Prose>
   </div>
 
   <div slot="hindsight">
     <Hindsight>
-      <p>
-        [NEEDS: yours. One honest candidate, if it is true: the framework was
-        built to make testing possible, and the tests that ran through it were
-        mostly about content and arrangement rather than about whether the
-        results page was the right model at all. A second: the recap test lost
-        and was retested with one variable removed, which is the right instinct,
-        but three layouts producing one recorded outcome suggests the learning
-        was not captured as carefully as the shipping was.]
-      </p>
+      {c.hindsight.paras.map((p, i) => <p data-copy={`${F}:hindsight.paras.${i}`}>{p}</p>)}
     </Hindsight>
   </div>
 </CaseStudy>

@@ -55,9 +55,24 @@ export default function copyEditor() {
   return {
     name: 'copy-editor',
     hooks: {
-      'astro:config:setup': ({ command, injectScript, config }) => {
+      'astro:config:setup': ({ command, injectScript, config, updateConfig }) => {
         if (command !== 'dev') return;
         const copyDir = resolve(config.root.pathname ?? config.root, 'src/copy');
+
+        /*
+          Keep src/copy out of Vite's watcher.
+
+          Saving writes the JSON, which the watcher sees as a source change and
+          answers with a full reload — while you are still working. You lose
+          your place, and an edit in progress on the next string can go with it.
+          The reload also buys nothing: the text you are looking at is the text
+          you just typed, so the page is already correct.
+
+          The cost is the other direction. When the file changes from outside
+          the browser — me editing it, or a git checkout — the page will not
+          notice. Refresh to pick that up.
+        */
+        updateConfig({ vite: { server: { watch: { ignored: [join(copyDir, '**')] } } } });
 
         injectScript('page', `import(${JSON.stringify('/@fs' + resolve(config.root.pathname ?? config.root, 'tools/copy-editor.client.js'))});`);
 

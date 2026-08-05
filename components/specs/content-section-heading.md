@@ -22,10 +22,14 @@ Implementation: `src/components/SectionHeading.tsx` and `src/components/SectionH
 | `children` | `ReactNode` | **yes** |
 | `standfirst` | `ReactNode` | no |
 | `id` | `string` | no |
+| `copyRef` | `string` | no |
+| `standfirstCopyRef` | `string` | no |
 
 ### Property notes
 
 - `standfirst` Optional supporting line. Stacked under the heading, never beside it.
+- `copyRef` `<file>:<path>` into src/copy, making this string editable in the browser under `npm run dev`. Dev tooling only: it renders as a plain data attribute and does nothing in a build.
+- `standfirstCopyRef` `<file>:<path>` into src/copy, making this string editable in the browser under `npm run dev`. Dev tooling only: it renders as a plain data attribute and does nothing in a build.
 
 ## Don't
 

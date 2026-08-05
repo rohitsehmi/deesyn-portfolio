@@ -15,11 +15,15 @@ Implementation: `src/components/Metrics.tsx` and `src/components/Metrics.css`.
 |---|---|---|
 | `items` | `Metric[]` | **yes** |
 | `source` | `string` | **yes** |
+| `copyBase` | `string` | no |
+| `sourceCopyRef` | `string` | no |
 
 ### Property notes
 
 - `items` Two to four. Past four this is a data dump, not an argument.
 - `source` Where the numbers come from: instrument, window, sample size. Required, not optional. An unsourced number in a case study is a credibility failure rather than a design one, and this is the one prop a reviewer will check hardest. If the provenance is genuinely unavailable, say so here in words rather than leaving it blank.
+- `copyBase` `<file>:<path>` into src/copy for this list. The index and field are appended, so a base of `study:items` yields `study:items.0.title`. Dev tooling only; inert in a build.
+- `sourceCopyRef` `<file>:<path>` into src/copy, making this string editable in the browser under `npm run dev`. Dev tooling only: it renders as a plain data attribute and does nothing in a build.
 
 ## Don't
 

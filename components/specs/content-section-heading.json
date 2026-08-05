@@ -31,6 +31,16 @@
     "id": {
       "type": "string",
       "required": false
+    },
+    "copyRef": {
+      "type": "string",
+      "required": false,
+      "note": "`<file>:<path>` into src/copy, making this string editable in the browser under `npm run dev`. Dev tooling only: it renders as a plain data attribute and does nothing in a build."
+    },
+    "standfirstCopyRef": {
+      "type": "string",
+      "required": false,
+      "note": "`<file>:<path>` into src/copy, making this string editable in the browser under `npm run dev`. Dev tooling only: it renders as a plain data attribute and does nothing in a build."
     }
   },
   "tokens": {

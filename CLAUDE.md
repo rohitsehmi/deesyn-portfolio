@@ -156,7 +156,7 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 
 `design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-05: `1567749477`, 132 entries. See `design/README.md`.
 
-**Three checksums, three sources.** Tokens `4115829316`. Figma components `2596963867`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `458711991` but have no Figma counterpart to match, by definition.
+**Three checksums, three sources.** Tokens `4115829316`. Figma components `2596963867`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `3873207522` but have no Figma counterpart to match, by definition.
 
 **Six components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. 17 React components, 17 specs.
 
@@ -171,6 +171,24 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 **Measured vs authored, kept apart.** `design/figma-export.json` is read off the nodes — nobody wrote it, so it cannot flatter the system. `design/usage-rules.json` is authored: the failure modes someone would actually hit (ghost is not a primary action; never ship an icon-only button without `aria-label`; never fake a product UI out of rectangles). `build.mjs` merges them into each spec; the files stay separate so it is obvious which is which. Same split in Figma: `getSharedPluginData('spec','contract')` measured, `…'donts'` authored.
 
 **Each component section on canvas carries** its reasoning (rendered from the set's own `description`, one source), its don't-rules, a readable contract table, and an in-context usage example in both a base and an inverse band. The raw contract JSON is deliberately *not* on canvas — a 12,000px JSON wall is documentation theatre. Machines read it from plugin data and the repo.
+
+## Copy
+
+**Every word the site renders lives in `src/copy/*.json`**, in reading order. The `.astro` page is the arrangement; the JSON is the writing. Nothing in a page should hardcode a sentence.
+
+Two reasons it is JSON and not a TS module: a whole page's voice can be read in one file, and the dev editor patches it by path — rewriting a string literal inside TypeScript works right up until two strings are similar.
+
+**In-browser editing, dev only.** `npm run dev`, then `Alt+E` or the pill bottom-left. Anything rendered with `data-copy="<file>:<path>"` becomes editable; blur or Enter writes it back to the JSON, Escape reverts. Components that render strings internally take `copyRef`, `standfirstCopyRef`, `captionCopyRef` or a `copyBase` (which appends `.0.title`).
+
+It **cannot exist in a production build**: `tools/copy-editor.mjs` registers both the Vite middleware and the client script inside `command === 'dev'`. A Vite middleware rather than an API route because this site is static output, which prerenders GET and has nowhere to put a POST. The `data-copy` attributes do remain in the build, inert.
+
+Writes are narrow on purpose — inside `src/copy` only, only replacing a string that already exists at that path, never creating keys; traversal and unknown keys are refused. **There is no undo in the tool. The undo is `git diff src/copy/`,** which is better than anything worth building.
+
+`src/copy` is excluded from Vite's watcher. Saving would otherwise trigger a full reload while you are still working, and the reload buys nothing because the text on screen is the text you just typed. The cost: when the JSON changes from *outside* the browser, refresh to see it.
+
+**`alt` text is not editable in the browser** — it is an attribute, not a text node. It lives in the same JSON and is edited there.
+
+Not in `src/copy`: `src/data/studies.ts` and `src/data/cv.ts`, which are already single readable files and carry structure the copy files do not.
 
 ## Favicon
 

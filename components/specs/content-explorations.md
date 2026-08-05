@@ -15,6 +15,11 @@ Implementation: `src/components/Explorations.tsx` and `src/components/Exploratio
 | Property | Type | Required |
 |---|---|---|
 | `items` | `Exploration[]` | **yes** |
+| `copyBase` | `string` | no |
+
+### Property notes
+
+- `copyBase` `<file>:<path>` into src/copy for this list. The index and field are appended, so a base of `study:items` yields `study:items.0.title`. Dev tooling only; inert in a build.
 
 ## Don't
 

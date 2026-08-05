@@ -22,6 +22,12 @@ export interface Exploration {
 
 export interface ExplorationsProps {
   items: Exploration[];
+  /**
+   * `<file>:<path>` into src/copy for this list. The index and field are
+   * appended, so a base of `study:items` yields `study:items.0.title`. Dev
+   * tooling only; inert in a build.
+   */
+  copyBase?: string;
 }
 
 /**
@@ -31,10 +37,10 @@ export interface ExplorationsProps {
  * hardest, so `why` is required on every item. An exploration without a stated
  * reason for its rejection is a picture, and pictures score nothing here.
  */
-export function Explorations({ items }: ExplorationsProps) {
+export function Explorations({ items, copyBase }: ExplorationsProps) {
   return (
     <ol className="explorations">
-      {items.map((item) => (
+      {items.map((item, i) => (
         <li className="explorations__item" key={item.title}>
           {item.image && (
             <div className="explorations__media">
@@ -42,8 +48,8 @@ export function Explorations({ items }: ExplorationsProps) {
             </div>
           )}
           <div className="explorations__text">
-            <h3 className="explorations__title">{item.title}</h3>
-            <p className="explorations__why">{item.why}</p>
+            <h3 className="explorations__title" data-copy={copyBase && `${copyBase}.${i}.title`}>{item.title}</h3>
+            <p className="explorations__why" data-copy={copyBase && `${copyBase}.${i}.why`}>{item.why}</p>
           </div>
         </li>
       ))}

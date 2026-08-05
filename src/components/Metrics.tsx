@@ -21,6 +21,18 @@ export interface MetricsProps {
    * say so here in words rather than leaving it blank.
    */
   source: string;
+  /**
+   * `<file>:<path>` into src/copy for this list. The index and field are
+   * appended, so a base of `study:items` yields `study:items.0.title`. Dev
+   * tooling only; inert in a build.
+   */
+  copyBase?: string;
+  /**
+   * `<file>:<path>` into src/copy, making this string editable in the browser
+   * under `npm run dev`. Dev tooling only: it renders as a plain data attribute
+   * and does nothing in a build.
+   */
+  sourceCopyRef?: string;
 }
 
 /**
@@ -29,21 +41,21 @@ export interface MetricsProps {
  *
  * Cell count always equals item count, so a grid never ends on a blank tile.
  */
-export function Metrics({ items, source }: MetricsProps) {
+export function Metrics({ items, source, copyBase, sourceCopyRef }: MetricsProps) {
   return (
     <div className="metrics">
       <dl className="metrics__grid" data-count={Math.min(items.length, 4)}>
-        {items.map((m) => (
+        {items.map((m, i) => (
           <div className="metrics__item" key={m.label}>
-            <dt className="metrics__value">{m.value}</dt>
+            <dt className="metrics__value" data-copy={copyBase && `${copyBase}.${i}.value`}>{m.value}</dt>
             <dd className="metrics__label">
-              {m.label}
+              <span data-copy={copyBase && `${copyBase}.${i}.label`}>{m.label}</span>
               {m.from && <span className="metrics__from">previously {m.from}</span>}
             </dd>
           </div>
         ))}
       </dl>
-      <p className="metrics__source">{source}</p>
+      <p className="metrics__source" data-copy={sourceCopyRef}>{source}</p>
     </div>
   );
 }

@@ -18,6 +18,12 @@ export interface MediaProps {
   /** bleed runs to the band edge and drops the radius; inset keeps r20. */
   fit?: 'inset' | 'bleed';
   caption?: string;
+  /**
+   * `<file>:<path>` into src/copy, making this string editable in the browser
+   * under `npm run dev`. Dev tooling only: it renders as a plain data attribute
+   * and does nothing in a build.
+   */
+  captionCopyRef?: string;
 }
 
 /**
@@ -27,7 +33,7 @@ export interface MediaProps {
  * Caption sits below, outside the frame. No labels overlaid on the image, and
  * no decorative photo credits.
  */
-export function Media({ src, srcSet, sizes, alt, ratio = '16-9', fit = 'inset', caption }: MediaProps) {
+export function Media({ src, srcSet, sizes, alt, ratio = '16-9', fit = 'inset', caption, captionCopyRef }: MediaProps) {
   return (
     <figure className="media" data-ratio={ratio} data-fit={fit}>
       <div className="media__frame">
@@ -44,7 +50,7 @@ export function Media({ src, srcSet, sizes, alt, ratio = '16-9', fit = 'inset', 
           </div>
         )}
       </div>
-      {caption && <figcaption className="media__caption">{caption}</figcaption>}
+      {caption && <figcaption className="media__caption" data-copy={captionCopyRef}>{caption}</figcaption>}
     </figure>
   );
 }

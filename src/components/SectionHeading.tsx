@@ -7,6 +7,18 @@ export interface SectionHeadingProps {
   /** Optional supporting line. Stacked under the heading, never beside it. */
   standfirst?: ReactNode;
   id?: string;
+  /**
+   * `<file>:<path>` into src/copy, making this string editable in the browser
+   * under `npm run dev`. Dev tooling only: it renders as a plain data attribute
+   * and does nothing in a build.
+   */
+  copyRef?: string;
+  /**
+   * `<file>:<path>` into src/copy, making this string editable in the browser
+   * under `npm run dev`. Dev tooling only: it renders as a plain data attribute
+   * and does nothing in a build.
+   */
+  standfirstCopyRef?: string;
 }
 
 /**
@@ -20,12 +32,12 @@ export interface SectionHeadingProps {
  * `standfirst` stacks below the heading. The split-header pattern (big heading
  * left, small paragraph right) is banned as a default.
  */
-export function SectionHeading({ level = 2, children, standfirst, id }: SectionHeadingProps) {
+export function SectionHeading({ level = 2, children, standfirst, id, copyRef, standfirstCopyRef }: SectionHeadingProps) {
   const H = level === 3 ? 'h3' : 'h2';
   return (
     <header className="section-heading" data-level={level}>
-      <H className="section-heading__title" id={id}>{children}</H>
-      {standfirst && <p className="section-heading__standfirst">{standfirst}</p>}
+      <H className="section-heading__title" id={id} data-copy={copyRef}>{children}</H>
+      {standfirst && <p className="section-heading__standfirst" data-copy={standfirstCopyRef}>{standfirst}</p>}
     </header>
   );
 }
