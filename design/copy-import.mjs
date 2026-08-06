@@ -7,7 +7,7 @@
  *
  *   node design/copy-import.mjs --dry                 # show what would change
  *   node design/copy-import.mjs                       # write it
- *   node design/copy-import.mjs contextual-home       # one page
+ *   node design/copy-import.mjs making-the-app-testable       # one page
  *
  * Refuses, rather than guesses:
  *
@@ -23,12 +23,13 @@
  *
  * There is no undo here either. The undo is `git diff src/copy/`.
  */
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 
 const COPY_DIR = 'src/copy';
 const IN_DIR = 'copy-drafts';
 
 const dry = process.argv.includes('--dry');
+const force = process.argv.includes('--force');
 const named = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 
 /** Markers are the only structure that matters; headings are for the reader. */
@@ -91,6 +92,29 @@ for (const page of pages) {
   if (!existsSync(mdPath)) { console.error(`skip ${page}: no ${mdPath}`); continue; }
   if (!existsSync(jsonPath)) { console.error(`skip ${page}: no ${jsonPath}`); continue; }
 
+  /**
+   * A draft older than the JSON it came from is the dangerous case, and it is
+   * silent: every string in it still parses, still matches a real key, and
+   * still writes — it just writes the version from before the JSON was edited.
+   * Caught here because nothing downstream can tell a deliberate rewrite from
+   * a stale one.
+   *
+   * Happened on 2026-08-06: machine-readable-components.md was exported, then
+   * the JSON was simplified directly, and an import would have reverted 25
+   * strings. The only reason it surfaced was a key that had been deleted in the
+   * meantime, so one of the 25 refused and drew attention to the other 24.
+   */
+  if (statSync(jsonPath).mtimeMs > statSync(mdPath).mtimeMs && !force) {
+    console.error(
+      `\n${page}  SKIPPED — ${jsonPath} is newer than ${mdPath}.\n` +
+        `  The draft was exported before the JSON was last edited, so importing it\n` +
+        `  would revert those edits. Re-export and redo your changes, or pass\n` +
+        `  --force if the draft really is the version you want.`
+    );
+    refusedTotal += 1;
+    continue;
+  }
+
   const json = JSON.parse(readFileSync(jsonPath, 'utf8'));
   const entries = parse(readFileSync(mdPath, 'utf8'));
 
@@ -101,10 +125,26 @@ for (const page of pages) {
     const current = get(json, path);
     if (current === undefined) { refused.push([path, 'no such key in the JSON']); continue; }
     if (typeof current !== 'string') { refused.push([path, `not a string (${typeof current})`]); continue; }
-    if (value === current) continue;
-    if (!value.length && current.length) { refused.push([path, 'refusing to blank an existing string']); continue; }
-    set(json, path, value);
-    changed.push(path);
+
+    /**
+     * Edge whitespace is structural, not writing, so it is carried over from
+     * the value being replaced rather than taken from the document.
+     *
+     * A few strings are deliberate fragments that join around an emphasised
+     * span — `process.principle.before` ends in a space, `.after` starts with
+     * one — and markdown cannot show that. Exporting then re-importing would
+     * trim it and render "at the time:create a hypothesis", two words fused,
+     * in the one paragraph on the page with emphasis in it. Invisible in the
+     * diff, invisible in the document, obvious only on the page.
+     */
+    const lead = current.match(/^\s*/)[0];
+    const trail = current.match(/\s*$/)[0];
+    const padded = value.length ? lead + value + trail : value;
+
+    if (padded === current) continue;
+    if (!value.length && current.trim().length) { refused.push([path, 'refusing to blank an existing string']); continue; }
+    set(json, path, padded);
+    changed.push(path + (lead || trail ? '  (edge spacing preserved)' : ''));
   }
 
   changedTotal += changed.length;

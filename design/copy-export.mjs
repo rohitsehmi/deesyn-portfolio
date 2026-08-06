@@ -11,7 +11,7 @@
  * markdown the comments vanish; in an editor they read as quiet labels.
  *
  *   node design/copy-export.mjs                      # every page
- *   node design/copy-export.mjs contextual-home ...  # named pages
+ *   node design/copy-export.mjs making-the-app-testable ...  # named pages
  *
  * Keys beginning `_` are documentation for whoever opens the JSON, not copy,
  * and are skipped. Their content is repeated at the top of the document
