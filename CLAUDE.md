@@ -221,6 +221,25 @@ Writes are narrow on purpose — inside `src/copy` only, only replacing a string
 
 **`alt` text is not editable in the browser** — it is an attribute, not a text node. It lives in the same JSON and is edited there.
 
+### Bulk editing, when the browser is too bitty
+
+A field at a time is the wrong instrument for rewriting a whole case study — you cannot judge a voice you are seeing one string of at a time. So the same copy round-trips through one markdown document per page:
+
+```bash
+npm run copy:export                     # all pages -> copy-drafts/<page>.md
+npm run copy:export contextual-home     # or just one
+npm run copy:import -- --dry            # show what would change
+npm run copy:import                     # write it back
+```
+
+**The format is prose with an HTML comment above each string carrying its JSON path**, and that comment is the marker the importer reads — so the round trip is exact rather than a fuzzy match on similar-looking sentences, which is the same reason copy is JSON and not a TS module. Rendered as markdown the comments disappear; in an editor they read as quiet labels. Hard-wrapping is free: lines under one marker are rejoined into a single paragraph.
+
+`copy-drafts/` is **gitignored**. It is a working surface, and a committed draft alongside the JSON would be two sources of truth for the same sentence. The undo is still `git diff src/copy/`.
+
+The importer **refuses rather than guesses**, and reports what it refused while still writing everything else — one bad marker should not cost an afternoon of edits. It refuses a path that does not already exist (a typo'd marker is a typo, not a new key), a path whose current value is not a string, and **an empty value over a non-empty one** — the same guard the browser editor has, for the same reason: a blank paragraph reads as a layout gap rather than as data loss, so nothing on the page reports it.
+
+**`how-this-was-built` moved into `src/copy/` on 2026-08-06** to make this work — it had been hardcoding its prose in the `.astro`, against the rule at the top of this section. Its build-time numbers cannot live in JSON, so the copy carries `{braced}` placeholders that the page substitutes. **Edit the words around them; keep the braces.** A placeholder with no matching value is left visible on the page rather than blanked, so a typo shows up as `{primitves}` instead of as a plausible-looking gap. Its facts block is deliberately *not* browser-editable: the rendered string has had its numbers substituted, and writing that back would bake today's counts into the copy and stop the page recomputing.
+
 `src/data/studies.ts` keeps only **structure** — slug, cover image, archived — and reads its strings from `src/copy/studies.json`, keyed by the same slug. One file rather than per-study because the same tile renders twice, on the index and as the next-study link at the foot of the other study; edit it in either place and both change.
 
 **Links containing editable copy get parked while editing.** A tile's title is an anchor and the whole tile is click-through via a stretched pseudo element on it, so in edit mode clicking to place a cursor would navigate. The client moves the `href` to `data-copy-href` and turns off pointer events on that anchor's pseudo elements — removing the href alone stops the navigation but leaves the overlay swallowing clicks on the summary.

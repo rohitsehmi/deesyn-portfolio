@@ -6,6 +6,7 @@ import { SectionHeading } from '../components/SectionHeading';
 import { Contribution } from '../components/Contribution';
 import { ArrowLink } from '../components/Link';
 import { hash } from '../../design/hash.mjs';
+import c from '../copy/how-this-was-built.json';
 
 /**
  * Every number on this page is computed here, at build time, from the files it
@@ -14,6 +15,11 @@ import { hash } from '../../design/hash.mjs';
  * That is the point: the case study argues for a specification machines can
  * read, and a page about it that had to be hand-updated would be arguing
  * against itself.
+ *
+ * The words live in src/copy/how-this-was-built.json like every other page.
+ * The numbers cannot, so the copy carries {braced} placeholders and they are
+ * substituted below — which keeps the whole sentence in one editable string
+ * rather than splitting it around a value nobody is allowed to type.
  */
 const tokens = JSON.parse(readFileSync('tokens/tokens.json', 'utf8'));
 const banding = JSON.parse(readFileSync('design/banding-export.json', 'utf8'));
@@ -46,88 +52,82 @@ const canonical = (v: any): string => {
   return JSON.stringify(v);
 };
 
-const facts = [
-  { term: 'Design tokens', detail: `${leaves(tokens.primitive)} primitives and ${leaves(tokens.semantic.light)} semantic tokens per theme, exported from Figma and checksum verified against it.` },
-  { term: 'Text styles', detail: `${leaves(tokens.typography)}, each emitted as CSS custom properties. Responsive type steps between two of them at a breakpoint rather than clamping, so every size on screen exists in the design file.` },
-  { term: 'Components', detail: `${componentCount} in code, ${specCount} with a published contract. The ones with no Figma counterpart have their specs generated from their own TypeScript and stylesheets.` },
-  { term: 'Stories', detail: `${storyCount}, every one rendered inside a band so the zero override property is checked the same way it is asserted in Figma. Each is snapshotted light and dark.` },
-  { term: 'Layout rules', detail: `${banding.rules.length} band adjacency rules, read from the Figma page rather than transcribed. Checksum ${hash(canonical(banding))}.` }
-];
+/**
+ * The substitutions the copy is allowed to name. A placeholder with no entry
+ * here is left in the string rather than blanked, so a typo shows up as
+ * `{primitves}` on the page instead of as a plausible-looking gap.
+ */
+const numbers: Record<string, string | number> = {
+  primitives: leaves(tokens.primitive),
+  semantic: leaves(tokens.semantic.light),
+  textStyles: leaves(tokens.typography),
+  components: componentCount,
+  specs: specCount,
+  stories: storyCount,
+  rules: banding.rules.length,
+  checksum: hash(canonical(banding))
+};
+
+const fill = (s: string) =>
+  s.replace(/\{(\w+)\}/g, (whole, key) => (key in numbers ? String(numbers[key]) : whole));
+
+const facts = c.facts.map((f) => ({ term: f.term, detail: fill(f.detail) }));
 ---
 
 <Page
-  title="How this was built"
-  standfirst="A design system where Figma, the code and the build agree, and where the build refuses to ship if they stop agreeing."
+  title={c.title}
+  standfirst={c.standfirst}
+  titleCopyRef="how-this-was-built:title"
+  standfirstCopyRef="how-this-was-built:standfirst"
 >
   <Prose lead>
-    <p>
-      The first case study on this site argues for a single written
-      specification that designers, engineers and language models can all build
-      from. That project ended before it reached production, so this site is the
-      smallest complete version of the same idea: not a description of the
-      approach, but the approach running, on something you can open.
-    </p>
-    <p>
-      None of the numbers below were typed in. They are computed when this page
-      is built, from the files they describe.
-    </p>
+    {c.lead.map((p, i) => <p data-copy={`how-this-was-built:lead.${i}`}>{p}</p>)}
   </Prose>
 
   <div class="hb-block">
+    {/* Not editable in place: the rendered string has had its numbers
+        substituted, so writing it back would bake today's counts into the copy
+        and the page would stop recomputing. Edit it in the JSON. */}
     <Contribution items={facts} />
   </div>
 
   <div class="hb-block">
-    <SectionHeading level={3}>What the build refuses to ship</SectionHeading>
+    <SectionHeading level={3} copyRef="how-this-was-built:checks.heading">
+      {c.checks.heading}
+    </SectionHeading>
     <Prose>
-      <p>
-        Four checks run on every push. Each exists because something got through
-        without it.
-      </p>
+      <p data-copy="how-this-was-built:checks.intro">{c.checks.intro}</p>
       <ul>
-        <li>
-          <strong>Tokens.</strong> Every alias resolves, and the export
-          checksum matches the one Figma reproduces from inside the file. A
-          renamed variable fails the build instead of silently rendering nothing.
-        </li>
-        <li>
-          <strong>Components.</strong> Every value in every spec is a token
-          reference. Zero literals, asserted rather than reviewed.
-        </li>
-        <li>
-          <strong>CSS.</strong> Every custom property in the source resolves to
-          a real token, and every font value binds to the type scale. A typo
-          like <code>fg-secondry</code> is not a CSS error: it renders as an
-          inherited default and looks deliberate, so nothing else would catch it.
-        </li>
-        <li>
-          <strong>Bands.</strong> The built pages are linted against the layout
-          rules, and those rules are read from Figma rather than copied. Adding
-          a rule there fails the build here until someone implements it.
-        </li>
+        {c.checks.items.map((item, i) => (
+          <li>
+            <strong data-copy={`how-this-was-built:checks.items.${i}.label`}>{item.label}</strong>
+            {' '}
+            <span data-copy={`how-this-was-built:checks.items.${i}.text`}>{item.text}</span>
+            {item.code && (
+              <>
+                {' '}
+                <code data-copy={`how-this-was-built:checks.items.${i}.code`}>{item.code}</code>
+                {' '}
+                <span data-copy={`how-this-was-built:checks.items.${i}.textAfter`}>{item.textAfter}</span>
+              </>
+            )}
+          </li>
+        ))}
       </ul>
     </Prose>
   </div>
 
   <div class="hb-block">
-    <SectionHeading level={3}>What it does not do</SectionHeading>
+    <SectionHeading level={3} copyRef="how-this-was-built:limits.heading">
+      {c.limits.heading}
+    </SectionHeading>
     <Prose>
-      <p>
-        It does not check whether the design is any good. It checks that the
-        design and the code are the same thing, which is a narrower claim and
-        the only one worth automating. Taste is still done by looking.
-      </p>
-      <p>
-        Three things live only in code, because Figma cannot express them:
-        state, which is a CSS concern rather than a variant axis; press
-        feedback; and required properties, where the type system enforces what a
-        variant never could.
-      </p>
+      {c.limits.paras.map((p, i) => <p data-copy={`how-this-was-built:limits.paras.${i}`}>{p}</p>)}
     </Prose>
   </div>
 
   <div class="hb-block">
-    <ArrowLink href="/work/machine-readable-components">Read the case study this came from</ArrowLink>
+    <ArrowLink href="/work/machine-readable-components">{c.readCaseStudy}</ArrowLink>
   </div>
 </Page>
 

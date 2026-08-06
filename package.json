@@ -15,7 +15,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "npm run tokens && storybook build",
     "chromatic": "chromatic --exit-zero-on-changes",
-    "favicon": "node design/build-favicon.mjs"
+    "favicon": "node design/build-favicon.mjs",
+    "copy:export": "node design/copy-export.mjs",
+    "copy:import": "node design/copy-import.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.2",

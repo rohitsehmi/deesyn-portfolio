@@ -25,3 +25,7 @@ storybook-static/
 chromatic.log
 chromatic-diagnostics.json
 build-storybook.log
+
+# Copy drafts. Exported from src/copy for a bulk rewrite and imported back;
+# the JSON is the source of truth and two of them would be one too many.
+copy-drafts/

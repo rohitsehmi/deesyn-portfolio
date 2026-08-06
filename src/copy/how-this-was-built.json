@@ -1,0 +1,70 @@
+{
+  "_comment": "All the copy for /how-this-was-built, in reading order. Editable in the browser under `npm run dev` — see tools/copy-editor.mjs. The {braced} tokens in facts.*.detail are build-time numbers computed from the files they describe; the page substitutes them. Edit the words around them freely, but keep the braces — a fact with a number typed in would make this page argue against itself.",
+
+  "title": "How this was built",
+  "standfirst": "A design system where Figma, the code and the build agree, and where the build refuses to ship if they stop agreeing.",
+
+  "lead": [
+    "The first case study on this site argues for a single written specification that designers, engineers and language models can all build from. That project ended before it reached production, so this site is the smallest complete version of the same idea: not a description of the approach, but the approach running, on something you can open.",
+    "None of the numbers below were typed in. They are computed when this page is built, from the files they describe."
+  ],
+
+  "facts": [
+    {
+      "term": "Design tokens",
+      "detail": "{primitives} primitives and {semantic} semantic tokens per theme, exported from Figma and checksum verified against it."
+    },
+    {
+      "term": "Text styles",
+      "detail": "{textStyles}, each emitted as CSS custom properties. Responsive type steps between two of them at a breakpoint rather than clamping, so every size on screen exists in the design file."
+    },
+    {
+      "term": "Components",
+      "detail": "{components} in code, {specs} with a published contract. The ones with no Figma counterpart have their specs generated from their own TypeScript and stylesheets."
+    },
+    {
+      "term": "Stories",
+      "detail": "{stories}, every one rendered inside a band so the zero override property is checked the same way it is asserted in Figma. Each is snapshotted light and dark."
+    },
+    {
+      "term": "Layout rules",
+      "detail": "{rules} band adjacency rules, read from the Figma page rather than transcribed. Checksum {checksum}."
+    }
+  ],
+
+  "checks": {
+    "heading": "What the build refuses to ship",
+    "intro": "Four checks run on every push. Each exists because something got through without it.",
+    "_note": "Each item is a bold lead-in plus its sentence. Two strings rather than one, because editing is plain text and a <strong> inside a single editable string would be stripped the first time anyone touched it. The CSS item carries a third part because it names a typo that has to set as code.",
+    "items": [
+      {
+        "label": "Tokens.",
+        "text": "Every alias resolves, and the export checksum matches the one Figma reproduces from inside the file. A renamed variable fails the build instead of silently rendering nothing."
+      },
+      {
+        "label": "Components.",
+        "text": "Every value in every spec is a token reference. Zero literals, asserted rather than reviewed."
+      },
+      {
+        "label": "CSS.",
+        "text": "Every custom property in the source resolves to a real token, and every font value binds to the type scale. A typo like",
+        "code": "fg-secondry",
+        "textAfter": "is not a CSS error: it renders as an inherited default and looks deliberate, so nothing else would catch it."
+      },
+      {
+        "label": "Bands.",
+        "text": "The built pages are linted against the layout rules, and those rules are read from Figma rather than copied. Adding a rule there fails the build here until someone implements it."
+      }
+    ]
+  },
+
+  "limits": {
+    "heading": "What it does not do",
+    "paras": [
+      "It does not check whether the design is any good. It checks that the design and the code are the same thing, which is a narrower claim and the only one worth automating. Taste is still done by looking.",
+      "Three things live only in code, because Figma cannot express them: state, which is a CSS concern rather than a variant axis; press feedback; and required properties, where the type system enforces what a variant never could."
+    ]
+  },
+
+  "readCaseStudy": "Read the case study this came from"
+}
