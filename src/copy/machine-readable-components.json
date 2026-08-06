@@ -1,50 +1,51 @@
 {
-  "_comment": "All the copy for /work/machine-readable-components, in reading order. Editable in the browser under `npm run dev` — see tools/copy-editor.mjs. [NEEDS: …] strings are gaps kept deliberately visible; replace the whole value when you have the fact. Keys are stable — renaming one orphans the string on the page.",
+  "_comment": "All the copy for /work/machine-readable-components, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. [NEEDS: …] strings are gaps kept deliberately visible; replace the whole value when you have the fact. Keys are stable — renaming one orphans the string on the page. Simplified 2026-08-06: shorter throughout, and the argument re-centred on the loop that actually ran — a machine proposed each component from three codebases, a person overruled it with reasons, and the decision was written back in a form the machine could build from.",
 
   "title": "A component library a machine could read",
-  "standfirst": "Expedia Group's components had drifted across iOS, Android and web. We rebuilt them against a single written specification that designers, engineers and language models could all build from.",
+  "standfirst": "Expedia Group's components had drifted across iOS, Android and web. We rebuilt them against one written specification — the thing designers, engineers and language models all build from, instead of each interpreting a different source.",
 
   "contribution": [
     { "term": "Role", "detail": "Product Designer in the New Component Architecture pod, Expedia Group Design System" },
-    { "term": "What I owned", "detail": "Component ownership end to end: reading the generated plan, rebuilding the component from the ground up in Figma, and delivering the specification engineering built from. I also created the designer onboarding for the pod as it grew." },
-    { "term": "The team", "detail": "Three designers and a principal, with Nathan Curtis contracted in for guidance and to pick up remaining components. Engineering implemented from the spec." },
+    { "term": "What I owned", "detail": "Components end to end: reading the generated plan, rebuilding in Figma from the ground up, and delivering the specification engineering built from. I also created the pod's designer onboarding as it grew." },
+    { "term": "The team", "detail": "Three designers and a principal, with Nathan Curtis contracted in for guidance. Engineering implemented from the spec." },
     { "term": "Duration", "detail": "2025, with user testing in Q1 2026" }
   ],
 
   "problem": {
     "heading": "The problem",
-    "standfirst": "Three platforms had implemented the same components independently for years. Nobody knew how far apart they had drifted until we asked a machine to read all three.",
+    "standfirst": "Three platforms had built the same components independently for years. Nobody knew how far apart they had drifted until we asked a machine to read all three.",
     "paras": [
-      "A component in the design system was really three components: one in the iOS repo, one in Android, one in web. Each had its own props, its own arrangement rules, its own accumulated exceptions. The Figma library was a fourth version that matched none of them exactly.",
-      "The team's answer was to stop treating any implementation as the source of truth. A single written specification would define the component, and Figma, all three platforms and eventually a language model would build from that one document.",
-      "[NEEDS: the insight, and it is recoverable. Scraping three repos for one component produced a plan that showed exactly how far apart they were. How many props existed on one platform and not the others? How many components turned out to be genuinely different rather than accidentally different? That number is both the problem statement and the baseline the work should be measured against, and it is sitting in the plan files in GitHub.]"
+      "A component was really four: one in the iOS repo, one in Android, one in web, and a Figma library matching none of them exactly. Each had its own props, arrangement rules and accumulated exceptions.",
+      "The fix was to stop treating any implementation as the source. One specification would define the component, and Figma, all three platforms and a language model would build from it — which only works if it is structured data rather than prose. A person can interpret a paragraph. Nothing else can build from one.",
+      "[NEEDS: the insight. Scraping three repos for one component produced a plan showing exactly how far apart they were — how many props existed on one platform and not the others, how many components were genuinely different rather than accidentally different. That number is both the problem statement and the baseline.]"
     ]
   },
 
   "process": {
     "heading": "How a component got rebuilt",
-    "standfirst": "A machine proposed each component by reading the code. A person decided what was actually right.",
+    "standfirst": "A machine proposed each component by reading the code. A person decided what was actually right, and wrote the decision back in a form the machine could use.",
     "paras": [
-      "Every component started as a scrape. We read the iOS, Android and web repositories for that component and generated a plan, which lived in GitHub next to the component itself. The plan carried recommendations, configurations, elements, decisions, open questions and TODOs.",
-      "The plan was a proposal, not an instruction. I rebuilt each component from the ground up against it: variables bound, slots attached, auto layout throughout, naming corrected, hidden and code-only properties declared, accessibility labels specified. Where the plan was wrong, I challenged it and recorded why. Once the component and its specification were finished, engineering implemented from the spec, and Code Connect established a one to one match between Figma and code afterwards.",
-      "[NEEDS: one concrete example of the workflow changing because of what Q1 2026 testing showed. It was run with Expedia product designers, and with product managers and engineers who opted in. A reader asks specifically for a trade-off made because of what testing told you, and that is currently the weakest part of this study.]"
+      "Every component started as a scrape. We read the iOS, Android and web repositories and generated a plan, which lived in GitHub beside the component: recommendations, configurations, elements, decisions, open questions, TODOs.",
+      "The plan was a proposal, not an instruction. I rebuilt each component against it — variables bound, slots attached, naming corrected, accessibility specified — and where the plan was wrong I overruled it and recorded why. Engineering implemented from the finished spec, with Code Connect holding Figma and code one to one.",
+      "That loop is the part worth taking forward. The machine did the reading, which no person was going to do across three codebases. The designer did the deciding — and the decision only counted once it was written somewhere the machine could read back.",
+      "[NEEDS: one example of the workflow changing because of what Q1 2026 testing showed. It ran with Expedia product designers, and with PMs and engineers who opted in. A reader asks specifically for a trade-off made because of testing, and that is the weakest part of this study.]"
     ],
     "explorationsHeading": "What the plan proposed, and what we overruled",
-    "explorationsIntro": "The rejected paths are unusually well evidenced here, because the alternative was not imagined. It was proposed by a machine reading three real codebases, and then overruled by a person who could say why.",
+    "explorationsIntro": "These rejected paths are unusually well evidenced, because the alternative was not imagined. A machine proposed it from three real codebases, a person overruled it, and the reason went back into the record.",
     "explorations": [
       {
         "title": "A vertical offset property, because React already had one",
-        "why": "Rejected. Parents control arrangement and spacing outside a component, not the component itself. Carrying the prop forward would have moved a layout decision inside a boundary it does not belong in, on every platform, permanently.",
+        "why": "Rejected. Parents control arrangement outside a component, not the component itself. Carrying the prop forward would have moved a layout decision inside a boundary it does not belong in — on every platform, permanently.",
         "imageAlt": "The generated plan showing the vertical offset decision and its rationale"
       },
       {
         "title": "A dark frame variant for inverse surfaces",
-        "why": "Rejected in favour of styling with inverse tokens. A forced dark frame hardcodes a theme into a component; tokens let the surface decide, which is what made the system themable across brands.",
+        "why": "Rejected in favour of inverse tokens. A forced dark frame hardcodes a theme into a component; tokens let the surface decide, which is what made the system themable across brands.",
         "imageAlt": "The plan entry recommending inverse tokens over a dark frame"
       },
       {
         "title": "A maximum height, so message content crops after two lines",
-        "why": "Left open, then rejected as a built-in constraint. The recommendation was that cropping is guidance rather than something the component enforces. Building it in would have made the component wrong for every case that legitimately needed three lines.",
+        "why": "Left open, then rejected as a built-in constraint. Cropping is guidance, not something the component enforces. Building it in would have made the component wrong for every case that legitimately needed three lines.",
         "imageAlt": "The open question about message cropping and the recommendation against a max height"
       }
     ]
@@ -54,33 +55,32 @@
     "heading": "What shipped",
     "standfirst": "One component, three platforms, each honouring its own conventions rather than one design relabelled three times.",
     "mediaAlt": "The EGDS Dialog component set showing Web, iOS and Android variants of the same component",
-    "mediaCaption": "Platform is a variant axis on a single component. The iOS variant uses native alert conventions, a centred heading and a text action above a hairline, rather than inheriting the web treatment.",
+    "mediaCaption": "Platform is a variant axis on a single component. The iOS variant uses native alert conventions — centred heading, text action above a hairline — rather than inheriting the web treatment.",
     "paras": [
-      "Dialog is a fair example of the shape. Platform sits as a variant axis on one component set rather than as three separate components. Its actions are a nested set covering one to three actions, primary or tertiary emphasis, and horizontal or vertical arrangement, built again for iOS where the conventions differ.",
-      "Slots arrived in beta partway through, and we had already built components with placeholder slots in anticipation, so adopting them was a substitution rather than a rebuild.",
-      "[NEEDS: a second example, ideally one that was harder than Dialog. Dialog is clean. The reviewer is looking for complexity untangled, so the component that fought back is the better story.]"
+      "Dialog shows the shape. Platform is a variant axis on one component set rather than three separate components, and its actions are a nested set covering one to three actions, two emphases and two arrangements.",
+      "[NEEDS: a second example, ideally harder than Dialog. Dialog is clean, and the reviewer is looking for complexity untangled — the component that fought back is the better story.]"
     ]
   },
 
   "impact": {
     "heading": "Impact",
-    "standfirst": "The pod was made redundant before the system could be measured in production. What follows is what was true when the work stopped.",
+    "standfirst": "The pod was made redundant before the architecture reached production. This is what was true when the work stopped.",
     "metrics": [
       { "value": "[NEEDS]", "label": "components rebuilt against a single specification" },
-      { "value": "3", "label": "platform implementations collapsed into one source of truth, from iOS, Android and web" },
+      { "value": "3", "label": "platform implementations collapsed into one source of truth" },
       { "value": "90+", "label": "brands the system serves" }
     ],
-    "metricsSource": "[NEEDS: the component count, and confirmation that 90+ brands is a figure you can cite from a system source rather than from a colleague's LinkedIn. The proof of concept demonstrated a shorter path from idea to code; if anyone timed it even once, that figure belongs here and would carry this section on its own.]",
+    "metricsSource": "[NEEDS: the component count, and confirmation 90+ brands is citable from a system source rather than a colleague's LinkedIn. The proof of concept demonstrated a shorter path from idea to code; if anyone timed it even once, that figure would carry this section on its own.]",
     "paras": [
-      "[NEEDS: this section is the one a reader gates hardest on, and it is currently the weakest. Recoverable candidates, in order of strength: anything measured during the Q1 2026 testing; the time to produce a component specification before and after the scraping workflow, which the tracking board's dates would show; and the divergence the scrape found between platforms, which is a real number sitting in the plans.]"
+      "[NEEDS: a reader gates hardest here and this is the weakest section. In order of strength: anything measured in the Q1 2026 testing; time to produce a specification before and after the scraping workflow, which the tracking board's dates would show; the divergence the scrape found, which is a real number in the plans.]"
     ]
   },
 
   "hindsight": {
     "paras": [
-      "We never instrumented it. The pod was made redundant before the architecture reached production, so the claim the whole project rested on, that the distance from idea to shipped code gets shorter, has a proof of concept behind it and no measurement.",
-      "That was avoidable and it was my blind spot as much as anyone's. The baseline was measurable from the first scrape: we knew how long a component took to specify the old way, and we could have recorded it. Instrumenting at the start costs a day. Reconstructing it afterwards, as I am finding while writing this, is not possible at all.",
-      "[NEEDS: your own read. This is written from what you told me and it should sound like you. A reader calls out self-awareness explicitly, so this section is worth more than its length suggests. Keep it factual and free of grievance.]"
+      "We never instrumented it. The pod was made redundant before the architecture reached production, so the claim the whole project rested on — that the distance from idea to shipped code gets shorter — has a proof of concept behind it and no measurement.",
+      "That was avoidable, and it was my blind spot as much as anyone's. The baseline was measurable from the first scrape: we knew how long a component took to specify the old way and could have recorded it. Instrumenting at the start costs a day. Reconstructing it afterwards, as I am finding while writing this, is not possible at all.",
+      "[NEEDS: your own read, in your voice. A reader calls out self-awareness explicitly, so this is worth more than its length. Factual, free of grievance.]"
     ]
   }
 }
