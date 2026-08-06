@@ -34,3 +34,14 @@ export const FooterFull: S = {
   )
 };
 export const FooterCompact: S = { render: () => <Footer scale="compact" /> };
+
+/**
+ * On the page the footer link points at, it offers the work instead of itself.
+ *
+ * Snapshotted because the two states differ only by a few words, which is
+ * exactly the kind of regression that survives a read-through — and it is a
+ * self-link that got noticed by eye rather than by any check.
+ */
+export const FooterOnItsOwnPage: S = {
+  render: () => <Footer scale="compact" currentPath="/how-this-was-built/" />
+};

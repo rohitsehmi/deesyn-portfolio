@@ -15,7 +15,22 @@ export interface FooterProps {
    * cannot get to otherwise.
    */
   link?: { label: string; href: string };
+  /**
+   * The path currently being rendered, so the footer can avoid linking to it.
+   *
+   * Same rule the nav states and `nextStudy()` enforces: a link pointing at the
+   * page you are already on is a wasted slot. Handled here rather than by
+   * passing a different `link` from the one page that needs it, because the
+   * next page added to the footer would hit it again and nothing would say so.
+   *
+   * Optional: omitted, the footer just renders its link, which is right for
+   * Storybook and for anywhere with no routing.
+   */
+  currentPath?: string;
 }
+
+/** Offered instead of a self-link. The home page is the two case studies. */
+const FALLBACK_LINK = { label: 'Back to the work', href: '/' };
 
 /**
  * Transparent by design — the band it sits in owns the surface, so the footer
@@ -25,8 +40,18 @@ export interface FooterProps {
 export function Footer({
   scale = 'full',
   columns,
-  link = { label: 'How this was built', href: '/how-this-was-built' }
+  link = { label: 'How this was built', href: '/how-this-was-built' },
+  currentPath
 }: FooterProps) {
+  /*
+    Trailing slashes are normalised because Astro serves /how-this-was-built/
+    while the href is written without one. Comparing them raw would silently
+    never match, and the bug would look exactly like no fix at all.
+  */
+  const norm = (p: string) => p.replace(/\/+$/, '') || '/';
+  const resolved =
+    currentPath && norm(currentPath) === norm(link.href) ? FALLBACK_LINK : link;
+
   /*
     The copyright sits under the mark, not beside it, so the two read as one
     block of attribution rather than as two separate items in a row. Written
@@ -54,7 +79,7 @@ export function Footer({
         )}
         <div className="footer__bottom">
           {scale === 'compact' && brand}
-          <ArrowLink href={link.href}>{link.label}</ArrowLink>
+          <ArrowLink href={resolved.href}>{resolved.label}</ArrowLink>
         </div>
       </div>
     </footer>

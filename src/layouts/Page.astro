@@ -55,7 +55,7 @@ const links = linksFor(Astro.url.pathname);
   </main>
 
   <Band role="base" scale="compact" bleed>
-    <Footer scale="compact" />
+    <Footer scale="compact" currentPath={Astro.url.pathname} />
   </Band>
 </Base>
 
