@@ -1,89 +1,106 @@
 {
-  "_comment": "All the copy for /work/contextual-home, in reading order. Editable in the browser under `npm run dev` — see tools/copy-editor.mjs. [NEEDS: …] strings are gaps kept deliberately visible; replace the whole value when you have the fact. Keys are stable — renaming one orphans the string on the page. The title is a working title, not a fact: overrule it. The four metrics are the only numbers in this file that are real — they came off rohitsehmi.com/apps, which is why this study exists.",
-
-  "title": "The home screen, made contextual",
-  "standfirst": "[NEEDS: one sentence saying what was wrong with the old home screen and what replacing it changed. This is the line that has to make a reviewer want the rest, and it is the only part of the page that cannot be written from the metrics alone.]",
-
+  "_comment": "All the copy for /work/making-the-app-testable, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. Drafted 2026-08-06 from rohitsehmi.com/apps — everything not marked [NEEDS:] is on that page or follows directly from it. It draws on three initiatives that page keeps separate (A Contextual Home, Search Experience, Small Enhancements) because they are one argument: two structural rebuilds that made testing possible, and the programme that ran through them. Kept deliberately short — a reader asks for a complex flow made simple, not for length.",
+  "title": "The app that could not be tested",
+  "standfirst": "Hotels.com's two most valuable screens were both fixed layouts. Nothing on them could vary, so nothing could be learned from them. Rebuilding both as systems is what turned the app into something the team could run a continuous testing programme through.",
   "contribution": [
-    { "term": "Role", "detail": "Senior Product Designer, mobile" },
-    { "term": "What I owned", "detail": "[NEEDS: your specific scope, and this matters more here than anywhere else on the page. These are the strongest numbers in the portfolio, so the reviewer's first question is what you personally decided. Did you own the content model — what the home screen was allowed to show and in what priority? The test design? The visual system? Name the decisions, not the deliverables.]" },
-    { "term": "The team", "detail": "[NEEDS: who else was on it, and what they owned. The Apps page credits Product, Developers and Analytics generically. A specific team makes a specific role believable.]" },
-    { "term": "When", "detail": "[NEEDS: the dates. A reader says \"recent\", and this is the one axis where this study is weaker than the one it replaced — so the date needs to be stated plainly rather than left for the reader to infer.]" }
+    {
+      "term": "Role",
+      "detail": "Senior Product Designer — UX, mobile and brand"
+    },
+    {
+      "term": "What I owned",
+      "detail": "[NEEDS: the decisions, not the deliverables. This study carries the strongest numbers in the portfolio, so it is the first thing a reviewer will want.]"
+    },
+    {
+      "term": "The team",
+      "detail": "Product, design, engineering and analytics, running a continuous multivariate testing programme"
+    },
+    {
+      "term": "When",
+      "detail": "2016 to 2019, iOS and Android"
+    }
   ],
-
   "problem": {
     "heading": "The problem",
-    "standfirst": "[NEEDS: one line naming the user problem, not the business one. \"Engagement was low\" is a business problem; \"people opened the app with a trip already booked and had to go and find it\" is a user problem.]",
+    "standfirst": "A layout that cannot vary cannot be tested, and these were the two screens where testing mattered most.",
     "paras": [
-      "[NEEDS: what the home screen was before. Describe it concretely — what did it show, in what order, and to whom? A static merchandising surface? A search box and nothing else? The reader needs to be able to picture the screen that was replaced.]",
-      "[NEEDS: the insight. This is the first thing a reader looks for and the thing that separates a redesign from a decision. What did you know about what people arrived at the home screen wanting? Sessions that opened and closed without a search, travellers with a live booking who used the app as a boarding pass, returning searchers repeating the same query — one finding is enough, provided it is a finding rather than a hypothesis.]",
-      "[NEEDS: why the fix was context rather than more content. \"Contextual\" is the whole premise, so it needs one sentence saying what context the screen read — trip state, recency, location, time to check in — and why that was the right variable to bet on.]"
+      "Hotels.com sells in 90 points of sale and 41 languages, lists properties in over 200 countries, and takes around 165,000 bookings a day. Every one of those customers met the same two screens: a dated, static home, and a search results page built on a fixed card framework.",
+      "Both were arrangements rather than systems. Nothing on either could respond to who was looking or what they were in the middle of — and because nothing could vary, no question about what a traveller actually needed to see could be answered. The app shipped on judgement and defended it afterwards.",
+      "[NEEDS: the insight. What did you know about how people were failing on these screens? One research finding turns this from a refactor into a decision, and a reader scores it as the first thing it looks for.]"
     ]
   },
-
   "process": {
     "heading": "How it was worked out",
-    "standfirst": "[NEEDS: one line on the method. If this ran inside the same continuous multivariate testing programme as the search work, say so — that programme is the strongest process evidence you have.]",
-    "openingPara": "[NEEDS: how the work was run. The search study records a joint programme across product, design, engineering and analytics in which changes shipped as hypotheses rather than as judgements. If contextual home ran through the same programme, this paragraph writes itself and is worth more here, because here the tests produced numbers.]",
+    "standfirst": "Rebuild both screens as systems, then run everything through one programme rather than shipping one-off launches.",
+    "openingPara": "The home moved from a fixed layout to a modular, scalable one, with a single brand language holding it together across iOS and Android — the first personalisation work the company had done. Search results moved from static cards to dynamic ones, so a card could carry different amounts of content in the same slot. Neither was a visual exercise. Both were about making the screen capable of holding a variation.",
     "principle": {
       "_note": "One paragraph, three editable parts, because the middle is emphasised. Editing is plain text, so a <strong> inside a single string would be stripped the first time anyone touched it.",
-      "before": "[NEEDS: the operating principle, in your words at the time. ]",
-      "quote": "[NEEDS: the line itself]",
-      "after": "[NEEDS: what that principle changed about how the work was decided.]"
+      "before": "What ran through them was a standing programme across product, design, engineering and analytics, built to fail fast and iterate. Its operating principle, in the words used at the time: ",
+      "quote": "create a hypothesis to give us an opportunity to learn, not to predict.",
+      "after": " That distinction is what makes a losing test useful rather than embarrassing, and it is why the one below was kept rather than quietly dropped."
     },
-    "closingPara": "[NEEDS: the hard part. A contextual home screen has to decide what wins when two contexts are true at once — a live booking and an abandoned search, say. That priority order is the actual design work, and it is the kind of complexity a reader means by \"complex flow made simple\". How was it resolved?]",
-    "explorationsHeading": "What was tried, and what lost",
+    "closingPara": "The 2019 refresh pushed the same idea further: a global rebrand with parity across platforms, machine learning behind modules like recommended destinations and travel guides, and a shift towards content before, during and after a trip rather than only at the point of booking.",
+    "explorationsHeading": "Three tests, and what each one settled",
     "explorations": [
       {
-        "title": "[NEEDS: a direction that was explored and rejected]",
-        "why": "[NEEDS: what killed it. A reader asks for alternatives considered and why paths were rejected, and weights this section hardest. Rejected paths are the section that most often decides these reviews.]",
-        "imageAlt": "[NEEDS: describe the rejected direction once it is named]"
+        "title": "A richer image gallery, on Android",
+        "why": "Won. Positive on conversion, more interaction with the gallery, and it sent better-qualified shoppers through to the booking form. The variation was only possible because the card had become a container rather than a fixed arrangement.",
+        "imageAlt": "The Android image gallery variant tested on the search results card"
       },
       {
-        "title": "[NEEDS: a second direction, ideally one that tested and lost]",
-        "why": "[NEEDS: a losing test kept rather than deleted is the single most credible thing a portfolio can show. The search study had one; if this work has one, it belongs here.]",
-        "imageAlt": "[NEEDS: describe the second direction once it is named]"
+        "title": "A search recap carrying check-in details, on iOS",
+        "why": "Lost. Negative on conversion, so it went back out and was retested without the check-in details. Showing travellers a summary of what they had already told us cost more attention than it returned.",
+        "imageAlt": "The search recap variant that carried check-in details"
       },
       {
-        "title": "[NEEDS: a third, or delete this entry]",
-        "why": "[NEEDS: three is not a target. Two real rejected paths beat three where one is padding — delete this entry rather than filling it.]",
-        "imageAlt": "[NEEDS: describe the third direction once it is named]"
+        "title": "A sign-in module in the results stream",
+        "why": "[NEEDS: recorded on the source page as an ongoing test, which means it had not resolved. Say that plainly if so — an unresolved test is honest, a test dropped from the write-up is not.]",
+        "imageAlt": "The sign-in module placed within the results stream"
       }
     ]
   },
-
   "interface": {
-    "heading": "The screen",
-    "standfirst": "[NEEDS: one line on what the finished home screen did that the old one could not.]",
-    "mediaAlt": "[NEEDS: describe the screen once there is a real capture]",
-    "mediaCaption": "[NEEDS: replace with a real export. This study is being carried by its numbers, which makes the absence of screens the thing a reviewer notices — a reader asks explicitly to see complex flows resolved into simple UI, and that axis cannot be argued in prose.]",
+    "heading": "The two screens",
+    "standfirst": "A home whose modules changed with context, and a results card that could hold a different amount of content in the same slot.",
+    "mediaAlt": "[NEEDS: describe the home screen once there is a real capture]",
+    "mediaCaption": "[NEEDS: a real export of the home. A reader asks explicitly to see a complex flow resolved into simple UI, and that axis cannot be argued in prose.]",
     "paras": [
-      "[NEEDS: what the states were. A contextual screen is really several screens sharing a frame — no trip, trip booked, trip imminent, trip in progress, just returned. Naming them and showing two of them is the clearest evidence of the flow work.]",
-      "[NEEDS: what stayed constant across the states, and why. The interesting part of an adaptive surface is usually the part that refuses to adapt.]"
+      "On the home, modules carried recommended destinations, travel guides and trip content, and the mix changed with context rather than staying fixed. On results, three adaptive layouts were built and tested against each other, each carrying a different amount of price, image and review content.",
+      "[NEEDS: what separated the three search layouts, and what the home's states were. Naming them and showing two of each is the clearest evidence of the flow work on this page.]"
     ],
-    "motionMediaAlt": "[NEEDS: describe the second capture, or delete this block]",
-    "motionMediaCaption": "[NEEDS: a second capture — the state change itself, or the two extreme states side by side. Delete this block if there is only one thing worth showing; an empty media frame is worse than one image.]"
+    "motionMediaAlt": "[NEEDS: describe the search results capture, or delete this block]",
+    "motionMediaCaption": "[NEEDS: the three adaptive layouts side by side would carry this section. An empty media frame is worse than one image.]"
   },
-
   "impact": {
     "heading": "Impact",
-    "standfirst": "[NEEDS: one line framing the numbers. They are strong enough that they do not need selling — say what was measured and over what, and let them sit.]",
+    "standfirst": "The home's numbers are the hard ones. The framework underneath both screens is what everything after them was tested inside.",
     "metrics": [
-      { "value": "+85%", "label": "increase in account creation" },
-      { "value": "+25%", "label": "increase in engagement" },
-      { "value": "+20%", "label": "increase in sign ins" },
-      { "value": "+5%", "label": "increase in conversion" }
+      {
+        "value": "+85%",
+        "label": "increase in account creation"
+      },
+      {
+        "value": "+25%",
+        "label": "uplift in engagement rate"
+      },
+      {
+        "value": "+20%",
+        "label": "increase in sign in rates"
+      },
+      {
+        "value": "+5%",
+        "label": "conversion uplift"
+      }
     ],
-    "metricsSource": "[NEEDS: where these came from and over what window. This is the reason this study replaced the search one, so the sourcing has to be exact: measured against what baseline, over how long, on which point of sale, and were they from one test or the programme overall? An unattributed +85% reads as a rounding of something softer.]",
+    "metricsSource": "[NEEDS: these four are the contextual home result, recorded as an overall strong positive. Needed: the measurement window, the baseline, and whether they are the 2016 build or the 2019 refresh. Search's own result is recorded only directionally — driven by US point of sale, with more customers returning within 30 days and more shortlisting.]",
     "paras": [
-      "[NEEDS: what the numbers mean, and what they do not. +85% account creation next to +5% conversion is a real story — the screen was much better at starting a relationship than at closing a booking — and saying so is more convincing than presenting four numbers as four wins.]",
-      "[NEEDS: what happened to it afterwards. Did the contextual model survive, get extended, get rolled back? A metric with an ending is worth more than a metric that stops at launch.]"
+      "+85% on account creation beside +5% on conversion is the finding worth stating: a contextual screen was far better at starting a relationship than at closing a booking. Sign-ins and engagement moved with account creation and point the same way.",
+      "[NEEDS: what happened next. Did the modular home and the dynamic card framework survive, get extended, get replaced? A metric with an ending is worth more than one that stops at launch.]"
     ]
   },
-
   "hindsight": {
     "paras": [
-      "[NEEDS: yours. A reader names this explicitly as something the team looks for, so it is worth more than its length. One candidate, if it is true: the numbers say the screen was far better at acquisition than at conversion, and it is worth asking whether the contexts it read were the ones that mattered to someone ready to book rather than someone ready to browse. Keep it factual and free of grievance.]"
+      "[NEEDS: yours, and a reader names this explicitly. One honest candidate: both screens were rebuilt to make testing possible, and the tests that then ran through them were mostly about content and arrangement rather than about whether these were the right models at all.]"
     ]
   }
 }

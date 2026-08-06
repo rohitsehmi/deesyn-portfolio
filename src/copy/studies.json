@@ -2,13 +2,13 @@
   "_comment": "Tile copy for each case study, keyed by slug. Editable in the browser under `npm run dev` — see tools/copy-editor.mjs. One file rather than per-study, because the same tile renders in two places: the index, and the next-study link at the foot of the other study. Edit it in either and both change. src/data/studies.ts keeps the structure — slug, cover image, archived — and reads these strings from here.",
   "machine-readable-components": {
     "title": "A component library a machine could read",
-    "summary": "Expedia Group had three drifting implementations of every component. We rebuilt them against one written specification that designers, engineers and language models could all build from.",
+    "summary": "Expedia Group had three drifting implementations of every component. A machine read all three and proposed a rebuild; my job was to overrule it where it was wrong, and write the decision back in a form it could build from.",
     "discipline": "Design systems",
     "coverAlt": "An abstract still life in violet and off-white: frosted glass panels showing a component grid, a list, a card and a block of code, wired together by glowing cables into a central lit tile."
   },
-  "contextual-home": {
-    "title": "The home screen, made contextual",
-    "summary": "[NEEDS: one line that earns the click. It has to say what was wrong with the old home screen, not what the new one contained. Keep it to the length of the one above it — the two tiles sit side by side and an uneven pair reads as one study mattering more.]",
+  "making-the-app-testable": {
+    "title": "The app that could not be tested",
+    "summary": "Hotels.com's two most valuable screens were both fixed layouts, so nothing on them could vary and nothing could be learned from them. Rebuilding both is what made a continuous testing programme possible.",
     "discipline": "Product design",
     "coverAlt": "An abstract still life in sage green and off-white: frosted glass panels showing a search field over a list of results, a detail view, a set of filters and a bar chart, linked by glowing cables."
   },

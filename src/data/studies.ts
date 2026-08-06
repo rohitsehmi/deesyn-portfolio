@@ -58,20 +58,25 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean }[]
     without, which reads as a build error rather than as a draft. Replace it
     with this study's own before anything is sent.
   */
-  { slug: 'contextual-home', coverSrc: coverSearch },
+  { slug: 'making-the-app-testable', coverSrc: coverSearch },
   /*
-    Archived 2026-08-06. Same surface, same app, same testing programme as
-    contextual-home, and the better flow story of the two — but the measured
-    results on rohitsehmi.com/apps belong to contextual home, and search's own
-    are recorded as directional only. A reader names "fail to prove impact
-    with clear metrics" as a reason portfolios do not pass this stage, so the
-    slot goes to the study that can answer that axis.
+    Archived 2026-08-06, and then absorbed rather than shelved.
 
-    Not deleted, and the trade is not settled: if search's percentages are ever
-    recovered it is the stronger study, and it comes back by removing one line.
-    Its written material — the "hypothesis to learn, not to predict" principle
-    and the recap test that lost and was kept — is still in
-    src/copy/search-experience.json and some of it belongs in this study.
+    It was first swapped out for `contextual-home`, on the grounds that the
+    measured results on rohitsehmi.com/apps belong to the home work and search's
+    own are recorded only directionally. That trade cost the better flow story
+    to win the impact axis, and it left the replacement with an empty
+    explorations section.
+
+    Both problems went away when the two were read as one argument: the home and
+    the results page were both rebuilt to make testing possible, and the
+    standing test programme is what ran through them. That study is
+    `making-the-app-testable`, and search's material — the dynamic card
+    framework, the three adaptive layouts, the recap test that lost and was
+    retested — is in it.
+
+    Kept here because its own page still holds the longer version, including the
+    2025 App Shell motion work, which the merged study leaves out. Not deleted.
   */
   { slug: 'search-experience', coverSrc: coverSearch, archived: true },
   /*

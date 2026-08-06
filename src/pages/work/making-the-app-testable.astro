@@ -7,34 +7,44 @@ import { Explorations } from '../../components/Explorations';
 import { Hindsight } from '../../components/Hindsight';
 import { Contribution } from '../../components/Contribution';
 import { Media } from '../../components/Media';
-import c from '../../copy/contextual-home.json';
+import c from '../../copy/making-the-app-testable.json';
 
 /**
  * DRAFT. Study two of two: the Product Design discipline.
  *
- * Every word lives in src/copy/contextual-home.json, in reading order, so the
+ * Every word lives in src/copy/making-the-app-testable.json, in reading order, so the
  * whole voice can be read in one file and edited in the browser while
  * `npm run dev` runs. This file is the arrangement; that file is the writing.
  *
- * Replaced search-experience in this slot on 2026-08-06. Both come off
- * rohitsehmi.com/apps and both are Hotels.com app work, but the measured
- * results on that page — +5% conversion, +25% engagement, +20% sign ins, +85%
- * account creation — belong to this work, not to search. A reader names
- * "fail to prove impact with clear metrics" as a reason portfolios do not pass
- * this stage, so the study with the numbers takes the slot. search-experience
- * has the better flow story and is archived rather than deleted, in case the
- * material recovered here changes that trade.
+ * Drafted from rohitsehmi.com/apps, which covers five separate initiatives on
+ * one page. This takes three of them — A Contextual Home, Search Experience,
+ * and the Small Enhancements testing programme — because they are one argument
+ * rather than three projects: two structural rebuilds that made testing
+ * possible, and the programme that then ran through them. Both rebuilds say so
+ * in their own stated rationale on that page.
  *
- * The arrangement deliberately mirrors search-experience.astro: same slots in
- * the same reader order, so the two studies read as one portfolio rather than
- * as two attempts.
+ * Started as `contextual-home` on 2026-08-06 and was renamed the same day. That
+ * version had the metrics and nothing else the reader asks for — in particular
+ * an empty explorations section, because the source records only what shipped.
+ * Bringing the testing programme in fills it with three real tests, one of them
+ * a loser kept and retested, and it makes the "hypothesis to learn, not to
+ * predict" principle this study's own rather than a borrowed line.
+ *
+ * The risk this shape carries is being a survey — three initiatives stapled
+ * together, which is why scaling-a-system was archived. It is held off by
+ * having one thesis and using the three only as evidence for it. If a section
+ * ever starts to read as "and then I also did X", that has failed.
+ *
+ * The arrangement deliberately mirrors the other studies: same slots in the
+ * same reader order, so the portfolio reads as one thing rather than as
+ * separate attempts.
  */
-const F = 'contextual-home';
+const F = 'making-the-app-testable';
 ---
 
 <CaseStudy
   title={c.title}
-  slug="contextual-home"
+  slug="making-the-app-testable"
   standfirst={c.standfirst}
   titleCopyRef={`${F}:title`}
   standfirstCopyRef={`${F}:standfirst`}
