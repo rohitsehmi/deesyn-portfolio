@@ -80,9 +80,14 @@ const facts = c.facts.map((f) => ({ term: f.term, detail: fill(f.detail) }));
   titleCopyRef="how-this-was-built:title"
   standfirstCopyRef="how-this-was-built:standfirst"
 >
-  <Prose lead>
-    {c.lead.map((p, i) => <p data-copy={`how-this-was-built:lead.${i}`}>{p}</p>)}
-  </Prose>
+  {/* The lead is an hb-block like everything else on this page. Left outside,
+      it sat at zero against the facts table below it: `.hb-block + .hb-block`
+      only spaces a block against another block, and the lead was neither. */}
+  <div class="hb-block">
+    <Prose lead>
+      {c.lead.map((p, i) => <p data-copy={`how-this-was-built:lead.${i}`}>{p}</p>)}
+    </Prose>
+  </div>
 
   <div class="hb-block">
     {/* Not editable in place: the rendered string has had its numbers
