@@ -4,9 +4,13 @@ Guidance for Claude Code when working in this repository.
 
 ## What this project is
 
-A portfolio website showcasing a **maximum of three case studies**, for Rohit Sehmi's design work.
+Rohit Sehmi's design portfolio: one to two recent, complex screen flows, written up properly rather than a gallery of projects.
 
-Started 2026-07-31. **Stack: Astro + React.** Astro for the site and MDX case studies so pages ship no JS unless a component opts in; plain React for components so Storybook and Chromatic work normally.
+**What a case study here has to answer.** It asks for **one to two recent, complex screen flows** — not three projects — and scores four axes: the problem (an insight, not a mandate), UX thinking and process (explorations, **alternatives rejected and why**, trade-offs driven by testing), UI and interaction (a complex flow made simple), and impact (**a specific role**, concrete metrics rather than summaries). Plus hindsight, named explicitly as something the team looks for. Its stated failure mode: *"portfolios that lack detail, skip over the data-driven testing process, or fail to prove impact with clear metrics typically don't pass this stage."*
+
+**The design system answers none of those questions directly.** No axis asks about tokens, checksums or visual-regression CI. It buys the "polished visuals" axis cheaply and consistently, and it is a good vehicle. It is not evidence of problem-solving, and it must not take page space it has not earned.
+
+Started 2026-07-31. **Stack: Astro + React.** Astro for the site so pages ship no JS unless a component opts in; plain React for components so Storybook and Chromatic work normally. There is no MDX — case studies are `.astro` arrangements over JSON copy, described under **Case studies** below.
 
 ```bash
 npm run dev          # Astro dev server
@@ -48,7 +52,7 @@ File **"Revolut"** — `UnybX8G5sQIEhLLZN2YFl6`. Pages, and the repo folder each
 | **Banding** | `docs/banding-system.md` | `Layout/Band` + adjacency rules |
 | **Icons** | `icons/` | the icon set |
 | **Marks** | `marks/` | brand marks |
-| **Components** | `components/` | the 9 UI components |
+| **Components** | `components/` | the 10 UI components |
 
 The original "Foundations" page (an Expedia EGDS template) is reference scaffolding only — not ours.
 
@@ -154,7 +158,7 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 
 **Deprecating a component:** set `setSharedPluginData('spec', 'status', 'deprecated')` on the set in Figma and rename it out of the live namespace. It stays in the file and leaves the published contract; the export lists it under `deprecated` and `verify.mjs` prints it, so its absence is recorded rather than silent. `Deprecated/Brand Logo` (was `XX · Brand/Logo`) is the first.
 
-`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma. Matched 2026-08-05: `1567749477`, 132 entries. See `design/README.md`.
+`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma: `2596963867`, 132 entries, matched 2026-08-05. See `design/README.md`. (An earlier `1567749477` was recorded here against the same entry count and was stale — **re-read a checksum from `verify.mjs` rather than trusting this file**, which is the only reason these are written down at all.)
 
 **Three checksums, three sources.** Tokens `4115829316`. Figma components `2596963867`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `2834059722` but have no Figma counterpart to match, by definition.
 
@@ -171,6 +175,35 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 **Measured vs authored, kept apart.** `design/figma-export.json` is read off the nodes — nobody wrote it, so it cannot flatter the system. `design/usage-rules.json` is authored: the failure modes someone would actually hit (ghost is not a primary action; never ship an icon-only button without `aria-label`; never fake a product UI out of rectangles). `build.mjs` merges them into each spec; the files stay separate so it is obvious which is which. Same split in Figma: `getSharedPluginData('spec','contract')` measured, `…'donts'` authored.
 
 **Each component section on canvas carries** its reasoning (rendered from the set's own `description`, one source), its don't-rules, a readable contract table, and an in-context usage example in both a base and an inverse band. The raw contract JSON is deliberately *not* on canvas — a 12,000px JSON wall is documentation theatre. Machines read it from plugin data and the repo.
+
+## Case studies
+
+**Two live, one archived, one retired.** `src/data/studies.ts` is the one list; the index and the next-study link at the foot of each study both read it, so they cannot disagree about what exists.
+
+| Slug | Discipline | State |
+|---|---|---|
+| `machine-readable-components` | Design systems | **Live.** Expedia's New Component Architecture pod, 2025 into Q1 2026 |
+| `contextual-home` | Product design | **Live.** Hotels.com app home screen. Carries the only hard metrics in the portfolio |
+| `search-experience` | Product design | **Archived 2026-08-06.** Better flow story, no recoverable metrics |
+| `scaling-a-system` | Design systems | **Archived 2026-08-05.** No user testing, adoption figures where outcomes were asked for |
+
+**Nothing is ever deleted from `studies.ts`.** `archived: true` takes a study off the index and out of the next-study rotation; it keeps building and stays reachable at its URL. Which studies make the final cut is a content decision to be made late, and deleting an entry removes the option before then. Reversible by removing one line.
+
+**The section order in `src/layouts/CaseStudy.astro` is the reader, in the order the reader states it** — problem, process, interface, impact, hindsight. Slots are named rather than one default slot, so a study cannot quietly ship without its heaviest sections. It is deliberately *not* the structure of the old Expedia page, which was organised around what the system contained and so had nowhere to put rejected explorations, testing trade-offs or hindsight.
+
+**Gaps render as `[NEEDS: …]` on the page**, not as a TODO in a comment. A missing fact that is visible in the browser cannot be lost; one in a comment can. Replace the whole string when the fact arrives. Keys are stable — renaming one orphans the string on the page.
+
+**Two components take a required prop for the same reason `IconButton` requires `aria-label`:** `Metrics` requires `source`, and each `Explorations` item requires `why`. An unattributed number and an unexplained rejected path are the two things a case study says do not pass, so the type system enforces what a convention cannot.
+
+**The vertical rhythm inside a section is three steps**, and each is a stated value rather than whatever margins happened to collapse:
+
+| Between | Gap | Owned by |
+|---|---|---|
+| Paragraph and paragraph | 20px | `.prose > * + *` |
+| A heading and the content it introduces | 40px | `.section-heading` |
+| Two blocks that are peers | 64px | `.cs-section` in `CaseStudy.astro` |
+
+It lives on the arrangement rather than as a margin on each component, because a trailing margin on the last block in a section adds space the band has already paid for. Two things it needs that are not obvious: **adjacent margins collapse to the larger**, so the heading's 40px would silently become 64px without an explicit override, and **`.explorations` resets `margin: 0` at equal specificity**, so `.cs-section` is doubled to outrank it — don't "tidy" that away. Every section wrapper must carry `class="cs-section"` or its blocks stack at zero.
 
 ## Copy
 
@@ -275,5 +308,13 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
 
 ## Next up
 
-1. **The three case studies** — which three, and what each is *for*. Recommended first: components built before the content is known tend to get built twice. Also gates the band *rhythm* (§8 of the banding doc).
-2. **Components** — button (48px pill, replacing `Demo / Button (stand-in)`), input (56px), nav (56px), card at r20, case-study tile, footer.
+**The system and the site are finished. Content is the only thing blocking, which is the opposite of where the effort has gone.** 9 pages, 20 components, every check green.
+
+1. **Fill the case studies.** ~25 `[NEEDS:]` in `contextual-home`, 8 in `machine-readable-components`. Confirmed 2026-08-06: **none of it is recoverable from a source.** Rohit has no access to the Expedia GitHub `plan.md` files, the NCA tracking board, or the Principle prototypes. It comes out of his head or not at all — so **ask him rather than research**, in small batches, writing immediately so he can correct in the browser.
+2. **The strongest single gap is `contribution.What I owned` on `contextual-home`.** A +85% invites the question of what he personally decided before it invites any other, and the answer changes how the rest of the page is pitched.
+3. **Every image on the site is a placeholder** — the hero and both covers. They carry no `[NEEDS:]` marker, so they look finished, which is the trap. `contextual-home` is worse than that: it is borrowing the *search* cover, which draws a search field over a list of results. And neither study has a single real screen, against a reader that asks explicitly to see complex flows resolved into simple UI.
+4. **Rotate the Chromatic token.** Pasted into chat transcripts twice. Only Rohit can do it: Chromatic → Manage → Configure, then `.env` and the GitHub Actions secret.
+
+**Smaller, none blocking:** `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); `about.astro` holds 4 `[NEEDS:]` but is de-linked from the nav; Figma draws `Brand/Logo` at 233×48 in both Chrome sets while code renders 32.
+
+**Before anything is published at an open URL** — not needed to send this to Revolut — settle the `Ro × Revolut` lockup. An `×` lockup conventionally reads as a partnership, which would imply an engagement that does not exist. Same question governs making the Storybook public.
