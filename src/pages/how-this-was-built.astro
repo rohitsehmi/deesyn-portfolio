@@ -5,6 +5,7 @@ import { Prose } from '../components/Prose';
 import { SectionHeading } from '../components/SectionHeading';
 import { Contribution } from '../components/Contribution';
 import { ArrowLink } from '../components/Link';
+import { SERVICE_MARKS } from '../components/service-marks';
 import { hash } from '../../design/hash.mjs';
 import c from '../copy/how-this-was-built.json';
 
@@ -71,7 +72,7 @@ const numbers: Record<string, string | number> = {
 const fill = (s: string) =>
   s.replace(/\{(\w+)\}/g, (whole, key) => (key in numbers ? String(numbers[key]) : whole));
 
-const facts = c.facts.map((f) => ({ term: f.term, detail: fill(f.detail) }));
+const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }));
 ---
 
 <Page
@@ -90,6 +91,19 @@ const facts = c.facts.map((f) => ({ term: f.term, detail: fill(f.detail) }));
   </div>
 
   <div class="hb-block">
+    <SectionHeading level={3} copyRef="how-this-was-built:workflow.heading">
+      {c.workflow.heading}
+    </SectionHeading>
+    <Contribution items={c.workflow.items} copyBase="how-this-was-built:workflow.items" />
+  </div>
+
+  <div class="hb-block">
+    <SectionHeading level={3} copyRef="how-this-was-built:facts.heading">
+      {c.facts.heading}
+    </SectionHeading>
+    <Prose>
+      <p data-copy="how-this-was-built:facts.intro">{c.facts.intro}</p>
+    </Prose>
     {/* Not editable in place: the rendered string has had its numbers
         substituted, so writing it back would bake today's counts into the copy
         and the page would stop recomputing. Edit it in the JSON. */}
@@ -132,10 +146,84 @@ const facts = c.facts.map((f) => ({ term: f.term, detail: fill(f.detail) }));
   </div>
 
   <div class="hb-block">
-    <ArrowLink href="/work/machine-readable-components">{c.readCaseStudy}</ArrowLink>
+    <SectionHeading level={3} copyRef="how-this-was-built:links.heading">
+      {c.links.heading}
+    </SectionHeading>
+    {/*
+      arrow-up-right, not arrow-thin-right: these leave the site, and the
+      diagonal is the convention for that. It is the reason the icon exists in
+      the set — Revolut ships no diagonal, so it is their thin arrow rotated.
+    */}
+    <ul class="hb-links">
+      {c.links.items.map((l, i) => {
+        const mark = SERVICE_MARKS[l.mark];
+        return (
+          <li class="hb-links__item">
+            {/*
+              aria-hidden, because the link beside it already says which
+              service this is. A mark that repeats the link's own name is
+              decoration to a screen reader, not information.
+            */}
+            <svg class="hb-links__mark" viewBox={mark.viewBox} aria-hidden="true" focusable="false">
+              {mark.paths.map((d) => <path d={d} />)}
+            </svg>
+            <ArrowLink
+              href={l.href}
+              icon="arrow-up-right"
+              copyRef={`how-this-was-built:links.items.${i}.label`}
+            >
+              {l.label}
+            </ArrowLink>
+            <p class="hb-links__note" data-copy={`how-this-was-built:links.items.${i}.note`}>{l.note}</p>
+          </li>
+        );
+      })}
+    </ul>
   </div>
 </Page>
 
 <style is:global>
   .hb-block + .hb-block { margin-block-start: var(--primitive-layout-l64); }
+
+  /*
+    The same three-step rhythm the case-study sections use, for the same reason:
+    only SectionHeading owns the space after it, so without this a heading's
+    content and the block below it both stack at zero. Class doubled to outrank
+    a component resetting its own root margin; the heading override stops the
+    40px collapsing into the 64px. See CLAUDE.md § Case studies.
+  */
+  .hb-block.hb-block > * + * { margin-block-start: var(--primitive-layout-l64); }
+  .hb-block.hb-block > .section-heading + * { margin-block-start: 0; }
+
+  .hb-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--primitive-layout-l40);
+  }
+  @media (min-width: 768px) {
+    .hb-links { grid-template-columns: repeat(3, 1fr); }
+  }
+  /* The link owns the space to its own note, so the grid gap stays one value. */
+  .hb-links__item > * + * { margin-block-start: var(--primitive-space-sp300); }
+  /*
+    currentColor, so each mark takes the foreground of the band it lands in and
+    reads in both themes. Brand colours were the alternative and are wrong here:
+    three saturated logos fight each other, and GitHub's near-black disappears
+    entirely against an inverse band.
+  */
+  .hb-links__mark {
+    display: block;
+    width: var(--primitive-size-s24);
+    height: var(--primitive-size-s24);
+    fill: currentColor;
+    color: var(--semantic-fg-secondary);
+  }
+  .hb-links__note {
+    margin: 0;
+    font: var(--type-body-2);
+    letter-spacing: var(--type-body-2-tracking);
+    color: var(--semantic-fg-secondary);
+  }
 </style>

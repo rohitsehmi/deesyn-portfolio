@@ -236,6 +236,10 @@ npm run copy:import                     # write it back
 
 `copy-drafts/` is **gitignored**. It is a working surface, and a committed draft alongside the JSON would be two sources of truth for the same sentence. The undo is still `git diff src/copy/`.
 
+**A draft older than its JSON is skipped**, because that case is silent: every string in it parses, matches a real key and writes — it just writes the version from before the JSON was edited. It bit on 2026-08-06, when a draft exported before a simplification would have reverted 25 strings, and only surfaced because one deleted key happened to refuse. Re-export, or pass `--force` if the draft really is the version you want.
+
+**Edge whitespace is carried over from the value being replaced, not taken from the document.** A few strings are deliberate fragments that join around an emphasised span — `process.principle.before` ends in a space, `.after` begins with one — and markdown cannot show that. Trimming them rendered two words fused together in the one paragraph on the page with emphasis in it.
+
 The importer **refuses rather than guesses**, and reports what it refused while still writing everything else — one bad marker should not cost an afternoon of edits. It refuses a path that does not already exist (a typo'd marker is a typo, not a new key), a path whose current value is not a string, and **an empty value over a non-empty one** — the same guard the browser editor has, for the same reason: a blank paragraph reads as a layout gap rather than as data loss, so nothing on the page reports it.
 
 **`how-this-was-built` moved into `src/copy/` on 2026-08-06** to make this work — it had been hardcoding its prose in the `.astro`, against the rule at the top of this section. Its build-time numbers cannot live in JSON, so the copy carries `{braced}` placeholders that the page substitutes. **Edit the words around them; keep the braces.** A placeholder with no matching value is left visible on the page rather than blanked, so a typo shows up as `{primitves}` instead of as a plausible-looking gap. Its facts block is deliberately *not* browser-editable: the rendered string has had its numbers substituted, and writing that back would bake today's counts into the copy and stop the page recomputing.
@@ -255,6 +259,16 @@ The one thing it hardcodes is colour, and it resolves it from the token rather t
 `favicon.svg` carries its own `prefers-color-scheme` rule. That matters more here than anywhere on the site — a favicon sits on the browser's **tab strip**, not on the page background, so a dark mark disappears into a dark tab. The PNG fallbacks can't flip and take the light fill.
 
 `public/` exists only for these files. It was briefly empty after the hero moved to `src/assets/`, and an empty directory holds no tracked files — git prunes it on checkout, so it vanished from fresh clones and `build-storybook` failed on its missing `staticDirs` entry everywhere but the machine with the stale folder. If it ever empties again, drop the `staticDirs` line with it rather than committing a `.gitkeep`.
+
+## Service marks
+
+`/how-this-was-built` links out to Figma, Chromatic and GitHub, and each link carries that service's mark. **Generated, never drawn** — `design/build-service-marks.mjs` fetches them from Simple Icons (path data CC0) into `src/components/service-marks.ts`. A hand-traced logo is a wrong logo, and someone else's mark is the one place "close enough" is a real problem.
+
+**They are deliberately not `Icon` and not in `icons/specs`.** `Icon` is contracted as real Revolut assets taken verbatim from `assets.revolut.com`, with a Figma component set and a checksum behind it; three third-party logos in there would make all three statements false. The file is a **`.ts`, not a `.tsx`**, for a second reason: the component count on `/how-this-was-built` is computed by counting `.tsx` files and `build-code-specs.mjs` writes a contract for each one. A brand mark is an asset, not a component, and must move neither number.
+
+Rendered `fill: currentColor` at `fg/secondary`, not in brand colours — three saturated logos fight each other, and GitHub's near-black vanishes on an inverse band. The marks are `aria-hidden`: the link beside each already names the service.
+
+Not part of `npm run specs` — it needs the network, and these change roughly never.
 
 ## Images
 

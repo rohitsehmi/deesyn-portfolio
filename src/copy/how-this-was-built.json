@@ -1,40 +1,60 @@
 {
-  "_comment": "All the copy for /how-this-was-built, in reading order. Editable in the browser under `npm run dev` — see tools/copy-editor.mjs. The {braced} tokens in facts.*.detail are build-time numbers computed from the files they describe; the page substitutes them. Edit the words around them freely, but keep the braces — a fact with a number typed in would make this page argue against itself.",
-
+  "_comment": "All the copy for /how-this-was-built, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. The {braced} tokens in facts.*.detail are build-time numbers computed from the files they describe; the page substitutes them. Edit the words around them freely, but keep the braces — a fact with a number typed in would make this page argue against itself. Rewritten 2026-08-06 to show the workflow and link the artefacts. Deliberately the shortest page on the site: it is an easter egg, not a third case study.",
   "title": "How this was built",
-  "standfirst": "A design system where Figma, the code and the build agree, and where the build refuses to ship if they stop agreeing.",
-
+  "standfirst": "A design system where Figma, the code and the build agree — and a build that refuses to ship if they stop.",
   "lead": [
-    "The first case study on this site argues for a single written specification that designers, engineers and language models can all build from. That project ended before it reached production, so this site is the smallest complete version of the same idea: not a description of the approach, but the approach running, on something you can open.",
-    "None of the numbers below were typed in. They are computed when this page is built, from the files they describe."
+    "The first case study argues for one specification that designers, engineers and language models all build from. That project ended before it reached production, so this site is the smallest complete version of the same idea: not a description of the approach, but the approach running, on something you can open."
   ],
-
-  "facts": [
-    {
-      "term": "Design tokens",
-      "detail": "{primitives} primitives and {semantic} semantic tokens per theme, exported from Figma and checksum verified against it."
-    },
-    {
-      "term": "Text styles",
-      "detail": "{textStyles}, each emitted as CSS custom properties. Responsive type steps between two of them at a breakpoint rather than clamping, so every size on screen exists in the design file."
-    },
-    {
-      "term": "Components",
-      "detail": "{components} in code, {specs} with a published contract. The ones with no Figma counterpart have their specs generated from their own TypeScript and stylesheets."
-    },
-    {
-      "term": "Stories",
-      "detail": "{stories}, every one rendered inside a band so the zero override property is checked the same way it is asserted in Figma. Each is snapshotted light and dark."
-    },
-    {
-      "term": "Layout rules",
-      "detail": "{rules} band adjacency rules, read from the Figma page rather than transcribed. Checksum {checksum}."
-    }
-  ],
-
+  "workflow": {
+    "heading": "The workflow",
+    "items": [
+      {
+        "term": "Claude Code, in VS Code",
+        "detail": "Where the work happens. The repo, the Figma file and the checks are driven from one place, so a change reaches the design file, the code and the tests without a handoff between them."
+      },
+      {
+        "term": "Figma Console MCP",
+        "detail": "A live connection into the Figma file. Tokens, components and the layout rules are read and written from the editor rather than exported by hand — which is what stops the file and the repo drifting."
+      },
+      {
+        "term": "GitHub Actions",
+        "detail": "Four checks on every push. If Figma and the code disagree, the build stops rather than the disagreement getting noticed later."
+      },
+      {
+        "term": "Storybook and Chromatic",
+        "detail": "Every component rendered inside a band and snapshotted in both themes, so a regression in either one fails the build."
+      }
+    ]
+  },
+  "facts": {
+    "heading": "What that adds up to",
+    "intro": "None of these numbers were typed in. They are computed when this page is built, from the files they describe.",
+    "items": [
+      {
+        "term": "Design tokens",
+        "detail": "{primitives} primitives and {semantic} semantic tokens per theme, exported from Figma and checksum verified against it."
+      },
+      {
+        "term": "Text styles",
+        "detail": "{textStyles}, emitted as CSS custom properties. Type steps between two of them at a breakpoint rather than clamping, so every size on screen exists in the design file."
+      },
+      {
+        "term": "Components",
+        "detail": "{components} in code, {specs} with a published contract. The ones with no Figma counterpart have their specs generated from their own TypeScript and stylesheets."
+      },
+      {
+        "term": "Stories",
+        "detail": "{stories}, each snapshotted light and dark."
+      },
+      {
+        "term": "Layout rules",
+        "detail": "{rules} band adjacency rules, read from the Figma page rather than transcribed. Checksum {checksum}."
+      }
+    ]
+  },
   "checks": {
     "heading": "What the build refuses to ship",
-    "intro": "Four checks run on every push. Each exists because something got through without it.",
+    "intro": "Each of these exists because something got through without it.",
     "_note": "Each item is a bold lead-in plus its sentence. Two strings rather than one, because editing is plain text and a <strong> inside a single editable string would be stripped the first time anyone touched it. The CSS item carries a third part because it names a typo that has to set as code.",
     "items": [
       {
@@ -47,9 +67,9 @@
       },
       {
         "label": "CSS.",
-        "text": "Every custom property in the source resolves to a real token, and every font value binds to the type scale. A typo like",
+        "text": "Every custom property resolves to a real token. A typo like",
         "code": "fg-secondry",
-        "textAfter": "is not a CSS error: it renders as an inherited default and looks deliberate, so nothing else would catch it."
+        "textAfter": "is not a CSS error — it renders as an inherited default and looks deliberate, so nothing else would catch it."
       },
       {
         "label": "Bands.",
@@ -57,14 +77,34 @@
       }
     ]
   },
-
   "limits": {
     "heading": "What it does not do",
     "paras": [
-      "It does not check whether the design is any good. It checks that the design and the code are the same thing, which is a narrower claim and the only one worth automating. Taste is still done by looking.",
-      "Three things live only in code, because Figma cannot express them: state, which is a CSS concern rather than a variant axis; press feedback; and required properties, where the type system enforces what a variant never could."
+      "It does not check whether the design is any good. It checks that the design and the code are the same thing — a narrower claim, and the only one worth automating. Taste is still done by looking."
     ]
   },
-
-  "readCaseStudy": "Read the case study this came from"
+  "links": {
+    "heading": "The receipts",
+    "_note": "Access states as of 2026-08-06: the repo is private (404), the Figma file is restricted (403), the Chromatic build is access-controlled and inherits the private repo (401). Open them before sending this to anyone, or the page argues for evidence and then withholds it. `note` renders beside each link and should be emptied once that artefact is open.",
+    "items": [
+      {
+        "label": "The Figma file",
+        "note": "Tokens, components, banding and motion",
+        "href": "https://www.figma.com/design/UnybX8G5sQIEhLLZN2YFl6/Revolut",
+        "mark": "figma"
+      },
+      {
+        "label": "Storybook, on Chromatic",
+        "note": "Every component, both themes",
+        "href": "https://www.chromatic.com/library?appId=6a70c473fc9430ebb1214df6",
+        "mark": "storybook"
+      },
+      {
+        "label": "The repository",
+        "note": "The site, the token pipeline and the checks",
+        "href": "https://github.com/rohitsehmi/revolut-case-studies",
+        "mark": "github"
+      }
+    ]
+  }
 }
