@@ -38,7 +38,7 @@ const F = 'machine-readable-components';
 >
   <Contribution slot="contribution" items={c.contribution} copyBase={`${F}:contribution`} />
 
-  <div slot="problem">
+  <div class="cs-section" slot="problem">
     <SectionHeading
       standfirst={c.problem.standfirst}
       copyRef={`${F}:problem.heading`}
@@ -51,7 +51,7 @@ const F = 'machine-readable-components';
     </Prose>
   </div>
 
-  <div slot="process">
+  <div class="cs-section" slot="process">
     <SectionHeading
       standfirst={c.process.standfirst}
       copyRef={`${F}:process.heading`}
@@ -79,7 +79,7 @@ const F = 'machine-readable-components';
     />
   </div>
 
-  <div slot="interface">
+  <div class="cs-section" slot="interface">
     <SectionHeading
       standfirst={c.interface.standfirst}
       copyRef={`${F}:interface.heading`}
@@ -98,7 +98,7 @@ const F = 'machine-readable-components';
     </Prose>
   </div>
 
-  <div slot="impact">
+  <div class="cs-section" slot="impact">
     <SectionHeading
       standfirst={c.impact.standfirst}
       copyRef={`${F}:impact.heading`}
@@ -117,7 +117,7 @@ const F = 'machine-readable-components';
     </Prose>
   </div>
 
-  <div slot="hindsight">
+  <div class="cs-section" slot="hindsight">
     <Hindsight>
       {c.hindsight.paras.map((p, i) => <p data-copy={`${F}:hindsight.paras.${i}`}>{p}</p>)}
     </Hindsight>

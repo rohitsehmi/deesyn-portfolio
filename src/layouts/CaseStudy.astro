@@ -140,6 +140,42 @@ const footerRole = next ? 'base' : 'sunken';
     .cs-hero__title { font: var(--type-display-l); letter-spacing: var(--type-display-l-tracking); }
   }
 
+  /*
+    The vertical rhythm between the blocks inside one section.
+
+    Only SectionHeading owned the space after it, so every other pair — Metrics
+    against the paragraph under it, a Media against the prose either side of it —
+    stacked at zero and read as one run-on block. Fixed here rather than as a
+    margin on each component, because a trailing margin on the last block in a
+    section adds space the band has already paid for, and because this is a
+    property of the arrangement, which is what this file is for.
+
+    Three steps, each a real one: 20px between paragraphs (.prose), 40px from a
+    heading to the content it introduces (.section-heading), 64px between two
+    blocks that are peers. 48px was the alternative and says nothing the 40 does
+    not — if block-to-block is meant to read as the bigger break, it has to be
+    visibly bigger.
+
+    `> * + *` and not a gap, so a section with one block is unaffected.
+  */
+  /*
+    The class is doubled to raise specificity, not by accident. Components reset
+    their own root margin — `.explorations` is `margin: 0` — and a single class
+    plus two universals ties with a single class, so it came down to bundle
+    order and the component won. That only ever showed on
+    machine-readable-components, the one section where Explorations does not
+    follow a heading and so was not already being zeroed on purpose.
+  */
+  .cs-section.cs-section > * + * { margin-block-start: var(--primitive-layout-l64); }
+  /*
+    A heading already owns the space to the thing it introduces, and adjacent
+    margins collapse to the larger of the two — so without this the heading's
+    40px would silently become 64px and the two steps would be one. Zeroing the
+    start margin here hands the gap back to .section-heading, which is where the
+    40px is stated.
+  */
+  .cs-section.cs-section > .section-heading + * { margin-block-start: 0; }
+
   .cs-next__label {
     margin: 0 0 var(--primitive-space-sp600);
     font: var(--type-emphasis-2);
