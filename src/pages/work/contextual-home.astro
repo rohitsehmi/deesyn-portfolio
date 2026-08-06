@@ -1,0 +1,142 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import { SectionHeading } from '../../components/SectionHeading';
+import { Prose } from '../../components/Prose';
+import { Metrics } from '../../components/Metrics';
+import { Explorations } from '../../components/Explorations';
+import { Hindsight } from '../../components/Hindsight';
+import { Contribution } from '../../components/Contribution';
+import { Media } from '../../components/Media';
+import c from '../../copy/contextual-home.json';
+
+/**
+ * DRAFT. Study two of two: the Product Design discipline.
+ *
+ * Every word lives in src/copy/contextual-home.json, in reading order, so the
+ * whole voice can be read in one file and edited in the browser while
+ * `npm run dev` runs. This file is the arrangement; that file is the writing.
+ *
+ * Replaced search-experience in this slot on 2026-08-06. Both come off
+ * rohitsehmi.com/apps and both are Hotels.com app work, but the measured
+ * results on that page — +5% conversion, +25% engagement, +20% sign ins, +85%
+ * account creation — belong to this work, not to search. A reader names
+ * "fail to prove impact with clear metrics" as a reason portfolios do not pass
+ * this stage, so the study with the numbers takes the slot. search-experience
+ * has the better flow story and is archived rather than deleted, in case the
+ * material recovered here changes that trade.
+ *
+ * The arrangement deliberately mirrors search-experience.astro: same slots in
+ * the same reader order, so the two studies read as one portfolio rather than
+ * as two attempts.
+ */
+const F = 'contextual-home';
+---
+
+<CaseStudy
+  title={c.title}
+  slug="contextual-home"
+  standfirst={c.standfirst}
+  titleCopyRef={`${F}:title`}
+  standfirstCopyRef={`${F}:standfirst`}
+>
+  <Contribution slot="contribution" items={c.contribution} copyBase={`${F}:contribution`} />
+
+  <div class="cs-section" slot="problem">
+    <SectionHeading
+      standfirst={c.problem.standfirst}
+      copyRef={`${F}:problem.heading`}
+      standfirstCopyRef={`${F}:problem.standfirst`}
+    >
+      {c.problem.heading}
+    </SectionHeading>
+    <Prose lead>
+      {c.problem.paras.map((p, i) => <p data-copy={`${F}:problem.paras.${i}`}>{p}</p>)}
+    </Prose>
+  </div>
+
+  <div class="cs-section" slot="process">
+    <SectionHeading
+      standfirst={c.process.standfirst}
+      copyRef={`${F}:process.heading`}
+      standfirstCopyRef={`${F}:process.standfirst`}
+    >
+      {c.process.heading}
+    </SectionHeading>
+    <Prose>
+      <p data-copy={`${F}:process.openingPara`}>{c.process.openingPara}</p>
+      {/*
+        Three spans rather than one string, because the middle is emphasised and
+        editing is plain text: a <strong> inside a single editable string would
+        be stripped the first time anyone touched it.
+      */}
+      <p>
+        <span data-copy={`${F}:process.principle.before`}>{c.process.principle.before}</span>
+        <strong data-copy={`${F}:process.principle.quote`}>{c.process.principle.quote}</strong>
+        <span data-copy={`${F}:process.principle.after`}>{c.process.principle.after}</span>
+      </p>
+      <p data-copy={`${F}:process.closingPara`}>{c.process.closingPara}</p>
+    </Prose>
+
+    <SectionHeading level={3} copyRef={`${F}:process.explorationsHeading`}>
+      {c.process.explorationsHeading}
+    </SectionHeading>
+    <Explorations
+      copyBase={`${F}:process.explorations`}
+      items={c.process.explorations.map((e) => ({
+        title: e.title,
+        why: e.why,
+        image: { alt: e.imageAlt }
+      }))}
+    />
+  </div>
+
+  <div class="cs-section" slot="interface">
+    <SectionHeading
+      standfirst={c.interface.standfirst}
+      copyRef={`${F}:interface.heading`}
+      standfirstCopyRef={`${F}:interface.standfirst`}
+    >
+      {c.interface.heading}
+    </SectionHeading>
+    <Media
+      alt={c.interface.mediaAlt}
+      ratio="16-9"
+      caption={c.interface.mediaCaption}
+      captionCopyRef={`${F}:interface.mediaCaption`}
+    />
+    <Prose>
+      {c.interface.paras.map((p, i) => <p data-copy={`${F}:interface.paras.${i}`}>{p}</p>)}
+    </Prose>
+    <Media
+      alt={c.interface.motionMediaAlt}
+      ratio="16-9"
+      caption={c.interface.motionMediaCaption}
+      captionCopyRef={`${F}:interface.motionMediaCaption`}
+    />
+  </div>
+
+  <div class="cs-section" slot="impact">
+    <SectionHeading
+      standfirst={c.impact.standfirst}
+      copyRef={`${F}:impact.heading`}
+      standfirstCopyRef={`${F}:impact.standfirst`}
+    >
+      {c.impact.heading}
+    </SectionHeading>
+    <Metrics
+      items={c.impact.metrics}
+      source={c.impact.metricsSource}
+      copyBase={`${F}:impact.metrics`}
+      sourceCopyRef={`${F}:impact.metricsSource`}
+    />
+    <Prose>
+      {c.impact.paras.map((p, i) => <p data-copy={`${F}:impact.paras.${i}`}>{p}</p>)}
+    </Prose>
+  </div>
+
+  <div class="cs-section" slot="hindsight">
+    <Hindsight>
+      {c.hindsight.paras.map((p, i) => <p data-copy={`${F}:hindsight.paras.${i}`}>{p}</p>)}
+    </Hindsight>
+  </div>
+</CaseStudy>

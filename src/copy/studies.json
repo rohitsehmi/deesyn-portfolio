@@ -6,6 +6,12 @@
     "discipline": "Design systems",
     "coverAlt": "An abstract still life in violet and off-white: frosted glass panels showing a component grid, a list, a card and a block of code, wired together by glowing cables into a central lit tile."
   },
+  "contextual-home": {
+    "title": "The home screen, made contextual",
+    "summary": "[NEEDS: one line that earns the click. It has to say what was wrong with the old home screen, not what the new one contained. Keep it to the length of the one above it — the two tiles sit side by side and an uneven pair reads as one study mattering more.]",
+    "discipline": "Product design",
+    "coverAlt": "An abstract still life in sage green and off-white: frosted glass panels showing a search field over a list of results, a detail view, a set of filters and a bar chart, linked by glowing cables."
+  },
   "search-experience": {
     "title": "Search, rebuilt so it could be tested",
     "summary": "The Hotels.com app showed search results in a card framework nothing could be varied inside. Rebuilding it as dynamic cards turned the app's most valuable screen into one the team could learn from.",

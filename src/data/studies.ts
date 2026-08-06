@@ -50,7 +50,30 @@ type StudySlug = Exclude<keyof typeof copy, '_comment'>;
 /** Structure only. Everything a reader sees comes from src/copy/studies.json. */
 const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean }[] = [
   { slug: 'machine-readable-components', coverSrc: coverMachineReadable },
-  { slug: 'search-experience', coverSrc: coverSearch },
+  /*
+    Borrowing the search cover, deliberately and temporarily. Every cover on the
+    site is a placeholder, and this one is off-subject on top of that: it draws
+    a search field over a list of results, which is the study this one replaced.
+    It is here so the index does not render one tile with an image beside one
+    without, which reads as a build error rather than as a draft. Replace it
+    with this study's own before anything is sent.
+  */
+  { slug: 'contextual-home', coverSrc: coverSearch },
+  /*
+    Archived 2026-08-06. Same surface, same app, same testing programme as
+    contextual-home, and the better flow story of the two — but the measured
+    results on rohitsehmi.com/apps belong to contextual home, and search's own
+    are recorded as directional only. A reader names "fail to prove impact
+    with clear metrics" as a reason portfolios do not pass this stage, so the
+    slot goes to the study that can answer that axis.
+
+    Not deleted, and the trade is not settled: if search's percentages are ever
+    recovered it is the stronger study, and it comes back by removing one line.
+    Its written material — the "hypothesis to learn, not to predict" principle
+    and the recap test that lost and was kept — is still in
+    src/copy/search-experience.json and some of it belongs in this study.
+  */
+  { slug: 'search-experience', coverSrc: coverSearch, archived: true },
   /*
     Archived 2026-08-05. A reader asks for one to two flows, and this is the
     weaker of the two design-system studies: no user testing anywhere, and

@@ -1,0 +1,89 @@
+{
+  "_comment": "All the copy for /work/contextual-home, in reading order. Editable in the browser under `npm run dev` — see tools/copy-editor.mjs. [NEEDS: …] strings are gaps kept deliberately visible; replace the whole value when you have the fact. Keys are stable — renaming one orphans the string on the page. The title is a working title, not a fact: overrule it. The four metrics are the only numbers in this file that are real — they came off rohitsehmi.com/apps, which is why this study exists.",
+
+  "title": "The home screen, made contextual",
+  "standfirst": "[NEEDS: one sentence saying what was wrong with the old home screen and what replacing it changed. This is the line that has to make a reviewer want the rest, and it is the only part of the page that cannot be written from the metrics alone.]",
+
+  "contribution": [
+    { "term": "Role", "detail": "Senior Product Designer, mobile" },
+    { "term": "What I owned", "detail": "[NEEDS: your specific scope, and this matters more here than anywhere else on the page. These are the strongest numbers in the portfolio, so the reviewer's first question is what you personally decided. Did you own the content model — what the home screen was allowed to show and in what priority? The test design? The visual system? Name the decisions, not the deliverables.]" },
+    { "term": "The team", "detail": "[NEEDS: who else was on it, and what they owned. The Apps page credits Product, Developers and Analytics generically. A specific team makes a specific role believable.]" },
+    { "term": "When", "detail": "[NEEDS: the dates. A reader says \"recent\", and this is the one axis where this study is weaker than the one it replaced — so the date needs to be stated plainly rather than left for the reader to infer.]" }
+  ],
+
+  "problem": {
+    "heading": "The problem",
+    "standfirst": "[NEEDS: one line naming the user problem, not the business one. \"Engagement was low\" is a business problem; \"people opened the app with a trip already booked and had to go and find it\" is a user problem.]",
+    "paras": [
+      "[NEEDS: what the home screen was before. Describe it concretely — what did it show, in what order, and to whom? A static merchandising surface? A search box and nothing else? The reader needs to be able to picture the screen that was replaced.]",
+      "[NEEDS: the insight. This is the first thing a reader looks for and the thing that separates a redesign from a decision. What did you know about what people arrived at the home screen wanting? Sessions that opened and closed without a search, travellers with a live booking who used the app as a boarding pass, returning searchers repeating the same query — one finding is enough, provided it is a finding rather than a hypothesis.]",
+      "[NEEDS: why the fix was context rather than more content. \"Contextual\" is the whole premise, so it needs one sentence saying what context the screen read — trip state, recency, location, time to check in — and why that was the right variable to bet on.]"
+    ]
+  },
+
+  "process": {
+    "heading": "How it was worked out",
+    "standfirst": "[NEEDS: one line on the method. If this ran inside the same continuous multivariate testing programme as the search work, say so — that programme is the strongest process evidence you have.]",
+    "openingPara": "[NEEDS: how the work was run. The search study records a joint programme across product, design, engineering and analytics in which changes shipped as hypotheses rather than as judgements. If contextual home ran through the same programme, this paragraph writes itself and is worth more here, because here the tests produced numbers.]",
+    "principle": {
+      "_note": "One paragraph, three editable parts, because the middle is emphasised. Editing is plain text, so a <strong> inside a single string would be stripped the first time anyone touched it.",
+      "before": "[NEEDS: the operating principle, in your words at the time. ]",
+      "quote": "[NEEDS: the line itself]",
+      "after": "[NEEDS: what that principle changed about how the work was decided.]"
+    },
+    "closingPara": "[NEEDS: the hard part. A contextual home screen has to decide what wins when two contexts are true at once — a live booking and an abandoned search, say. That priority order is the actual design work, and it is the kind of complexity a reader means by \"complex flow made simple\". How was it resolved?]",
+    "explorationsHeading": "What was tried, and what lost",
+    "explorations": [
+      {
+        "title": "[NEEDS: a direction that was explored and rejected]",
+        "why": "[NEEDS: what killed it. A reader asks for alternatives considered and why paths were rejected, and weights this section hardest. Rejected paths are the section that most often decides these reviews.]",
+        "imageAlt": "[NEEDS: describe the rejected direction once it is named]"
+      },
+      {
+        "title": "[NEEDS: a second direction, ideally one that tested and lost]",
+        "why": "[NEEDS: a losing test kept rather than deleted is the single most credible thing a portfolio can show. The search study had one; if this work has one, it belongs here.]",
+        "imageAlt": "[NEEDS: describe the second direction once it is named]"
+      },
+      {
+        "title": "[NEEDS: a third, or delete this entry]",
+        "why": "[NEEDS: three is not a target. Two real rejected paths beat three where one is padding — delete this entry rather than filling it.]",
+        "imageAlt": "[NEEDS: describe the third direction once it is named]"
+      }
+    ]
+  },
+
+  "interface": {
+    "heading": "The screen",
+    "standfirst": "[NEEDS: one line on what the finished home screen did that the old one could not.]",
+    "mediaAlt": "[NEEDS: describe the screen once there is a real capture]",
+    "mediaCaption": "[NEEDS: replace with a real export. This study is being carried by its numbers, which makes the absence of screens the thing a reviewer notices — a reader asks explicitly to see complex flows resolved into simple UI, and that axis cannot be argued in prose.]",
+    "paras": [
+      "[NEEDS: what the states were. A contextual screen is really several screens sharing a frame — no trip, trip booked, trip imminent, trip in progress, just returned. Naming them and showing two of them is the clearest evidence of the flow work.]",
+      "[NEEDS: what stayed constant across the states, and why. The interesting part of an adaptive surface is usually the part that refuses to adapt.]"
+    ],
+    "motionMediaAlt": "[NEEDS: describe the second capture, or delete this block]",
+    "motionMediaCaption": "[NEEDS: a second capture — the state change itself, or the two extreme states side by side. Delete this block if there is only one thing worth showing; an empty media frame is worse than one image.]"
+  },
+
+  "impact": {
+    "heading": "Impact",
+    "standfirst": "[NEEDS: one line framing the numbers. They are strong enough that they do not need selling — say what was measured and over what, and let them sit.]",
+    "metrics": [
+      { "value": "+85%", "label": "increase in account creation" },
+      { "value": "+25%", "label": "increase in engagement" },
+      { "value": "+20%", "label": "increase in sign ins" },
+      { "value": "+5%", "label": "increase in conversion" }
+    ],
+    "metricsSource": "[NEEDS: where these came from and over what window. This is the reason this study replaced the search one, so the sourcing has to be exact: measured against what baseline, over how long, on which point of sale, and were they from one test or the programme overall? An unattributed +85% reads as a rounding of something softer.]",
+    "paras": [
+      "[NEEDS: what the numbers mean, and what they do not. +85% account creation next to +5% conversion is a real story — the screen was much better at starting a relationship than at closing a booking — and saying so is more convincing than presenting four numbers as four wins.]",
+      "[NEEDS: what happened to it afterwards. Did the contextual model survive, get extended, get rolled back? A metric with an ending is worth more than a metric that stops at launch.]"
+    ]
+  },
+
+  "hindsight": {
+    "paras": [
+      "[NEEDS: yours. A reader names this explicitly as something the team looks for, so it is worth more than its length. One candidate, if it is true: the numbers say the screen was far better at acquisition than at conversion, and it is worth asking whether the contexts it read were the ones that mattered to someone ready to book rather than someone ready to browse. Keep it factual and free of grievance.]"
+    ]
+  }
+}
