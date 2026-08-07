@@ -17,7 +17,7 @@
     "paras": [
       "Search results were built on a static card framework. Every property appeared in the same fixed arrangement, which meant that any question about what a traveller actually needed to see in order to choose was unanswerable. There was no way to put a different amount of content in front of someone and find out.",
       "Refactoring to dynamic cards was not a visual exercise. It was about making the results page capable of holding more content, in more arrangements, so the team could run real tests on the highest traffic screen in the app.",
-      "[NEEDS: the insight, and this is the gap that matters most. What did you know about how travellers were failing on this screen? Drop-off between results and property page, scroll depth before the first tap, how many results people compared before choosing, complaints about missing information. One finding turns this from a technical refactor into a user problem, and a reader scores it as the first thing it looks for.]"
+      "[NEEDS: the insight, and this is the gap that matters most. What did you know about how travellers were failing on this screen? Drop-off between results and property page, scroll depth before the first tap, how many results people compared before choosing, complaints about missing information. One finding turns this from a technical refactor into a user problem, and it is the first thing a reader looks for.]"
     ]
   },
 
@@ -46,7 +46,7 @@
       },
       {
         "title": "[NEEDS: the third adaptive layout, and why it was not the one]",
-        "why": "[NEEDS: three layouts were tested and only the outcome is recorded. Which two lost, and what did each get wrong? This section is the one a reader weights hardest, and it is currently one real entry deep.]",
+        "why": "[NEEDS: three layouts were tested and only the outcome is recorded. Which two lost, and what did each get wrong? This section carries the most weight, and it is currently one real entry deep.]",
         "imageAlt": "Placeholder for the rejected adaptive layout"
       }
     ]
@@ -74,7 +74,7 @@
       { "value": "[NEEDS]", "label": "increase in shortlisting, the behaviour that precedes a booking" },
       { "value": "3", "label": "adaptive layouts tested against each other on the app's highest traffic screen" }
     ],
-    "metricsSource": "[NEEDS: the numbers behind the two directional claims. Your own write-up records an overall strong positive result driven by US point of sale, with increased returning customers within 30 days and increased shortlisting. Those were measured, so the percentages exist somewhere. Directional claims without figures are exactly what a case study says does not pass.]",
+    "metricsSource": "[NEEDS: the numbers behind the two directional claims. Your own write-up records an overall strong positive result driven by US point of sale, with increased returning customers within 30 days and increased shortlisting. Those were measured, so the percentages exist somewhere. Directional claims without figures are the weakest thing a case study can offer.]",
     "paras": [
       "[NEEDS: this is the decision that shapes the whole study. The hard numbers on the Apps page belong to the contextual home work, not to search: +5% conversion, +25% engagement, +20% sign ins, +85% account creation. Search's own results are recorded as directional only. Either recover search's percentages, or we should talk about whether contextual home is the better subject for this slot despite the weaker flow story.]"
     ]

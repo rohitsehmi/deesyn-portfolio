@@ -16,7 +16,7 @@ export interface HindsightProps {
 /**
  * What you would change if you ran the project again.
  *
- * Named on a reader as something the team actively looks for, and cheap to
+ * The section most portfolios leave out, and the cheapest one to
  * write, which makes leaving it out the expensive choice. It reads as
  * self-awareness only when it names a real cost. "More user testing" is the
  * answer everyone gives and scores nothing.

@@ -8,6 +8,11 @@ import { Hindsight } from '../../components/Hindsight';
 import { Contribution } from '../../components/Contribution';
 import { Media } from '../../components/Media';
 import c from '../../copy/making-the-app-testable.json';
+import { getImage } from 'astro:assets';
+import imgGallery from '../../assets/hcom-exploration-gallery.png';
+import imgRecap from '../../assets/hcom-exploration-recap.png';
+import imgSignIn from '../../assets/hcom-exploration-signin.png';
+import imgHomeYears from '../../assets/hcom-home-through-the-years.png';
 
 /**
  * DRAFT. Study two of two: the Product Design discipline.
@@ -24,7 +29,7 @@ import c from '../../copy/making-the-app-testable.json';
  * in their own stated rationale on that page.
  *
  * Started as `contextual-home` on 2026-08-06 and was renamed the same day. That
- * version had the metrics and nothing else the reader asks for — in particular
+ * version had the metrics and little else it needed — in particular
  * an empty explorations section, because the source records only what shipped.
  * Bringing the testing programme in fills it with three real tests, one of them
  * a loser kept and retested, and it makes the "hypothesis to learn, not to
@@ -36,10 +41,28 @@ import c from '../../copy/making-the-app-testable.json';
  * ever starts to read as "and then I also did X", that has failed.
  *
  * The arrangement deliberately mirrors the other studies: same slots in the
- * same reader order, so the portfolio reads as one thing rather than as
+ * same order, so the portfolio reads as one thing rather than as
  * separate attempts.
  */
 const F = 'making-the-app-testable';
+
+/* Same pipeline and the same reasoning as the other study: WebP at each width,
+   originals pruned, and `natural` because every one of these carries a title
+   and a table of figures that a cover crop would cut off. */
+const EXPLORATION_SIZES = '(min-width: 1040px) 1000px, calc(100vw - 40px)';
+const FIGURE_SIZES = '(min-width: 1040px) 1000px, calc(100vw - 40px)';
+const shot = (src: ImageMetadata, sizes: string) =>
+  getImage({ src, format: 'webp', widths: [480, 720, 960, 1280, 1600], sizes });
+
+const [exGallery, exRecap, exSignIn, figHome] = await Promise.all([
+  shot(imgGallery, EXPLORATION_SIZES),
+  shot(imgRecap, EXPLORATION_SIZES),
+  shot(imgSignIn, EXPLORATION_SIZES),
+  shot(imgHomeYears, FIGURE_SIZES)
+]);
+
+/* Index-aligned with copy.process.explorations. */
+const explorationShots = [exGallery, exRecap, exSignIn];
 ---
 
 <CaseStudy
@@ -91,11 +114,18 @@ const F = 'making-the-app-testable';
       {c.process.explorationsHeading}
     </SectionHeading>
     <Explorations
+      layout="stack"
       copyBase={`${F}:process.explorations`}
-      items={c.process.explorations.map((e) => ({
+      items={c.process.explorations.map((e, i) => ({
         title: e.title,
         why: e.why,
-        image: { alt: e.imageAlt }
+        image: {
+          src: explorationShots[i].src,
+          srcSet: explorationShots[i].srcSet.attribute,
+          sizes: EXPLORATION_SIZES,
+          alt: e.imageAlt,
+          ratio: 'natural' as const
+        }
       }))}
     />
   </div>
@@ -108,21 +138,23 @@ const F = 'making-the-app-testable';
     >
       {c.interface.heading}
     </SectionHeading>
+    {/*
+      Restored 2026-08-07 with a real capture. The second block, which held the
+      three adaptive results layouts, stays out — that image does not exist and
+      an empty frame reads as a broken image rather than as a draft.
+    */}
     <Media
+      src={figHome.src}
+      srcSet={figHome.srcSet.attribute}
+      sizes={FIGURE_SIZES}
       alt={c.interface.mediaAlt}
-      ratio="16-9"
+      ratio="natural"
       caption={c.interface.mediaCaption}
       captionCopyRef={`${F}:interface.mediaCaption`}
     />
     <Prose>
       {c.interface.paras.map((p, i) => <p data-copy={`${F}:interface.paras.${i}`}>{p}</p>)}
     </Prose>
-    <Media
-      alt={c.interface.motionMediaAlt}
-      ratio="16-9"
-      caption={c.interface.motionMediaCaption}
-      captionCopyRef={`${F}:interface.motionMediaCaption`}
-    />
   </div>
 
   <div class="cs-section" slot="impact">

@@ -15,10 +15,12 @@ Implementation: `src/components/Explorations.tsx` and `src/components/Exploratio
 | Property | Type | Required |
 |---|---|---|
 | `items` | `Exploration[]` | **yes** |
+| `layout` | `'grid' | 'stack'` | no |
 | `copyBase` | `string` | no |
 
 ### Property notes
 
+- `layout` `grid` puts two per row above 768px, which suits a single screen or a wireframe. `stack` gives each one the full measure. Not cosmetic: a wide comparison — three phones side by side, or a Figma window with a panel open — is illegible at half measure, and an artefact nobody can read is worth less than the paragraph beside it. Pick by what the picture is, not by how many there are.
 - `copyBase` `<file>:<path>` into src/copy for this list. The index and field are appended, so a base of `study:items` yields `study:items.0.title`. Dev tooling only; inert in a build.
 
 ## Don't

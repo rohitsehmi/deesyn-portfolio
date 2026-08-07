@@ -19,6 +19,11 @@
       "type": "Exploration[]",
       "required": true
     },
+    "layout": {
+      "type": "'grid' | 'stack'",
+      "required": false,
+      "note": "`grid` puts two per row above 768px, which suits a single screen or a wireframe. `stack` gives each one the full measure. Not cosmetic: a wide comparison — three phones side by side, or a Figma window with a panel open — is illegible at half measure, and an artefact nobody can read is worth less than the paragraph beside it. Pick by what the picture is, not by how many there are."
+    },
     "copyBase": {
       "type": "string",
       "required": false,

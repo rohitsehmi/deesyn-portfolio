@@ -8,7 +8,7 @@
     "component": "src/components/Hindsight.tsx",
     "styles": "src/components/Hindsight.css"
   },
-  "description": "What you would change if you ran the project again.\n\nNamed on a reader as something the team actively looks for, and cheap to\nwrite, which makes leaving it out the expensive choice. It reads as\nself-awareness only when it names a real cost. \"More user testing\" is the\nanswer everyone gives and scores nothing.",
+  "description": "What you would change if you ran the project again.\n\nThe section most portfolios leave out, and the cheapest one to\nwrite, which makes leaving it out the expensive choice. It reads as\nself-awareness only when it names a real cost. \"More user testing\" is the\nanswer everyone gives and scores nothing.",
   "donts": [
     "Do not write that you would have done more user testing. It is the answer every candidate gives and it names no cost that was actually paid.",
     "Do not pair it with a section heading that says the same thing. The callout carries its own heading, so the page would state the point twice."

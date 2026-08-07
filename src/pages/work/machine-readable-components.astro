@@ -8,6 +8,11 @@ import { Hindsight } from '../../components/Hindsight';
 import { Contribution } from '../../components/Contribution';
 import { Media } from '../../components/Media';
 import c from '../../copy/machine-readable-components.json';
+import { getImage } from 'astro:assets';
+import imgVerticalOffset from '../../assets/nca-exploration-vertical-offset.png';
+import imgDarkFrame from '../../assets/nca-exploration-dark-frame.png';
+import imgMaxHeight from '../../assets/nca-exploration-max-height.png';
+import imgDialog from '../../assets/nca-dialog-platforms.png';
 
 /**
  * DRAFT. Study one of two: the Design Systems discipline.
@@ -17,16 +22,36 @@ import c from '../../copy/machine-readable-components.json';
  * while `npm run dev` runs. This file is the arrangement; that file is the
  * writing. Nothing here should hardcode a sentence.
  *
- * Every fact came from Rohit directly, from the Design System Summary FigJam,
- * or from the EGDS Components and Theming file. Nothing is invented, and no
- * metric has been added that does not exist. The `[NEEDS: …]` markers are
- * rendered visibly because a gap you can see in a browser gets closed.
- *
- * The decision quotes in the explorations are verbatim from a plan.md
- * screenshot on the FigJam. Confirm the component they belong to before this
- * ships: the screenshot was legible but not labelled.
+ * Every fact came from the Design System Summary FigJam or the EGDS Components
+ * and Theming file. Nothing is invented, and no metric appears here that was
+ * not measured.
  */
 const F = 'machine-readable-components';
+
+/*
+  Images through Astro's pipeline, same as the hero and the index tiles: WebP at
+  each width, hashed filenames, and the 1.3MB PNG originals pruned from dist/.
+  Never reference `.width`/`.height` off the source — that reference is what
+  drags the unoptimised original into the build.
+
+  All four are UI captures carrying text, so they render `natural` rather than
+  cropped to a frame. See MediaRatio in Media.tsx.
+*/
+const EXPLORATION_SIZES = '(min-width: 1040px) 1000px, calc(100vw - 40px)';
+const FIGURE_SIZES = '(min-width: 1040px) 1000px, calc(100vw - 40px)';
+const shot = (src: ImageMetadata, sizes: string) =>
+  getImage({ src, format: 'webp', widths: [480, 720, 960, 1280, 1600], sizes });
+
+const [exVerticalOffset, exDarkFrame, exMaxHeight, figDialog] = await Promise.all([
+  shot(imgVerticalOffset, EXPLORATION_SIZES),
+  shot(imgDarkFrame, EXPLORATION_SIZES),
+  shot(imgMaxHeight, EXPLORATION_SIZES),
+  shot(imgDialog, FIGURE_SIZES)
+]);
+
+/* Index-aligned with copy.process.explorations, so the order the copy reads is
+   the order the pictures appear. */
+const explorationShots = [exVerticalOffset, exDarkFrame, exMaxHeight];
 ---
 
 <CaseStudy
@@ -70,11 +95,18 @@ const F = 'machine-readable-components';
       <p data-copy={`${F}:process.explorationsIntro`}>{c.process.explorationsIntro}</p>
     </Prose>
     <Explorations
+      layout="stack"
       copyBase={`${F}:process.explorations`}
-      items={c.process.explorations.map((e) => ({
+      items={c.process.explorations.map((e, i) => ({
         title: e.title,
         why: e.why,
-        image: { alt: e.imageAlt }
+        image: {
+          src: explorationShots[i].src,
+          srcSet: explorationShots[i].srcSet.attribute,
+          sizes: EXPLORATION_SIZES,
+          alt: e.imageAlt,
+          ratio: 'natural' as const
+        }
       }))}
     />
   </div>
@@ -88,8 +120,11 @@ const F = 'machine-readable-components';
       {c.interface.heading}
     </SectionHeading>
     <Media
+      src={figDialog.src}
+      srcSet={figDialog.srcSet.attribute}
+      sizes={FIGURE_SIZES}
       alt={c.interface.mediaAlt}
-      ratio="4-3"
+      ratio="natural"
       caption={c.interface.mediaCaption}
       captionCopyRef={`${F}:interface.mediaCaption`}
     />

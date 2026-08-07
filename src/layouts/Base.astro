@@ -21,6 +21,13 @@ const { title, description = 'Product design work by Rohit Sehmi.', pageEnd = 'b
     <title>{title}</title>
     <meta name="description" content={description} />
     {/*
+      Unlisted, not private. Belt and braces with public/robots.txt and the
+      X-Robots-Tag header in vercel.json: robots.txt asks a crawler not to
+      fetch, this tells one that did fetch not to index, and the header covers
+      what a meta tag cannot reach — the CV PDF in public/.
+    */}
+    <meta name="robots" content="noindex, nofollow" />
+    {/*
       Rohit's own mark, generated from the same path data the Logo component
       renders — see design/build-favicon.mjs. The SVG carries its own
       prefers-color-scheme rule, which matters more here than on the page: a

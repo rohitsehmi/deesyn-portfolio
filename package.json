@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "verify": "npm run typecheck && node tokens/verify.mjs && node design/verify.mjs && node design/verify-css.mjs",
     "verify:bands": "node design/verify-bands.mjs",
+    "verify:gaps": "node design/verify-gaps.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "npm run tokens && storybook build",
     "chromatic": "chromatic --exit-zero-on-changes",

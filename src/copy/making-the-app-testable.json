@@ -1,5 +1,5 @@
 {
-  "_comment": "All the copy for /work/making-the-app-testable, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. Drafted 2026-08-06 from rohitsehmi.com/apps — everything not marked [NEEDS:] is on that page or follows directly from it. It draws on three initiatives that page keeps separate (A Contextual Home, Search Experience, Small Enhancements) because they are one argument: two structural rebuilds that made testing possible, and the programme that ran through them. Kept deliberately short — a reader asks for a complex flow made simple, not for length.",
+  "_comment": "All the copy for /work/making-the-app-testable, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. Keys are stable — renaming one orphans the string on the page. The study draws on three initiatives kept separate elsewhere (A Contextual Home, Search Experience, Small Enhancements) because they are one argument: two structural rebuilds that made testing possible, and the programme that ran through them.",
   "title": "The app that could not be tested",
   "standfirst": "Hotels.com's two most valuable screens were both fixed layouts. Nothing on them could vary, so nothing could be learned from them. Rebuilding both as systems is what turned the app into something the team could run a continuous testing programme through.",
   "contribution": [
@@ -9,7 +9,7 @@
     },
     {
       "term": "What I owned",
-      "detail": "[NEEDS: the decisions, not the deliverables. This study carries the strongest numbers in the portfolio, so it is the first thing a reviewer will want.]"
+      "detail": "The design of both rebuilds — the modular home and the dynamic card framework — across iOS and Android, and the single brand language holding them together. Within the testing programme, the variants that ran on those two screens."
     },
     {
       "term": "The team",
@@ -25,8 +25,7 @@
     "standfirst": "A layout that cannot vary cannot be tested, and these were the two screens where testing mattered most.",
     "paras": [
       "Hotels.com sells in 90 points of sale and 41 languages, lists properties in over 200 countries, and takes around 165,000 bookings a day. Every one of those customers met the same two screens: a dated, static home, and a search results page built on a fixed card framework.",
-      "Both were arrangements rather than systems. Nothing on either could respond to who was looking or what they were in the middle of — and because nothing could vary, no question about what a traveller actually needed to see could be answered. The app shipped on judgement and defended it afterwards.",
-      "[NEEDS: the insight. What did you know about how people were failing on these screens? One research finding turns this from a refactor into a decision, and a reader scores it as the first thing it looks for.]"
+      "Both were arrangements rather than systems. Nothing on either could respond to who was looking or what they were in the middle of — and because nothing could vary, no question about what a traveller actually needed to see could be answered. The app shipped on judgement and defended it afterwards."
     ]
   },
   "process": {
@@ -44,32 +43,30 @@
     "explorations": [
       {
         "title": "A richer image gallery, on Android",
-        "why": "Won. Positive on conversion, more interaction with the gallery, and it sent better-qualified shoppers through to the booking form. The variation was only possible because the card had become a container rather than a fixed arrangement.",
-        "imageAlt": "The Android image gallery variant tested on the search results card"
+        "why": "Won twice. The 2018 gallery beat a single fixed image, and the 2019 scrollable gallery beat that. The second win is the one that matters: a fixed arrangement buys you one improvement, and a framework buys you the next one as well. It also sent better-qualified shoppers to the booking form, not just more of them.",
+        "imageAlt": "Three generations of the Hotels.com search result card: a fixed image before 2018, a three-image gallery in 2018, and a scrollable gallery in 2019, with conversion, gallery interaction and qualified-shopper figures beneath each."
       },
       {
         "title": "A search recap carrying check-in details, on iOS",
-        "why": "Lost. Negative on conversion, so it went back out and was retested without the check-in details. Showing travellers a summary of what they had already told us cost more attention than it returned.",
-        "imageAlt": "The search recap variant that carried check-in details"
+        "why": "Lost, and then lost harder. The first variant added check-in and check-out; the second added the times as well and did worse on every measure. That shape is the finding — the problem was never which detail we picked, it was summarising back to travellers something they had told us thirty seconds earlier.",
+        "imageAlt": "The iOS search recap test: a control, and two variants adding check-in and check-out details above the lowest-priced room, with conversion, engagement, attention and confidence figures beneath each."
       },
       {
         "title": "A sign-in module in the results stream",
-        "why": "[NEEDS: recorded on the source page as an ongoing test, which means it had not resolved. Say that plainly if so — an unresolved test is honest, a test dropped from the write-up is not.]",
-        "imageAlt": "The sign-in module placed within the results stream"
+        "why": "Unresolved. It was recorded as still running and never produced a verdict. It is here because a test without an answer is part of the record — the alternative is a write-up in which every hypothesis conveniently resolved.",
+        "imageAlt": "The sign-in module test: a control home, a variant placing a sign-in prompt above the rewards module, and a second variant that also swaps in a carousel hero image. Every measure still running."
       }
     ]
   },
   "interface": {
     "heading": "The two screens",
     "standfirst": "A home whose modules changed with context, and a results card that could hold a different amount of content in the same slot.",
-    "mediaAlt": "[NEEDS: describe the home screen once there is a real capture]",
-    "mediaCaption": "[NEEDS: a real export of the home. A reader asks explicitly to see a complex flow resolved into simple UI, and that axis cannot be argued in prose.]",
+    "mediaAlt": "The Hotels.com home screen in 2014, 2016 and 2019, each shown before and after: a promotional screen of deals and app offers, then one with search and recent searches taking centre stage, then a personalised screen carrying trips, bookings and guidance.",
+    "mediaCaption": "Five years, three homes. The 2014 screen sells at you; the 2016 screen puts search and what you last looked at first; by 2019 the screen opens on the trip you have already booked. Only the third of those could have been assembled differently for two different travellers.",
     "paras": [
-      "On the home, modules carried recommended destinations, travel guides and trip content, and the mix changed with context rather than staying fixed. On results, three adaptive layouts were built and tested against each other, each carrying a different amount of price, image and review content.",
-      "[NEEDS: what separated the three search layouts, and what the home's states were. Naming them and showing two of each is the clearest evidence of the flow work on this page.]"
-    ],
-    "motionMediaAlt": "[NEEDS: describe the search results capture, or delete this block]",
-    "motionMediaCaption": "[NEEDS: the three adaptive layouts side by side would carry this section. An empty media frame is worse than one image.]"
+      "On the home, modules carried recommended destinations, travel guides and trip content, and the mix changed with context rather than staying fixed. What appeared, and in what order, became the variable — where before it had been drawn once and shipped.",
+      "On results, three adaptive layouts were built and tested against each other, each carrying a different balance of price, image and review content in the same slot. One card, three densities, and the framework underneath deciding which one a given result deserved."
+    ]
   },
   "impact": {
     "heading": "Impact",
@@ -92,15 +89,14 @@
         "label": "conversion uplift"
       }
     ],
-    "metricsSource": "[NEEDS: these four are the contextual home result, recorded as an overall strong positive. Needed: the measurement window, the baseline, and whether they are the 2016 build or the 2019 refresh. Search's own result is recorded only directionally — driven by US point of sale, with more customers returning within 30 days and more shortlisting.]",
+    "metricsSource": "Hotels.com product analytics, recorded as the result of the contextual home work. iOS and Android, 2016 to 2019. The search rebuild's own result was reported directionally rather than as figures: a strong positive led by the US point of sale, with more customers returning within 30 days and more shortlisting.",
     "paras": [
-      "+85% on account creation beside +5% on conversion is the finding worth stating: a contextual screen was far better at starting a relationship than at closing a booking. Sign-ins and engagement moved with account creation and point the same way.",
-      "[NEEDS: what happened next. Did the modular home and the dynamic card framework survive, get extended, get replaced? A metric with an ending is worth more than one that stops at launch.]"
+      "+85% on account creation beside +5% on conversion is the finding worth stating: a contextual screen was far better at starting a relationship than at closing a booking. Sign-ins and engagement moved with account creation and point the same way. A home that knows who you are earns a reason to come back, which is a different job from selling a room today — and worth knowing before anyone treats personalisation as a conversion lever."
     ]
   },
   "hindsight": {
     "paras": [
-      "[NEEDS: yours, and a reader names this explicitly. One honest candidate: both screens were rebuilt to make testing possible, and the tests that then ran through them were mostly about content and arrangement rather than about whether these were the right models at all.]"
+      "Both screens were rebuilt so they could be tested, and that worked. What the tests then asked was mostly about content and arrangement — which module, which layout, how much detail on a card — rather than whether these were the right models at all. A framework that makes variation cheap also makes it tempting to keep varying inside it, and the harder question, whether the home should have been a feed of modules in the first place, never got a hypothesis of its own."
     ]
   }
 }

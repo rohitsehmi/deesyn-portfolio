@@ -8,7 +8,7 @@ export interface ContributionItem {
 export interface ContributionProps {
   /**
    * Role, scope, team, duration. Keep "what I owned" and "what the team owned"
-   * as separate entries: a reader asks what your specific role was, and a
+   * as separate entries: a reader needs to know what you personally decided, and a
    * combined answer reads as a claim on other people's work.
    */
   items: ContributionItem[];

@@ -16,7 +16,7 @@ Implementation: `src/components/Contribution.tsx` and `src/components/Contributi
 
 ### Property notes
 
-- `items` Role, scope, team, duration. Keep "what I owned" and "what the team owned" as separate entries: a reader asks what your specific role was, and a combined answer reads as a claim on other people's work.
+- `items` Role, scope, team, duration. Keep "what I owned" and "what the team owned" as separate entries: a reader needs to know what you personally decided, and a combined answer reads as a claim on other people's work.
 - `copyBase` `<file>:<path>` into src/copy for this list. The index and field are appended, so a base of `study:items` yields `study:items.0.title`. Dev tooling only; inert in a build.
 
 ## Don't

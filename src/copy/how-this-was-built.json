@@ -85,12 +85,12 @@
   },
   "links": {
     "heading": "The receipts",
-    "_note": "Access states as of 2026-08-06: the repo is private (404), the Figma file is restricted (403), the Chromatic build is access-controlled and inherits the private repo (401). Open them before sending this to anyone, or the page argues for evidence and then withholds it. `note` renders beside each link and should be emptied once that artefact is open.",
+    "_note": "Access states, checked anonymously 2026-08-07: Figma is open (verified by fetching the file thumbnail with no session). Chromatic is still access-controlled and GitHub still private — open both before sending this, or the page argues for evidence and then withholds it. The Figma href carries a node-id so it lands on Foundations rather than wherever the file was last left; the `t=` parameter is deliberately stripped, because that is a share-session token and not part of the address.",
     "items": [
       {
         "label": "The Figma file",
         "note": "Tokens, components, banding and motion",
-        "href": "https://www.figma.com/design/UnybX8G5sQIEhLLZN2YFl6/Revolut",
+        "href": "https://www.figma.com/design/UnybX8G5sQIEhLLZN2YFl6/Revolut?node-id=2-4530",
         "mark": "figma"
       },
       {

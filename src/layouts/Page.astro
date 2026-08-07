@@ -9,8 +9,8 @@ import { linksFor } from '../data/nav';
  * The shell for standard content pages: about, cv, contact.
  *
  * Simpler than CaseStudy.astro on purpose. A case study has a fixed section
- * order because the reader dictates one; these pages do not, so they take a
- * single slot.
+ * order because the questions it answers come in one; these pages do not, so
+ * they take a single slot.
  */
 interface Props {
   title: string;
@@ -26,9 +26,20 @@ interface Props {
 }
 const { title, standfirst, description, titleCopyRef, standfirstCopyRef } = Astro.props;
 const links = linksFor(Astro.url.pathname);
+
+/*
+  The footer continues the alternation rather than assuming one. With a body
+  band the page ends sunken, so the footer is `base`; without one the hero is
+  the last thing above it and the footer has to step to `sunken` instead, or
+  banding rule 1 fires — two consecutive bands sharing a fill. The index page
+  already ends `base -> sunken/compact` for the same reason; this makes the
+  rule hold rather than leaving it to whoever writes the next page.
+*/
+const hasBody = Astro.slots.has('default');
+const footerRole = hasBody ? 'base' : 'sunken';
 ---
 
-<Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst} pageEnd="base">
+<Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst} pageEnd={footerRole}>
   <Nav client:load sticky links={links} />
 
   <main id="main">
@@ -49,12 +60,19 @@ const links = linksFor(Astro.url.pathname);
       )}
     </Band>
 
-    <Band role="sunken" scale="default">
-      <slot />
-    </Band>
+    {/*
+      Conditional for the same reason `actions` is: a band with nothing in it
+      still paints its fill and its padding, so a page that says everything in
+      its hero would render an empty grey strip under it. /contact is that page.
+    */}
+    {hasBody && (
+      <Band role="sunken" scale="default">
+        <slot />
+      </Band>
+    )}
   </main>
 
-  <Band role="base" scale="compact" bleed>
+  <Band role={footerRole} scale="compact" bleed>
     <Footer scale="compact" currentPath={Astro.url.pathname} />
   </Band>
 </Base>

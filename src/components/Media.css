@@ -6,6 +6,13 @@
 .media[data-ratio='1-1']  .media__frame { aspect-ratio: 1 / 1; }
 .media[data-ratio='3-4']  .media__frame { aspect-ratio: 3 / 4; }
 .media__frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* No aspect-ratio on the frame, so the picture sets the height and nothing is
+   cropped. See MediaRatio in Media.tsx for why text-carrying images need it. */
+.media[data-ratio='natural'] .media__frame img { height: auto; object-fit: fill; }
+/* The placeholder has no intrinsic height to borrow, so it would collapse to
+   nothing on a natural frame and read as a missing section rather than a
+   missing image. */
+.media[data-ratio='natural'] .media__placeholder { aspect-ratio: 4 / 3; }
 /* Deliberately unfinished-looking. This is scaffolding, and it should be
    obvious on the page that an asset is missing rather than merely absent. */
 .media__placeholder {

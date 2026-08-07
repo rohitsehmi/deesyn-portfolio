@@ -65,7 +65,7 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean }[]
     It was first swapped out for `contextual-home`, on the grounds that the
     measured results on rohitsehmi.com/apps belong to the home work and search's
     own are recorded only directionally. That trade cost the better flow story
-    to win the impact axis, and it left the replacement with an empty
+    to get the harder numbers, and it left the replacement with an empty
     explorations section.
 
     Both problems went away when the two were read as one argument: the home and
@@ -80,10 +80,9 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean }[]
   */
   { slug: 'search-experience', coverSrc: coverSearch, archived: true },
   /*
-    Archived 2026-08-05. A reader asks for one to two flows, and this is the
-    weaker of the two design-system studies: no user testing anywhere, and
-    adoption figures where a reader asks for outcomes. It is also 2021-2023
-    against a reader that says "recent".
+    Archived 2026-08-05. Two design-system studies is one too many, and this is
+    the weaker of them: no user testing anywhere, and adoption figures where it
+    needed outcomes. It is also the older of the two.
 
     Not deleted. It still builds, is still reachable at /work/scaling-a-system,
     and can come back by removing one line.

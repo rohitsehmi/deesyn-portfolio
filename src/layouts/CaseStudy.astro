@@ -10,7 +10,7 @@ import { linksFor } from '../data/nav';
 /**
  * The case-study shell.
  *
- * The section order is what a case study has to answer, in the order the reader states
+ * The section order is the order these questions get asked, and it states
  * it: problem and insight, then process, then interface, then impact, then
  * hindsight. It is deliberately not the structure of the old Expedia page,
  * which was organised around what the system contained and therefore had
@@ -76,7 +76,7 @@ const footerRole = next ? 'base' : 'sunken';
       <slot name="problem" />
     </Band>
 
-    {/* The longest band on the page. This is the one the reader weights hardest. */}
+    {/* The longest band on the page, and the one carrying the most weight. */}
     <Band role="base" scale="feature">
       <slot name="process" />
     </Band>

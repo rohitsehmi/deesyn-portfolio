@@ -2,26 +2,46 @@
 import Page from '../layouts/Page.astro';
 import { Prose } from '../components/Prose';
 
-/** STUB. Real content needed; the markers say what belongs here. */
+/**
+ * Written 2026-08-07 from src/data/cv.ts, which is the only place the career
+ * is recorded as data. Nothing here is a fact that file does not carry.
+ *
+ * Still linked from nowhere — not the nav, not the footer. That was deliberate
+ * while it was a stub, and is now just a leftover: one entry in nav.ts brings
+ * it back. Left alone rather than changed, because adding a nav item is a
+ * decision about what the site is for, not a copy fix.
+ *
+ * Prose lives here rather than in src/copy/ because this page is three
+ * paragraphs with no arrangement to separate from its writing. If it grows a
+ * second section, move it — the rule in CLAUDE.md holds and this is the
+ * exception that proves nothing.
+ */
 ---
 <Page
   title="About"
-  standfirst="[NEEDS: one line on what you do and who for. Not a summary of this page, and not a job title.]"
+  standfirst="I build the thing that makes the thing — design systems that hold across brands and platforms, for teams that have to ship faster than they can agree."
 >
   <Prose lead>
     <p>
-      [NEEDS: the opening paragraph. A hiring reader arrives here after a case
-      study, wanting to know what kind of designer produced it. Two or three
-      sentences of what you work on and how you work, in your own voice.]
+      Twelve years across mobile products and the systems underneath them. Most
+      recently five at Expedia Group on the design system serving around ninety
+      brands, and before that seven at Hotels.com designing the app itself — the
+      home screen, the search results, the flows people actually book through. I
+      have been on both sides of a design system: the team that maintains one,
+      and the team that has to ship against one on a deadline.
     </p>
     <p>
-      [NEEDS: the through line. Design systems and product design are two
-      disciplines and the portfolio argues both. This is where you say what
-      connects them, which is the thing a Lead role is actually hiring for.]
+      The two disciplines are the same problem at different altitudes. A product
+      screen fails when it cannot answer a question about what a customer needs.
+      A design system fails when it cannot answer a question about what a
+      component is. Both get fixed the same way — stop shipping arrangements,
+      start shipping something structured enough that a person, a team or a
+      machine can build from it without having to ask. That is the argument both
+      case studies here make, seven years apart.
     </p>
     <p>
-      [NEEDS: where you are now, and what you are looking for. Keep it short.
-      This page exists to make the case studies make sense, not to restate a CV.]
+      I am in London, looking for a lead role where the system and the product
+      are one conversation rather than two teams negotiating.
     </p>
   </Prose>
 </Page>

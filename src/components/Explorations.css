@@ -11,6 +11,9 @@
 }
 @media (min-width: 768px) {
   .explorations { grid-template-columns: repeat(2, 1fr); gap: var(--primitive-layout-l64); }
+  /* One per row at any width. See the `layout` prop in Explorations.tsx: a wide
+     artefact halved is an artefact nobody reads. */
+  .explorations[data-layout='stack'] { grid-template-columns: 1fr; }
 }
 
 .explorations__item {

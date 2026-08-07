@@ -42,6 +42,18 @@ const links = [
   standfirst={copy.standfirst}
   standfirstCopyRef="contact:standfirst"
 >
+  {/*
+    In the hero band, not below it. The links are what the standfirst is asking
+    you to do, and a band seam between an invitation and the way to accept it
+    put ~500px of empty page between them. Banding rule 1 — no two consecutive
+    bands share a fill — names the fix as merging rather than restyling, and
+    Page.astro already had the slot for it: "the one action a page is for, sat
+    directly under the sentence that explains why you would want it."
+
+    One wrapper div because `.page-hero__actions` is a flex row: passing the
+    list and the note as two children would sit them side by side.
+  */}
+  <div slot="actions">
   <ul class="contact">
     {links.map((l) => (
       <li class="contact__item">
@@ -65,6 +77,7 @@ const links = [
   </ul>
 
   <p class="contact__where" data-copy="contact:where">{copy.where}</p>
+  </div>
 </Page>
 
 <style is:global>
@@ -88,8 +101,13 @@ const links = [
     }
   }
 
+  /*
+    l40, not l64. In its own band the note was a separate block and needed the
+    larger step; in the hero it is the tail of one group, and 64 against the
+    40 between the links read as a detached orphan.
+  */
   .contact__where {
-    margin: var(--primitive-layout-l64) 0 0;
+    margin: var(--primitive-layout-l40) 0 0;
     font: var(--type-body-2);
     letter-spacing: var(--type-body-2-tracking);
     color: var(--semantic-fg-secondary);

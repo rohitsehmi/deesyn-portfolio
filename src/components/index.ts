@@ -11,7 +11,8 @@ export { Card } from './Card';
 export { Nav } from './Nav';
 export { Footer } from './Footer';
 
-/* Case-study content. Shaped by what a case study has to answer, not by the old page. */
+/* Case-study content. Shaped by what a case study has to answer, not by what
+   the old page happened to contain. */
 export { SectionHeading } from './SectionHeading';
 export { Prose } from './Prose';
 export { Metrics, type Metric } from './Metrics';

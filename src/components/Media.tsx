@@ -1,5 +1,15 @@
 import './Media.css';
-export type MediaRatio = '16-9' | '4-3' | '1-1' | '3-4';
+/**
+ * `natural` keeps the image's own proportions instead of cropping to a frame.
+ *
+ * Every other value crops — the frame sets an `aspect-ratio` and the image is
+ * `object-fit: cover`, which is right for photography and wrong for anything
+ * carrying text. A UI capture or an annotated comparison puts its title at the
+ * top and its figures along the bottom, and those are precisely the pixels a
+ * cover crop removes. Letterboxing them instead would be no better; the frame
+ * just takes the height the picture has.
+ */
+export type MediaRatio = '16-9' | '4-3' | '1-1' | '3-4' | 'natural';
 
 export interface MediaProps {
   src?: string;

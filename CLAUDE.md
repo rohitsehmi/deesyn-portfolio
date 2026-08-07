@@ -4,11 +4,13 @@ Guidance for Claude Code when working in this repository.
 
 ## What this project is
 
-Rohit Sehmi's design portfolio: one to two recent, complex screen flows, written up properly rather than a gallery of projects.
+Rohit Sehmi's design portfolio: **one to two recent, complex screen flows**, written up properly rather than a gallery of projects.
 
-**What a case study here has to answer.** It asks for **one to two recent, complex screen flows** — not three projects — and scores four axes: the problem (an insight, not a mandate), UX thinking and process (explorations, **alternatives rejected and why**, trade-offs driven by testing), UI and interaction (a complex flow made simple), and impact (**a specific role**, concrete metrics rather than summaries). Plus hindsight, named explicitly as something the team looks for. Its stated failure mode: *"portfolios that lack detail, skip over the data-driven testing process, or fail to prove impact with clear metrics typically don't pass this stage."*
+**What a case study here has to answer**, in this order, because it is the order someone reads them in: the problem (an insight, not a mandate someone handed down), the process (explorations, **the alternatives rejected and why**, trade-offs made from testing), the interface (a complex flow made simple), and the impact (**a specific personal role**, concrete metrics rather than summaries). Then hindsight, which is the section most portfolios leave out and the cheapest one to be honest in.
 
-**The design system answers none of those questions directly.** No axis asks about tokens, checksums or visual-regression CI. It buys the "polished visuals" axis cheaply and consistently, and it is a good vehicle. It is not evidence of problem-solving, and it must not take page space it has not earned.
+The failure mode this is built against: **case studies that lack detail, skip the testing, or assert impact without a number.**
+
+**The design system underneath answers none of those questions directly.** No reader asks about tokens, checksums or visual-regression CI. It buys consistent, polished visuals cheaply and it is a good vehicle for them. It is not evidence of problem-solving, and it must not take page space it has not earned.
 
 Started 2026-07-31. **Stack: Astro + React.** Astro for the site so pages ship no JS unless a component opts in; plain React for components so Storybook and Chromatic work normally. There is no MDX — case studies are `.astro` arrangements over JSON copy, described under **Case studies** below.
 
@@ -32,7 +34,7 @@ npm run chromatic    # visual regression (needs CHROMATIC_PROJECT_TOKEN)
 |---|---|---|
 | Typeface (display) | **Hanken Grotesk** | Stand-in for Aeonik Pro, which is licensed (CoType Foundry) and not installed |
 | Typeface (body/UI) | **Inter** | Mirrors Revolut's own Aeonik-marketing / Inter-product split |
-| Brand match | **Near-exact Revolut match** | The risk of reading as derivative at senior level was raised and accepted. Settled. |
+| Brand match | **Near-exact Revolut match** | The risk of reading as derivative was raised and accepted. Settled. |
 | Theming | **Dual light/dark from the start** | Via Figma variable modes |
 | Accent | **Blue** — `#0666eb` light / `#6fa0ff` dark | Matches the *website*. Revolut's app accent `#ea035d` never renders on revolut.com |
 
@@ -72,7 +74,11 @@ Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development
 
 ## Repository
 
-`https://github.com/rohitsehmi/revolut-case-studies` — **private**. Keep it private: `CLAUDE.md` and `docs/` state the ask context openly, and the repo reconstructs Revolut's design tokens under their name.
+`https://github.com/rohitsehmi/revolut-case-studies` — **public as of 2026-08-07.**
+
+It was private up to that point, and going public set one standing rule: **the repo is read by the same people who read the site.** Working notes about what a page is weak at, or what a claim is inferred from, belong in a conversation and not in a tracked file. The technical record — why a token is shaped a certain way, why a check exists, what broke and how it was caught — is the part worth publishing, and it is most of what is here.
+
+The design system reconstructs Revolut's public brand values under their name, from their live CSS, as a study. See `docs/revolut-design-foundations.md`.
 
 `memory` (symlink to `~/.claude/projects/…`) and `.claude/settings.local.json` are gitignored on purpose — the first would commit a broken absolute path, the second is machine-specific.
 
@@ -130,7 +136,9 @@ Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Varia
 
 `Action/Icon Button` is square: one size token drives both axes, so `Radius/Round` is a true circle at 32/44/48. Separate from `Action/Button` because the shape contract differs *and* **`aria-label` is required, not optional**.
 
-**Resolved 2026-08-04.** The chrome used to present Revolut's wordmark alone, which read as claiming their identity. It now uses the lockup, which says work made *for* Revolut. One thing still to settle before anything is published openly: an `×` lockup conventionally reads as a partnership. Sent to Revolut as an application it is exactly right; on an open URL it implies an engagement that does not exist.
+**Resolved 2026-08-04.** The chrome used to present Revolut's wordmark alone, which read as claiming their identity. It now uses the lockup, which reads as work made *for* Revolut rather than by them.
+
+**Still open, and it matters more now the repo is public:** an `×` lockup conventionally signals a partnership. Sent directly to someone as a piece of work it is exactly right; sitting on an open URL it implies an engagement that does not exist. The site itself is `noindex` (`public/robots.txt` and the `X-Robots-Tag` header in `vercel.json`), which contains the problem without solving it.
 
 `src/components/` holds the React implementation — one file plus one CSS file per component, consuming tokens as CSS custom properties. `src/components/Band.tsx` implements the banding system: `data-band` re-declares the semantic properties for its subtree, which is the CSS equivalent of Figma's mode override.
 
@@ -184,12 +192,12 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 |---|---|---|
 | `machine-readable-components` | Design systems | **Live.** Expedia's New Component Architecture pod, 2025 into Q1 2026 |
 | `contextual-home` | Product design | **Live.** Hotels.com app home screen. Carries the only hard metrics in the portfolio |
-| `search-experience` | Product design | **Archived 2026-08-06.** Better flow story, no recoverable metrics |
-| `scaling-a-system` | Design systems | **Archived 2026-08-05.** No user testing, adoption figures where outcomes were asked for |
+| `search-experience` | Product design | **Archived 2026-08-06.** Absorbed into `making-the-app-testable`; its own page keeps the longer version |
+| `scaling-a-system` | Design systems | **Archived 2026-08-05.** Two design-system studies was one too many |
 
 **Nothing is ever deleted from `studies.ts`.** `archived: true` takes a study off the index and out of the next-study rotation; it keeps building and stays reachable at its URL. Which studies make the final cut is a content decision to be made late, and deleting an entry removes the option before then. Reversible by removing one line.
 
-**The section order in `src/layouts/CaseStudy.astro` is the reader, in the order the reader states it** — problem, process, interface, impact, hindsight. Slots are named rather than one default slot, so a study cannot quietly ship without its heaviest sections. It is deliberately *not* the structure of the old Expedia page, which was organised around what the system contained and so had nowhere to put rejected explorations, testing trade-offs or hindsight.
+**The section order in `src/layouts/CaseStudy.astro` is the order the questions get asked** — problem, process, interface, impact, hindsight. Slots are named rather than one default slot, so a study cannot quietly ship without its heaviest sections. It is deliberately *not* the structure of the old Expedia page, which was organised around what the system contained and so had nowhere to put rejected explorations, testing trade-offs or hindsight.
 
 **Gaps render as `[NEEDS: …]` on the page**, not as a TODO in a comment. A missing fact that is visible in the browser cannot be lost; one in a comment can. Replace the whole string when the fact arrives. Keys are stable — renaming one orphans the string on the page.
 
@@ -291,7 +299,9 @@ npm run storybook     # dev
 npm run chromatic     # publish a build (needs CHROMATIC_PROJECT_TOKEN)
 ```
 
-**Published Storybooks are access-controlled**, inherited from the private GitHub repo — an unauthenticated request returns `401`. To share, invite people in Chromatic → Manage → Collaborate. **Do not make it public yet:** it contains Revolut's real icon assets and, in the lockup, their wordmark. Sent to Revolut that reads as close study; on an open URL it is their trademark on an artefact that is not theirs.
+**Published Storybooks are access-controlled** — an unauthenticated request returns `401`. To share, invite people in Chromatic → Manage → Collaborate, which is the preferred route.
+
+**Think before making it public.** It contains Revolut's real icon assets and, in the lockup, their wordmark. Shared with a named person that reads as close study; on an open URL it is their trademark on an artefact that is not theirs. Inviting collaborators gets the same result without that.
 
 Build URLs are per-build. Anything you send out should use the project permalink, not the URL a run prints.
 
@@ -341,13 +351,13 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
 
 ## Next up
 
-**The system and the site are finished. Content is the only thing blocking, which is the opposite of where the effort has gone.** 9 pages, 20 components, every check green.
+**The system and the site are finished; content is what moves the needle.** 9 pages, 20 components, every check green, no gaps rendering on any live page.
 
-1. **Fill the case studies.** ~25 `[NEEDS:]` in `contextual-home`, 8 in `machine-readable-components`. Confirmed 2026-08-06: **none of it is recoverable from a source.** Rohit has no access to the Expedia GitHub `plan.md` files, the NCA tracking board, or the Principle prototypes. It comes out of his head or not at all — so **ask him rather than research**, in small batches, writing immediately so he can correct in the browser.
-2. **The strongest single gap is `contribution.What I owned` on `contextual-home`.** A +85% invites the question of what he personally decided before it invites any other, and the answer changes how the rest of the page is pitched.
-3. **Every image on the site is a placeholder** — the hero and both covers. They carry no `[NEEDS:]` marker, so they look finished, which is the trap. `contextual-home` is worse than that: it is borrowing the *search* cover, which draws a search field over a list of results. And neither study has a single real screen, against a reader that asks explicitly to see complex flows resolved into simple UI.
-4. **Rotate the Chromatic token.** Pasted into chat transcripts twice. Only Rohit can do it: Chromatic → Manage → Configure, then `.env` and the GitHub Actions secret.
+1. **Real screens for the second interface block.** `making-the-app-testable` shows the home across three generations; the three adaptive results layouts have no capture, so that block stays out of the arrangement rather than rendering an empty frame.
+2. **Two provenance questions on the exploration imagery.** The Hotels.com comparison graphics carry per-variant percentages that no written source backs; either they are real and belong in the copy with a citation, or they are illustrative and should come off the pictures. Separately, the three EGDS "Decisions" panels are recreations rather than captures.
+3. **Rotate the Chromatic project token** — Chromatic → Manage → Configure, then `.env` and the GitHub Actions secret. It is a write credential and it has been handled loosely.
+4. **`/about` builds but is linked from nowhere.** One entry in `src/data/nav.ts` brings it back; it was unlinked while it was a stub and has been written since.
 
-**Smaller, none blocking:** `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); `about.astro` holds 4 `[NEEDS:]` but is de-linked from the nav; Figma draws `Brand/Logo` at 233×48 in both Chrome sets while code renders 32.
+**Smaller, none blocking:** `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); Figma draws `Brand/Logo` at 233×48 in both Chrome sets while code renders 32; the hero and both index covers are still stand-in imagery.
 
-**Before anything is published at an open URL** — not needed to send this to Revolut — settle the `Ro × Revolut` lockup. An `×` lockup conventionally reads as a partnership, which would imply an engagement that does not exist. Same question governs making the Storybook public.
+**Settle the `Ro × Revolut` lockup.** An `×` lockup conventionally reads as a partnership, which would imply an engagement that does not exist. Shared directly with a person it is fine; on an open URL it is not. The same question governs making the Storybook public.
