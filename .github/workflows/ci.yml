@@ -18,7 +18,21 @@ jobs:
       # If this needs to move, move .nvmrc with it.
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: npm }
-      - run: npm ci
+      # `npm install`, not `npm ci`, and this is a deliberate trade rather than
+      # sloppiness. `npm ci` refused on every push from 2026-08-05 with
+      # "Missing: @emnapi/runtime@1.11.3 from lock file". @emnapi/* are the WASM
+      # Node-API shims that @napi-rs/wasm-runtime needs; on macOS npm resolves
+      # sharp's native darwin binary and never walks that optional branch, so a
+      # lockfile generated here cannot contain the entries a Linux install
+      # demands. Neither --os/--cpu flags nor npm config coerce it, and there is
+      # no Linux machine in the loop to regenerate on.
+      #
+      # The lockfile is still committed and still the starting point; `install`
+      # simply repairs the platform branch instead of refusing. Vercel does its
+      # own install for the real build, so what is traded is strict resolution
+      # in a checks-only pipeline -- against fifteen runs where no check ran at
+      # all. Move back to `npm ci` the day the lockfile is generated on Linux.
+      - run: npm install --no-audit --no-fund
 
       # Nothing else here reads TypeScript. `astro build` transpiles without
       # checking, and Storybook renders a story whose props no longer exist
@@ -76,7 +90,21 @@ jobs:
       # If this needs to move, move .nvmrc with it.
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: npm }
-      - run: npm ci
+      # `npm install`, not `npm ci`, and this is a deliberate trade rather than
+      # sloppiness. `npm ci` refused on every push from 2026-08-05 with
+      # "Missing: @emnapi/runtime@1.11.3 from lock file". @emnapi/* are the WASM
+      # Node-API shims that @napi-rs/wasm-runtime needs; on macOS npm resolves
+      # sharp's native darwin binary and never walks that optional branch, so a
+      # lockfile generated here cannot contain the entries a Linux install
+      # demands. Neither --os/--cpu flags nor npm config coerce it, and there is
+      # no Linux machine in the loop to regenerate on.
+      #
+      # The lockfile is still committed and still the starting point; `install`
+      # simply repairs the platform branch instead of refusing. Vercel does its
+      # own install for the real build, so what is traded is strict resolution
+      # in a checks-only pipeline -- against fifteen runs where no check ran at
+      # all. Move back to `npm ci` the day the lockfile is generated on Linux.
+      - run: npm install --no-audit --no-fund
       - uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
