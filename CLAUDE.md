@@ -299,9 +299,13 @@ npm run storybook     # dev
 npm run chromatic     # publish a build (needs CHROMATIC_PROJECT_TOKEN)
 ```
 
-**Published Storybooks are access-controlled** — an unauthenticated request returns `401`. To share, invite people in Chromatic → Manage → Collaborate, which is the preferred route.
+**Public as of 2026-08-07**, alongside the repo. 54 stories across 20 components, both themes.
 
-**Think before making it public.** It contains Revolut's real icon assets and, in the lockup, their wordmark. Shared with a named person that reads as close study; on an open URL it is their trademark on an artefact that is not theirs. Inviting collaborators gets the same result without that.
+**Link the branch permalink, `https://main--<appId>.chromatic.com`, not `chromatic.com/library?appId=`.** The library is the build history and sits behind a login, so it reads as a closed door to anyone without an account; the permalink is the Storybook itself and needs none. Per-build URLs are worse again — they go stale.
+
+**What being public costs:** it carries Revolut's real icon assets and, in the lockup, their wordmark. Shared with a named person that reads as close study; on an open URL it is their trademark on an artefact that is not theirs. That is the same unsettled question as the `×` lockup, and it is now live on two URLs rather than none.
+
+**Rotate the project token now that this is public.** A write credential on a public project lets someone else publish content to a URL being sent to employers. Chromatic → Manage → Configure, then `.env` and the GitHub Actions secret.
 
 Build URLs are per-build. Anything you send out should use the project permalink, not the URL a run prints.
 

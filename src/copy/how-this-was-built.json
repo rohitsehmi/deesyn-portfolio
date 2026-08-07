@@ -85,7 +85,7 @@
   },
   "links": {
     "heading": "The receipts",
-    "_note": "Access states, checked anonymously 2026-08-07: Figma is open (verified by fetching the file thumbnail with no session). Chromatic is still access-controlled and GitHub still private — open both before sending this, or the page argues for evidence and then withholds it. The Figma href carries a node-id so it lands on Foundations rather than wherever the file was last left; the `t=` parameter is deliberately stripped, because that is a share-session token and not part of the address.",
+    "_note": "All three verified open anonymously on 2026-08-07 — Figma by fetching the file thumbnail with no session, Chromatic by reading 54 stories out of index.json, GitHub by cloning with no credentials. Two href rules learned here. The Figma link carries a node-id so it lands on Foundations rather than wherever the file was last left, and the `t=` parameter is stripped because that is a share-session token, not part of the address. The Chromatic link is the branch permalink, not the `library?appId=` URL: the library is the build history and sits behind a login, so it would have read as a closed door to anyone without an account. The permalink is the Storybook itself and needs none.",
     "items": [
       {
         "label": "The Figma file",
@@ -96,7 +96,7 @@
       {
         "label": "Storybook, on Chromatic",
         "note": "Every component, both themes",
-        "href": "https://www.chromatic.com/library?appId=6a70c473fc9430ebb1214df6",
+        "href": "https://main--6a70c473fc9430ebb1214df6.chromatic.com",
         "mark": "storybook"
       },
       {
