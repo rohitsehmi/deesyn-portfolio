@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Regenerate the specs whenever the things they are generated from change.
+#
+# `components/specs/*` are measured from component source and stylesheets. Edit
+# a prop or a token and the spec is stale the moment you commit -- and a stale
+# generated file is invisible in review, because the diff you are reading is the
+# one that did not get made. CI catches it, but only after a push, and a red
+# build you have to come back to is a worse tool than one that never goes red.
+#
+# Only runs when something it reads has actually changed, so an ordinary copy or
+# docs commit pays nothing.
+
+changed=$(git diff --cached --name-only --diff-filter=ACM)
+echo "$changed" | grep -qE '^src/components/.*\.(tsx|css)$|^design/(build|build-code-specs|usage-rules)' || exit 0
+
+command -v node >/dev/null 2>&1 || exit 0
+[ -d node_modules ] || exit 0
+
+npm run specs >/dev/null 2>&1 || {
+  echo "pre-commit: npm run specs failed — commit anyway and fix, or run it by hand." >&2
+  exit 0
+}
+
+stale=$(git diff --name-only -- components/specs icons/specs marks/specs public)
+[ -z "$stale" ] && exit 0
+
+git add components/specs icons/specs marks/specs public
+echo "pre-commit: regenerated and staged —"
+echo "$stale" | sed 's/^/  /'

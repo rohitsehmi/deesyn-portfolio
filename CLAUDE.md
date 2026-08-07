@@ -215,6 +215,14 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 
 It lives on the arrangement rather than as a margin on each component, because a trailing margin on the last block in a section adds space the band has already paid for. Two things it needs that are not obvious: **adjacent margins collapse to the larger**, so the heading's 40px would silently become 64px without an explicit override, and **`.explorations` resets `margin: 0` at equal specificity**, so `.cs-section` is doubled to outrank it — don't "tidy" that away. Every section wrapper must carry `class="cs-section"` or its blocks stack at zero.
 
+## Generated files stay generated
+
+**A pre-commit hook regenerates the specs whenever the things they are measured from change**, and stages the result. `.githooks/pre-commit`, self-installing via `package.json`'s `prepare` script, which sets `core.hooksPath`. It only runs when a `src/components/*.{tsx,css}` or a `design/build*` file is staged, so an ordinary copy commit pays nothing.
+
+**It exists because CI caught what review could not.** `components/specs/*` are measured from component source and stylesheets, so editing a prop or a token makes the spec stale the instant you commit — and a stale generated file is invisible in a diff, because the change you are looking for is the one that never got made. CI's staleness check found it after a push, on 2026-08-07, when a `Parallax` prop change shipped without its spec. A red build you have to come back to is a worse tool than one that never goes red.
+
+It stages rather than aborts. These are generated files with no authorship to preserve, and a hook that blocks a commit to ask you to run a command it could have run itself is friction for its own sake. It prints what it staged, so nothing happens silently.
+
 ## Copy
 
 **Every word the site renders lives in `src/copy/*.json`**, in reading order. The `.astro` page is the arrangement; the JSON is the writing. Nothing in a page should hardcode a sentence.
