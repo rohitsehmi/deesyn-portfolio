@@ -105,7 +105,21 @@ jobs:
       # in a checks-only pipeline -- against fifteen runs where no check ran at
       # all. Move back to `npm ci` the day the lockfile is generated on Linux.
       - run: npm install --no-audit --no-fund
+      # Skip rather than fail when the token is absent. A missing optional
+      # credential is a configuration gap, not a regression, and a permanently
+      # red badge from one trains everyone to ignore the badge. The job runs the
+      # moment CHROMATIC_PROJECT_TOKEN exists in repository secrets.
+      - id: token
+        env:
+          T: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        run: |
+          if [ -n "$T" ]; then echo "present=true" >> "$GITHUB_OUTPUT"
+          else echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::CHROMATIC_PROJECT_TOKEN is not set — visual regression did not run."
+          fi
+
       - uses: chromaui/action@latest
+        if: steps.token.outputs.present == 'true'
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: build-storybook

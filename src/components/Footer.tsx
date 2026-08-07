@@ -60,7 +60,7 @@ export function Footer({
   */
   const brand = (
     <div className="footer__brand">
-      <Logo height={32} />
+      <Logo variant="mark" height={32} />
       <p className="footer__copy">© {new Date().getFullYear()} Rohit Sehmi</p>
     </div>
   );

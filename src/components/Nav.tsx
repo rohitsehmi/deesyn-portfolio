@@ -78,7 +78,7 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, onMedi
       data-on-media={onMedia && resolved === 'top' ? (onMedia === 'light' ? 'light' : 'true') : undefined}
     >
       <div className="measure nav__inner">
-        <a className="nav__logo" href="/" aria-label="Home"><Logo height={32} /></a>
+        <a className="nav__logo" href="/" aria-label="Home"><Logo variant="mark" height={32} /></a>
         <nav className="nav__links" aria-label="Primary">
           {/*
             One link carries `cta` and renders primary; the rest stay ghost.
