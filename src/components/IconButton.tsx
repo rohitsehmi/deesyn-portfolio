@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes, Ref } from 'react';
 import { Icon, type IconName } from './Icon';
 import type { ButtonVariant, ButtonSize } from './Button';
 import './IconButton.css';
@@ -9,6 +9,13 @@ export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
   'aria-label': string;
   variant?: ButtonVariant;
   size?: ButtonSize;
+  /**
+   * React 19 passes `ref` to function components as an ordinary prop, so no
+   * forwardRef is needed — but it is not part of ButtonHTMLAttributes, so it
+   * has to be declared to be typed. Nav needs it to return focus to the menu
+   * trigger when the panel closes.
+   */
+  ref?: Ref<HTMLButtonElement>;
 }
 
 const ICON_SIZE = { sm: 16, md: 20, lg: 24 } as const;

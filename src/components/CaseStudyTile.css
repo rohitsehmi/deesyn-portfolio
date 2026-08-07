@@ -17,7 +17,35 @@
 @media (hover: hover) and (pointer: fine) {
   .tile:hover .tile__media .media__frame { transform: scale(1.02); }
 }
-.tile:active .tile__media .media__frame { transform: scale(0.99); }
+
+/*
+  Press feedback, and why it was invisible on a phone.
+
+  `.tile:active` never fired on iOS. Safari only applies :active to elements it
+  considers interactive -- a link, a button, or something carrying a touch
+  handler -- and .tile is an <article>. So the whole tile was pressable, via the
+  stretched pseudo-element on .tile__link, while nothing acknowledged the press.
+  Matching on the link's own :active is what fixes it: that element *is*
+  interactive, so iOS fires the state, and :has() lifts it back to the tile.
+
+  0.985 on the whole tile rather than 0.99 on the image alone. The image moving
+  by itself reads as a hover effect that got stuck; the card moving reads as the
+  card being pressed, which is what a native list row does.
+*/
+.tile:has(.tile__link:active) { transform: scale(0.985); }
+.tile:has(.tile__link:active) .tile__media .media__frame { transform: scale(0.99); }
+
+.tile {
+  transition: transform var(--semantic-duration-press) var(--semantic-easing-out);
+  /* iOS paints a grey box over a tapped link before any of our own feedback
+     runs, which reads as a rendering fault rather than a response. Removed and
+     replaced, never simply removed. */
+  -webkit-tap-highlight-color: transparent;
+}
+/* Kills the 300ms wait Safari holds every tap for in case it becomes a
+   double-tap zoom. Nothing here zooms, and 300ms is the difference between an
+   interface that answers and one that hesitates. */
+.tile__link { touch-action: manipulation; }
 
 .tile__body {
   display: flex;

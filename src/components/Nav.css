@@ -118,3 +118,151 @@
 @media (prefers-reduced-motion: reduce) {
   .nav__cta::before { animation: none !important; }
 }
+
+/* ---------------------------------------------------------------------------
+   Mobile menu panel
+
+   Below 768px the links are display:none and the only way to reach CV or
+   Contact is this panel. It is navigation, not decoration, so it gets the
+   treatment a native sheet gets: it animates from somewhere, it traps nothing
+   it should not, and it is unreachable when closed.
+
+   Fixed to the viewport and sized with dvh rather than vh. On mobile Safari
+   `100vh` is the height with the URL bar hidden, so a 100vh panel is taller
+   than the screen and the last link sits under the chrome. `100dvh` tracks the
+   bar as it collapses.
+--------------------------------------------------------------------------- */
+.nav__panel {
+  position: fixed;
+  inset: 0;
+  /* Above the theme toggle FAB (--z-fab: 150), below the bar (--z-sticky: 100
+     is raised alongside this). `aria-modal` promises the rest of the page is
+     unavailable; a floating button still sitting on top of it makes that a lie
+     for anyone using a pointer, even though a screen reader already ignores it. */
+  z-index: 160;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--semantic-bg-canvas);
+  /* Clears the fixed bar above and the home indicator below. env() is 0 on a
+     device without insets, so this needs no feature query. */
+  padding:
+    calc(var(--primitive-layout-l64) + env(safe-area-inset-top))
+    calc(var(--primitive-space-sp500) + env(safe-area-inset-right))
+    calc(var(--primitive-layout-l64) + env(safe-area-inset-bottom))
+    calc(var(--primitive-space-sp500) + env(safe-area-inset-left));
+
+  /* Closed. Opacity and transform only -- both composited, neither triggers
+     layout. `visibility` is what stops it being hit-testable mid-fade, and it
+     is deliberately not transitioned on the way in. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition:
+    opacity var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    transform var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    visibility 0s linear var(--semantic-duration-dropdown);
+}
+
+.nav__panel[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  /* Opening uses the drawer curve and takes longer than it closes. Entering is
+     where the user is watching; leaving should get out of the way. */
+  transition:
+    opacity var(--semantic-duration-overlay) var(--semantic-easing-drawer),
+    transform var(--semantic-duration-overlay) var(--semantic-easing-drawer),
+    visibility 0s;
+}
+
+.nav__panel-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+}
+
+.nav__panel-link {
+  display: block;
+  padding: var(--primitive-space-sp300) 0;
+  /* Well past the 24px minimum. This is the primary navigation on a phone and
+     it should be hard to miss, not merely legal. */
+  min-height: var(--primitive-size-s56);
+  font: var(--type-display-s);
+  letter-spacing: var(--type-display-s-tracking);
+  color: var(--semantic-fg-primary);
+  text-decoration: none;
+  /* Removes the grey flash iOS paints over a tapped link, which fires before
+     our own feedback and reads as a rendering fault. Replaced below, not
+     dropped -- never remove the only press signal a touch device has. */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;           /* no 300ms double-tap-to-zoom delay */
+
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    transform var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+
+/* Staggered by 40ms, inside the 30-80ms band: enough to read as a cascade,
+   short enough that the last link is not visibly waiting. */
+.nav__panel[data-open='true'] .nav__panel-link {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(var(--i) * 40ms);
+}
+
+.nav__panel-link:active { transform: scale(0.97); transition-duration: var(--semantic-duration-press); }
+.nav__panel-link[aria-current='page'] { color: var(--semantic-fg-secondary); }
+.nav__panel-link:focus-visible {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 4px;
+  border-radius: var(--primitive-radius-r8);
+}
+
+@media (min-width: 768px) {
+  /* Belt and braces with the resize handler: if the panel is somehow open at
+     desktop width it must not cover the page. */
+  .nav__panel { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Reduced motion is fewer and gentler, not none. The fade stays because it
+     explains that something appeared; the movement and the stagger go. */
+  .nav__panel, .nav__panel-link {
+    transform: none;
+    transition-duration: var(--semantic-duration-instant);
+    transition-delay: 0ms;
+  }
+  .nav__panel-link:active { transform: none; }
+}
+
+/*
+  The one action keeps being the one action.
+
+  On the bar, `cta` renders a filled pill and everything else is ghost — the nav
+  has an opinion about what it wants you to do. Rendering both links as plain
+  text in the panel quietly threw that away. A pill inside a type-led sheet
+  would be clutter, so the emphasis is carried by weight and colour instead.
+*/
+.nav__panel-link[data-cta='true'] { color: var(--semantic-fg-accent); }
+
+/* A modal that leaves a floating button live is not modal. Fades rather than
+   snaps, so the toggle does not blink out from under a finger. :has() rather
+   than a class, because the panel already holds the open state and two sources
+   of one truth is how they drift. */
+body:has(.nav__panel[data-open='true']) .theme-toggle {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+
+/*
+  The bar has to stay above its own panel, or the close button is buried and a
+  phone has no way out — no Escape key, and the links are the only thing on
+  screen. Raised only while open, so the normal stacking (FAB above sticky bar)
+  is untouched everywhere else.
+*/
+body:has(.nav__panel[data-open='true']) .nav { z-index: 170; }

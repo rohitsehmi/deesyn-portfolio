@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Logo } from './Logo';
 import { Button } from './Button';
 import { IconButton } from './IconButton';
@@ -47,6 +47,48 @@ export interface NavProps {
  */
 export function Nav({ links = [], actions, state = 'top', sticky = false, onMedia = false }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  /*
+    Everything a native sheet does and a div does not.
+
+    Scroll lock: without it the page scrolls under the panel, which on iOS also
+    drags the URL bar around. `position: fixed` on the body is the heavier fix
+    and loses scroll position; `overflow: hidden` is enough here because the
+    panel itself is the full viewport and does not scroll.
+
+    Escape closes, and focus returns to the button that opened it — otherwise
+    focus is left orphaned on a hidden element and the next Tab starts from the
+    top of the document.
+
+    The resize listener matters more than it looks: open the menu on a phone,
+    rotate to landscape past 768px, and the panel is hidden by media query while
+    the scroll lock stays applied. The page would be frozen with nothing on
+    screen to explain why.
+  */
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    const onResize = () => { if (window.innerWidth >= 768) setOpen(false); };
+    document.addEventListener('keydown', onKey);
+    window.addEventListener('resize', onResize);
+
+    // Focus the panel itself rather than the first link: announcing "Contact"
+    // with no context is disorienting, and the panel carries the accessible name.
+    panelRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onResize);
+      triggerRef.current?.focus();
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!sticky) return;
@@ -108,10 +150,58 @@ export function Nav({ links = [], actions, state = 'top', sticky = false, onMedi
         </nav>
         <div className="nav__actions">{actions}</div>
         <div className="nav__menu">
-          <IconButton icon="menu" variant="ghost" size="sm" aria-label="Open menu" />
+          <IconButton
+            ref={triggerRef}
+            icon={open ? 'cross' : 'menu'}
+            variant="ghost"
+            size="sm"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            aria-controls="nav-menu-panel"
+            onClick={() => setOpen((v) => !v)}
+          />
         </div>
       </div>
     </header>
+
+    {/*
+      Kept mounted rather than conditionally rendered, so it has something to
+      animate out from — an unmounted element cannot transition. `inert` is what
+      makes that safe: while closed it is unreachable by tab, by screen reader
+      and by pointer, which `visibility: hidden` alone does not guarantee across
+      browsers.
+
+      Outside the <header> because it is the full viewport, not part of the bar.
+    */}
+    <div
+      id="nav-menu-panel"
+      ref={panelRef}
+      className="nav__panel"
+      data-open={open ? 'true' : undefined}
+      inert={!open}
+      tabIndex={-1}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+    >
+      <nav className="nav__panel-links" aria-label="Primary">
+        {links.map((l, i) => (
+          <a
+            key={l.href}
+            className="nav__panel-link"
+            href={l.href}
+            aria-current={l.current ? 'page' : undefined}
+            data-cta={l.cta ? 'true' : undefined}
+            /* Staggered by index. Decorative, so it never gates interaction —
+               the link is clickable from the first frame. */
+            style={{ '--i': i } as CSSProperties}
+            onClick={() => setOpen(false)}
+          >
+            {l.label}
+          </a>
+        ))}
+      </nav>
+    </div>
     {/* Reserves the height the fixed header no longer occupies. Omitted when
         the nav deliberately overlays what is beneath it. */}
     {sticky && !onMedia && <div className="nav__spacer" aria-hidden="true" />}

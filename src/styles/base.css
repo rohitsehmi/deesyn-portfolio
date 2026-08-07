@@ -62,3 +62,27 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/*
+  Touch behaviour for everything pressable, in one place.
+
+  iOS paints a translucent grey box over a tapped link or button before any of
+  our own feedback runs. Every interactive element here already answers a press
+  with `transform: scale(0.97)`, so the grey flash is a second, uglier signal
+  arriving first — it reads as a rendering fault rather than a response. Removed
+  globally because the replacement is also global; never strip it from something
+  that has no press state of its own.
+
+  `touch-action: manipulation` drops the ~300ms Safari holds every tap for in
+  case it turns into a double-tap zoom. Nothing on this site zooms, and 300ms is
+  the whole difference between an interface that answers and one that hesitates.
+
+  :where() so all of this carries zero specificity and any component can
+  override a single value without a fight.
+*/
+:where(a, button, [role='button'], summary, label, input, select, textarea) {
+  -webkit-tap-highlight-color: transparent;
+}
+:where(a, button, [role='button'], summary) {
+  touch-action: manipulation;
+}
