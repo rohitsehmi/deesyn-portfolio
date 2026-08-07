@@ -2,6 +2,7 @@
 import '../styles/tokens.css';
 import '../styles/base.css';
 import { ThemeToggle } from '../components/ThemeToggle';
+import Analytics from '@vercel/analytics/astro';
 interface Props {
   title: string;
   description?: string;
@@ -56,6 +57,15 @@ const { title, description = 'Product design work by Rohit Sehmi.', pageEnd = 'b
     <a class="skip" href="#main">Skip to content</a>
     <slot />
     <ThemeToggle client:load />
+    {/*
+      Cookieless, so no consent banner — which is the whole reason it is this
+      and not GA4. A cookie dialog is the first thing a reader would interact
+      with on a site arguing about interface judgement.
+
+      It no-ops until Web Analytics is enabled on the Vercel project, and logs
+      to the console instead of sending in development.
+    */}
+    <Analytics />
     <style is:global>
       .skip {
         position: absolute; left: -9999px;

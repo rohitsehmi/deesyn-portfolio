@@ -86,7 +86,12 @@ const footerRole = next ? 'base' : 'sunken';
     </Band>
 
     <Band role="inverse" scale="feature">
-      <slot name="impact" />
+      {/*
+        The read-depth marker. Impact rather than hindsight: hindsight is the
+        last block before the footer, so anyone scrolling to the bottom for any
+        reason passes through it and would report as a full read.
+      */}
+      <div data-read-depth={slug}><slot name="impact" /></div>
     </Band>
 
     {/* Rule 5: come out of inverse into base, never into sunken. */}
@@ -195,3 +200,8 @@ const footerRole = next ? 'base' : 'sunken';
     .cs-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
   }
 </style>
+
+<script>
+  import { trackReadDepth } from '../components/analytics';
+  trackReadDepth();
+</script>

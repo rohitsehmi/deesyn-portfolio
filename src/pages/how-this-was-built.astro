@@ -170,6 +170,7 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
             <ArrowLink
               href={l.href}
               icon="arrow-up-right"
+              data-receipt={l.mark}
               copyRef={`how-this-was-built:links.items.${i}.label`}
             >
               {l.label}
@@ -227,3 +228,8 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
     color: var(--semantic-fg-secondary);
   }
 </style>
+
+<script>
+  import { trackReceipts } from '../components/analytics';
+  trackReceipts();
+</script>

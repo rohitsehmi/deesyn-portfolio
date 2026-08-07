@@ -270,6 +270,21 @@ The one thing it hardcodes is colour, and it resolves it from the token rather t
 
 `public/` exists only for these files. It was briefly empty after the hero moved to `src/assets/`, and an empty directory holds no tracked files — git prunes it on checkout, so it vanished from fresh clones and `build-storybook` failed on its missing `staticDirs` entry everywhere but the machine with the stale folder. If it ever empties again, drop the `staticDirs` line with it rather than committing a `.gitkeep`.
 
+## Analytics
+
+**Vercel Web Analytics, cookieless, so there is no consent banner.** That is the whole reason it is this and not GA4: a cookie dialog would be the first thing a reader interacts with on a site whose argument is interface judgement. `<Analytics />` sits in `Base.astro`, so all 9 pages report. It no-ops until Web Analytics is enabled on the Vercel project, and logs to the console instead of sending in development.
+
+**Two custom events, because page views answer the wrong questions.** Views tell you someone opened a page; they do not tell you whether anyone reached the end of a case study or opened the artefacts it points at, which are the only two things worth knowing here.
+
+- `receipt_open` — `{ artefact }`, from `[data-receipt]` on the three links on `/how-this-was-built`. One delegated listener on the document, so it survives the list changing length.
+- `study_read` — `{ study }`, when the impact section has been on screen for **three seconds**, not on first intersection. Scrolling past something is not reading it, and a fire-on-touch event reports a fast scroll to the footer as a full read. Impact rather than hindsight, because hindsight is the last block before the footer and anyone reaching the bottom passes through it.
+
+**`src/components/analytics.ts` is a `.ts`, not a `.tsx`, and that is load-bearing** — same reason as `service-marks.ts`. The component count on `/how-this-was-built` is computed by counting `.tsx` files and `build-code-specs.mjs` writes a contract for each one. Analytics is plumbing, not a component, and must move neither number.
+
+The read-depth slug is read from `data-read-depth` in the DOM rather than passed in, because an Astro `<script>` has no access to frontmatter and `define:vars` would force it inline instead of letting it bundle.
+
+**At this traffic, "aggregate" is effectively individual.** The site is `noindex` and unlisted and goes to a handful of named people, so these numbers identify readers in practice. That is a reason to keep the event list this short, not to add to it.
+
 ## Service marks
 
 `/how-this-was-built` links out to Figma, Chromatic and GitHub, and each link carries that service's mark. **Generated, never drawn** — `design/build-service-marks.mjs` fetches them from Simple Icons (path data CC0) into `src/components/service-marks.ts`. A hand-traced logo is a wrong logo, and someone else's mark is the one place "close enough" is a real problem.
