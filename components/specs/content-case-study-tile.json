@@ -55,6 +55,16 @@
         "property": "gap",
         "var": "--primitive-space-sp600",
         "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-press",
+        "ref": "semantic.*.duration.press"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
       }
     ],
     ".tile__media": [

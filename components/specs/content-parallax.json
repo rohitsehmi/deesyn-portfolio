@@ -42,7 +42,7 @@
     "minHeight": {
       "type": "string",
       "required": false,
-      "note": "Content-led height, per the hero note in the banding spec."
+      "note": "Override for the hero height. Left unset by default, deliberately. When this component supplied a default it wrote an inline custom property on every instance, which beats any stylesheet — so the CSS could never make the height responsive, because its fallback was never reached. Passing nothing lets Parallax.css own the defaults per breakpoint, which is where a breakpoint decision belongs. Pass a value only to override both."
     },
     "range": {
       "type": "'cover' | 'exit'",
@@ -76,6 +76,13 @@
   },
   "tokens": {
     ".parallax": [
+      {
+        "property": "min-height",
+        "var": "--parallax-min-height",
+        "local": "--parallax-min-height"
+      }
+    ],
+    "@media (max-width: 767px) { .parallax }": [
       {
         "property": "min-height",
         "var": "--parallax-min-height",

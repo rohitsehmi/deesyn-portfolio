@@ -50,6 +50,8 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | Selector | Property | Token |
 |---|---|---|
 | `.tile` | gap | `primitive.space.sp600` |
+| `.tile` | transition | `semantic.*.duration.press` |
+| `.tile` | transition | `semantic.*.easing.out` |
 | `.tile__media` | border-radius | `primitive.radius.r20` |
 | `.tile__media .media__frame` | transition | `semantic.*.duration.dropdown` |
 | `.tile__media .media__frame` | transition | `semantic.*.easing.out` |
