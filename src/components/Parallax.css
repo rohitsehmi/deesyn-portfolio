@@ -17,6 +17,27 @@
 }
 
 /*
+  Shorter on a phone, so more of the picture survives the crop.
+
+  `cover` crops on whichever axis overflows, and how much it takes is decided by
+  the frame's shape against the image's — not by `object-position`, which only
+  chooses which part of the crop you keep. At 78vh the frame at 390px is 390x658
+  against an image of ratio 1.88, so **31% of the image width is visible**. The
+  content needs about 416px, so most of that height was buying nothing.
+
+  At 440 the same frame shows **47%** — half as much again — and the type still
+  sits comfortably. Verified with design/measure-media-contrast.mjs afterwards,
+  because a shorter frame pulls new pixels in from the right and the busy middle
+  of this image is what the heading cannot survive.
+
+  A floor, not a fixed height: if the copy grows or the text wraps further on a
+  narrower phone, the hero grows with it.
+*/
+@media (max-width: 767px) {
+  .parallax { min-height: var(--parallax-min-height, 440px); }
+}
+
+/*
   Exactly `drift` taller than the section, which is what guarantees the section
   stays covered from one end of the range to the other rather than relying on a
   number that happens to work.

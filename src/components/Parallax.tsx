@@ -84,7 +84,15 @@ export interface ParallaxProps {
    * Keep it small. This reads as depth, not as movement.
    */
   drift?: string;
-  /** Content-led height, per the hero note in the banding spec. */
+  /**
+   * Override for the hero height. Left unset by default, deliberately.
+   *
+   * When this component supplied a default it wrote an inline custom property
+   * on every instance, which beats any stylesheet — so the CSS could never make
+   * the height responsive, because its fallback was never reached. Passing
+   * nothing lets Parallax.css own the defaults per breakpoint, which is where a
+   * breakpoint decision belongs. Pass a value only to override both.
+   */
   minHeight?: string;
   /**
    * Which stretch of scrolling the drift is spread across.
@@ -179,7 +187,7 @@ export function Parallax({
   srcSet,
   sizes,
   drift = '80px',
-  minHeight = 'min(78vh, 720px)',
+  minHeight,
   range = 'cover',
   tone = 'dark',
   objectPosition = 'center',
@@ -197,7 +205,13 @@ export function Parallax({
       data-on-media={tone === 'light' ? 'light' : 'true'}
       data-range={range}
       data-scrim={scrim ? 'true' : undefined}
-      style={{ '--parallax-drift': drift, '--parallax-min-height': minHeight, '--parallax-object-position': objectPosition } as CSSProperties}
+      style={{
+        '--parallax-drift': drift,
+        /* Only written when the caller asks for it. An unset custom property is
+           what lets the stylesheet's own fallback -- and its media query -- win. */
+        ...(minHeight ? { '--parallax-min-height': minHeight } : {}),
+        '--parallax-object-position': objectPosition
+      } as CSSProperties}
     >
       <div className="parallax__image-layer">
         <img
