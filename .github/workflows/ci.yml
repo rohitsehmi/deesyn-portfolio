@@ -11,8 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # 24, not 22. Local development, the lockfile and every green run of these
+      # checks are on 24; CI was the only thing on 22, and it had been failing at
+      # `npm ci` on every push since 2026-08-05 while the checks themselves passed
+      # locally. Pinning both sides to one major removes the whole class of drift.
+      # If this needs to move, move .nvmrc with it.
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+        with: { node-version-file: .nvmrc, cache: npm }
       - run: npm ci
 
       # Nothing else here reads TypeScript. `astro build` transpiles without
@@ -64,8 +69,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }   # Chromatic needs history to detect changes
+      # 24, not 22. Local development, the lockfile and every green run of these
+      # checks are on 24; CI was the only thing on 22, and it had been failing at
+      # `npm ci` on every push since 2026-08-05 while the checks themselves passed
+      # locally. Pinning both sides to one major removes the whole class of drift.
+      # If this needs to move, move .nvmrc with it.
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+        with: { node-version-file: .nvmrc, cache: npm }
       - run: npm ci
       - uses: chromaui/action@latest
         with:
