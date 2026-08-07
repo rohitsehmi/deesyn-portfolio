@@ -19,6 +19,11 @@
       "type": "2 | 3",
       "required": false
     },
+    "size": {
+      "type": "2 | 3",
+      "required": false,
+      "note": "Visual scale, when it must differ from the semantic level. Heading level is document structure and cannot be chosen for looks — a page whose first heading after the h1 is an h3 fails axe's heading-order rule and genuinely misleads anyone navigating by headings. Size is a separate decision. /how-this-was-built is an h2 page rendered at level-3 scale because it is deliberately the smallest page on the site."
+    },
     "children": {
       "type": "ReactNode",
       "required": true

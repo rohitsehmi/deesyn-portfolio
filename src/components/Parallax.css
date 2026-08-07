@@ -72,6 +72,35 @@
   );
 }
 
+/*
+  The light counterpart, and the reason it has to exist.
+
+  A scrim is not "the dark one" -- it is whatever pulls the backdrop away from
+  the foreground, so a pale image carrying dark type needs a pale scrim. That is
+  the same correction the banding system already made for `data-on-media`: dark
+  is a tonality, not the definition.
+
+  Horizontal rather than vertical, because the failure is horizontal. Measured
+  at 1728 (a 16-inch MacBook, so not an edge case) the heading ran off the pale
+  wall in the photograph and onto a dark blue panel behind it -- worst glyph
+  pixel 1.70:1, 6.4% of the heading below AA, while 390 and 768 passed at 0.0%
+  because the crop never showed the panel. Covering the text column fixes it and
+  leaves the right of the picture, which is the half worth looking at, alone.
+
+  The stops track the content measure: solid past the longest line, faded out
+  before the midpoint. Do not tune these by eye -- run
+  `node design/measure-media-contrast.mjs` against a preview server.
+*/
+.parallax[data-scrim='true'][data-on-media='light'] .parallax__scrim {
+  background: linear-gradient(
+    to right,
+    var(--primitive-alpha-white-70) 0%,
+    var(--primitive-alpha-white-70) 44%,
+    var(--primitive-alpha-white-50) 58%,
+    transparent 72%
+  );
+}
+
 .parallax__content {
   position: relative;
   z-index: 2;

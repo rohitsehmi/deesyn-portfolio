@@ -66,9 +66,9 @@ export function CaseStudyTile({
       )}
       <div className="tile__body">
         <p className="tile__discipline" data-copy={copyBase && `${copyBase}.discipline`}>{discipline}</p>
-        <h3 className="tile__title">
+        <h2 className="tile__title">
           <a className="tile__link" href={href} data-copy={copyBase && `${copyBase}.title`}>{title}</a>
-        </h3>
+        </h2>
         <p className="tile__summary" data-copy={copyBase && `${copyBase}.summary`}>{summary}</p>
         {/*
           Looks like an IconButton and is deliberately not one. The whole tile

@@ -6,5 +6,12 @@
   font: var(--type-emphasis-3);
   letter-spacing: var(--type-emphasis-3-tracking);
 }
-.tag[data-variant='neutral'] { background: var(--semantic-bg-widget); color: var(--semantic-fg-secondary); }
+/*
+  fg/primary, not fg/secondary. fg/secondary is built for 4.87:1 on pure white;
+  on bg/widget it lands at 4.16:1 and fails AA, measured with axe on /cv. A tag
+  is a label rather than de-emphasised prose, so the darker value is also the
+  more truthful one. Same shape of trap as fg/tertiary -- a token that passes
+  against one background and quietly fails against another.
+*/
+.tag[data-variant='neutral'] { background: var(--semantic-bg-widget); color: var(--semantic-fg-primary); }
 .tag[data-variant='accent']  { background: var(--semantic-action-accent-bg); color: var(--semantic-action-accent-fg); }

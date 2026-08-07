@@ -82,6 +82,9 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.parallax__image` | object-position | `--parallax-object-position` (local property, not a token) |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
 | `.parallax[data-scrim='true'] .parallax__scrim` | background | `semantic.*.bg.scrim` |
+| `.parallax[data-scrim='true'][data-on-media='light'] .parallax__scrim` | background | `primitive.alpha.white-70` |
+| `.parallax[data-scrim='true'][data-on-media='light'] .parallax__scrim` | background | `primitive.alpha.white-70` |
+| `.parallax[data-scrim='true'][data-on-media='light'] .parallax__scrim` | background | `primitive.alpha.white-50` |
 | `.parallax__content` | padding-block | `primitive.layout.l64` |
 | `@media (min-width: 768px) { .parallax__content }` | padding-block | `primitive.layout.l96` |
 | `@media (min-width: 1024px) { .parallax__content }` | padding-block | `primitive.layout.l128` |

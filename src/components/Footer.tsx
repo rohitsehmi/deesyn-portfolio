@@ -66,7 +66,7 @@ export function Footer({
   );
 
   return (
-    <footer className="footer" data-scale={scale}>
+    <footer className="footer" role="contentinfo" data-scale={scale}>
       <div className="measure footer__inner">
         {scale === 'full' && (
           <>

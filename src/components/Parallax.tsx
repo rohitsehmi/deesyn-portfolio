@@ -183,7 +183,7 @@ export function Parallax({
   range = 'cover',
   tone = 'dark',
   objectPosition = 'center',
-  scrim = tone === 'dark',
+  scrim = true,
   priority = false,
   children
 }: ParallaxProps) {

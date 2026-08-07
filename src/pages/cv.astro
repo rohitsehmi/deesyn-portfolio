@@ -242,4 +242,10 @@ import { roles, skills, education, awards, cvPdf } from '../data/cv';
 
   .cv__contact { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--primitive-space-sp400); }
   .cv__contact li { font: var(--type-body-2); letter-spacing: var(--type-body-2-tracking); }
+  /*
+    These are standalone links in a list, not links inside a sentence, so the
+    inline exception to WCAG 2.2 target size does not cover them. At body-2 the
+    line box is 17px; this takes the hit area to 24 without moving the text.
+  */
+  .cv__contact a { display: inline-flex; align-items: center; min-height: 24px; }
 </style>

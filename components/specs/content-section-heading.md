@@ -19,6 +19,7 @@ Implementation: `src/components/SectionHeading.tsx` and `src/components/SectionH
 | Property | Type | Required |
 |---|---|---|
 | `level` | `2 | 3` | no |
+| `size` | `2 | 3` | no |
 | `children` | `ReactNode` | **yes** |
 | `standfirst` | `ReactNode` | no |
 | `id` | `string` | no |
@@ -27,6 +28,7 @@ Implementation: `src/components/SectionHeading.tsx` and `src/components/SectionH
 
 ### Property notes
 
+- `size` Visual scale, when it must differ from the semantic level. Heading level is document structure and cannot be chosen for looks — a page whose first heading after the h1 is an h3 fails axe's heading-order rule and genuinely misleads anyone navigating by headings. Size is a separate decision. /how-this-was-built is an h2 page rendered at level-3 scale because it is deliberately the smallest page on the site.
 - `standfirst` Optional supporting line. Stacked under the heading, never beside it.
 - `copyRef` `<file>:<path>` into src/copy, making this string editable in the browser under `npm run dev`. Dev tooling only: it renders as a plain data attribute and does nothing in a build.
 - `standfirstCopyRef` `<file>:<path>` into src/copy, making this string editable in the browser under `npm run dev`. Dev tooling only: it renders as a plain data attribute and does nothing in a build.

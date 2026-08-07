@@ -108,6 +108,23 @@
         "ref": "semantic.*.bg.scrim"
       }
     ],
+    ".parallax[data-scrim='true'][data-on-media='light'] .parallax__scrim": [
+      {
+        "property": "background",
+        "var": "--primitive-alpha-white-70",
+        "ref": "primitive.alpha.white-70"
+      },
+      {
+        "property": "background",
+        "var": "--primitive-alpha-white-70",
+        "ref": "primitive.alpha.white-70"
+      },
+      {
+        "property": "background",
+        "var": "--primitive-alpha-white-50",
+        "ref": "primitive.alpha.white-50"
+      }
+    ],
     ".parallax__content": [
       {
         "property": "padding-block",
