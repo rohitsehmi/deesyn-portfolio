@@ -13,6 +13,15 @@ interface Props {
   pageEnd?: 'base' | 'sunken';
 }
 const { title, description = 'Product design work by Rohit Sehmi.', pageEnd = 'base' } = Astro.props;
+
+/*
+  Built from `site` rather than from the request, so a page served on the
+  .vercel.app deployment URL still points at the real one. Astro serves
+  directory-style URLs, so the pathname already carries its trailing slash and
+  is left exactly as-is -- normalising it here would disagree with the address
+  bar and with every internal link.
+*/
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://www.deesyn.com').href;
 ---
 <!doctype html>
 <html lang="en" data-page-end={pageEnd}>
@@ -28,6 +37,7 @@ const { title, description = 'Product design work by Rohit Sehmi.', pageEnd = 'b
       what a meta tag cannot reach — the CV PDF in public/.
     */}
     <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href={canonicalUrl} />
     {/*
       Rohit's own mark, generated from the same path data the Logo component
       renders — see design/build-favicon.mjs. The SVG carries its own
