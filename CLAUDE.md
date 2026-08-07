@@ -26,7 +26,9 @@ npm run verify:bands # band adjacency, linted off built HTML (run after build)
 npm run chromatic    # visual regression (needs CHROMATIC_PROJECT_TOKEN)
 ```
 
-**The Chromatic project token is a write credential.** It lives in `.env` (gitignored) and a GitHub Actions secret, never in the repo or on a command line. `.env.example` documents it.
+**The Chromatic project token is a write credential**, and this repo is public. It lives in `.env` (gitignored) and a GitHub Actions secret — never in a tracked file, never on a command line, because shell history is a file too. `.env.example` documents it. Rotated 2026-08-07.
+
+`design/verify-secrets.mjs` is the check that enforces it, in `npm run verify` and in CI. It scans **tracked files only**: `.env` legitimately holds the token, and flagging it would train everyone to ignore the check. What it catches is the moment a value moves from an ignored file into a tracked one. It never prints the match — echoing a secret into a CI log is the same mistake one step further on.
 
 ## Decisions already made — do not re-litigate
 

@@ -22,6 +22,13 @@ jobs:
       - name: Types
         run: npm run typecheck
 
+      # This repo is public, so a committed token is harvested in minutes and
+      # the only cheap moment to catch one is before the push. Scans tracked
+      # files only -- .env is gitignored and holds the real token, and flagging
+      # it would train everyone to ignore this check.
+      - name: Secrets — no credentials in tracked files
+        run: node design/verify-secrets.mjs
+
       # These are the checks that stop Figma and code drifting apart. Both exit
       # non-zero on failure, so a renamed or deleted token breaks the build
       # rather than quietly producing a component that references nothing.
