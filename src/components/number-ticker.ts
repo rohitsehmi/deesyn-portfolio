@@ -180,6 +180,30 @@ export function tickNumbers(): void {
   }
   if (!parsed.size) return;
 
+  /**
+   * Zero the digits now, at load, rather than at the moment the count starts.
+   *
+   * This was the other way round and it was wrong to watch: the real value is
+   * rendered server-side, so you scrolled down, read "+85%", and then saw it
+   * snap back to "+0%" and count up to the number you had already read. The
+   * reset was the most visible thing about the animation.
+   *
+   * The comment that used to be here worried about blanking a number that is on
+   * screen at load. That case takes care of itself: IntersectionObserver
+   * delivers the current state as soon as it observes, so a grid already inside
+   * the trigger region counts immediately rather than sitting at zero. The only
+   * gap left is a page restored mid-scroll with the metrics in the bottom third,
+   * which resolves the moment the reader scrolls at all.
+   *
+   * The server-rendered value is untouched by any of this. With JavaScript off,
+   * or before this file runs, the markup still says "+85%".
+   */
+  const zero = (p: Parsed) => {
+    const z = (0).toFixed(p.decimals);
+    p.el.textContent = `${p.prefix}${p.grouped ? group(z) : z}${p.suffix}`;
+  };
+  for (const p of parsed.values()) zero(p);
+
   const run = (p: Parsed, delay: number) => {
     const start = performance.now() + delay;
     const frame = (now: number) => {
@@ -218,9 +242,6 @@ export function tickNumbers(): void {
         tiles.forEach((el, i) => {
           const p = parsed.get(el);
           if (!p) return;
-          // Zero the digits only now. Doing it up front would blank a number
-          // that is on screen at load, before the observer has anything to say.
-          p.el.textContent = `${p.prefix}${(0).toFixed(p.decimals)}${p.suffix}`;
           run(p, i * STAGGER_MS);
         });
       }
