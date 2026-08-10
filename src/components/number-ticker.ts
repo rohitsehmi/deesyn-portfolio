@@ -117,6 +117,29 @@ function bezier(x1: number, y1: number, x2: number, y2: number) {
 const cssVar = (name: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
+/**
+ * Milliseconds from a CSS time, in whichever unit it arrives in.
+ *
+ * This is not defensive programming, it is a bug that shipped. The token is
+ * authored as `800ms`, and `parseFloat` on it gives 800, which is why this
+ * worked in dev for as long as anyone looked at it there. The production CSS is
+ * minified, and the minifier rewrites `800ms` to the shorter, exactly
+ * equivalent `.8s` — at which point parseFloat returns 0.8 and the count runs
+ * for eight tenths of a millisecond.
+ *
+ * It does not fail visibly. The numbers zero and reach their targets inside one
+ * frame, so the animation reads as having already happened before you scrolled
+ * to it. Every duration token on the site is minified the same way, so anything
+ * else that reads one from CSS has to come through here.
+ */
+function cssMs(value: string): number {
+  const n = parseFloat(value);
+  if (!Number.isFinite(n)) return 0;
+  if (/ms$/.test(value)) return n;
+  if (/s$/.test(value)) return n * 1000;
+  return n;
+}
+
 function easingFromToken(value: string): (x: number) => number {
   const m = value.match(/cubic-bezier\(([^)]+)\)/);
   if (!m) return (x) => x; // `linear`, or anything unparseable
@@ -145,7 +168,7 @@ export function tickNumbers(): void {
   */
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const duration = parseFloat(cssVar('--semantic-duration-counter')) || 0;
+  const duration = cssMs(cssVar('--semantic-duration-counter'));
   if (!duration) return;
   const ease = easingFromToken(cssVar('--semantic-easing-out'));
 
@@ -171,9 +194,20 @@ export function tickNumbers(): void {
 
   /*
     Per grid, so the stagger runs across the tiles a reader is actually looking
-    at rather than across every metric on the page. Threshold 0.6: the tiles are
-    tall, and starting a count the moment one pixel appears means most of it
-    happens below the fold.
+    at rather than across every metric on the page.
+
+    The trigger is a rootMargin, not a threshold, and that swap is the fix for a
+    real complaint: it started far too early. A threshold is a fraction of the
+    *element*, so a short grid satisfies it while barely on screen — the desktop
+    grid is 107px tall, so `threshold: 0.6` fired once 64px of it had crossed the
+    bottom edge, with the numbers still in the last tenth of the viewport. By the
+    time you had scrolled them somewhere you could read them, the count was over.
+
+    Shrinking the bottom of the root by 35% instead says something the element's
+    own height cannot change: do not start until this has come up into the part
+    of the screen someone is actually reading. Threshold drops to 0 because
+    rootMargin is now doing the work, which also means a tall mobile grid starts
+    when its top arrives rather than waiting for 60% of a 412px block.
   */
   const observer = new IntersectionObserver(
     (entries) => {
@@ -191,7 +225,7 @@ export function tickNumbers(): void {
         });
       }
     },
-    { threshold: 0.6 }
+    { threshold: 0, rootMargin: '0px 0px -35% 0px' }
   );
 
   const grids = new Set<Element>();
