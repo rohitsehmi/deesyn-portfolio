@@ -25,6 +25,27 @@ import c from '../copy/how-this-was-built.json';
 const tokens = JSON.parse(readFileSync('tokens/tokens.json', 'utf8'));
 const banding = JSON.parse(readFileSync('design/banding-export.json', 'utf8'));
 
+/**
+ * How many checks run on a push, counted from the workflow that runs them.
+ *
+ * This was the word "Four", typed into the copy, on a page whose facts block
+ * opens by saying none of its numbers were typed in. It had been wrong for a
+ * while: Types, Secrets and the generated-files check were all missing from it
+ * before Contracts was added on 2026-08-10, so the page was claiming four while
+ * CI ran eight.
+ *
+ * Scoped to the `verify` job rather than counting `- name:` across the file.
+ * The chromatic job has no named steps today, so a whole-file count would give
+ * the right answer now and the wrong one the moment anyone named one.
+ */
+const workflow = readFileSync('.github/workflows/ci.yml', 'utf8');
+const verifyJob = workflow.slice(
+  workflow.indexOf('\n  verify:'),
+  workflow.indexOf('\n  chromatic:')
+);
+const checkCount = (verifyJob.match(/^\s+- name:/gm) ?? []).length;
+if (!checkCount) throw new Error('could not count check steps in .github/workflows/ci.yml');
+
 const leaves = (node: any): number =>
   Object.entries(node).reduce((n, [k, v]: [string, any]) => {
     if (k.startsWith('$')) return n;
@@ -95,6 +116,7 @@ const numbers: Record<string, string | number> = {
   textStyles: leaves(tokens.typography),
   components: componentCount,
   specs: specCount,
+  checks: checkCount,
   stories: storyCount,
   rules: banding.rules.length,
   checksum: hash(canonical(banding))

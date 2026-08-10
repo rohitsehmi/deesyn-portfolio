@@ -18,7 +18,7 @@
       },
       {
         "term": "GitHub Actions",
-        "detail": "Four checks on every push. If Figma and the code disagree, the build stops rather than the disagreement getting noticed later."
+        "detail": "Every push runs the checks below. If Figma and the code disagree, the build stops rather than the disagreement getting noticed later."
       },
       {
         "term": "Storybook and Chromatic",
@@ -49,6 +49,10 @@
       {
         "term": "Layout rules",
         "detail": "{rules} band adjacency rules, read from the Figma page rather than transcribed. Checksum {checksum}."
+      },
+      {
+        "term": "Checks",
+        "detail": "{checks} on every push, counted from the workflow that runs them rather than from memory. Any one of them failing stops the build."
       }
     ]
   },
@@ -57,6 +61,14 @@
     "intro": "Each of these exists because something got through without it.",
     "_note": "Each item is a bold lead-in plus its sentence. Two strings rather than one, because editing is plain text and a <strong> inside a single editable string would be stripped the first time anyone touched it. The CSS item carries a third part because it names a typo that has to set as code.",
     "items": [
+      {
+        "label": "Types.",
+        "text": "Nothing else in the repo reads TypeScript. Astro transpiles without checking and Storybook will happily render a story whose props no longer exist, which is how three stale props on Parallax survived the change that removed them."
+      },
+      {
+        "label": "Secrets.",
+        "text": "This repo is public, so a committed credential is harvested in minutes and the only cheap moment to catch one is before the push. It scans tracked files only, because the ignored ones legitimately hold the real token, and it never prints what it finds."
+      },
       {
         "label": "Tokens.",
         "text": "Every alias resolves, and the export checksum matches the one Figma reproduces from inside the file. A renamed variable fails the build instead of silently rendering nothing."
@@ -72,6 +84,14 @@
         "textAfter": "is not a CSS error, because it renders as an inherited default and looks deliberate, so nothing else would catch it."
       },
       {
+        "label": "Contracts.",
+        "text": "Every component has a published contract somewhere. The number above says so, and until this check existed that number was right by coincidence rather than by measurement, because two ways of counting happened to cancel."
+      },
+      {
+        "label": "Generated files.",
+        "text": "Regenerating everything has to change nothing. If it does, someone hand-edited a file that is supposed to be measured, and a stale generated file is invisible in a diff because the change you would be looking for is the one that never got made."
+      },
+      {
         "label": "Bands.",
         "text": "The built pages are linted against the layout rules, and those rules are read from Figma rather than copied. Adding a rule there fails the build here until someone implements it."
       }
@@ -80,7 +100,8 @@
   "limits": {
     "heading": "What it does not do",
     "paras": [
-      "It does not check whether the design is any good. It checks that the design and the code are the same thing, which is a narrower claim and the only one worth automating. Taste is still done by looking."
+      "It does not check whether the design is any good. It checks that the design and the code are the same thing, which is a narrower claim and the only one worth automating. Taste is still done by looking.",
+      "It does not check that the result is usable either. axe-core runs clean across nine pages, two widths and two themes, and the site still shipped a menu that told screen readers it was modal while keyboard focus walked straight out of it, onto a button that was invisible and could not be clicked. No single element was wrong, so nothing automated could see it. A person tabbing through the sheet did."
     ]
   },
   "links": {
