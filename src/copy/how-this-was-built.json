@@ -106,12 +106,13 @@
   },
   "links": {
     "heading": "The receipts",
-    "_note": "All three verified open anonymously on 2026-08-07 — Figma by fetching the file thumbnail with no session, Chromatic by reading 54 stories out of index.json, GitHub by cloning with no credentials. Two href rules learned here. The Figma link carries a node-id so it lands on Foundations rather than wherever the file was last left, and the `t=` parameter is stripped because that is a share-session token, not part of the address. The Chromatic link is the branch permalink, not the `library?appId=` URL: the library is the build history and sits behind a login, so it would have read as a closed door to anyone without an account. The permalink is the Storybook itself and needs none.",
+    "_note": "All three verified open anonymously on 2026-08-07 — Figma by fetching the file thumbnail with no session, Chromatic by reading 54 stories out of index.json, GitHub by cloning with no credentials. Three href rules learned here. The Figma link carries the node-id of the Cover page (56-4384) so it always lands on the cover and the reader picks where to go next, rather than opening wherever the file was last left; the `t=` parameter is stripped because that is a share-session token, not part of the address. The Chromatic link is the branch permalink, not the `library?appId=` URL: the library is the build history and sits behind a login, so it would have read as a closed door to anyone without an account. The permalink is the Storybook itself and needs none. All three open in a new tab, so reading the receipts never costs the reader their place on this page — which is why `newTab` below is appended to each link's accessible name.",
+    "newTab": "opens in a new tab",
     "items": [
       {
         "label": "The Figma file",
         "note": "Tokens, components, banding and motion",
-        "href": "https://www.figma.com/design/UnybX8G5sQIEhLLZN2YFl6/Revolut?node-id=2-4530",
+        "href": "https://www.figma.com/design/UnybX8G5sQIEhLLZN2YFl6/Revolut?node-id=56-4384",
         "mark": "figma"
       },
       {

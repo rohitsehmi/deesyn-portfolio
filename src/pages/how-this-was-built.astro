@@ -207,6 +207,17 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
       arrow-up-right, not arrow-thin-right: these leave the site, and the
       diagonal is the convention for that. It is the reason the icon exists in
       the set — Revolut ships no diagonal, so it is their thin arrow rotated.
+
+      All three open in a new tab. These are receipts for claims made on this
+      page, so a reader checks one and comes back; navigating away in place
+      makes that a round trip through the back button. Same target/rel pattern
+      as the external link on /contact.
+
+      The diagonal says "this leaves the site" to anyone who can see it, but
+      the icon is aria-hidden, so the new tab is announced in the accessible
+      name instead. Composed from the label rather than written out three
+      times, so the three cannot drift apart, and label-first so the
+      accessible name still starts with the visible text (WCAG 2.5.3).
     */}
     <ul class="hb-links">
       {c.links.items.map((l, i) => {
@@ -224,6 +235,9 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
             <ArrowLink
               href={l.href}
               icon="arrow-up-right"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${l.label}, ${c.links.newTab}`}
               data-receipt={l.mark}
               copyRef={`how-this-was-built:links.items.${i}.label`}
             >
