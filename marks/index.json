@@ -1,7 +1,7 @@
 {
   "$description": "Contracts for Figma page \"Marks\". Generated — do not edit by hand. Run node design/build.mjs.",
   "figmaPage": "Marks",
-  "generated": "2026-08-05",
+  "generated": "2026-08-10",
   "components": [
     {
       "name": "Brand/Logo",

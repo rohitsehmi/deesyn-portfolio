@@ -132,55 +132,113 @@
    than the screen and the last link sits under the chrome. `100dvh` tracks the
    bar as it collapses.
 --------------------------------------------------------------------------- */
-.nav__panel {
+/*
+  The scrim. Opacity only — it never moves, so the sheet is the only thing the
+  eye tracks. `bg/scrim` is 40% black in light and 70% in dark, which is the one
+  place a band-relative value would be wrong: the sheet is not a band.
+*/
+.nav__scrim {
   position: fixed;
   inset: 0;
-  /* Above the theme toggle FAB (--z-fab: 150), below the bar (--z-sticky: 100
-     is raised alongside this). `aria-modal` promises the rest of the page is
-     unavailable; a floating button still sitting on top of it makes that a lie
-     for anyone using a pointer, even though a screen reader already ignores it. */
+  z-index: 155;
+  background: var(--semantic-bg-scrim);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    visibility 0s linear var(--semantic-duration-dropdown);
+}
+.nav__scrim[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--semantic-duration-overlay) var(--semantic-easing-drawer),
+    visibility 0s;
+}
+
+.nav__panel {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  /*
+    Full width. It briefly ran at min(86vw, 360px) so a strip of page stayed
+    visible behind the scrim, which is the argument for a partial sheet: it
+    says the page is still there. Full-bleed wins on a phone anyway — the links
+    are set at display size and a 335px column left them crowded against both
+    edges, and at this width the sheet reads as the menu rather than as a panel
+    over the menu.
+
+    One thing it costs, and it is worth knowing: there is no longer an outside
+    to tap. Dismissal is the close button and Escape. The scrim below is kept
+    because it still does real work on the way in — the page darkens ahead of
+    the sheet arriving — but it is no longer a hit target.
+  */
+  width: 100%;
+  /* Above the theme toggle FAB (--z-fab: 150) and above the scrim.
+     `aria-modal` promises the rest of the page is unavailable; a floating
+     button still sitting on top of it makes that a lie for anyone using a
+     pointer, even though a screen reader already ignores it. */
   z-index: 160;
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   background: var(--semantic-bg-canvas);
-  /* Clears the fixed bar above and the home indicator below. env() is 0 on a
-     device without insets, so this needs no feature query. */
-  padding:
-    calc(var(--primitive-layout-l64) + env(safe-area-inset-top))
-    calc(var(--primitive-space-sp500) + env(safe-area-inset-right))
-    calc(var(--primitive-layout-l64) + env(safe-area-inset-bottom))
-    calc(var(--primitive-space-sp500) + env(safe-area-inset-left));
+  /* Only the trailing and bottom insets can apply — the sheet is pinned to the
+     right edge and runs the full height. env() is 0 on a device without insets,
+     so this needs no feature query. */
+  padding-inline: var(--primitive-space-sp600);
+  padding-inline-end: calc(var(--primitive-space-sp600) + env(safe-area-inset-right));
+  padding-block-end: calc(var(--primitive-layout-l40) + env(safe-area-inset-bottom));
 
-  /* Closed. Opacity and transform only -- both composited, neither triggers
-     layout. `visibility` is what stops it being hit-testable mid-fade, and it
-     is deliberately not transitioned on the way in. */
-  opacity: 0;
+  /*
+    Closed, parked off its own trailing edge. A percentage, so it is exactly one
+    sheet-width regardless of what `min()` resolved to. Transform and opacity
+    only — both composited, neither triggers layout — and no opacity here at
+    all: a drawer slides, it does not fade, and fading one while it moves reads
+    as two effects competing.
+
+    `visibility` is what stops it being hit-testable mid-slide, and it is
+    deliberately not transitioned on the way in.
+  */
+  transform: translateX(100%);
   visibility: hidden;
-  transform: translateY(-8px);
   transition:
-    opacity var(--semantic-duration-dropdown) var(--semantic-easing-out),
     transform var(--semantic-duration-dropdown) var(--semantic-easing-out),
     visibility 0s linear var(--semantic-duration-dropdown);
 }
 
 .nav__panel[data-open='true'] {
-  opacity: 1;
+  transform: translateX(0);
   visibility: visible;
-  transform: translateY(0);
-  /* Opening uses the drawer curve and takes longer than it closes. Entering is
-     where the user is watching; leaving should get out of the way. */
+  /*
+    Opening takes the drawer curve and longer than it closes: entering is where
+    the user is watching and the movement is the explanation, leaving should get
+    out of the way. 400ms out, 250ms back.
+  */
   transition:
-    opacity var(--semantic-duration-overlay) var(--semantic-easing-drawer),
     transform var(--semantic-duration-overlay) var(--semantic-easing-drawer),
     visibility 0s;
+}
+
+/*
+  The same height and gutter as the header, so the close sits exactly where the
+  trigger was. `flex-end` puts it on the right; the sheet's own inline padding
+  supplies the gutter, which is why this row has none of its own.
+*/
+.nav__panel-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: none;
+  min-height: var(--primitive-size-nav);
+  padding-block-start: env(safe-area-inset-top);
 }
 
 .nav__panel-links {
   display: flex;
   flex-direction: column;
   gap: var(--primitive-space-sp400);
+  margin-block-start: var(--primitive-layout-l40);
 }
 
 .nav__panel-link {
@@ -199,18 +257,23 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;           /* no 300ms double-tap-to-zoom delay */
 
+  /* Settles in from the trailing edge, the same direction the sheet arrives
+     from. Vertically would be a second axis of movement inside something
+     already moving horizontally, which reads as two animations rather than
+     one thing arriving. */
   opacity: 0;
-  transform: translateY(6px);
+  transform: translateX(12px);
   transition:
     opacity var(--semantic-duration-dropdown) var(--semantic-easing-out),
     transform var(--semantic-duration-dropdown) var(--semantic-easing-out);
 }
 
 /* Staggered by 40ms, inside the 30-80ms band: enough to read as a cascade,
-   short enough that the last link is not visibly waiting. */
+   short enough that the last link is not visibly waiting. Decorative only —
+   the link is clickable from the first frame. */
 .nav__panel[data-open='true'] .nav__panel-link {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(0);
   transition-delay: calc(var(--i) * 40ms);
 }
 
@@ -223,31 +286,58 @@
 }
 
 @media (min-width: 768px) {
-  /* Belt and braces with the resize handler: if the panel is somehow open at
-     desktop width it must not cover the page. */
-  .nav__panel { display: none; }
+  /* Belt and braces with the resize handler: if the sheet is somehow open at
+     desktop width neither it nor its scrim may cover the page. */
+  .nav__panel, .nav__scrim { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Reduced motion is fewer and gentler, not none. The fade stays because it
-     explains that something appeared; the movement and the stagger go. */
-  .nav__panel, .nav__panel-link {
+  /*
+    Reduced motion is fewer and gentler, not none. The slide is the whole
+    animation here — there is no opacity on the sheet to fall back to — so
+    rather than dropping the transform and letting it appear with a hard cut,
+    the sheet swaps to a fade in place. Something still explains that a layer
+    arrived; nothing travels.
+  */
+  .nav__panel {
+    transform: none;
+    opacity: 0;
+    transition:
+      opacity var(--semantic-duration-instant) var(--semantic-easing-out),
+      visibility 0s linear var(--semantic-duration-instant);
+  }
+  .nav__panel[data-open='true'] {
+    transform: none;
+    opacity: 1;
+    transition: opacity var(--semantic-duration-instant) var(--semantic-easing-out), visibility 0s;
+  }
+  /* The stagger is decoration on top of decoration. It goes entirely. */
+  .nav__panel-link,
+  .nav__panel[data-open='true'] .nav__panel-link {
     transform: none;
     transition-duration: var(--semantic-duration-instant);
     transition-delay: 0ms;
   }
   .nav__panel-link:active { transform: none; }
+  .nav__scrim, .nav__scrim[data-open='true'] {
+    transition-duration: var(--semantic-duration-instant);
+  }
 }
 
 /*
-  The one action keeps being the one action.
+  The sheet deliberately does NOT restate `cta`.
 
-  On the bar, `cta` renders a filled pill and everything else is ghost — the nav
-  has an opinion about what it wants you to do. Rendering both links as plain
-  text in the panel quietly threw that away. A pill inside a type-led sheet
-  would be clutter, so the emphasis is carried by weight and colour instead.
+  On the bar it renders a filled pill with a conic ring on hover, and the
+  emphasis is unmistakable. The sheet used to carry the idea across as
+  `fg/accent` on the text, on the argument that a pill inside a type-led sheet
+  would be clutter — but blue display-size text with no pill and no ring reads
+  as a mis-styled link, not as the one thing worth doing. It was the one part of
+  this that looked wrong on a phone.
+
+  So the hierarchy is expressed where there is room to express it properly, and
+  the sheet renders two links at equal weight. Two items do not need a hierarchy
+  imposed on them when both are one tap away and the whole list is on screen.
 */
-.nav__panel-link[data-cta='true'] { color: var(--semantic-fg-accent); }
 
 /* A modal that leaves a floating button live is not modal. Fades rather than
    snaps, so the toggle does not blink out from under a finger. :has() rather
@@ -260,9 +350,12 @@ body:has(.nav__panel[data-open='true']) .theme-toggle {
 }
 
 /*
-  The bar has to stay above its own panel, or the close button is buried and a
-  phone has no way out — no Escape key, and the links are the only thing on
-  screen. Raised only while open, so the normal stacking (FAB above sticky bar)
-  is untouched everywhere else.
+  The bar used to be raised above the panel while open (`z-index: 170`), because
+  the panel was full-bleed and the close button lived in the bar — buried, it
+  left a phone with no way out. The sheet carries its own close now, so that
+  rule was doing the opposite of its job: it painted the header, lockup and all,
+  straight over the sheet.
+
+  Removed rather than tuned. The way out is the sheet's own button, the scrim,
+  and Escape; the bar has no reason to be above a layer that covers it.
 */
-body:has(.nav__panel[data-open='true']) .nav { z-index: 170; }

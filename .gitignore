@@ -12,6 +12,12 @@ memory
 # Local Claude Code settings (machine-specific permissions)
 .claude/settings.local.json
 
+# Vercel CLI link. Deploys run off the GitHub integration, so this directory
+# does not exist here today -- it appears the first time anyone runs a `vercel`
+# command in this folder, and it carries project and org ids. This repo is
+# public, so it is ignored before it can exist rather than after.
+.vercel/
+
 # Build output
 dist/
 storybook-static/

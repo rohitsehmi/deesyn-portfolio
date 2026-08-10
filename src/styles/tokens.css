@@ -108,7 +108,7 @@
   --primitive-size-button-md: 44px;
   --primitive-size-button-lg: 48px;
   --primitive-size-input: 56px;
-  --primitive-size-nav: 56px;
+  --primitive-size-nav: 64px;
   --primitive-size-max-width: 1000px;
   --primitive-breakpoint-mobile: 425px;
   --primitive-breakpoint-tablet: 768px;
@@ -119,6 +119,7 @@
   --primitive-duration-d200: 200ms;
   --primitive-duration-d250: 250ms;
   --primitive-duration-d400: 400ms;
+  --primitive-duration-d800: 800ms;
   --primitive-easing-out: cubic-bezier(0.23, 1, 0.32, 1);
   --primitive-easing-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --primitive-easing-drawer: cubic-bezier(0.32, 0.72, 0, 1);
@@ -167,6 +168,7 @@
   --semantic-duration-tooltip: var(--primitive-duration-d200);
   --semantic-duration-dropdown: var(--primitive-duration-d250);
   --semantic-duration-overlay: var(--primitive-duration-d400);
+  --semantic-duration-counter: var(--primitive-duration-d800);
   --semantic-easing-out: var(--primitive-easing-out);
   --semantic-easing-in-out: var(--primitive-easing-in-out);
   --semantic-easing-drawer: var(--primitive-easing-drawer);
@@ -226,6 +228,7 @@
     --semantic-duration-tooltip: var(--primitive-duration-d200);
     --semantic-duration-dropdown: var(--primitive-duration-d250);
     --semantic-duration-overlay: var(--primitive-duration-d400);
+    --semantic-duration-counter: var(--primitive-duration-d800);
     --semantic-easing-out: var(--primitive-easing-out);
     --semantic-easing-in-out: var(--primitive-easing-in-out);
     --semantic-easing-drawer: var(--primitive-easing-drawer);
@@ -277,6 +280,7 @@
   --semantic-duration-tooltip: var(--primitive-duration-d200);
   --semantic-duration-dropdown: var(--primitive-duration-d250);
   --semantic-duration-overlay: var(--primitive-duration-d400);
+  --semantic-duration-counter: var(--primitive-duration-d800);
   --semantic-easing-out: var(--primitive-easing-out);
   --semantic-easing-in-out: var(--primitive-easing-in-out);
   --semantic-easing-drawer: var(--primitive-easing-drawer);
@@ -332,6 +336,7 @@
   --semantic-duration-tooltip: var(--primitive-duration-d200);
   --semantic-duration-dropdown: var(--primitive-duration-d250);
   --semantic-duration-overlay: var(--primitive-duration-d400);
+  --semantic-duration-counter: var(--primitive-duration-d800);
   --semantic-easing-out: var(--primitive-easing-out);
   --semantic-easing-in-out: var(--primitive-easing-in-out);
   --semantic-easing-drawer: var(--primitive-easing-drawer);
@@ -386,6 +391,7 @@
     --semantic-duration-tooltip: var(--primitive-duration-d200);
     --semantic-duration-dropdown: var(--primitive-duration-d250);
     --semantic-duration-overlay: var(--primitive-duration-d400);
+    --semantic-duration-counter: var(--primitive-duration-d800);
     --semantic-easing-out: var(--primitive-easing-out);
     --semantic-easing-in-out: var(--primitive-easing-in-out);
     --semantic-easing-drawer: var(--primitive-easing-drawer);
@@ -437,6 +443,7 @@
   --semantic-duration-tooltip: var(--primitive-duration-d200);
   --semantic-duration-dropdown: var(--primitive-duration-d250);
   --semantic-duration-overlay: var(--primitive-duration-d400);
+  --semantic-duration-counter: var(--primitive-duration-d800);
   --semantic-easing-out: var(--primitive-easing-out);
   --semantic-easing-in-out: var(--primitive-easing-in-out);
   --semantic-easing-drawer: var(--primitive-easing-drawer);
@@ -488,6 +495,7 @@
   --semantic-duration-tooltip: var(--primitive-duration-d200);
   --semantic-duration-dropdown: var(--primitive-duration-d250);
   --semantic-duration-overlay: var(--primitive-duration-d400);
+  --semantic-duration-counter: var(--primitive-duration-d800);
   --semantic-easing-out: var(--primitive-easing-out);
   --semantic-easing-in-out: var(--primitive-easing-in-out);
   --semantic-easing-drawer: var(--primitive-easing-drawer);
@@ -539,6 +547,7 @@
   --semantic-duration-tooltip: var(--primitive-duration-d200);
   --semantic-duration-dropdown: var(--primitive-duration-d250);
   --semantic-duration-overlay: var(--primitive-duration-d400);
+  --semantic-duration-counter: var(--primitive-duration-d800);
   --semantic-easing-out: var(--primitive-easing-out);
   --semantic-easing-in-out: var(--primitive-easing-in-out);
   --semantic-easing-drawer: var(--primitive-easing-drawer);

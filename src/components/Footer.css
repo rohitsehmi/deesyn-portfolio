@@ -9,7 +9,35 @@
 .footer__top { display: flex; gap: var(--primitive-layout-l48); align-items: flex-start; }
 .footer__columns { margin-left: auto; display: flex; gap: var(--primitive-layout-l48); }
 .footer__rule { border: 0; height: 1px; background: var(--semantic-border-subtle); margin: 0; }
-.footer__bottom { display: flex; align-items: center; gap: var(--primitive-space-sp600); flex-wrap: wrap; }
+/*
+  Mobile stacks the link ABOVE the mark; from 768px it is a row again, link
+  right, mark left, exactly as before.
+
+  `column-reverse` rather than reordering the markup, because the DOM order is
+  right for the desktop row and for reading order — and it is safe here for one
+  specific reason: `.footer__brand` holds no focusable element. The mark is an
+  inline SVG and the copyright is a paragraph, so the only tab stop in this row
+  is the link itself. Reversing the visual order of a single focusable element
+  cannot desynchronise focus order from what is on screen, which is the usual
+  reason not to do this.
+
+  The mark last on a phone is what puts the one thing worth tapping in the
+  thumb's way and leaves the signature where a signature belongs.
+*/
+.footer__bottom {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: var(--primitive-space-sp1000);
+  flex-wrap: wrap;
+}
+@media (min-width: 768px) {
+  .footer__bottom {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--primitive-space-sp600);
+  }
+}
 
 /*
   Mark and copyright stack. align-items rather than the default stretch, so the

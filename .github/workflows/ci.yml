@@ -58,6 +58,13 @@ jobs:
       - name: CSS — token references resolve, font values bound
         run: node design/verify-css.mjs
 
+      # /how-this-was-built states "N in code, M with a published contract".
+      # Those two numbers used to be counted from different things and agreed by
+      # coincidence; this fails the build if any component loses its contract,
+      # so the page cannot quietly start making a false claim about itself.
+      - name: Contracts — every component has one
+        run: node design/verify-contracts.mjs
+
       # Regenerating must be a no-op. If it is not, someone hand-edited a
       # generated file instead of changing Figma and re-exporting.
       - name: Generated files are up to date

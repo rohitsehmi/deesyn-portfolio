@@ -4,6 +4,7 @@ import { Nav } from '../components/Nav';
 import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { linksFor } from '../data/nav';
+import { readingTime } from '../data/reading-time';
 
 /**
  * The shell for standard content pages: about, cv, contact.
@@ -23,9 +24,23 @@ interface Props {
    */
   titleCopyRef?: string;
   standfirstCopyRef?: string;
+  /**
+   * The copy file to measure a reading time from, named rather than derived
+   * from the URL.
+   *
+   * Opt-in because most pages here should not carry one. /contact is eighteen
+   * words and would render "1 min read" over a single button, which reads as a
+   * system applying itself where nobody asked; /about and /cv have no copy file
+   * at all and would silently get nothing. Naming the file makes both cases a
+   * decision instead of an accident.
+   */
+  readingTimeFor?: string;
 }
-const { title, standfirst, description, titleCopyRef, standfirstCopyRef } = Astro.props;
+const { title, standfirst, description, titleCopyRef, standfirstCopyRef, readingTimeFor } =
+  Astro.props;
 const links = linksFor(Astro.url.pathname);
+
+const reading = readingTimeFor ? readingTime(readingTimeFor) : null;
 
 /*
   The footer continues the alternation rather than assuming one. With a body
@@ -46,6 +61,16 @@ const footerRole = hasBody ? 'base' : 'sunken';
     <Band role="base" scale="feature">
       <h1 class="page-hero__title" data-copy={titleCopyRef}>{title}</h1>
       {standfirst && <p class="page-hero__standfirst" data-copy={standfirstCopyRef}>{standfirst}</p>}
+      {/*
+        Same treatment as a case study's: computed from the copy, carrying no
+        data-copy so the browser editor cannot write a stale number back into
+        the JSON, and a <time> because a duration is what datetime takes.
+      */}
+      {reading && (
+        <p class="page-hero__meta">
+          <time datetime={`PT${reading.minutes}M`}>{reading.label}</time>
+        </p>
+      )}
       {/*
         Optional, and only rendered when something fills it — an empty wrapper
         would still add its own top margin and open a gap under the standfirst
@@ -78,28 +103,54 @@ const footerRole = hasBody ? 'base' : 'sunken';
 </Base>
 
 <style is:global>
+  /*
+    One step below a case study's hero, all the way down: heading-l -> display-s
+    on the title where a study runs display-s -> display-m, and body-1 -> body-l
+    on the standfirst where a study runs body-l -> body-xl.
+
+    The distinction is what the words are doing. A case study's title is a
+    sentence carrying the argument and it earns a display size. "CV" and "About"
+    are labels on furniture — at display-m, a two-letter word was set at 52px,
+    and the CV hero took 503px of an 844px phone screen before a single line of
+    the CV appeared. The step down gives that back without inventing a size:
+    every value here is still a style on the scale, and nothing clamps.
+  */
   .page-hero__title {
     margin: 0 0 var(--primitive-space-sp600);
     max-width: 18ch;
-    font: var(--type-display-s);
-    letter-spacing: var(--type-display-s-tracking);
+    font: var(--type-heading-l);
+    letter-spacing: var(--type-heading-l-tracking);
     color: var(--semantic-fg-primary);
     text-wrap: balance;
   }
   @media (min-width: 768px) {
-    .page-hero__title { font: var(--type-display-m); letter-spacing: var(--type-display-m-tracking); }
+    .page-hero__title { font: var(--type-display-s); letter-spacing: var(--type-display-s-tracking); }
   }
 
   .page-hero__standfirst {
     margin: 0;
     max-width: 60ch;
-    font: var(--type-body-l);
-    letter-spacing: var(--type-body-l-tracking);
+    font: var(--type-body-1);
+    letter-spacing: var(--type-body-1-tracking);
     color: var(--semantic-fg-secondary);
     text-wrap: pretty;
   }
   @media (min-width: 768px) {
-    .page-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
+    .page-hero__standfirst { font: var(--type-body-l); letter-spacing: var(--type-body-l-tracking); }
+  }
+
+  /*
+    Matches .cs-hero__meta: 16px under the standfirst, body weight rather than
+    emphasis. The two are stated separately rather than shared, the same way
+    the two heroes already state their own title and standfirst — these layouts
+    have never had a common stylesheet, and inventing one for five declarations
+    would put the case study's rhythm and this page's on the same hook.
+  */
+  .page-hero__meta {
+    margin: var(--primitive-space-sp500) 0 0;
+    font: var(--type-body-2);
+    letter-spacing: var(--type-body-2-tracking);
+    color: var(--semantic-fg-secondary);
   }
 
   /* Wraps rather than shrinks: on a narrow screen the note drops below the

@@ -47,7 +47,19 @@ export function Metrics({ items, source, copyBase, sourceCopyRef }: MetricsProps
       <dl className="metrics__grid" data-count={Math.min(items.length, 4)}>
         {items.map((m, i) => (
           <div className="metrics__item" key={m.label}>
-            <dt className="metrics__value" data-copy={copyBase && `${copyBase}.${i}.value`}>{m.value}</dt>
+            {/*
+              `data-ticker` marks this as countable. The value rendered here is
+              always the real one — see number-ticker.ts, which is a page script
+              rather than part of this component precisely so that stays true
+              with JavaScript off.
+            */}
+            <dt
+              className="metrics__value"
+              data-ticker
+              data-copy={copyBase && `${copyBase}.${i}.value`}
+            >
+              {m.value}
+            </dt>
             <dd className="metrics__label">
               <span data-copy={copyBase && `${copyBase}.${i}.label`}>{m.label}</span>
               {m.from && <span className="metrics__from">previously {m.from}</span>}

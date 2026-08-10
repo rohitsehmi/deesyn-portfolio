@@ -111,7 +111,22 @@
   display: flex;
   justify-content: flex-end;
 }
-.tile__cue { flex: none; }
+/*
+  Transparent to the pointer, and this is the whole fix for a real bug: the
+  arrow was the one part of a tile that did nothing when you tapped it.
+
+  It is `aria-hidden` decoration — the tile is the target and the title is the
+  accessible name — but decoration still takes hit tests. A tap on the arrow was
+  landing on the cue's own subtree, finding nothing that handled it, and
+  bubbling to `.tile__body`, which is not a link. Every other part of the tile
+  navigated; the arrow, the one element that *looks* like the button, did not.
+
+  `pointer-events: none` hands the hit straight to `.tile__link::after`
+  underneath. It is the right tool rather than a second anchor: a duplicate link
+  to the same destination is a second tab stop and a second announcement for
+  something that is already one target with one name.
+*/
+.tile__cue { flex: none; pointer-events: none; }
 
 /*
   The cue is never hovered or pressed itself, so the tile drives both. Values
@@ -142,8 +157,21 @@
 @media (hover: hover) and (pointer: fine) {
   .tile[data-variant='card']:hover { background: var(--semantic-bg-surface-raised); }
 }
-/* Media bleeds to the card edge, so the radius lives on the card. */
+/*
+  Media bleeds to the card edge, so the radius lives on the card.
+
+  Both of these are needed, and only the first was here. `.tile__media` is the
+  wrapper; the rounding that was actually visible came from `.media__frame`
+  inside it, which Media.css gives r20 at `fit=inset`. The card clips, so the
+  top two corners looked correct either way — but the bottom two were being
+  rounded by the frame, mid-card, above the body text. Figma holds that frame at
+  0/0/0/0 and lets the card do all four; this is what makes the two agree.
+
+  Card.css already does exactly this for `Layout/Card`. The card variant of the
+  tile is the same arrangement and had only half the rule.
+*/
 .tile[data-variant='card'] .tile__media { border-radius: 0; }
+.tile[data-variant='card'] .tile__media .media__frame { border-radius: 0; }
 .tile[data-variant='card'] .tile__body { padding: var(--primitive-space-sp1000); }
 /* The image no longer lifts: inside a clipped card it just crops. */
 .tile[data-variant='card']:hover .tile__media .media__frame { transform: none; }

@@ -1,16 +1,30 @@
 # Chrome/Nav
 
-Height binds to Size/Nav (56). The inner container caps at Size/Max Width (1000) via maxWidth, so the bar spans full-bleed while its content stays on the measure.
+Height binds to Size/Nav (64). Raised from 56 on 2026-08-10: the mobile trigger moved to the md button size (44) so the touch target clears Apple's 44pt minimum and WCAG 2.5.5, and 56 left it 6px of air top and bottom. The inner container caps at Size/Max Width (1000) via maxWidth, so the bar spans full-bleed while its content stays on the measure.
 
 state=top is transparent and sits over whatever band is beneath it, which is how it inherits that band's foreground for free. state=scrolled takes bg/canvas plus a 1px border/subtle hairline — no shadow, per the banding system.
 
-One link is primary and the rest are ghost. Three ghost links gave Contact the same weight as CV, which left the page with no opinion about what it wanted the reader to do. There can only be one: a second would put the hierarchy straight back. Ghost is what the other links are for — a low-emphasis action that is still a real button, with real hit area and real press feedback.
+The mark is the Ro x Revolut lockup at height 32, which is what the code renders. It says the work was made for Revolut rather than by them; the wordmark alone read as claiming their identity.
 
-CODE-ONLY, AND DELIBERATE: the primary link carries a rotating conic ring on hover and focus. It cannot be a variant here — it is an animation, and it is bound to a pointer state Figma cannot express. Hover-only is the design, not a limitation: the motion gate rates a fixed nav at 100+/day, which resolves to none, while hovering Contact is rare and rare earns delight. A ring rather than a bloom, because site chrome carries no box-shadow.
+One link is primary and the rest are ghost. There can only be one: two ghost links gave Contact the same weight as CV, which left the chrome with no opinion about what it wanted the reader to do, and the whole site exists to start one conversation. Ghost is what the others are for — a low-emphasis action that is still a real button, with real hit area and real press feedback.
 
-Code-only props: href per link, aria-current, cta on the one primary link, skip-to-content target.
+Both treatments were briefly removed on 2026-08-10 and restored the same day. What was actually wrong was the mobile sheet, where cta rendered the link in fg/accent — blue display-size text with no pill and no ring, which reads as a mis-styled link rather than as emphasis. The desktop treatment was never the problem, and the sheet no longer restates cta at all.
 
-The actions slot is 140x56 and fills vertically. A SLOT cannot hug on either axis — it is FIXED or FILL — so it needs an explicit size and its content needs positioning inside it.
+CODE-ONLY, AND DELIBERATE:
+
+- The conic ring on the primary link, on hover and focus. It cannot be a variant — it is an animation bound to a pointer state. Hover-only is the design: the motion gate rates a fixed nav at 100+/day, which resolves to none, while hovering Contact is rare and rare earns delight. A ring rather than a bloom, because site chrome carries no box-shadow.
+
+- The mobile side sheet. Below 768px the links live in a full-width sheet that enters from the trailing edge over a bg/scrim: transform only, duration/overlay on the easing/drawer curve in, duration/dropdown on easing/out back, because entering is where the user is watching and leaving should get out of the way. Links stagger 40ms from the same edge. Under prefers-reduced-motion the sheet fades in place instead. Figma has no open state and no scroll position, so none of it can be a variant here.
+
+- The sheet carries its own close, at md, positioned to land exactly where the trigger that opened it was. Because it is full width there is no outside to tap: dismissal is that button and Escape.
+
+- While the sheet is open the rest of the page is made inert, so aria-modal="true" is actually true. Without it, tabbing past the last link walked out into the page behind the scrim -- both case-study tiles, the footer link, the skip link, and the theme toggle, which is opacity:0 and pointer-events:none at that moment, so a keyboard user could land on a control they could neither see nor click. Found by a WCAG 2.2 pass on 2026-08-10; axe reports nothing, because no single element is wrong on its own.
+
+- The sheet renders both links at equal weight, deliberately. Two items one tap apart, with the whole list on screen, do not need a hierarchy imposed on them.
+
+- href per link, aria-current, cta on the one primary link, skip-to-content target.
+
+The actions slot is 140x64 and fills vertically, desktop only — .nav__actions is display:none below 768px, so the mobile variants carry no slot. A SLOT cannot hug on either axis, so it needs an explicit size and its content needs positioning inside it.
 
 Figma: page **Components**, set `Chrome/Nav` — 4 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
@@ -89,7 +103,10 @@ Every value is a token reference, not a literal. `.` is the component root.
 | `.` | paddingX | `Space/sp600` |
 | `inner` | gap | `Space/sp600` |
 | `inner/Brand/Logo/Vector` | fg | `fg/primary` |
-| `inner/menu/Vector` | fg | `fg/primary` |
+| `inner/menu` | width | `Size/Button md` |
+| `inner/menu` | height | `Size/Button md` |
+| `inner/menu` | radius | `Radius/Round` |
+| `inner/menu/icon/Vector` | fg | `fg/primary` |
 
 ### layout=mobile, state=scrolled
 
@@ -101,4 +118,7 @@ Every value is a token reference, not a literal. `.` is the component root.
 | `.` | border | `border/subtle` |
 | `inner` | gap | `Space/sp600` |
 | `inner/Brand/Logo/Vector` | fg | `fg/primary` |
-| `inner/menu/Vector` | fg | `fg/primary` |
+| `inner/menu` | width | `Size/Button md` |
+| `inner/menu` | height | `Size/Button md` |
+| `inner/menu` | radius | `Radius/Round` |
+| `inner/menu/icon/Vector` | fg | `fg/primary` |

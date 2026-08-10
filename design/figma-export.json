@@ -1,6 +1,6 @@
 {
   "_comment": "Design-system contracts extracted from Figma file UnybX8G5sQIEhLLZN2YFl6. Source of truth. Regenerate with design/figma-export.snippet.js, then run `node design/build.mjs`.",
-  "_exported": "2026-08-05",
+  "_exported": "2026-08-10",
   "_note": "Domains mirror Figma pages one-to-one. tokenSets is a shared dedupe pool; each variant's `t` indexes into it. Values are TOKEN NAMES, not literals — resolve against tokens/tokens.json.",
   "domains": {
     "icons": {
@@ -874,7 +874,7 @@
           }
         },
         "Chrome/Nav": {
-          "description": "Height binds to Size/Nav (56). The inner container caps at Size/Max Width (1000) via maxWidth, so the bar spans full-bleed while its content stays on the measure.\n\nstate=top is transparent and sits over whatever band is beneath it, which is how it inherits that band's foreground for free. state=scrolled takes bg/canvas plus a 1px border/subtle hairline — no shadow, per the banding system.\n\nOne link is primary and the rest are ghost. Three ghost links gave Contact the same weight as CV, which left the page with no opinion about what it wanted the reader to do. There can only be one: a second would put the hierarchy straight back. Ghost is what the other links are for — a low-emphasis action that is still a real button, with real hit area and real press feedback.\n\nCODE-ONLY, AND DELIBERATE: the primary link carries a rotating conic ring on hover and focus. It cannot be a variant here — it is an animation, and it is bound to a pointer state Figma cannot express. Hover-only is the design, not a limitation: the motion gate rates a fixed nav at 100+/day, which resolves to none, while hovering Contact is rare and rare earns delight. A ring rather than a bloom, because site chrome carries no box-shadow.\n\nCode-only props: href per link, aria-current, cta on the one primary link, skip-to-content target.\n\nThe actions slot is 140x56 and fills vertically. A SLOT cannot hug on either axis — it is FIXED or FILL — so it needs an explicit size and its content needs positioning inside it.",
+          "description": "Height binds to Size/Nav (64). Raised from 56 on 2026-08-10: the mobile trigger moved to the md button size (44) so the touch target clears Apple's 44pt minimum and WCAG 2.5.5, and 56 left it 6px of air top and bottom. The inner container caps at Size/Max Width (1000) via maxWidth, so the bar spans full-bleed while its content stays on the measure.\n\nstate=top is transparent and sits over whatever band is beneath it, which is how it inherits that band's foreground for free. state=scrolled takes bg/canvas plus a 1px border/subtle hairline — no shadow, per the banding system.\n\nThe mark is the Ro x Revolut lockup at height 32, which is what the code renders. It says the work was made for Revolut rather than by them; the wordmark alone read as claiming their identity.\n\nOne link is primary and the rest are ghost. There can only be one: two ghost links gave Contact the same weight as CV, which left the chrome with no opinion about what it wanted the reader to do, and the whole site exists to start one conversation. Ghost is what the others are for — a low-emphasis action that is still a real button, with real hit area and real press feedback.\n\nBoth treatments were briefly removed on 2026-08-10 and restored the same day. What was actually wrong was the mobile sheet, where cta rendered the link in fg/accent — blue display-size text with no pill and no ring, which reads as a mis-styled link rather than as emphasis. The desktop treatment was never the problem, and the sheet no longer restates cta at all.\n\nCODE-ONLY, AND DELIBERATE:\n- The conic ring on the primary link, on hover and focus. It cannot be a variant — it is an animation bound to a pointer state. Hover-only is the design: the motion gate rates a fixed nav at 100+/day, which resolves to none, while hovering Contact is rare and rare earns delight. A ring rather than a bloom, because site chrome carries no box-shadow.\n- The mobile side sheet. Below 768px the links live in a full-width sheet that enters from the trailing edge over a bg/scrim: transform only, duration/overlay on the easing/drawer curve in, duration/dropdown on easing/out back, because entering is where the user is watching and leaving should get out of the way. Links stagger 40ms from the same edge. Under prefers-reduced-motion the sheet fades in place instead. Figma has no open state and no scroll position, so none of it can be a variant here.\n- The sheet carries its own close, at md, positioned to land exactly where the trigger that opened it was. Because it is full width there is no outside to tap: dismissal is that button and Escape.\n- While the sheet is open the rest of the page is made inert, so aria-modal=\"true\" is actually true. Without it, tabbing past the last link walked out into the page behind the scrim -- both case-study tiles, the footer link, the skip link, and the theme toggle, which is opacity:0 and pointer-events:none at that moment, so a keyboard user could land on a control they could neither see nor click. Found by a WCAG 2.2 pass on 2026-08-10; axe reports nothing, because no single element is wrong on its own.\n- The sheet renders both links at equal weight, deliberately. Two items one tap apart, with the whole list on screen, do not need a hierarchy imposed on them.\n- href per link, aria-current, cta on the one primary link, skip-to-content target.\n\nThe actions slot is 140x64 and fills vertically, desktop only — .nav__actions is display:none below 768px, so the mobile variants carry no slot. A SLOT cannot hug on either axis, so it needs an explicit size and its content needs positioning inside it.",
           "props": {
             "actions": {
               "type": "SLOT"
@@ -898,35 +898,35 @@
             "layout=desktop, state=top": {
               "size": [
                 1440,
-                56
+                64
               ],
               "t": 60
             },
             "layout=desktop, state=scrolled": {
               "size": [
                 1440,
-                56
+                64
               ],
               "t": 61
             },
             "layout=mobile, state=top": {
               "size": [
                 375,
-                56
+                64
               ],
               "t": 62
             },
             "layout=mobile, state=scrolled": {
               "size": [
                 375,
-                56
+                64
               ],
               "t": 63
             }
           }
         },
         "Chrome/Footer": {
-          "description": "Transparent by design — the band it sits in owns the surface, so the footer inherits foreground with no override. Inner container caps at Size/Max Width (1000).\n\nThe copyright sits under the mark, not beside it. Side by side they read as two separate items with a gap between them; stacked, with their left edges aligned, they read as one block of attribution.\n\nThe single link is not a contact address. Contact already has a nav item, so a mailto here would be a second affordance for an intent that is already served, and the footer's one link is worth more pointing somewhere the reader cannot get to otherwise.\n\ncompact drops the columns slot and the rule: brand block, then the link. Use it on case-study pages where the footer should not compete with the next-study link. full moves the brand block up into the top row, which leaves the bottom row holding only the link — it justifies to the end rather than sitting alone on the left.\n\nCode-only props: href per column link, href on the arrow link.\n\nThe columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.",
+          "description": "Transparent by design — the band it sits in owns the surface, so the footer inherits foreground with no override. Inner container caps at Size/Max Width (1000).\n\nThe copyright sits under the mark, not beside it. Side by side they read as two separate items with a gap between them; stacked, with their left edges aligned, they read as one block of attribution.\n\nThe single link is not a contact address. Contact already has a nav item, so a mailto here would be a second affordance for an intent that is already served, and the footer's one link is worth more pointing somewhere the reader cannot get to otherwise.\n\ncompact drops the columns slot and the rule: brand block, then the link. Use it on case-study pages where the footer should not compete with the next-study link. full moves the brand block up into the top row, which leaves the bottom row holding only the link — it justifies to the end rather than sitting alone on the left.\n\nCode-only props: href per column link, href on the arrow link.\n\nThe columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.\n\nMark size is 32 tall (155x32 for the lockup), matching the nav so the two read as one signature down the page.\n\nCODE-ONLY: below 768px the bottom row becomes a column-reverse — the \"How this was built\" link sits ABOVE the mark, so the one thing worth tapping is in the thumb's way and the signature stays where a signature belongs. Safe as a visual reversal because .footer__brand holds no focusable element: the mark is an inline SVG and the copyright is a paragraph, so the row has exactly one tab stop and reversing it cannot desynchronise focus order from the screen. Figma models the 1440 row only.",
           "props": {
             "columns": {
               "type": "SLOT"
@@ -1907,7 +1907,12 @@
       "inner/Brand/Logo/Vector": {
         "fg": "fg/primary"
       },
-      "inner/menu/Vector": {
+      "inner/menu": {
+        "width": "Size/Button md",
+        "height": "Size/Button md",
+        "radius": "Radius/Round"
+      },
+      "inner/menu/icon/Vector": {
         "fg": "fg/primary"
       }
     },
@@ -1924,7 +1929,12 @@
       "inner/Brand/Logo/Vector": {
         "fg": "fg/primary"
       },
-      "inner/menu/Vector": {
+      "inner/menu": {
+        "width": "Size/Button md",
+        "height": "Size/Button md",
+        "radius": "Radius/Round"
+      },
+      "inner/menu/icon/Vector": {
         "fg": "fg/primary"
       }
     },

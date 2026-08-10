@@ -11,8 +11,28 @@ interface Props {
    * past the bottom continues that band rather than cutting to the canvas.
    */
   pageEnd?: 'base' | 'sunken';
+  /**
+   * Set by CaseStudy.astro. A case study is an article with an author and a
+   * subject; every other page here is part of the site itself, and claiming
+   * otherwise in structured data is the kind of overreach schema.org invites.
+   */
+  article?: { published?: string; section?: string };
+  /**
+   * The page's own name, without the " · Rohit Sehmi" suffix that <title>
+   * carries. og:site_name already says whose site this is, so repeating it in
+   * og:title reads as stutter on the card, and an Article headline that ends in
+   * its own author's name is simply wrong.
+   */
+  socialTitle?: string;
 }
-const { title, description = 'Product design work by Rohit Sehmi.', pageEnd = 'base' } = Astro.props;
+const {
+  title,
+  description = 'Product design work by Rohit Sehmi.',
+  pageEnd = 'base',
+  article,
+  socialTitle
+} = Astro.props;
+const cardTitle = socialTitle ?? title;
 
 /*
   Built from `site` rather than from the request, so a page served on the
@@ -22,6 +42,44 @@ const { title, description = 'Product design work by Rohit Sehmi.', pageEnd = 'b
   bar and with every internal link.
 */
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://www.deesyn.com').href;
+
+const siteOrigin = (Astro.site ?? new URL('https://www.deesyn.com')).origin;
+/* Absolute, because og:image is one of the few places a relative URL is simply
+   invalid rather than merely resolved differently. */
+const ogImage = new URL('/og.png', siteOrigin).href;
+const ogType = article ? 'article' : 'website';
+
+const person = {
+  '@type': 'Person',
+  name: 'Rohit Sehmi',
+  url: siteOrigin,
+  jobTitle: 'Product and design systems designer',
+  address: { '@type': 'PostalAddress', addressLocality: 'London', addressCountry: 'GB' }
+};
+
+const structuredData = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: cardTitle,
+      description,
+      url: canonicalUrl,
+      image: ogImage,
+      author: person,
+      publisher: person,
+      inLanguage: 'en-GB',
+      ...(article.published ? { datePublished: article.published } : {}),
+      ...(article.section ? { articleSection: article.section } : {})
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Rohit Sehmi',
+      description,
+      url: siteOrigin,
+      inLanguage: 'en-GB',
+      author: person
+    };
 ---
 <!doctype html>
 <html lang="en" data-page-end={pageEnd}>
@@ -38,6 +96,43 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://www.dees
     */}
     <meta name="robots" content="noindex, nofollow" />
     <link rel="canonical" href={canonicalUrl} />
+    {/*
+      The unfurl card, for the one way this URL actually travels: pasted into a
+      message to a named person. Without these, Slack, LinkedIn, iMessage and
+      WhatsApp render the bare address, which is the least persuasive thing a
+      link to a portfolio can look like.
+
+      Not in tension with noindex. `og:*` is read by link previewers to draw a
+      card; `noindex` is read by search engines to stay out of an index. A card
+      in a DM is not a listing. See public/robots.txt for the one thing that
+      does gate this.
+
+      og:image is an absolute URL because the spec requires it, and generated
+      from the brand lockup rather than drawn — see design/build-og-image.mjs.
+    */}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Rohit Sehmi" />
+    <meta property="og:title" content={cardTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ro x Revolut" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={cardTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    {/*
+      Structured data, for the readers that parse rather than render — which now
+      includes the language models people ask about candidates. It says the same
+      things the page says, in the form a machine can take: who this is, and for
+      a case study, that the page is an article with an author and a subject.
+
+      Deliberately modest. Schema.org rewards inventing properties you cannot
+      support, and every value below is already on the page in words.
+    */}
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
     {/*
       Rohit's own mark, generated from the same path data the Logo component
       renders — see design/build-favicon.mjs. The SVG carries its own
@@ -63,7 +158,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://www.dees
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
   </head>
-  <body>
+  <body data-route={Astro.routePattern}>
     <a class="skip" href="#main">Skip to content</a>
     <slot />
     <ThemeToggle client:load />
@@ -76,6 +171,43 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://www.dees
       to the console instead of sending in development.
     */}
     <Analytics />
+    {/*
+      Field Core Web Vitals, also cookieless. Speed Insights was already enabled
+      on the Vercel project, but nothing on the site rendered it, so it reported
+      "no data" -- which reads exactly like no traffic, and this site does not
+      have much. An unwired integration that looks like a quiet one is worse
+      than an absent one.
+
+      Worth the second script for one reason: the hero is the LCP element and
+      was optimised on lab numbers alone. This is the only thing here that says
+      whether 137kB of WebP actually lands on a real phone on a real network.
+
+      Wired by hand rather than with `@vercel/speed-insights/astro`, which does
+      not work here. That component renders <vercel-speed-insights> and relies
+      on its own hoisted <script> to define the element; Astro drops the script
+      without a warning, so the element ships undefined and the page collects
+      nothing while the HTML looks right. Verified by grepping the build: the
+      equivalent `customElements.define` for analytics is in the bundle and the
+      speed-insights one is in no chunk at all.
+
+      The likely cause, held loosely because it was not worth proving: both
+      packages ship the component as dist/astro/index.astro, which keys their
+      scripts `index.astro_astro_type_script_index_0` -- the same key as
+      src/pages/index.astro's own script. Analytics survives that collision and
+      speed-insights does not. Importing the module directly sidesteps the
+      question, and is what the rest of this repo does anyway.
+    */}
+    <script>
+      import { injectSpeedInsights } from '@vercel/speed-insights';
+      // Astro.routePattern rather than the pathname. Every page here is its own
+      // file, so today the two are identical -- it matters the day a study
+      // becomes /work/[slug], which would otherwise report one row per study
+      // and lose the aggregate. Read off the DOM for the same reason
+      // analytics.ts does: a hoisted script cannot see frontmatter, and
+      // define:vars would force it inline instead of letting it bundle.
+      const route = document.body.dataset.route;
+      injectSpeedInsights({ route, framework: 'astro' });
+    </script>
     <style is:global>
       .skip {
         position: absolute; left: -9999px;

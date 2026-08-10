@@ -4,7 +4,8 @@ import { Nav } from '../components/Nav';
 import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
-import { nextStudy, studyPath, studyCopyBase } from '../data/studies';
+import { studies, nextStudy, studyPath, studyCopyBase } from '../data/studies';
+import { readingTime } from '../data/reading-time';
 import { linksFor } from '../data/nav';
 
 /**
@@ -51,9 +52,29 @@ const next = nextStudy(slug);
  * depends on whether the next-study band is above it.
  */
 const footerRole = next ? 'base' : 'sunken';
+
+/**
+ * Measured off this study's copy file — see src/data/reading-time.ts. It is
+ * here rather than on each page for the same reason `next` is: one arrangement
+ * cannot disagree with itself, and a per-page number would be a number someone
+ * has to remember to update.
+ */
+const reading = readingTime(slug);
+
+/* Marks the page as an Article in structured data, and carries the discipline
+   through as its section. Read from the one studies list rather than passed in,
+   for the same reason `next` is: two places to state it is two places to
+   disagree. */
+const discipline = studies.find((s) => s.slug === slug)?.discipline;
 ---
 
-<Base title={`${title} · Rohit Sehmi`} description={description ?? standfirst} pageEnd={footerRole}>
+<Base
+  title={`${title} · Rohit Sehmi`}
+  description={description ?? standfirst}
+  pageEnd={footerRole}
+  article={{ section: discipline }}
+  socialTitle={title}
+>
   {/*
     Nav sits in flow, not in a band. `state=top` is transparent and inherits the
     foreground beneath it, and the component carries its own height and measure.
@@ -67,7 +88,30 @@ const footerRole = next ? 'base' : 'sunken';
     <Band role="base" scale="feature">
       <div class="cs-hero">
         <h1 class="cs-hero__title" data-copy={titleCopyRef}>{title}</h1>
-        <p class="cs-hero__standfirst" data-copy={standfirstCopyRef}>{standfirst}</p>
+        {/*
+          Standfirst and reading time are one group so the hero's sp800 rhythm
+          stays between groups, not inside one. The meta line is metadata about
+          the standfirst above it and belongs closer to it than to the
+          contribution list below.
+        */}
+        <div class="cs-hero__lede">
+          <p class="cs-hero__standfirst" data-copy={standfirstCopyRef}>{standfirst}</p>
+          {/*
+            Deliberately not browser-editable and carrying no data-copy: the
+            string is computed from the copy, so writing it back would bake
+            today's word count into the copy and stop the page recomputing it.
+            Same trap the facts block on /how-this-was-built avoids.
+
+            <time> because this is a duration and datetime takes one, which
+            makes the estimate machine-readable rather than just a string that
+            happens to end in "read".
+          */}
+          {reading && (
+            <p class="cs-hero__meta">
+              <time datetime={`PT${reading.minutes}M`}>{reading.label}</time>
+            </p>
+          )}
+        </div>
         <slot name="contribution" />
       </div>
     </Band>
@@ -199,9 +243,42 @@ const footerRole = next ? 'base' : 'sunken';
   @media (min-width: 768px) {
     .cs-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
   }
+
+  /* The standfirst and its reading time, held closer to each other than the
+     hero's sp800 holds the blocks apart. */
+  .cs-hero__lede {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-space-sp500);
+  }
+
+  /*
+    Quiet on purpose. This is an aid to a decision the reader makes before they
+    start, not a claim about the work — at the standfirst's weight it would
+    compete with the first sentence of the study, which is the one thing on the
+    page that has to land.
+
+    fg/secondary, which is 4.87:1 and legible at 14px. Not fg/tertiary: that is
+    1.65:1 on white and fails AA for body text, and this is text.
+
+    Regular weight, not emphasis. At 600 it sat directly above `Role` — also
+    600, one size up — and read as a fourth row of the contribution list rather
+    than as metadata about the study. 16px of space above it and 24px below was
+    not enough of a difference to say otherwise; dropping the weight is.
+  */
+  .cs-hero__meta {
+    margin: 0;
+    font: var(--type-body-2);
+    letter-spacing: var(--type-body-2-tracking);
+    color: var(--semantic-fg-secondary);
+  }
 </style>
 
 <script>
   import { trackReadDepth } from '../components/analytics';
+  import { tickNumbers } from '../components/number-ticker';
   trackReadDepth();
+  // Case studies only. These are the only pages with an impact band, and the
+  // only numbers on the site worth drawing the eye to.
+  tickNumbers();
 </script>

@@ -12,6 +12,10 @@ Code-only props: href per column link, href on the arrow link.
 
 The columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.
 
+Mark size is 32 tall (155x32 for the lockup), matching the nav so the two read as one signature down the page.
+
+CODE-ONLY: below 768px the bottom row becomes a column-reverse — the "How this was built" link sits ABOVE the mark, so the one thing worth tapping is in the thumb's way and the signature stays where a signature belongs. Safe as a visual reversal because .footer__brand holds no focusable element: the mark is an inline SVG and the copyright is a paragraph, so the row has exactly one tab stop and reversing it cannot desynchronise focus order from the screen. Figma models the 1440 row only.
+
 Figma: page **Components**, set `Chrome/Footer` — 2 variants. The same contract is on the set itself: `getSharedPluginData("spec", "contract")`.
 
 ## Variant axes

@@ -52,13 +52,13 @@ File **"Revolut"** — `UnybX8G5sQIEhLLZN2YFl6`. Pages, and the repo folder each
 
 | Page | Repo | Holds |
 |---|---|---|
-| **Foundations — Revolut** | `tokens/` | 246 tokens, 23 text styles, specimens |
+| **Foundations** | `tokens/` | 249 tokens, 23 text styles, specimens |
 | **Banding** | `docs/banding-system.md` | `Layout/Band` + adjacency rules |
 | **Icons** | `icons/` | the icon set |
 | **Marks** | `marks/` | brand marks |
 | **Components** | `components/` | the 10 UI components |
 
-The original "Foundations" page (an Expedia EGDS template) is reference scaffolding only — not ours.
+The page is called **`Foundations`**, not `Foundations — Revolut`. It was renamed at some point and this file said otherwise until 2026-08-10. The Expedia EGDS template page that used to sit alongside it as reference scaffolding has been deleted; the seven pages in the file are now Cover, a divider, Foundations, Icons, Marks, Components and Banding.
 
 Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development → **Figma Desktop Bridge** (manifest `~/.figma-console-mcp/plugin/manifest.json`). The plugin window must stay open.
 
@@ -86,7 +86,7 @@ The design system reconstructs Revolut's public brand values under their name, f
 
 ## Tokens
 
-`tokens/tokens.json` — W3C DTCG format, 246 leaf tokens, exported from Figma and checksum-verified against it (`4115829316`, matched 2026-08-03).
+`tokens/tokens.json` — W3C DTCG format, 249 leaf tokens, exported from Figma and checksum-verified against it (`2836674598`, matched 2026-08-10).
 
 ```bash
 node tokens/build.mjs     # regenerate from tokens/figma-export.json
@@ -103,10 +103,10 @@ The Figma-side export snippet lives in `tokens/figma-export.snippet.js` and retu
 
 ## Current state
 
-Built and visually verified on "Foundations — Revolut":
+Built and visually verified on "Foundations":
 
-- **`01 Primitives`** — 122 variables (colour ramp, white/black alphas, `sp50–sp1000`, layout scale, radius, sizing, breakpoints, `Duration/*`, `Easing/*`)
-- **`02 Semantic`** — 47 tokens × Light/Dark, every one aliased to a primitive, nothing hardcoded
+- **`01 Primitives`** — 123 variables (colour ramp, white/black alphas, `sp50–sp1000`, layout scale, radius, sizing, breakpoints, `Duration/*`, `Easing/*`)
+- **`02 Semantic`** — 48 tokens × Light/Dark, every one aliased to a primitive, nothing hardcoded
 - **23 text styles** — `Display/*`, `Heading/*`, `Lead/*`, `Body/*`, `Emphasis/*`, plus `UI/*` fenced off as product-only
 - **6 effect styles** — kept for app mockups only; the website itself uses zero shadows
 - **1 paint style** — `Gradient/Brand` (`#1227fd → #6fa0ff`)
@@ -140,6 +140,28 @@ Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Varia
 
 **Resolved 2026-08-04.** The chrome used to present Revolut's wordmark alone, which read as claiming their identity. It now uses the lockup, which reads as work made *for* Revolut rather than by them.
 
+**The lockup came out of the chrome on 2026-08-07 and went back in on 2026-08-10.** For those three days the nav rendered `variant="mark"` — Rohit's disc alone — which sidestepped the `×` question by dropping half the statement. Restored deliberately; the open question below is the one to answer, not to route around.
+
+**Nav changes, 2026-08-10.** `Size/Nav` 56 → 64, changed in Figma and re-exported, because all four `Chrome/Nav` variants bind their height to it — one edit moved both sides. The mobile trigger went from a bare 24px `Icon` to an `Action/Icon Button` at `md`, so the touch target is 44 rather than 32 and clears Apple's 44pt minimum and WCAG 2.5.5. Below 768px the panel is now a **full-width sheet**: it enters from the trailing edge over `bg/scrim`, `translateX` only, `duration/overlay` on `easing/drawer` in and `duration/dropdown` on `easing/out` back, with the links staggered 40ms from the same edge. It ran briefly at `min(86vw, 360px)` so a strip of page stayed visible; full-bleed won because display-size links were crowded in a 335px column. The cost is that there is no outside to tap — dismissal is the close button and Escape, and the scrim is kept for the way in rather than as a hit target. It carries its own close, positioned to land exactly where the trigger that opened it was — which is why the old `z-index: 170` rule that raised the bar above the panel is gone. That rule existed because the close used to live in the bar; with a sheet it painted the header straight over it.
+
+**Impact numbers count up — added 2026-08-10.** `src/components/number-ticker.ts` animates the `Metrics` values from zero when the grid reaches 60% on screen, staggered 80ms, over `duration/counter` on `easing/out`.
+
+Three things about it that are the point rather than the implementation:
+
+- **It is a page script, not a hydrated component.** `Metrics` renders server-side with no client directive, so the real number is in the HTML and a case study still ships no React for it. The animation is an enhancement on a correct page — with JS blocked a reader sees `+85%`, never `0`. Hydrating with `client:visible` would ship React to re-render a number already on screen *and* put a running animation inside every Chromatic snapshot.
+- **The curve is read from the token, not approximated.** `getComputedStyle` on `--semantic-easing-out`, then a small Newton-Raphson bezier solver evaluates it. Hand-rolling something that "looks similar" is the exact drift tokens exist to stop.
+- **It refuses `[NEEDS: …]` explicitly.** A gap marker containing a digit would otherwise count up to it, turning a visible reminder into what looks like a real measurement.
+
+Formatting survives the count: prefix and suffix are preserved, decimal places are fixed from the authored value (`35.5%` never renders `35`), and thousands separators are re-grouped each frame (`1,000+` counts through `722+`). `.metrics__value` already carried `font-variant-numeric: tabular-nums`, so nothing reflows — verified: value box widths and label tops are identical for the whole animation.
+
+`Duration/d800` and `duration/counter` were added to Figma for this, not typed into CSS. 800ms sits deliberately outside the interaction scale, which tops out at `d400`: that range exists to get out of the way, and a number has to stay legible while it moves.
+
+**The card arrow was decoration that ate its own tap target — fixed 2026-08-10, found by user research.** `.tile__cue` is the 48px circled arrow on a case-study tile. It is `aria-hidden` and the whole tile is the link, via a stretched `.tile__link::after`. But the cue still took hit tests: a tap on it landed in the cue's subtree, found nothing that handled it, and bubbled to `.tile__body`, which is not a link. Measured before the fix: title, summary and image all navigated, the arrow alone did **NO NAV** on both mouse and touch — the one element that *looks* like the button was the only dead spot on the tile. `pointer-events: none` on the cue hands the hit to the stretched link underneath. Deliberately not a second `<a>`: a duplicate link to the same destination is a second tab stop and a second announcement for something that is already one target with one name.
+
+**Footer, 2026-08-10.** Takes the lockup, at height 32, matching the nav — Figma already specified `variant=wordmark` here, so this was code catching up. Below 768px the bottom row is `column-reverse`, putting "How this was built" **above** the mark. Reversing visual order without reversing the DOM is normally a focus-order trap; it is safe here because `.footer__brand` holds no focusable element, so the row has exactly one tab stop.
+
+**Contact is still the one `cta`.** It was removed on 2026-08-10 and restored the same day, and the round trip is worth recording because it located the real fault. The desktop treatment — filled pill, conic ring on hover — was never the problem. What looked wrong was the **mobile sheet**, where `cta` rendered the link in `fg/accent`: blue display-size text with no pill and no ring, which reads as a mis-styled link rather than as emphasis. The sheet no longer restates `cta` at all and shows both links at equal weight; two items one tap apart, with the whole list on screen, do not need a hierarchy imposed on them.
+
 **Still open, and it matters more now the repo is public:** an `×` lockup conventionally signals a partnership. Sent directly to someone as a piece of work it is exactly right; sitting on an open URL it implies an engagement that does not exist. The site itself is `noindex` (`public/robots.txt` and the `X-Robots-Tag` header in `vercel.json`), which contains the problem without solving it.
 
 `src/components/` holds the React implementation — one file plus one CSS file per component, consuming tokens as CSS custom properties. `src/components/Band.tsx` implements the banding system: `data-band` re-declares the semantic properties for its subtree, which is the CSS equivalent of Figma's mode override.
@@ -168,11 +190,15 @@ node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 
 **Deprecating a component:** set `setSharedPluginData('spec', 'status', 'deprecated')` on the set in Figma and rename it out of the live namespace. It stays in the file and leaves the published contract; the export lists it under `deprecated` and `verify.mjs` prints it, so its absence is recorded rather than silent. `Deprecated/Brand Logo` (was `XX · Brand/Logo`) is the first.
 
-`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma: `2596963867`, 132 entries, matched 2026-08-05. See `design/README.md`. (An earlier `1567749477` was recorded here against the same entry count and was stale — **re-read a checksum from `verify.mjs` rather than trusting this file**, which is the only reason these are written down at all.)
+`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma: `2940174491`, 132 entries, matched 2026-08-10. See `design/README.md`. (An earlier `1567749477` was recorded here against the same entry count and was stale — **re-read a checksum from `verify.mjs` rather than trusting this file**, which is the only reason these are written down at all.)
 
-**Three checksums, three sources.** Tokens `4115829316`. Figma components `2596963867`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `2834059722` but have no Figma counterpart to match, by definition.
+**Three checksums, three sources.** Tokens `2836674598`. Figma components `2940174491`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `1695994133` but have no Figma counterpart to match, by definition.
 
-**Six components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. 17 React components, 17 specs.
+**Eight components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`, `CaseStudyTile` and `Parallax`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. **20 React components, 20 with a published contract** — this file said six and 17/17 until 2026-08-10, when `CaseStudyTile` and `Parallax` had joined the list without it being written down.
+
+**`design/verify-contracts.mjs` is what stops that recurring**, and it exists because the claim on `/how-this-was-built` was true by luck. "N in code, M with a published contract" counted components from `src/components/*.tsx` and contracts from the *number of files* in the spec directories. Those agreed at 20 and 20, which read as complete coverage and was arithmetic coincidence: `Link.tsx` exports both `Link` and `ArrowLink` so it produces **two** specs, while `Band.tsx` produces **none** there because a band is a page-layout primitive whose contract lives in `design/banding-export.json` with the adjacency rules. Two errors that cancelled exactly. The page now asks the real question per component, and the check fails the build if any component cannot answer it. In `verify` and in CI.
+
+An earlier version of that matcher tested `slug.endsWith()`, which looked tidy and was wrong: `Button` matched `action-icon-button` as well as `action-button`, so `IconButton` was silently covering for `Button`. It matches the whole domain-prefixed name now.
 
 `design/verify-css.mjs` covers what was written by hand rather than measured off Figma: **every `var(--*)` in `src/` must resolve against `tokens.json`**, and every font value must bind to `var(--type-*)`. A typo'd custom property is not a CSS error, it renders as an inherited default and looks deliberate, and nothing else in the repo catches it.
 
@@ -254,6 +280,8 @@ npm run copy:import                     # write it back
 
 `copy-drafts/` is **gitignored**. It is a working surface, and a committed draft alongside the JSON would be two sources of truth for the same sentence. The undo is still `git diff src/copy/`.
 
+**The importer's marker regex had no hyphen in it, and `studies.json` was uneditable through the round trip for as long as it has existed.** Markers there are keyed by case-study slug — `machine-readable-components.title` — and `[A-Za-z0-9_.]+` matches none of them. The export wrote all 16 correctly and the import recognised zero, so the file reported "0 markers, 0 changed" and wrote nothing. Nothing refused, nothing warned; the only symptom was a count of zero beside a file that plainly has content. Fixed 2026-08-10. It is the same class of failure as the stale-draft case below, and it is the reason that one is checked so loudly.
+
 **A draft older than its JSON is skipped**, because that case is silent: every string in it parses, matches a real key and writes — it just writes the version from before the JSON was edited. It bit on 2026-08-06, when a draft exported before a simplification would have reverted 25 strings, and only surfaced because one deleted key happened to refuse. Re-export, or pass `--force` if the draft really is the version you want.
 
 **Edge whitespace is carried over from the value being replaced, not taken from the document.** A few strings are deliberate fragments that join around an emphasised span — `process.principle.before` ends in a space, `.after` begins with one — and markdown cannot show that. Trimming them rendered two words fused together in the one paragraph on the page with emphasis in it.
@@ -277,6 +305,18 @@ The one thing it hardcodes is colour, and it resolves it from the token rather t
 `favicon.svg` carries its own `prefers-color-scheme` rule. That matters more here than anywhere on the site — a favicon sits on the browser's **tab strip**, not on the page background, so a dark mark disappears into a dark tab. The PNG fallbacks can't flip and take the light fill.
 
 `public/` exists only for these files. It was briefly empty after the hero moved to `src/assets/`, and an empty directory holds no tracked files — git prunes it on checkout, so it vanished from fresh clones and `build-storybook` failed on its missing `staticDirs` entry everywhere but the machine with the stale folder. If it ever empties again, drop the `staticDirs` line with it rather than committing a `.gitkeep`.
+
+## Social and structured data
+
+**Generated, never drawn — same rule as the favicon.** `design/build-og-image.mjs` reads `LOCKUP_PATHS` and the same `band/base` and `fg/primary` the page renders, and emits `public/og.png` at 1200x630. Part of `npm run specs`, and `public/` is in CI's staleness check, so changing the logo and forgetting the card fails the build.
+
+Light only, deliberately: a social card is composited onto whatever surface the reader's client uses and cannot respond to their theme, so it takes the light-mode pair that survives being dropped onto a white message list. PNG rather than SVG because Slack, LinkedIn, iMessage and WhatsApp all refuse SVG for `og:image`.
+
+`Base.astro` renders OpenGraph, Twitter card and JSON-LD on all 9 pages. **This is not in tension with `noindex`**: `og:*` is read by link previewers to draw a card, `noindex` is read by search engines to stay out of an index, and a card in a DM is not a listing. It matters because there is exactly one way this URL travels — pasted into a message to a named person — and without it that paste renders as a bare address.
+
+**`robots.txt` is the one thing that does gate this.** It carries `Disallow: /` for every user agent, and the compliant unfurlers (Slack, Twitter, LinkedIn) honour it, so they will not fetch the page and will never read the tags. The tags are correct and ready; whether to add an allow-list for those specific bots is a decision about the `x` lockup and Revolut's assets, not a technical one, and it has not been made.
+
+Structured data is `WebSite` on ordinary pages and `Article` on a case study, with `articleSection` carrying the discipline from `studies.ts`. Deliberately modest — schema.org rewards inventing properties you cannot support, and every value emitted is already on the page in words. `socialTitle` exists so `og:title` and the Article `headline` carry the page's own name without the `· Rohit Sehmi` suffix that `<title>` needs.
 
 ## Analytics
 
@@ -387,6 +427,6 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
 3. **Rotate the Chromatic project token** — Chromatic → Manage → Configure, then `.env` and the GitHub Actions secret. It is a write credential and it has been handled loosely.
 4. **`/about` builds but is linked from nowhere.** One entry in `src/data/nav.ts` brings it back; it was unlinked while it was a stub and has been written since.
 
-**Smaller, none blocking:** `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); Figma draws `Brand/Logo` at 233×48 in both Chrome sets while code renders 32; the hero and both index covers are still stand-in imagery.
+**Smaller, none blocking:** `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); the hero and both index covers are still stand-in imagery.
 
 **Settle the `Ro × Revolut` lockup.** An `×` lockup conventionally reads as a partnership, which would imply an engagement that does not exist. Shared directly with a person it is fine; on an open URL it is not. The same question governs making the Storybook public.

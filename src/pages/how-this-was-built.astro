@@ -33,11 +33,42 @@ const leaves = (node: any): number =>
   }, 0);
 
 const specDirs = ['components/specs', 'icons/specs', 'marks/specs'];
-const specCount = specDirs.reduce(
-  (n, d) => n + readdirSync(d).filter((f) => f.endsWith('.json')).length, 0);
+const specSlugs = new Set(
+  specDirs.flatMap((d) => readdirSync(d).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)))
+);
 
-const componentCount = readdirSync('src/components')
-  .filter((f) => f.endsWith('.tsx') && !f.endsWith('.stories.tsx')).length;
+const componentFiles = readdirSync('src/components')
+  .filter((f) => f.endsWith('.tsx') && !f.endsWith('.stories.tsx'));
+const componentCount = componentFiles.length;
+
+/**
+ * How many components actually have a published contract, checked one by one.
+ *
+ * This used to be `specSlugs.size`, and it read as 1:1 coverage while being a
+ * coincidence. Two errors cancelled exactly: `Link.tsx` exports both Link and
+ * ArrowLink and so produces *two* specs, while `Band.tsx` produces *none* in
+ * these directories, because a band is a page-layout primitive and its contract
+ * lives in design/banding-export.json with the adjacency rules it belongs to.
+ *
+ * Counting files gave the right number for the wrong reason, and would have
+ * started making a false claim on a public page the moment anyone added a
+ * component. This asks the real question instead: for each component, is there
+ * a contract somewhere that describes it? `npm run verify` fails if the answer
+ * is ever no, so the sentence below cannot quietly stop being true.
+ */
+const CONTRACT_ELSEWHERE: Record<string, string> = {
+  // slug -> the file that publishes its contract instead
+  band: 'design/banding-export.json'
+};
+const SPEC_DOMAINS = ['action', 'content', 'layout', 'chrome', 'brand'];
+const slugFor = (file: string) =>
+  file.slice(0, -4).replace(/(?<!^)(?=[A-Z])/g, '-').toLowerCase();
+const hasContract = (file: string) => {
+  const slug = slugFor(file);
+  if (slug in CONTRACT_ELSEWHERE) return true;
+  return [...specSlugs].some((s) => s === slug || SPEC_DOMAINS.some((d) => s === `${d}-${slug}`));
+};
+const specCount = componentFiles.filter(hasContract).length;
 
 const storyCount = readdirSync('src/components')
   .filter((f) => f.endsWith('.stories.tsx'))
@@ -80,6 +111,7 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
   standfirst={c.standfirst}
   titleCopyRef="how-this-was-built:title"
   standfirstCopyRef="how-this-was-built:standfirst"
+  readingTimeFor="how-this-was-built"
 >
   {/* The lead is an hb-block like everything else on this page. Left outside,
       it sat at zero against the facts table below it: `.hb-block + .hb-block`

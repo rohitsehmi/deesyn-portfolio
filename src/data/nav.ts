@@ -19,12 +19,18 @@ export interface NavLink {
   href: string;
   /**
    * The one action the site is for. Renders as a primary button instead of a
-   * ghost one.
+   * ghost one, and carries the conic ring on hover and focus.
    *
-   * There can only be one. Three ghost links gave Contact exactly the same
-   * weight as CV, which means the page had no opinion about what it wanted the
-   * reader to do — and the whole site exists to start one conversation. A
-   * second `cta` would put the hierarchy straight back where it was.
+   * There can only be one. Two ghost links gave Contact exactly the same weight
+   * as CV, which means the chrome had no opinion about what it wanted the
+   * reader to do — and the whole site exists to start one conversation.
+   *
+   * Briefly removed on 2026-08-10 and restored the same day. What was actually
+   * wrong was the mobile sheet, where `cta` was rendering the link in
+   * `fg/accent` — blue display-size text with no pill and no ring around it,
+   * which reads as a mis-styled link rather than as emphasis. The desktop
+   * treatment was never the problem. The sheet no longer keys off this at all;
+   * see Nav.css.
    */
   cta?: boolean;
 }
