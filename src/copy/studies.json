@@ -2,7 +2,7 @@
   "_comment": "Tile copy for each case study, keyed by slug. Editable in the browser under `npm run dev` — see tools/copy-editor.mjs. One file rather than per-study, because the same tile renders in two places: the index, and the next-study link at the foot of the other study. Edit it in either and both change. src/data/studies.ts keeps the structure — slug, cover image, archived — and reads these strings from here.",
   "machine-readable-components": {
     "title": "A component library a machine could read",
-    "summary": "Expedia Group had three drifting implementations of every component. A machine read all three and proposed a rebuild; my job was to overrule it where it was wrong, and write the decision back in a form it could build from.",
+    "summary": "Expedia Group had three drifting implementations of every component. A machine read all three and proposed a rebuild, and my job was to overrule it where it was wrong and write the decision back in a form it could build from.",
     "discipline": "Design systems",
     "coverAlt": "An abstract still life in violet and off-white: frosted glass panels showing a component grid, a list, a card and a block of code, wired together by glowing cables into a central lit tile."
   },
@@ -14,7 +14,7 @@
   },
   "search-experience": {
     "title": "Search, rebuilt so it could be tested",
-    "summary": "The Hotels.com app showed search results in a card framework nothing could be varied inside. Rebuilding it as dynamic cards turned the app's most valuable screen into one the team could learn from.",
+    "summary": "The Hotels.com app showed search results in a card framework that nothing could be varied inside. Rebuilding it as dynamic cards turned the app's most valuable screen into one the team could learn from.",
     "discipline": "Product design",
     "coverAlt": "An abstract still life in sage green and off-white: frosted glass panels showing a search field over a list of results, a detail view, a set of filters and a bar chart, linked by glowing cables."
   },

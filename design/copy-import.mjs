@@ -45,7 +45,20 @@ function parse(md) {
   };
 
   for (const line of lines) {
-    const marker = line.match(/^<!--\s*([A-Za-z0-9_.]+)\s*-->$/);
+    /*
+      The hyphen in the class is load-bearing. Without it this matched nothing
+      in studies.md, whose keys are case-study slugs — `machine-readable-
+      components.title` and every one of its siblings. The export wrote all 16
+      markers correctly and the import recognised none of them, so the file
+      reported "0 markers, 0 changed" and wrote nothing.
+
+      That is the exact failure this tool is otherwise careful about: silent.
+      Nothing refused, nothing warned, and the only visible symptom was a count
+      of zero next to a file that plainly has content. Found 2026-08-10 while
+      editing the tile copy, which had been uneditable through the round trip
+      since it was written.
+    */
+    const marker = line.match(/^<!--\s*([A-Za-z0-9_.-]+)\s*-->$/);
     if (marker) {
       flush();
       path = marker[1];

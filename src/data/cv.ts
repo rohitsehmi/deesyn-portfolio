@@ -27,7 +27,7 @@ export const roles: Role[] = [
     dates: 'May 2021 – March 2026',
     location: 'London',
     points: [
-      'Most recently worked on the architecture of a machine-readable component library — components with slots, built on Figma’s current feature set, across every brand in the Expedia Design System Group.',
+      'Most recently worked on the architecture of a machine-readable component library, built from components with slots on Figma’s current feature set, across every brand in the Expedia Design System Group.',
       'Evolved component frameworks, introducing structure and theme-based solutions serving around 90 brands at scale.',
       'Partnered with motion specialists to design and implement app shell transition patterns within the product experience.',
       'Defined cross-platform layout foundations, establishing scalable spacing and structural standards.',

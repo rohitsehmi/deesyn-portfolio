@@ -1,9 +1,9 @@
 {
   "_comment": "All the copy for /how-this-was-built, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. The {braced} tokens in facts.*.detail are build-time numbers computed from the files they describe; the page substitutes them. Edit the words around them freely, but keep the braces — a fact with a number typed in would make this page argue against itself. Rewritten 2026-08-06 to show the workflow and link the artefacts. Deliberately the shortest page on the site: it is an easter egg, not a third case study.",
   "title": "How this was built",
-  "standfirst": "A design system where Figma, the code and the build agree — and a build that refuses to ship if they stop.",
+  "standfirst": "A design system where Figma, the code and the build agree, and a build that refuses to ship if they stop.",
   "lead": [
-    "The first case study argues for one specification that designers, engineers and language models all build from. That project ended before it reached production, so this site is the smallest complete version of the same idea: not a description of the approach, but the approach running, on something you can open."
+    "The first case study argues for one specification that designers, engineers and language models all build from. That project ended before it reached production, so this site is the smallest complete version of the same idea, and rather than a description of the approach it is the approach running, on something you can open."
   ],
   "workflow": {
     "heading": "The workflow",
@@ -14,7 +14,7 @@
       },
       {
         "term": "Figma Console MCP",
-        "detail": "A live connection into the Figma file. Tokens, components and the layout rules are read and written from the editor rather than exported by hand — which is what stops the file and the repo drifting."
+        "detail": "A live connection into the Figma file. Tokens, components and the layout rules are read and written from the editor rather than exported by hand, which is what stops the file and the repo drifting."
       },
       {
         "term": "GitHub Actions",
@@ -69,7 +69,7 @@
         "label": "CSS.",
         "text": "Every custom property resolves to a real token. A typo like",
         "code": "fg-secondry",
-        "textAfter": "is not a CSS error — it renders as an inherited default and looks deliberate, so nothing else would catch it."
+        "textAfter": "is not a CSS error, because it renders as an inherited default and looks deliberate, so nothing else would catch it."
       },
       {
         "label": "Bands.",
@@ -80,7 +80,7 @@
   "limits": {
     "heading": "What it does not do",
     "paras": [
-      "It does not check whether the design is any good. It checks that the design and the code are the same thing — a narrower claim, and the only one worth automating. Taste is still done by looking."
+      "It does not check whether the design is any good. It checks that the design and the code are the same thing, which is a narrower claim and the only one worth automating. Taste is still done by looking."
     ]
   },
   "links": {
