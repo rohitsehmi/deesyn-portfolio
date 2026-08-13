@@ -26,7 +26,9 @@ npm run verify:bands # band adjacency, linted off built HTML (run after build)
 npm run chromatic    # visual regression (needs CHROMATIC_PROJECT_TOKEN)
 ```
 
-**The Chromatic project token is a write credential**, and this repo is public. It lives in `.env` (gitignored) and a GitHub Actions secret — never in a tracked file, never on a command line, because shell history is a file too. `.env.example` documents it. Rotated 2026-08-07.
+**The Chromatic project token is a write credential**, and this repo is public. It lives in `.env` (gitignored) and a GitHub Actions secret — never in a tracked file, never on a command line, because shell history is a file too. `.env.example` documents it. **Rotated 2026-08-13, and verified by a passing build rather than by a file timestamp.**
+
+That distinction is the whole lesson. This file previously said "Rotated 2026-08-07" in this spot while three other places still said rotation was outstanding, and the evidence offered for the former was `.env`'s modification time. A timestamp proves a write happened, not that what was written authenticates — and it did not: `npm run chromatic` failed `GRAPHQL_ERROR / Failed to authenticate`, and so did CI, for six days, on a token of the right length and shape. **The only proof a credential works is using it.**
 
 `design/verify-secrets.mjs` is the check that enforces it, in `npm run verify` and in CI. It scans **tracked files only**: `.env` legitimately holds the token, and flagging it would train everyone to ignore the check. What it catches is the moment a value moves from an ignored file into a tracked one. It never prints the match — echoing a secret into a CI log is the same mistake one step further on.
 
@@ -422,11 +424,11 @@ npm run chromatic     # publish a build (needs CHROMATIC_PROJECT_TOKEN)
 
 **What being public costs:** it carries Revolut's real icon assets and, in the lockup, their wordmark. Shared with a named person that reads as close study; on an open URL it is their trademark on an artefact that is not theirs. That is the same unsettled question as the `×` lockup, and it is now live on two URLs rather than none.
 
-**Rotate the project token now that this is public.** A write credential on a public project lets someone else publish content to a URL being sent to employers. Chromatic → Manage → Configure, then `.env` and the GitHub Actions secret.
+**The project token was rotated on 2026-08-13** and both copies — `.env` and the GitHub Actions secret — were updated together. It had been exposed in a chat transcript on 2026-08-03; the record above for why a write credential on a public project matters still stands.
+
+**Rotating it in one place and not the other is the failure mode to watch.** That is what happened between the 7th and the 13th: the value moved on Chromatic's side, `.env` and the Actions secret kept the old one, and the visual-regression job failed on every run while the design-system job stayed green. Nothing said "your token is stale" — CI reported a red build, and the workflow treats an *absent* token as skip-with-a-warning, so the failure looked like a Chromatic problem rather than a credential one.
 
 Build URLs are per-build. Anything you send out should use the project permalink, not the URL a run prints.
-
-**Outstanding:** the project token was pasted into a chat transcript on 2026-08-03 — rotate it in Chromatic → Manage → Configure, then update `.env` and the GitHub Actions secret.
 
 ## Banding
 
@@ -476,8 +478,9 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
 
 1. **Real screens for the second interface block.** `making-the-app-testable` shows the home across three generations; the three adaptive results layouts have no capture, so that block stays out of the arrangement rather than rendering an empty frame.
 2. **Two provenance questions on the exploration imagery.** The Hotels.com comparison graphics carry per-variant percentages that no written source backs; either they are real and belong in the copy with a citation, or they are illustrative and should come off the pictures. Separately, the three EGDS "Decisions" panels are recreations rather than captures.
-3. **Rotate the Chromatic project token** — Chromatic → Manage → Configure, then `.env` and the GitHub Actions secret. It is a write credential and it has been handled loosely.
+3. **Add `chevron-left` to the Figma icon set.** The carousel's previous button is `chevron-right` mirrored in CSS, which works and has precedent, but a real asset is the fix. It needs Figma Desktop with the Bridge plugin open, then a re-export and a new components checksum. **Do not add it to `icon-paths.ts` alone** — `verify.mjs` never reads that file, so 15 icons in code against 14 in Figma would drift with nothing to catch it.
 4. **`/about` builds but is linked from nowhere.** One entry in `src/data/nav.ts` brings it back; it was unlinked while it was a stub and has been written since.
+5. **Every subdomain of `deesyn.com` serves this build.** `*.deesyn.com` is attached to the Vercel project, so `revolut.deesyn.com` is live — and so is any name someone guesses. Decide whether unmatched hosts should redirect to the apex before a company subdomain is shared with anyone.
 
 **Smaller, none blocking:** `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); the hero and both index covers are still stand-in imagery.
 
