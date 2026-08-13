@@ -1,0 +1,299 @@
+{
+  "name": "Content/Carousel",
+  "slug": "content-carousel",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/Carousel.tsx",
+    "styles": "src/components/Carousel.css"
+  },
+  "description": "A gallery of real screens, one at a time.\n\nBuilt on scroll-snap rather than a transform track, which decides most of\nwhat follows. With JavaScript off or still loading, this is a horizontally\nscrollable list of images that swipes natively on a phone and scrolls with\nthe keyboard: the content is all in the HTML and none of it depends on the\nscript. The script adds the arrows, the dots and the autoplay on top.\n\nThat is also why the controls are hidden until the script marks the root as\nenhanced. A visible arrow that does nothing is worse than no arrow.\n\nThe transition is the platform's own scroll, not a tokenised animation. That\nis the one deliberate exception to binding motion to the scale: scroll\nphysics belong to the device, they are interruptible by definition, and a\nhand-timed transform would take that away to gain nothing.",
+  "donts": [
+    "Never autoplay without a way out. Reduced motion disables it, any deliberate input ends it for good, and hover or focus pauses it. Content that moves while someone reads is the failure WCAG 2.2.2 exists for.",
+    "Do not bake the backdrop into the slides. Each advance would repaint it and any difference between exports reads as the background twitching. One element behind a transparent track cannot.",
+    "Do not use it for one image. A gallery of one is a Media, and the controls would point at nothing.",
+    "Do not crop the slides to fill. These are screens with text in them, and cover removes the edges a reader is trying to read."
+  ],
+  "props": {
+    "slides": {
+      "type": "CarouselSlide[]",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true,
+      "note": "Names the region. Required: `aria-roledescription=\"carousel\"` replaces the role announcement, so without a label the thing announces its type and nothing about its content."
+    },
+    "sizes": {
+      "type": "string",
+      "required": false,
+      "note": "How wide a slide renders, for picking from `srcSet`."
+    },
+    "backdrop": {
+      "type": "CarouselBackdrop",
+      "required": false,
+      "note": "The plate the slides sit on. Absent falls back to a token-built gradient, which is what the stories use. It is deliberately NOT part of the slides. Baking the backdrop into each exported image means every advance repaints it, and any difference between exports — a pixel of crop, a re-rendered gradient — reads as the background twitching. One element behind a transparent track cannot twitch, and it holds still across a theme change too, because only the fill swaps while the box, the crop and the position stay where they are."
+    },
+    "autoplayMs": {
+      "type": "number",
+      "required": false,
+      "note": "Milliseconds between automatic advances. 0 disables autoplay. Not a duration token, and deliberately so: the motion scale describes how long a thing takes to move, and this is how long it sits still. Binding a dwell to `duration/*` would put a number on that scale which no transition ever uses."
+    },
+    "caption": {
+      "type": "string",
+      "required": false,
+      "note": "A standing caption for the gallery as a whole, below the per-slide label. The two say different things and both are worth having: the label names what is currently on screen and changes under the arrows, the caption makes the argument the whole set exists to make."
+    },
+    "captionCopyRef": {
+      "type": "string",
+      "required": false,
+      "note": "`<file>:<path>` into src/copy, making the caption editable in the browser."
+    }
+  },
+  "tokens": {
+    ".carousel": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "--carousel-arrow-inset",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "--carousel-arrow-size",
+        "var": "--primitive-size-button-md",
+        "ref": "primitive.size.button-md"
+      },
+      {
+        "property": "--carousel-slide-gutter",
+        "var": "--carousel-arrow-inset",
+        "local": "--carousel-arrow-inset"
+      },
+      {
+        "property": "--carousel-slide-gutter",
+        "var": "--carousel-arrow-size",
+        "local": "--carousel-arrow-size"
+      },
+      {
+        "property": "--carousel-slide-gutter",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      }
+    ],
+    ".carousel__stage": [
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r20",
+        "ref": "primitive.radius.r20"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-bg-widget",
+        "ref": "semantic.*.bg.widget"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-bg-subtle",
+        "ref": "semantic.*.bg.subtle"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-band-sunken",
+        "ref": "semantic.*.band.sunken"
+      }
+    ],
+    ".carousel__track:focus-visible": [
+      {
+        "property": "outline",
+        "var": "--semantic-border-focus",
+        "ref": "semantic.*.border.focus"
+      }
+    ],
+    ".carousel__slide": [
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "padding",
+        "var": "--carousel-slide-gutter",
+        "local": "--carousel-slide-gutter"
+      }
+    ],
+    ".carousel__placeholder": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    ".carousel__placeholder-kind": [
+      {
+        "property": "font",
+        "var": "--type-emphasis-3",
+        "ref": "typography.emphasis.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-3-tracking",
+        "ref": "typography.emphasis.3"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      }
+    ],
+    ".carousel__placeholder-alt": [
+      {
+        "property": "font",
+        "var": "--type-body-2",
+        "ref": "typography.body.2"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-2-tracking",
+        "ref": "typography.body.2"
+      }
+    ],
+    ".carousel__arrows [data-carousel-prev]": [
+      {
+        "property": "left",
+        "var": "--carousel-arrow-inset",
+        "local": "--carousel-arrow-inset"
+      }
+    ],
+    ".carousel__arrows [data-carousel-next]": [
+      {
+        "property": "right",
+        "var": "--carousel-arrow-inset",
+        "local": "--carousel-arrow-inset"
+      }
+    ],
+    ".carousel__dots": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      }
+    ],
+    ".carousel__dot": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s24",
+        "ref": "primitive.size.s24"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s24",
+        "ref": "primitive.size.s24"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      }
+    ],
+    ".carousel__dot-mark": [
+      {
+        "property": "width",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-tooltip",
+        "ref": "semantic.*.duration.tooltip"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".carousel__dot[aria-current='true'] .carousel__dot-mark": [
+      {
+        "property": "background",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      }
+    ],
+    ".carousel__dot:focus-visible": [
+      {
+        "property": "outline",
+        "var": "--semantic-border-focus",
+        "ref": "semantic.*.border.focus"
+      }
+    ],
+    ".carousel__label,\n.carousel__caption": [
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      }
+    ],
+    ".carousel__label": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".carousel__caption": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    "@media (max-width: 767px) { .carousel }": [
+      {
+        "property": "--carousel-arrow-inset",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      }
+    ],
+    "@media (max-width: 767px) { .carousel__slide }": [
+      {
+        "property": "padding-block",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      }
+    ]
+  }
+}

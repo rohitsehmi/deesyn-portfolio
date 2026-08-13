@@ -277,7 +277,11 @@ const discipline = studies.find((s) => s.slug === slug)?.discipline;
 <script>
   import { trackReadDepth } from '../components/analytics';
   import { tickNumbers } from '../components/number-ticker';
+  import { initCarousels } from '../components/carousel-controls';
   trackReadDepth();
+  // No-ops on a study with no gallery in it: it queries for [data-carousel]
+  // and finds nothing. Cheaper than making each page remember to opt in.
+  initCarousels();
   // Case studies only. These are the only pages with an impact band, and the
   // only numbers on the site worth drawing the eye to.
   tickNumbers();

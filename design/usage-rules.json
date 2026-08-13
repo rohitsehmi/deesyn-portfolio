@@ -101,6 +101,12 @@
       "Do not drop the blocking inline script in the document head. Without it the page paints in the system theme and then visibly flips to the remembered one, which is worse than having no toggle.",
       "Do not make the accessible name describe the current theme. It describes the action, so it stays true in both directions and needs no script to keep it accurate.",
       "Do not add a third state to the button. Light and dark is what a single control can carry; if following the system needs to be reachable again, that is a separate control, not a longer cycle."
+    ],
+    "Content/Carousel": [
+      "Never autoplay without a way out. Reduced motion disables it, any deliberate input ends it for good, and hover or focus pauses it. Content that moves while someone reads is the failure WCAG 2.2.2 exists for.",
+      "Do not bake the backdrop into the slides. Each advance would repaint it and any difference between exports reads as the background twitching. One element behind a transparent track cannot.",
+      "Do not use it for one image. A gallery of one is a Media, and the controls would point at nothing.",
+      "Do not crop the slides to fill. These are screens with text in them, and cover removes the edges a reader is trying to read."
     ]
   }
 }

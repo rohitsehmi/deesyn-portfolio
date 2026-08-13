@@ -6,6 +6,23 @@
 .media[data-ratio='1-1']  .media__frame { aspect-ratio: 1 / 1; }
 .media[data-ratio='3-4']  .media__frame { aspect-ratio: 3 / 4; }
 .media__frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Theme-paired artwork. Only applies when Media was given a `srcDark`; a lone
+   image carries no [data-theme-img] and none of this matches it.
+
+   This is the tokens.css cascade, not a copy of it by eye: the system
+   preference decides until an explicit [data-theme] exists, and then the
+   explicit choice wins in BOTH directions — which is why the [data-theme='light']
+   pair at the end is not redundant. Without it, choosing light on a machine set
+   to dark would leave the dark artwork showing on a light page. */
+.media__frame img[data-theme-img='dark'] { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .media__frame img[data-theme-img='light'] { display: none; }
+  :root:not([data-theme='light']) .media__frame img[data-theme-img='dark'] { display: block; }
+}
+[data-theme='dark'] .media__frame img[data-theme-img='light'] { display: none; }
+[data-theme='dark'] .media__frame img[data-theme-img='dark'] { display: block; }
+[data-theme='light'] .media__frame img[data-theme-img='light'] { display: block; }
+[data-theme='light'] .media__frame img[data-theme-img='dark'] { display: none; }
 /* No aspect-ratio on the frame, so the picture sets the height and nothing is
    cropped. See MediaRatio in Media.tsx for why text-carrying images need it. */
 .media[data-ratio='natural'] .media__frame img { height: auto; object-fit: fill; }

@@ -1,4 +1,5 @@
 import { Media, type MediaRatio } from './Media';
+import { Carousel, type CarouselProps } from './Carousel';
 import './Explorations.css';
 
 export interface Exploration {
@@ -21,11 +22,22 @@ export interface Exploration {
     src?: string;
     /** Spread straight into Media; the page builds them with Astro's getImage. */
     srcSet?: string;
+    /** Dark-theme counterpart, for artwork that carries the theme in its fills. */
+    srcDark?: string;
+    srcSetDark?: string;
     sizes?: string;
     alt: string;
     ratio?: MediaRatio;
     caption?: string;
   };
+  /**
+   * A gallery instead of a single still, for an exploration whose variants are
+   * better read one at a time than lined up at a third of the width each.
+   *
+   * Mutually exclusive with `image`, and `image` wins if both are supplied, so
+   * a half-finished edit renders the still rather than nothing.
+   */
+  carousel?: CarouselProps;
 }
 
 export interface ExplorationsProps {
@@ -60,11 +72,15 @@ export function Explorations({ items, copyBase, layout = 'grid' }: ExplorationsP
     <ol className="explorations" data-layout={layout}>
       {items.map((item, i) => (
         <li className="explorations__item" key={item.title}>
-          {item.image && (
+          {item.image ? (
             <div className="explorations__media">
               <Media {...item.image} ratio={item.image.ratio ?? '4-3'} />
             </div>
-          )}
+          ) : item.carousel ? (
+            <div className="explorations__media">
+              <Carousel {...item.carousel} />
+            </div>
+          ) : null}
           <div className="explorations__text">
             <h3 className="explorations__title" data-copy={copyBase && `${copyBase}.${i}.title`}>{item.title}</h3>
             <p className="explorations__why" data-copy={copyBase && `${copyBase}.${i}.why`}>{item.why}</p>

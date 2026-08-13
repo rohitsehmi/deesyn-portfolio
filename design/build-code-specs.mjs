@@ -24,9 +24,10 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { hash } from './hash.mjs';
+import { CODE_SPECS_DIR, COMPONENTS_DIR, TOKENS, USAGE_RULES } from './paths.mjs';
 
-const OUT = 'components/specs';
-const RULES = JSON.parse(readFileSync('design/usage-rules.json', 'utf8'));
+const OUT = CODE_SPECS_DIR;
+const RULES = JSON.parse(readFileSync(USAGE_RULES, 'utf8'));
 
 /** The registry is explicit. A component silently missing a spec is the bug. */
 const CODE_ONLY = [
@@ -37,7 +38,15 @@ const CODE_ONLY = [
   { name: 'Content/Hindsight', base: 'Hindsight' },
   { name: 'Content/Contribution', base: 'Contribution' },
   { name: 'Content/Case Study Tile', base: 'CaseStudyTile' },
-  { name: 'Content/Parallax', base: 'Parallax' }
+  { name: 'Content/Parallax', base: 'Parallax' },
+  /*
+    Code-only because the contract is behaviour, not configuration. A Figma
+    variant axis can say a carousel has arrows; it cannot say that autoplay
+    surrenders permanently on input, that the backdrop is a sibling of the
+    track rather than part of a slide, or that the controls do not exist until
+    a script says they work. Building it there would document it less.
+  */
+  { name: 'Content/Carousel', base: 'Carousel' }
 ];
 
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -53,7 +62,7 @@ const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^
 const TYPE_SUFFIXES = ['-family', '-weight', '-size', '-line', '-tracking'];
 
 function buildTokenMap() {
-  const t = JSON.parse(readFileSync('tokens/tokens.json', 'utf8'));
+  const t = JSON.parse(readFileSync(TOKENS, 'utf8'));
   const map = new Map();
   const walk = (node, path, ref) => {
     for (const [k, v] of Object.entries(node)) {
@@ -258,8 +267,8 @@ function markdown(spec) {
 
 const specs = [];
 for (const { name, base } of CODE_ONLY) {
-  const component = `src/components/${base}.tsx`;
-  const styles = `src/components/${base}.css`;
+  const component = `${COMPONENTS_DIR}/${base}.tsx`;
+  const styles = `${COMPONENTS_DIR}/${base}.css`;
   const { props, description } = readProps(component, base);
 
   const spec = {

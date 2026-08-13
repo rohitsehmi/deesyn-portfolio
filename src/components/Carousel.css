@@ -1,0 +1,224 @@
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+}
+
+/* The stage is a fixed box with a fixed aspect, which is half of why the
+   backdrop holds still: whatever the slide is, the plate behind it is the same
+   shape at the same size. 4/3 is the source frame's own ratio (1448x1086). */
+.carousel__stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--primitive-radius-r20);
+  /* Fallback plate when no backdrop image is supplied. Token-built, so it
+     re-themes on its own and needs no export. */
+  background:
+    radial-gradient(120% 90% at 15% 10%, var(--semantic-bg-widget) 0%, transparent 60%),
+    radial-gradient(100% 80% at 85% 90%, var(--semantic-bg-subtle) 0%, transparent 55%),
+    var(--semantic-band-sunken);
+}
+
+.carousel__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.carousel__backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+/* Same cascade as Media: system preference until an explicit [data-theme]
+   exists, then the choice wins in both directions. Only the fill changes —
+   the box, the crop and the position are identical, so nothing moves. */
+.carousel__backdrop img[data-theme-img='dark'] { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .carousel__backdrop img[data-theme-img='light'] { display: none; }
+  :root:not([data-theme='light']) .carousel__backdrop img[data-theme-img='dark'] { display: block; }
+}
+[data-theme='dark'] .carousel__backdrop img[data-theme-img='light'] { display: none; }
+[data-theme='dark'] .carousel__backdrop img[data-theme-img='dark'] { display: block; }
+[data-theme='light'] .carousel__backdrop img[data-theme-img='light'] { display: block; }
+[data-theme='light'] .carousel__backdrop img[data-theme-img='dark'] { display: none; }
+
+.carousel__track {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.carousel__track::-webkit-scrollbar { display: none; }
+.carousel__track:focus-visible {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: -2px;
+}
+
+/* The arrows overlay the stage, so the slides are padded clear of them: the
+   inset, plus the button, plus a gap. Stated as one sum rather than a magic
+   number, so changing the button size moves the padding with it. */
+.carousel {
+  --carousel-arrow-inset: var(--primitive-space-sp600);
+  --carousel-arrow-size: var(--primitive-size-button-md);
+  --carousel-slide-gutter: calc(
+    var(--carousel-arrow-inset) + var(--carousel-arrow-size) + var(--primitive-space-sp400)
+  );
+}
+
+.carousel__slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  /* Vertical padding as well, so the backdrop reads as a plate the screen sits
+     on rather than a hairline nobody notices. */
+  padding: var(--primitive-space-sp600) var(--carousel-slide-gutter);
+}
+/* contain, not cover. These are screens with text in them, and a cover crop
+   removes exactly the edges a reader is trying to read. */
+.carousel__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.carousel__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--primitive-space-sp200);
+  width: 100%;
+  height: 100%;
+  padding: var(--primitive-space-sp600);
+  text-align: center;
+  color: var(--semantic-fg-secondary);
+}
+.carousel__placeholder-kind {
+  font: var(--type-emphasis-3);
+  letter-spacing: var(--type-emphasis-3-tracking);
+  color: var(--semantic-fg-accent);
+}
+.carousel__placeholder-alt {
+  max-width: 40ch;
+  font: var(--type-body-2);
+  letter-spacing: var(--type-body-2-tracking);
+  text-wrap: pretty;
+}
+
+/* Hidden until the script says otherwise. Without JavaScript the track is
+   still a scrollable gallery, but these buttons would do nothing, and a dead
+   control is worse than an absent one. */
+[data-carousel-controls] { display: none; }
+
+.carousel[data-enhanced] .carousel__arrows {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  /* The overlay covers the track. Without this it eats every swipe. */
+  pointer-events: none;
+}
+.carousel__arrows [data-carousel-prev],
+.carousel__arrows [data-carousel-next] {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: auto;
+}
+.carousel__arrows [data-carousel-prev] { left: var(--carousel-arrow-inset); }
+.carousel__arrows [data-carousel-next] { right: var(--carousel-arrow-inset); }
+/* No chevron-left in the icon set, so prev is the same asset mirrored. Applied
+   to the glyph, not the button, or the focus ring and the press scale would be
+   mirrored with it. */
+.carousel__arrows [data-carousel-prev] svg { transform: scaleX(-1); }
+
+/* Press feedback has to compose with the centring transform, not replace it —
+   a bare `scale(0.97)` here would drop translateY and the button would jump
+   half its height on every tap. */
+.carousel__arrows [data-carousel-prev]:active,
+.carousel__arrows [data-carousel-next]:active {
+  transform: translateY(-50%) scale(0.97);
+}
+
+.carousel[data-enhanced] .carousel__indicators {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel__dots {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-space-sp200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* 24px square is the WCAG 2.5.8 (AA) minimum target. It was 16px, which failed
+   it — the visible dot and the hit area were the same 16px box. */
+.carousel__dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--primitive-size-s24);
+  height: var(--primitive-size-s24);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--primitive-radius-round);
+}
+.carousel__dot-mark {
+  width: var(--primitive-space-sp200);
+  height: var(--primitive-space-sp200);
+  border-radius: var(--primitive-radius-round);
+  background: var(--semantic-fg-secondary);
+  transition: background-color var(--semantic-duration-tooltip) var(--semantic-easing-out);
+}
+.carousel__dot[aria-current='true'] .carousel__dot-mark { background: var(--semantic-fg-accent); }
+.carousel__dot:focus-visible {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+/* The live per-slide label, and the standing caption beneath it. Same scale;
+   the label carries the accent so the changing line and the fixed one are
+   distinguishable without a size step. */
+.carousel__label,
+.carousel__caption {
+  margin: 0;
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  text-wrap: pretty;
+}
+.carousel__label { color: var(--semantic-fg-primary); }
+.carousel__caption { color: var(--semantic-fg-secondary); }
+
+/* Narrow screens pull the arrows closer to the edge to give the screen back
+   some width. The button itself stays 44 — shrinking a touch target on the
+   device where touch is the only input is the wrong way round. */
+@media (max-width: 767px) {
+  .carousel { --carousel-arrow-inset: var(--primitive-space-sp300); }
+  .carousel__slide { padding-block: var(--primitive-space-sp400); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel__track { scroll-behavior: auto; }
+  .carousel__dot-mark { transition: none; }
+  .carousel__arrows [data-carousel-prev]:active,
+  .carousel__arrows [data-carousel-next]:active { transform: translateY(-50%); }
+}

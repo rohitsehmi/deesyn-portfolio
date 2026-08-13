@@ -21,6 +21,27 @@ export interface MediaProps {
    * calls `getImage()` and passes the result down.
    */
   srcSet?: string;
+  /**
+   * The dark-theme counterpart, when the artwork has one.
+   *
+   * Optional and rare by design. "Bands are relative, media is absolute" —
+   * a photograph does not change with the theme, and most images here are
+   * photographs or captures whose own background is part of the picture. This
+   * exists for the exception: artwork exported from Figma that carries the
+   * theme in its own fills, where shipping only the light version puts a white
+   * plate in the middle of a dark page.
+   *
+   * Supplying it renders BOTH images and lets CSS choose, rather than a
+   * `<picture>` with `media="(prefers-color-scheme: dark)"`. That looks like
+   * the tidier answer and is wrong here: a `<picture>` media query reads the
+   * OS setting and cannot see `[data-theme]`, so a reader who used the theme
+   * toggle would keep the other theme's image. The CSS below matches the
+   * cascade in tokens.css exactly — system preference until an explicit choice
+   * exists, then the choice wins.
+   */
+  srcDark?: string;
+  /** Responsive candidates for `srcDark`. Ignored unless `srcDark` is set. */
+  srcSetDark?: string;
   /** How wide the image renders, for picking from `srcSet`. */
   sizes?: string;
   alt: string;
@@ -43,12 +64,51 @@ export interface MediaProps {
  * Caption sits below, outside the frame. No labels overlaid on the image, and
  * no decorative photo credits.
  */
-export function Media({ src, srcSet, sizes, alt, ratio = '16-9', fit = 'inset', caption, captionCopyRef }: MediaProps) {
+export function Media({ src, srcSet, srcDark, srcSetDark, sizes, alt, ratio = '16-9', fit = 'inset', caption, captionCopyRef }: MediaProps) {
   return (
     <figure className="media" data-ratio={ratio} data-fit={fit}>
       <div className="media__frame">
         {src ? (
-          <img src={src} srcSet={srcSet} sizes={sizes} alt={alt} loading="lazy" decoding="async" />
+          <>
+            <img
+              src={src}
+              srcSet={srcSet}
+              sizes={sizes}
+              alt={alt}
+              loading="lazy"
+              decoding="async"
+              data-theme-img={srcDark ? 'light' : undefined}
+            />
+            {/*
+              One alt, carried by whichever image is showing. The hidden one is
+              `display: none`, which assistive technology skips, so the figure
+              is announced once rather than twice — the same reason ThemeToggle
+              renders both its icons and hides one instead of swapping a src.
+
+              THE PAIR CAN COST TWO DOWNLOADS. Measured in a real build on
+              Chrome, scrolled to the figure, no toggling: with the OS set to
+              dark only the dark image was fetched, but with the OS set to
+              light BOTH were. `loading="lazy"` defers a `display: none` image
+              often enough to look like a rule and not often enough to be one,
+              so assume the reader pays for both.
+
+              That is the reason this prop is the exception rather than the
+              default. Use it only where the artwork carries the theme in its
+              own fills and the light version would otherwise sit on a dark
+              page as a white plate.
+            */}
+            {srcDark && (
+              <img
+                src={srcDark}
+                srcSet={srcSetDark}
+                sizes={sizes}
+                alt={alt}
+                loading="lazy"
+                decoding="async"
+                data-theme-img="dark"
+              />
+            )}
+          </>
         ) : (
           // A slot with nothing in it should say so. An invisible placeholder
           // reads as a finished section that happens to have a gap, which is
