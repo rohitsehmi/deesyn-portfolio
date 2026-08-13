@@ -18,9 +18,9 @@
  * instead, where it is guidance rather than a string to edit.
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
+import { COPY_DIR, COPY_DRAFTS_DIR } from './paths.mjs';
 
-const COPY_DIR = 'src/copy';
-const OUT_DIR = 'copy-drafts';
+const OUT_DIR = COPY_DRAFTS_DIR;
 
 /** Walk to leaf strings, in file order, skipping `_`-prefixed documentation. */
 function leaves(node, path = [], out = []) {

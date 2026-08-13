@@ -27,10 +27,13 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
+// Brand pack. Static, so it cannot take a runtime path — see LOGO_PATHS in
+// paths.mjs for why converting it early would buy an untested code path.
 import { MARK_PATHS, MARK_VIEWBOX } from '../src/components/logo-paths.ts';
+import { TOKENS, FAVICON_OUT } from './paths.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const tokens = JSON.parse(await import('node:fs').then((fs) => fs.readFileSync(join(root, 'tokens/tokens.json'), 'utf8')));
+const tokens = JSON.parse(await import('node:fs').then((fs) => fs.readFileSync(join(root, TOKENS), 'utf8')));
 
 /** Follows a DTCG alias like {primitive.neutral.850} to its literal value. */
 function resolve(node) {
@@ -60,7 +63,7 @@ ${paths}
 </svg>
 `;
 
-const pub = join(root, 'public');
+const pub = join(root, FAVICON_OUT);
 mkdirSync(pub, { recursive: true });
 writeFileSync(join(pub, 'favicon.svg'), svg);
 

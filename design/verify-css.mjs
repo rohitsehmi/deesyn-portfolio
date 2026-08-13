@@ -20,9 +20,16 @@
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { SRC_DIR, TOKENS } from './paths.mjs';
 
-const ROOT = 'src';
-const TOKENS = 'tokens/tokens.json';
+/*
+  This check does more than its name suggests once there is more than one brand.
+  "Every var(--*) in src/ resolves against tokens.json" is a typo-catcher today;
+  pointed at a second pack it becomes a completeness test — proof that the pack
+  defines every token the shared framework renders. That is the guarantee worth
+  having before pointing a new brand at these components, and it already exists.
+*/
+const ROOT = SRC_DIR;
 
 /** Generated. Everything else in src/ is checked, including base.css. */
 const SKIP_FILES = ['src/styles/tokens.css'];

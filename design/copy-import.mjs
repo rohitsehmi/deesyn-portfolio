@@ -24,9 +24,9 @@
  * There is no undo here either. The undo is `git diff src/copy/`.
  */
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { COPY_DIR, COPY_DRAFTS_DIR } from './paths.mjs';
 
-const COPY_DIR = 'src/copy';
-const IN_DIR = 'copy-drafts';
+const IN_DIR = COPY_DRAFTS_DIR;
 
 const dry = process.argv.includes('--dry');
 const force = process.argv.includes('--force');

@@ -24,8 +24,16 @@
  * it measures, which is the same argument as every other check in here.
  */
 import { readdirSync, existsSync } from 'node:fs';
+import { COMPONENTS_DIR, FIGMA_SPEC_DIRS } from './paths.mjs';
 
-const SPEC_DIRS = ['components/specs', 'icons/specs', 'marks/specs'];
+/*
+  The one check that genuinely changes shape under a second brand. Components
+  are shared and Figma contracts are not, so "21 components, 21 contracts"
+  becomes "for each pack, every component resolves to a contract in that pack" —
+  one component set against N sets of contracts. Left as-is until there is a
+  second pack to iterate over, since a loop over one element is just this.
+*/
+const SPEC_DIRS = FIGMA_SPEC_DIRS;
 
 /**
  * Components whose contract is published somewhere other than a spec directory.
@@ -40,7 +48,7 @@ const specSlugs = new Set(
   SPEC_DIRS.flatMap((d) => readdirSync(d).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)))
 );
 
-const componentFiles = readdirSync('src/components').filter(
+const componentFiles = readdirSync(COMPONENTS_DIR).filter(
   (f) => f.endsWith('.tsx') && !f.endsWith('.stories.tsx')
 );
 

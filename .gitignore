@@ -35,3 +35,8 @@ build-storybook.log
 # Copy drafts. Exported from src/copy for a bulk rewrite and imported back;
 # the JSON is the source of truth and two of them would be one too many.
 copy-drafts/
+
+# dist-hash baseline. A moment in a refactor, not a property of the repo:
+# committed, it would go stale on the first legitimate content change and fail
+# for everyone. Take a fresh one with `node design/dist-hash.mjs --save`.
+design/.dist-baseline.json

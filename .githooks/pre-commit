@@ -11,8 +11,12 @@
 # Only runs when something it reads has actually changed, so an ordinary copy or
 # docs commit pays nothing.
 
+# `paths` is in here because design/paths.mjs decides which directories the
+# specs are measured from and written to. A change there can stale every spec
+# without touching a single component, which is the exact failure this hook
+# exists to catch. `build` already covers build-code-specs.mjs by prefix.
 changed=$(git diff --cached --name-only --diff-filter=ACM)
-echo "$changed" | grep -qE '^src/components/.*\.(tsx|css)$|^design/(build|build-code-specs|usage-rules)' || exit 0
+echo "$changed" | grep -qE '^src/components/.*\.(tsx|css)$|^design/(build|usage-rules|paths)' || exit 0
 
 command -v node >/dev/null 2>&1 || exit 0
 [ -d node_modules ] || exit 0
