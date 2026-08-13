@@ -57,14 +57,21 @@ File **"Revolut"** — `UnybX8G5sQIEhLLZN2YFl6`. Pages, and the repo folder each
 | **Icons** | `icons/` | the icon set |
 | **Marks** | `marks/` | brand marks |
 | **Components** | `components/` | the 10 UI components |
+| **Case study imagery** | `src/assets/` | Hotels.com app screens, exported as case-study artwork |
 
-The page is called **`Foundations`**, not `Foundations — Revolut`. It was renamed at some point and this file said otherwise until 2026-08-10. The Expedia EGDS template page that used to sit alongside it as reference scaffolding has been deleted; the seven pages in the file are now Cover, a divider, Foundations, Icons, Marks, Components and Banding.
+The page is called **`Foundations`**, not `Foundations — Revolut`. It was renamed at some point and this file said otherwise until 2026-08-10. The Expedia EGDS template page that used to sit alongside it as reference scaffolding has been deleted; the eight pages in the file are now Cover, Case study imagery, a divider, Foundations, Icons, Marks, Components and Banding.
+
+**`Case study imagery` is content, not system**, which is why it sits above the divider with Cover rather than below it with the design system. 22 frames, 11 compositions each existing as a light/dark pair, named `hcom-<subject>-<variant>-<theme>` so a frame name is the filename it exports to. All carry PNG @2x export settings with no suffix.
+
+Inside a frame the tree is `Backdrop` (`Mesh 1–4`, `Base`) and either `Capture` or `Screens › Screen N › Device › Capture` + `Status bar mask`. **That structure is the export contract:** selecting `Screens` gives the phones on transparency, selecting `Backdrop` gives the plate alone. Exporting a whole frame bakes the backdrop into the picture, which is right for a still and wrong for a gallery — see `Content/Carousel` below.
 
 Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development → **Figma Desktop Bridge** (manifest `~/.figma-console-mcp/plugin/manifest.json`). The plugin window must stay open.
 
-`FIGMA_ACCESS_TOKEN` is **not configured**, so every REST-backed tool 403s — including `figma_get_file_data` and `figma_take_screenshot`. Use instead:
+`FIGMA_ACCESS_TOKEN` is **not configured**, so every REST-backed tool *on that server* 403s — including `figma_get_file_data` and `figma_take_screenshot`. Use instead:
 - `figma_execute` for all reads and writes (plugin sandbox)
 - `figma_capture_screenshot` for visuals (plugin `exportAsync`, not REST)
+
+**Image bytes cannot be moved from Figma into the repo by tooling.** There is no disk cache and a 1448×1086 PNG as base64 is far too large to return, so `exportAsync` bytes cannot cross. `figma_capture_screenshot` can *show* an image but cannot write a file. Real asset exports are done by hand: set `exportSettings` on the frames so the layer name becomes the filename, then export from Figma. They land in `~/Downloads`.
 
 ### Plugin API gotchas that cost rebuild cycles
 
@@ -144,6 +151,22 @@ Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Varia
 
 **Nav changes, 2026-08-10.** `Size/Nav` 56 → 64, changed in Figma and re-exported, because all four `Chrome/Nav` variants bind their height to it — one edit moved both sides. The mobile trigger went from a bare 24px `Icon` to an `Action/Icon Button` at `md`, so the touch target is 44 rather than 32 and clears Apple's 44pt minimum and WCAG 2.5.5. Below 768px the panel is now a **full-width sheet**: it enters from the trailing edge over `bg/scrim`, `translateX` only, `duration/overlay` on `easing/drawer` in and `duration/dropdown` on `easing/out` back, with the links staggered 40ms from the same edge. It ran briefly at `min(86vw, 360px)` so a strip of page stayed visible; full-bleed won because display-size links were crowded in a 335px column. The cost is that there is no outside to tap — dismissal is the close button and Escape, and the scrim is kept for the way in rather than as a hit target. It carries its own close, positioned to land exactly where the trigger that opened it was — which is why the old `z-index: 170` rule that raised the bar above the panel is gone. That rule existed because the close used to live in the bar; with a sheet it painted the header straight over it.
 
+**`Content/Carousel` — added 2026-08-13.** A gallery of real screens for an exploration whose variants are better read one at a time than lined up at a third of the width each. `Carousel.tsx` renders it, `carousel-controls.ts` adds the behaviour. Wired into `making-the-app-testable` via an optional `carousel` on an `Explorations` item, mutually exclusive with `image`.
+
+**It is scroll-snap, not a transform track**, and that decides most of the rest. With JavaScript off the gallery still works: every slide is in the HTML, it swipes natively on a phone and scrolls with the keyboard. The script adds arrows, dots and autoplay on top, which is why **the controls are hidden until it marks the root `data-enhanced`** — a visible arrow that does nothing is worse than no arrow. The transition is the platform's own scroll rather than a tokenised animation, the one deliberate exception to binding motion to the scale: scroll physics belong to the device and are interruptible by definition.
+
+**The backdrop is a sibling of the track, never part of a slide.** Baking it into each exported image means every advance repaints it, and any difference between exports reads as the background twitching. One element behind a transparent track cannot twitch, and it holds its box across a theme change because only the fill swaps — verified at 920×690, x=180 in both modes. This is what the `Screens` / `Backdrop` export split on the Figma page exists for.
+
+**Autoplay rules, all load-bearing:** `prefers-reduced-motion` disables it outright; any deliberate input ends it for the life of the page; off-screen pauses it. **Focus pauses it and hover does not**, which was measured rather than assumed — the stage fills most of the reading column, so a pointer resting anywhere near the text sat inside the carousel and held it at slide one indefinitely (0 → 0 over eleven seconds, against 0 → 2 with the pointer away). A feature that only runs when the cursor is elsewhere reads as broken. Focus is different: it means someone is working through it with a keyboard or a screen reader, and moving content under them is the failure WCAG 2.2.2 exists for.
+
+**It loops forward through a cloned first slide rather than rewinding.** Wrapping by scrolling back to the start drags the whole track past in reverse, which reads as a fault. The script appends an `aria-hidden` clone of slide one, advances into it, then resets the scroll position in a single frame — the same pixels either side of the swap. The clone is built in JS, not markup: without the script there is no autoplay to wrap, and a duplicate slide in the HTML would be a duplicate for everyone. The announced count stays "3 of 3". The one move with no clone to hide it is pressing *previous* on the first slide, which jumps instantly instead.
+
+**Targets and contrast are measured, not asserted.** Arrows 44×44 (WCAG 2.5.5, and Apple's 44pt), dots 24×24 (WCAG 2.5.8). The dots were 16×16 and **failed** — the hit area and the visible dot were the same box. The arrows overlay a photographic backdrop, so 1.4.11 applies: the button fill is only 4% black in light and 14% white in dark, so the plate is 1.07:1 against the backdrop and the **border** carries the boundary at 12.97:1 light and 8.61:1 dark, with the glyph at 12.15:1 and 5.54:1.
+
+**There is no `chevron-left` in the icon set**, so previous is `chevron-right` mirrored with `scaleX(-1)` on the glyph — not the button, or the focus ring and press scale would mirror with it. Precedent exists (`arrow-up-right` is `ArrowThinRight` rotated 45°), but a real `chevron-left` in the Figma set is the proper fix and is outstanding.
+
+**`carousel-controls.ts`, not `carousel.ts`.** macOS is case-insensitive, so `./Carousel` resolved to the script rather than the component and the build broke. It is a `.ts` for the same reason as `number-ticker.ts` — it must move neither the component count nor the contract count.
+
 **Impact numbers count up — added 2026-08-10.** `src/components/number-ticker.ts` animates the `Metrics` values from zero when the grid reaches 60% on screen, staggered 80ms, over `duration/counter` on `easing/out`.
 
 Three things about it that are the point rather than the implementation:
@@ -171,11 +194,18 @@ Formatting survives the count: prefix and suffix are preserved, decimal places a
 
 `src/components/` holds the React implementation — one file plus one CSS file per component, consuming tokens as CSS custom properties. `src/components/Band.tsx` implements the banding system: `data-band` re-declares the semantic properties for its subtree, which is the CSS equivalent of Figma's mode override.
 
-**Three things live only in code, because Figma cannot express them:**
+**Four things live only in code, because Figma cannot express them:**
 
 - **State is CSS, not a variant.** Figma needs `state=hover|disabled` as a variant axis; code uses `:hover` and `:disabled`. Same contract, different mechanism.
 - **Press feedback.** `transform: scale(0.97)` over `duration/press` with `easing/out`.
 - **Required props.** `IconButton`'s `aria-label` is a required TypeScript prop — the type system enforces what a variant never could.
+- **Theme-paired artwork.** `Media`'s `srcDark` — see below. A Figma frame carries both modes in one node; an exported PNG is one tonality, so the pair only exists in code.
+
+**`Media` takes an optional `srcDark`, added 2026-08-13, and it is the exception rather than a new default.** Bands are relative and media is absolute: a photograph does not change with the theme, and most artwork here is a capture whose own background is part of the picture. This is for artwork exported from Figma that carries the theme in its fills, where shipping only the light version puts a white plate in the middle of a dark page.
+
+It renders **both** images and lets CSS choose, rather than a `<picture>` with `media="(prefers-color-scheme: dark)"`. That looks like the tidier answer and is wrong here: a `<picture>` media query reads the OS setting and cannot see `[data-theme]`, so a reader who used the theme toggle would keep the other theme's image. The CSS mirrors the cascade in `tokens.css` exactly, including the `[data-theme='light']` branch — without it, choosing light on a machine set to dark leaves the dark artwork on a light page.
+
+**The pair can cost two downloads.** Measured on a real build in Chrome, scrolled to the figure, no toggling: with the OS set to dark only the dark image was fetched, with the OS set to light *both* were. `loading="lazy"` defers a `display: none` image often enough to look like a rule and not often enough to be one, so assume the reader pays for both.
 
 Every story renders inside a band, and the Storybook toolbar switches the band role, so the zero-override property is checked the same way it is asserted in Figma. Chromatic snapshots each story light and dark.
 
@@ -193,13 +223,30 @@ node design/verify-css.mjs        # every var(--*) in src/ resolves; type bound 
 node design/verify-bands.mjs      # adjacency rules, read from the Figma spec
 ```
 
+**`design/paths.mjs` holds every path these scripts read or write**, added 2026-08-13, and the grouping in it is the point rather than the deduplication. The constants are sorted into *framework* (the components, the code-only specs, the authored usage rules), *brand pack* (tokens, the Figma export, the Figma-measured specs, the marks and icons) and *content* (copy, drafts, assets). Nothing behaves differently — every value is the literal the scripts used to hardcode, and the build output was verified byte-identical across all 117 files after the change.
+
+What it buys is that the boundary between shared machinery and one brand's identity is written where a program reads it, instead of being spread across a dozen string literals that happen to agree. Two things it records that were not obvious:
+
+- **The code-only specs are brand-agnostic and the Figma-derived ones are not**, which is why they are in different groups despite sharing a directory today. `buildTokenMap()` maps custom properties to token *reference names* (`semantic.*.fg.primary`), never to values, so a code-only spec is identical whatever the tokens resolve to. A Figma-measured contract binds to whichever variables that file defines.
+- **`verify-css.mjs` is the check that would matter most.** "Every `var(--*)` in `src/` resolves against `tokens.json`" is a typo-catcher against one token file; against a different one it is a completeness test for that file.
+
+There is deliberately **no brand switch** in it — no env var, no second pack, no branch. A configuration path nothing exercises is a path that does not work, and finding that out later is worse than not having written it.
+
+**`design/dist-hash.mjs` is how a refactor proves it changed nothing.** `--save` before, `--check` after, and the refactor is correct iff the tree is byte-identical. "It still builds" does not show that: a page can lose a stylesheet or an image drop a srcSet candidate and the build stays green.
+
+It is only sound because the build is deterministic — verified by two clean builds producing the same digest — so `--save` builds **twice** and refuses to write a baseline it could not reproduce. A baseline taken from one build cannot tell "the output is stable" from "the output is nondeterministic and I caught one value", and that would fail every later check for a reason unrelated to the change.
+
+Not in `verify`, and `design/.dist-baseline.json` is gitignored: a baseline is a moment in a refactor, not a property of the repo, and a committed one would go stale on the first legitimate content change.
+
 **Deprecating a component:** set `setSharedPluginData('spec', 'status', 'deprecated')` on the set in Figma and rename it out of the live namespace. It stays in the file and leaves the published contract; the export lists it under `deprecated` and `verify.mjs` prints it, so its absence is recorded rather than silent. `Deprecated/Brand Logo` (was `XX · Brand/Logo`) is the first.
 
 `design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma: `2940174491`, 132 entries, matched 2026-08-10. See `design/README.md`. (An earlier `1567749477` was recorded here against the same entry count and was stale — **re-read a checksum from `verify.mjs` rather than trusting this file**, which is the only reason these are written down at all.)
 
-**Three checksums, three sources.** Tokens `2836674598`. Figma components `2940174491`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `1695994133` but have no Figma counterpart to match, by definition.
+**Three checksums, three sources.** Tokens `2836674598`. Figma components `2940174491`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `2397650938` (was `2975374804` before `Content/Carousel` joined them) but have no Figma counterpart to match, by definition.
 
-**Eight components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`, `CaseStudyTile` and `Parallax`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. **20 React components, 20 with a published contract** — this file said six and 17/17 until 2026-08-10, when `CaseStudyTile` and `Parallax` had joined the list without it being written down.
+**Nine components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`, `CaseStudyTile`, `Parallax` and `Carousel`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. **21 React components, 21 with a published contract** — this file said six and 17/17 until 2026-08-10, when `CaseStudyTile` and `Parallax` had joined the list without it being written down, and said 20/20 until 2026-08-13.
+
+`Content/Carousel` is the clearest case for code-only yet, and worth stating because "why is this not in Figma" is the obvious question. A variant axis can say a carousel has arrows. It cannot say that autoplay surrenders permanently the moment a reader touches a control, that the backdrop is a sibling of the track rather than part of a slide, or that the controls do not exist in the markup until a script has confirmed they work. Those three things *are* the component.
 
 **`design/verify-contracts.mjs` is what stops that recurring**, and it exists because the claim on `/how-this-was-built` was true by luck. "N in code, M with a published contract" counted components from `src/components/*.tsx` and contracts from the *number of files* in the spec directories. Those agreed at 20 and 20, which read as complete coverage and was arithmetic coincidence: `Link.tsx` exports both `Link` and `ArrowLink` so it produces **two** specs, while `Band.tsx` produces **none** there because a band is a page-layout primitive whose contract lives in `design/banding-export.json` with the adjacency rules. Two errors that cancelled exactly. The page now asks the real question per component, and the check fails the build if any component cannot answer it. In `verify` and in CI.
 
@@ -369,7 +416,7 @@ npm run storybook     # dev
 npm run chromatic     # publish a build (needs CHROMATIC_PROJECT_TOKEN)
 ```
 
-**Public as of 2026-08-07**, alongside the repo. 54 stories across 20 components, both themes.
+**Public as of 2026-08-07**, alongside the repo. 58 stories across 21 components, both themes.
 
 **Link the branch permalink, `https://main--<appId>.chromatic.com`, not `chromatic.com/library?appId=`.** The library is the build history and sits behind a login, so it reads as a closed door to anyone without an account; the permalink is the Storybook itself and needs none. Per-build URLs are worse again — they go stale.
 
@@ -425,7 +472,7 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
 
 ## Next up
 
-**The system and the site are finished; content is what moves the needle.** 9 pages, 20 components, every check green, no gaps rendering on any live page.
+**The system and the site are finished; content is what moves the needle.** 9 pages, 21 components, every check green, no gaps rendering on any live page.
 
 1. **Real screens for the second interface block.** `making-the-app-testable` shows the home across three generations; the three adaptive results layouts have no capture, so that block stays out of the arrangement rather than rendering an empty frame.
 2. **Two provenance questions on the exploration imagery.** The Hotels.com comparison graphics carry per-variant percentages that no written source backs; either they are real and belong in the copy with a citation, or they are illustrative and should come off the pictures. Separately, the three EGDS "Decisions" panels are recreations rather than captures.

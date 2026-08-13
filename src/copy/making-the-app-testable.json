@@ -43,8 +43,8 @@
     "explorations": [
       {
         "title": "A richer image gallery, on Android",
-        "why": "Won twice. The 2018 gallery beat a single fixed image, and the 2019 scrollable gallery beat that. The second win is the one that matters, because a fixed arrangement buys you one improvement whereas a framework buys you the next one as well. It also sent better-qualified shoppers to the booking form, rather than simply more of them.",
-        "imageAlt": "Three generations of the Hotels.com search result card: a fixed image before 2018, a three-image gallery in 2018, and a scrollable gallery in 2019, with conversion, gallery interaction and qualified-shopper figures beneath each."
+        "why": "Won. One test, with a single fixed photograph as the control and one variant showing three. Conversion moved, gallery interaction moved by a great deal more, and the gap between those two is the part worth keeping, because it says travellers had wanted the photographs all along and the old arrangement had been rationing them to one. It also sent better-qualified shoppers through to the booking form rather than simply more of them.",
+        "imageAlt": "One test on the Hotels.com property page. The control, on the left, shows a single fixed photograph badged one of 87. Variant 1, on the right, shows a three-image gallery strip badged 87, which lifts the price, rating and Book Now button up into the first screenful."
       },
       {
         "title": "A search recap carrying check-in details, on iOS",
@@ -66,6 +66,44 @@
     "paras": [
       "On the home, modules carried recommended destinations, travel guides and trip content, and the mix changed with context rather than staying fixed. What appeared, and in what order, became the variable, where before it had been drawn once and shipped.",
       "On results, three adaptive layouts were built and tested against each other, each carrying a different balance of price, image and review content in the same slot. That gave us one card in three densities, with the framework underneath deciding which one a given result deserved."
+    ],
+    "slides": [
+      {
+        "label": "A search card laid over a destination photograph, with recently viewed beneath it.",
+        "alt": "The Hotels.com home on a Samsung Galaxy S3 and an iPhone 5s. A blue \"Where are you going?\" card sits over a full-bleed destination photograph, with a recently viewed property card below it."
+      },
+      {
+        "label": "Search moves into the header, and recent searches take the top of the page.",
+        "alt": "The Hotels.com home on Android and an iPhone 6. The search field has moved up into the red header, with a list of recent searches below it and a \"Need a hotel tonight?\" card under that."
+      },
+      {
+        "label": "The contextual home: a named greeting, a city guide, and the next booking.",
+        "alt": "The Hotels.com home on Android and an iPhone X. A named greeting and a rounded search field sit over a city photograph, followed by a guide card for the destination and the upcoming booking."
+      }
+    ],
+    "resultsLabel": "The results page, before, tested and after",
+    "resultsCaption": "The layout that existed, the three built to be tested against each other, and where results went next. The middle three are the comparison: same chrome, same filters, same three properties, and the only variable is how much space a result is worth — three fit on screen in the text-led layout, one and a half in the full-bleed one.",
+    "resultsSlides": [
+      {
+        "label": "Before: one fixed row, with a rating out of five and no filters above the list.",
+        "alt": "Hotels.com search results before the rebuild, on an iPhone X. A red header over a white bar reading \"London, England, United Kingdom\" with an Edit button, then \"3322 properties\" and a grey \"Hotel Name...\" field. Each result is a fixed row: name, star rating, price and an \"Excellent 4.4/5\" chip, with a square photograph and a pin icon at the trailing edge."
+      },
+      {
+        "label": "Text-led. The name, price and score carry the card, and the photograph is held to a square.",
+        "alt": "The rebuilt results page with filter chips reading \"Below £800\", \"Above 4-stars\" and \"Above 8.0\" above a \"Property name...\" field. Each card runs its text down the left with a square photograph at the trailing edge: property name, a Gold Exclusive badge, star rating, distance to the city centre, price and a review score out of ten. Three results fit on screen."
+      },
+      {
+        "label": "The photograph leads, and the price moves to the foot of the card.",
+        "alt": "The same three properties with the card reversed: the photograph sits on the leading edge and the text on the right, with the review score above a right-aligned price. Taller cards, so fewer than three results fit on screen."
+      },
+      {
+        "label": "Full-bleed. One result at a time, with the badge over the photograph.",
+        "alt": "The same properties again with a full-width photograph across the top of each card and the text beneath it. The Gold Exclusive badge is overlaid on the image rather than sitting in the text. One and a half results fit on screen."
+      },
+      {
+        "label": "After: a destination header carrying booking pressure, and the list under a tab bar.",
+        "alt": "A later results page opening on a photograph of London at dusk, with the dates and \"81% booked for your travel dates\" over it. Filter chips and \"7,886 properties\" sit below, then full-bleed cards showing a green review score and a price broken down as \"for 1 room for 1 night including taxes and fees\". A floating Filters and Map control sits above a five-icon tab bar."
+      }
     ]
   },
   "impact": {

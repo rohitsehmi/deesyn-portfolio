@@ -7,12 +7,71 @@ import { Explorations } from '../../components/Explorations';
 import { Hindsight } from '../../components/Hindsight';
 import { Contribution } from '../../components/Contribution';
 import { Media } from '../../components/Media';
+import { Carousel } from '../../components/Carousel';
 import c from '../../copy/making-the-app-testable.json';
 import { getImage } from 'astro:assets';
-import imgGallery from '../../assets/hcom-exploration-gallery.png';
-import imgRecap from '../../assets/hcom-exploration-recap.png';
-import imgSignIn from '../../assets/hcom-exploration-signin.png';
-import imgHomeYears from '../../assets/hcom-home-through-the-years.png';
+/*
+  All three exploration graphics carry the theme in their own fills — the plate
+  behind the phones is part of the artwork, not part of the picture — so each
+  ships as a light/dark pair. That is still the exception rather than the rule:
+  see MediaProps.srcDark for why a single absolute image is the default, and
+  note the pair can cost the reader two downloads.
+
+  The gallery pair landed 2026-08-13; recap and sign-in followed the same day.
+*/
+import imgGallery from '../../assets/hcom-exploration-gallery-light.png';
+import imgGalleryDark from '../../assets/hcom-exploration-gallery-dark.png';
+/*
+  The gallery's plate, exported once per theme from the `Backdrop` frame rather
+  than baked into each slide. One element behind a transparent track cannot
+  twitch as the slides advance, and it holds its box across a theme change
+  because only the fill swaps.
+*/
+import imgBackdrop from '../../assets/hcom-backdrop-light.png';
+import imgBackdropDark from '../../assets/hcom-backdrop-dark.png';
+/*
+  The gallery slides: the phones alone, on transparency, so the one backdrop
+  behind them is what the reader sees change theme.
+
+  There is deliberately no light/dark pair here. Figma holds each composition as
+  two frames, but the `Screens` group inside them is the same captures, and the
+  two exports came out byte-identical — same SHA-256 for all three. A phone
+  screenshot has no theme; only the plate it sits on does. Shipping both would
+  be 6MB of duplicate.
+
+  ON THE `-light` SUFFIX, which these carry without having a `-dark` sibling.
+  It names the Figma frame the file came out of, not a promise that a pair
+  exists. The whole export set is suffixed that way, so a filename here is the
+  filename in the export folder and a new drop is a copy rather than a copy and
+  a rename — which is the step that goes wrong. Whether a pair exists is
+  answered by explorationShotsDark below, in code, where it can be checked.
+*/
+import imgHome1 from '../../assets/hcom-home-01-search-card-light.png';
+import imgHome2 from '../../assets/hcom-home-02-recent-searches-light.png';
+import imgHome3 from '../../assets/hcom-home-03-contextual-light.png';
+/*
+  Results, five screens: the layout that existed, the three adaptive layouts
+  built to be tested against each other, and the generation that followed.
+
+  The middle three are the comparison the prose is about, and they are only
+  legible as one because everything except the card is held constant — same
+  header, same filter chips, same three properties at the same prices. The
+  first and last deliberately do NOT match that chrome, which is what makes
+  them read as different generations rather than as two more variants.
+
+  Export them the way the home screens are exported, selecting `Screens` rather
+  than the whole frame, so the shared backdrop shows through instead of each
+  slide carrying its own baked-in plate.
+*/
+import imgResults1 from '../../assets/hcom-results-01-compact-list-light.png';
+import imgResults2 from '../../assets/hcom-results-02-filters-thumbnail-light.png';
+import imgResults3 from '../../assets/hcom-results-03-image-left-light.png';
+import imgResults4 from '../../assets/hcom-results-04-full-bleed-light.png';
+import imgResults5 from '../../assets/hcom-results-05-destination-hero-light.png';
+import imgRecap from '../../assets/hcom-exploration-recap-light.png';
+import imgRecapDark from '../../assets/hcom-exploration-recap-dark.png';
+import imgSignIn from '../../assets/hcom-exploration-signin-light.png';
+import imgSignInDark from '../../assets/hcom-exploration-signin-dark.png';
 
 /**
  * DRAFT. Study two of two: the Product Design discipline.
@@ -54,15 +113,46 @@ const FIGURE_SIZES = '(min-width: 1040px) 1000px, calc(100vw - 40px)';
 const shot = (src: ImageMetadata, sizes: string) =>
   getImage({ src, format: 'webp', widths: [480, 720, 960, 1280, 1600], sizes });
 
-const [exGallery, exRecap, exSignIn, figHome] = await Promise.all([
+const [exGallery, exRecap, exSignIn] = await Promise.all([
   shot(imgGallery, EXPLORATION_SIZES),
   shot(imgRecap, EXPLORATION_SIZES),
-  shot(imgSignIn, EXPLORATION_SIZES),
-  shot(imgHomeYears, FIGURE_SIZES)
+  shot(imgSignIn, EXPLORATION_SIZES)
 ]);
 
 /* Index-aligned with copy.process.explorations. */
 const explorationShots = [exGallery, exRecap, exSignIn];
+
+/*
+  Index-aligned with explorationShots. All three have a dark counterpart now,
+  but the array keeps its `undefined` slots meaningful rather than collapsing
+  to a plain map: a fourth exploration added as a single absolute image is the
+  normal case, and `undefined` there means "does not change with the theme"
+  rather than "dark version still to come".
+*/
+const [exGalleryDark, exRecapDark, exSignInDark] = await Promise.all([
+  shot(imgGalleryDark, EXPLORATION_SIZES),
+  shot(imgRecapDark, EXPLORATION_SIZES),
+  shot(imgSignInDark, EXPLORATION_SIZES)
+]);
+const explorationShotsDark = [exGalleryDark, exRecapDark, exSignInDark];
+
+/* The interface section's gallery, index-aligned with copy.interface.slides. */
+const homeSlides = await Promise.all([
+  shot(imgHome1, FIGURE_SIZES),
+  shot(imgHome2, FIGURE_SIZES),
+  shot(imgHome3, FIGURE_SIZES)
+]);
+const resultsSlides = await Promise.all([
+  shot(imgResults1, FIGURE_SIZES),
+  shot(imgResults2, FIGURE_SIZES),
+  shot(imgResults3, FIGURE_SIZES),
+  shot(imgResults4, FIGURE_SIZES),
+  shot(imgResults5, FIGURE_SIZES)
+]);
+const [bgLight, bgDark] = await Promise.all([
+  shot(imgBackdrop, EXPLORATION_SIZES),
+  shot(imgBackdropDark, EXPLORATION_SIZES)
+]);
 ---
 
 <CaseStudy
@@ -122,6 +212,9 @@ const explorationShots = [exGallery, exRecap, exSignIn];
         image: {
           src: explorationShots[i].src,
           srcSet: explorationShots[i].srcSet.attribute,
+          ...(explorationShotsDark[i]
+            ? { srcDark: explorationShotsDark[i]!.src, srcSetDark: explorationShotsDark[i]!.srcSet.attribute }
+            : {}),
           sizes: EXPLORATION_SIZES,
           alt: e.imageAlt,
           ratio: 'natural' as const
@@ -139,21 +232,73 @@ const explorationShots = [exGallery, exRecap, exSignIn];
       {c.interface.heading}
     </SectionHeading>
     {/*
-      Restored 2026-08-07 with a real capture. The second block, which held the
-      three adaptive results layouts, stays out — that image does not exist and
-      an empty frame reads as a broken image rather than as a draft.
+      The three generations, one at a time, replacing the flat composite that
+      held this slot until 2026-08-13. Three homes lined up at a third of the
+      width each are three pictures nobody can read; the argument this section
+      makes is about how one screen changed, which is a sequence rather than a
+      row.
+
+      The second block, the three adaptive results layouts, sits below the
+      paragraph about the home and above the one about results, so each gallery
+      is next to the prose that argues for it rather than both stacking at the
+      top. It held nothing until 2026-08-13, when the captures arrived.
     */}
-    <Media
-      src={figHome.src}
-      srcSet={figHome.srcSet.attribute}
+    <Carousel
+      label={c.interface.heading}
       sizes={FIGURE_SIZES}
-      alt={c.interface.mediaAlt}
-      ratio="natural"
+      /* 5s. Three was not long enough to read a phone screen, which is the
+         only thing on the slide. */
+      autoplayMs={5000}
+      backdrop={{
+        src: bgLight.src,
+        srcSet: bgLight.srcSet.attribute,
+        srcDark: bgDark.src,
+        srcSetDark: bgDark.srcSet.attribute
+      }}
+      slides={homeSlides.map((s, n) => ({
+        src: s.src,
+        srcSet: s.srcSet.attribute,
+        alt: c.interface.slides[n].alt,
+        label: c.interface.slides[n].label
+      }))}
       caption={c.interface.mediaCaption}
       captionCopyRef={`${F}:interface.mediaCaption`}
     />
+    {/*
+      Split rather than mapped, because a gallery now sits between the two
+      paragraphs. Each paragraph is its own Prose block, which is also the
+      correct rhythm: two peers 64px apart with the figure between them, rather
+      than the 20px that `.prose > * + *` gives paragraphs inside one block.
+    */}
     <Prose>
-      {c.interface.paras.map((p, i) => <p data-copy={`${F}:interface.paras.${i}`}>{p}</p>)}
+      <p data-copy={`${F}:interface.paras.0`}>{c.interface.paras[0]}</p>
+    </Prose>
+
+    <Carousel
+      label={c.interface.resultsLabel}
+      sizes={FIGURE_SIZES}
+      /* Same 5s as the home gallery, per slide rather than per cycle: the
+         dwell has to be long enough to read one phone screen, and that does
+         not change because there are five of them. */
+      autoplayMs={5000}
+      backdrop={{
+        src: bgLight.src,
+        srcSet: bgLight.srcSet.attribute,
+        srcDark: bgDark.src,
+        srcSetDark: bgDark.srcSet.attribute
+      }}
+      slides={resultsSlides.map((s, n) => ({
+        src: s.src,
+        srcSet: s.srcSet.attribute,
+        alt: c.interface.resultsSlides[n].alt,
+        label: c.interface.resultsSlides[n].label
+      }))}
+      caption={c.interface.resultsCaption}
+      captionCopyRef={`${F}:interface.resultsCaption`}
+    />
+
+    <Prose>
+      <p data-copy={`${F}:interface.paras.1`}>{c.interface.paras[1]}</p>
     </Prose>
   </div>
 
