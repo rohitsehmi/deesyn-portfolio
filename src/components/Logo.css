@@ -2,3 +2,18 @@
    colours it. There is nothing else to style: the previous rules were for the
    text stand-in that the real mark has replaced. */
 .logo { display: block; flex: none; color: var(--semantic-fg-primary); }
+
+/* Which logotype the lockup shows.
+
+   The site is one prerendered build answering on several hostnames, so the
+   brand cannot be decided when the HTML is written. Both logotypes ship and
+   this chooses, exactly as Media does for theme-paired artwork.
+
+   Revolut is the default and needs no attribute: with JavaScript blocked, or
+   before the head script runs, www.deesyn.com is already correct. Only a
+   hostname that resolves to another brand ever sets [data-brand], and the
+   script that sets it is inline and blocking, so there is no frame in which
+   the wrong logotype is painted. */
+.logo [data-brand-only='wise'] { display: none; }
+[data-brand='wise'] .logo [data-brand-only='revolut'] { display: none; }
+[data-brand='wise'] .logo [data-brand-only='wise'] { display: inline; }

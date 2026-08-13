@@ -150,10 +150,31 @@ const structuredData = article
       runs after the page has already painted in the system theme, so the page
       would visibly flip. Deliberately tiny for the same reason.
     */}
+    {/*
+      Which brand this hostname is. Inline and blocking for the same reason as
+      the theme above: the lockup ships both logotypes and CSS picks one, so
+      this has to run before the first paint or the wrong one is briefly shown.
+
+      One prerendered build answers on every *.deesyn.com hostname, so the brand
+      cannot be baked in at build time. Reading it from the hostname keeps that
+      to a single Vercel project and a single wildcard certificate, which is
+      what stops a company name appearing in the public Certificate
+      Transparency log the moment a subdomain is registered.
+
+      Isolation by routing is NOT isolation by build. Both logotypes are in
+      every page's HTML, so this is fine for a site whose brands are all the
+      author's own framing and would not be fine for content one client should
+      not see. That is what the separate-project split is for, later.
+
+      Anything not matched leaves the attribute unset, which renders Revolut —
+      the correct default for www and for the apex.
+    */}
     <script is:inline>
       try {
         var t = localStorage.getItem('theme');
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+        var h = location.hostname.split('.')[0];
+        if (h === 'wise') document.documentElement.dataset.brand = h;
       } catch (e) {}
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

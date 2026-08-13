@@ -21,6 +21,29 @@ export interface BrandPath { d: string; evenOdd: boolean }
 export const MARK_VIEWBOX = '0 0 48 48';
 export const LOCKUP_VIEWBOX = '0 0 233 48';
 
+/**
+ * The partner half of the lockup, keyed by brand.
+ *
+ * Only the logotype differs between brands. The disc, the script and the `x`
+ * are the first four entries of LOCKUP_PATHS and are shared, which is why this
+ * is one extra path rather than a second lockup: duplicating the disc would add
+ * 16kB of identical geometry to every page, twice, since Nav and Footer both
+ * render one.
+ *
+ * Both are drawn inside the same `0 0 233 48` viewBox. Wise's artwork is 224
+ * wide, so it sits in that box with 9px of transparent space after it. The
+ * artwork is not rescaled or distorted — it simply has a little more room on
+ * the trailing edge, which at nav sizes is under 3px and invisible. Giving each
+ * brand its own viewBox would mean a separate <svg> per brand, and that is the
+ * duplication this avoids.
+ *
+ * Exported from the Wise Figma file (G3HBCm7Dsa6gQ2PKv0Y8g4), node Brand/Logo,
+ * rounded to 2dp like everything else here. Do not hand edit.
+ */
+export type Brand = 'revolut' | 'wise';
+
+export const WISE_WORDMARK: BrandPath = { d: "M 159.76 8.45 L 168.05 8.45 L 163.87 39.49 L 155.58 39.49 L 159.76 8.45 Z M 149.26 8.45 L 143.67 26.33 L 141.22 8.45 L 135.38 8.45 L 128.01 26.27 L 127.15 8.51 L 119.05 8.51 L 121.87 39.55 L 128.57 39.55 L 136.79 19.88 L 139.68 39.49 L 146.25 39.49 L 157.12 8.45 L 149.26 8.45 Z M 219.08 26.52 L 199.37 26.52 C 199.49 30.55 201.76 33.23 205.2 33.23 C 207.78 33.23 209.81 31.82 211.4 29.08 L 218.1 32.21 C 215.7 36.87 210.91 39.94 204.96 39.94 C 196.85 39.94 191.45 34.25 191.45 25.12 C 191.45 15.09 197.77 8 206.74 8 C 214.6 8 219.51 13.49 219.51 22.12 C 219.51 23.52 219.39 24.99 219.08 26.52 Z M 211.65 20.58 C 211.65 17.01 209.68 14.71 206.61 14.71 C 203.42 14.71 200.72 17.07 200.04 20.58 L 211.65 20.58 Z M 93.07 17.84 L 84.6 28.12 L 99.77 28.12 L 101.49 23.26 L 94.98 23.26 L 98.97 18.48 L 98.97 18.35 L 96.39 13.75 L 108 13.75 L 98.97 39.49 L 105.11 39.49 L 115.98 8.45 L 87.92 8.45 L 93.07 17.84 Z M 181.56 14.71 C 184.51 14.71 187.09 16.37 189.3 19.18 L 190.46 10.43 C 188.38 8.96 185.55 8.06 181.81 8.06 C 174.37 8.06 170.2 12.6 170.2 18.35 C 170.2 22.31 172.35 24.8 175.85 26.33 L 177.51 27.1 C 180.64 28.5 181.5 29.21 181.5 30.67 C 181.5 32.21 180.09 33.17 177.94 33.17 C 174.37 33.17 171.49 31.31 169.34 28.06 L 168.11 37 C 170.57 38.98 173.76 40 177.94 40 C 185 40 189.36 35.78 189.36 29.84 C 189.36 25.82 187.64 23.27 183.34 21.22 L 181.5 20.33 C 178.92 19.18 178.06 18.47 178.06 17.2 C 178.12 15.79 179.29 14.71 181.56 14.71 Z", evenOdd: false };
+
 export const MARK_PATHS: BrandPath[] = [
   { d: "M23.02 13.67C25.61 13.38 28.37 13.51 30.86 14.33C31.45 14.52 32.58 15.06 32.25 15.81C31.94 16.49 31.61 16.68 31.03 17.08C30.35 17.55 29.65 17.99 28.93 18.39C28.68 18.53 28.41 18.64 28.16 18.77C27.87 18.92 27.61 19.11 27.31 19.24C26.78 19.47 26.24 19.68 25.69 19.88C25.63 19.9 25.61 19.99 25.59 20.04L25.58 20.07C25.53 20.09 25.42 20.05 25.34 20.03C25.14 20.08 24.97 20.19 24.78 20.27C24.15 20.53 23.5 20.75 22.85 20.93C22.66 20.99 22.47 21.01 22.29 21.07C22.12 21.12 21.96 21.21 21.8 21.26C21.44 21.39 21.08 21.52 20.73 21.66C20.77 21.77 20.77 21.73 20.75 21.84C20.65 21.92 20.64 21.9 20.52 21.85C20.51 21.82 20.49 21.77 20.49 21.75C20.28 21.82 19.96 21.89 19.74 21.95C19.51 22.01 18.58 22.36 18.41 22.29C18.4 22.08 18.69 21.33 18.77 21.07C19.4 18.93 20.28 16.88 21.16 14.83C21.27 14.57 21.52 14.1 21.68 13.88C22.22 13.66 22.5 13.73 23.02 13.67Z", evenOdd: false },
   { d: "M39.06 19.2C39.53 19.42 39.87 19.73 40.14 20.17C40.51 20.77 40.75 21.64 40.6 22.34C40.48 22.86 39.98 23.36 39.53 23.61C38.2 24.37 36.5 24.93 34.96 24.98C34.46 24.99 34.08 24.92 33.61 24.81C33.51 24.79 33.41 24.77 33.32 24.75C32.87 24.63 32.29 24.39 32.01 24.01C31.86 23.81 32.19 23.37 32.32 23.21C33.11 22.27 34.2 21.64 35.27 21.09C35.74 20.84 36.2 20.63 36.7 20.46C37.37 20.23 38.01 20.6 38.62 20.26C39.02 20.05 38.95 19.63 39.05 19.24L39.06 19.2Z", evenOdd: false },

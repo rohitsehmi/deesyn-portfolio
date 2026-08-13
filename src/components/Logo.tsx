@@ -1,5 +1,5 @@
 import './Logo.css';
-import { MARK_PATHS, LOCKUP_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, type BrandPath } from './logo-paths';
+import { MARK_PATHS, LOCKUP_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, WISE_WORDMARK, type BrandPath } from './logo-paths';
 
 export interface LogoProps {
   /**
@@ -38,6 +38,20 @@ const SHAPES: Record<'wordmark' | 'mark', { paths: BrandPath[]; viewBox: string;
  */
 export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi for Revolut' }: LogoProps) {
   const { paths, viewBox, ratio } = SHAPES[variant];
+  /*
+    The lockup ships both logotypes and lets CSS choose, for the same reason
+    Media renders both images of a theme pair: the site is prerendered to static
+    HTML, so which brand a page belongs to cannot be known at build time when
+    one build answers on several hostnames.
+
+    Only the last path differs. The first four — disc, script, `x` — are shared,
+    so this costs one 1.4kB path rather than a second lockup.
+
+    `data-brand-only` is what the stylesheet keys off. With no `data-brand` on
+    the root, the Revolut logotype shows, which is the correct default for
+    www.deesyn.com and for any client that runs no JavaScript at all.
+  */
+  const isLockup = variant === 'wordmark';
   return (
     <svg
       className="logo"
@@ -49,13 +63,15 @@ export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi f
       aria-label={title}
       focusable="false"
     >
-      {paths.map((p) => (
+      {paths.map((p, i) => (
         <path
           key={p.d.slice(0, 24)}
           d={p.d}
+          {...(isLockup && i === paths.length - 1 ? { 'data-brand-only': 'revolut' } : {})}
           {...(p.evenOdd ? { fillRule: 'evenodd' as const, clipRule: 'evenodd' as const } : {})}
         />
       ))}
+      {isLockup && <path d={WISE_WORDMARK.d} data-brand-only="wise" />}
     </svg>
   );
 }
