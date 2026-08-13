@@ -46,6 +46,26 @@ const verifyJob = workflow.slice(
 const checkCount = (verifyJob.match(/^\s+- name:/gm) ?? []).length;
 if (!checkCount) throw new Error('could not count check steps in .github/workflows/ci.yml');
 
+/*
+  The count above and the list further down are two independent sources, and
+  nothing made them agree. `{checks}` in the facts block is measured off the
+  workflow; the list under "What runs on every push" is written by hand in
+  src/copy. Add a step to CI and the page would say nine above a list of eight,
+  which is invisible precisely because both halves look deliberate.
+
+  That is the same failure verify-contracts.mjs exists for, where "N components,
+  M contracts" agreed at 20 and 20 by arithmetic coincidence. So it is a thrown
+  error rather than a note to remember: the build fails on the push that
+  introduces the gap, which is the only moment anyone is thinking about it.
+*/
+if (c.checks.items.length !== checkCount) {
+  throw new Error(
+    `how-this-was-built: CI runs ${checkCount} checks but the page lists ` +
+    `${c.checks.items.length}. Add or remove an entry in ` +
+    `src/copy/how-this-was-built.json under "checks.items".`
+  );
+}
+
 const leaves = (node: any): number =>
   Object.entries(node).reduce((n, [k, v]: [string, any]) => {
     if (k.startsWith('$')) return n;

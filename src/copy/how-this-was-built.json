@@ -101,7 +101,8 @@
     "heading": "What it does not do",
     "paras": [
       "It does not check whether the design is any good. It checks that the design and the code are the same thing, which is a narrower claim and the only one worth automating. Taste is still done by looking.",
-      "It does not check that the result is usable either. axe-core runs clean across nine pages, two widths and two themes, and the site still shipped a menu that told screen readers it was modal while keyboard focus walked straight out of it, onto a button that was invisible and could not be clicked. No single element was wrong, so nothing automated could see it. A person tabbing through the sheet did."
+      "It does not check that the result is usable either. axe-core runs clean across nine pages, two widths and two themes, and the site still shipped a menu that told screen readers it was modal while keyboard focus walked straight out of it, onto a button that was invisible and could not be clicked. No single element was wrong, so nothing automated could see it. A person tabbing through the sheet did.",
+      "It only sees what the design file sees. The carousel's back arrow was a right-pointing chevron flipped in CSS, which looked right on screen and left the published contract naming the wrong icon, because a contract is measured from Figma and Figma could not see the flip. Every check passed. What fixed it was drawing the icon."
     ]
   },
   "links": {
