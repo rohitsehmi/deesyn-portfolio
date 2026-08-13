@@ -239,9 +239,27 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
       times, so the three cannot drift apart, and label-first so the
       accessible name still starts with the visible text (WCAG 2.5.3).
     */}
-    <ul class="hb-links">
-      {c.links.items.map((l, i) => {
+    {/*
+      The receipts differ by brand, and this is the one place on the site where
+      that is about more than a name.
+
+      The repository and the Storybook are shared across every brand here. The
+      repo carries the Revolut tokens, their icon set and their lockup; the
+      Storybook renders those components in those tokens. Linking either from a
+      hostname that is meant to be about a different company hands that
+      company the other one's work, which is exactly what the per-brand
+      hostnames are for. They come back per brand once the framework and the
+      brand packs are separate repositories.
+    */}
+    {(['revolut', 'wise'] as const).map((brand) => {
+      const links = brand === 'revolut' ? c.links : (c as any).brands[brand].links;
+      return (
+      <ul class="hb-links" data-brand-only={brand}>
+      {links.items.map((l: any, i: number) => {
         const mark = SERVICE_MARKS[l.mark];
+        const copyBase = brand === 'revolut'
+          ? `how-this-was-built:links.items.${i}`
+          : `how-this-was-built:brands.${brand}.links.items.${i}`;
         return (
           <li class="hb-links__item">
             {/*
@@ -259,15 +277,17 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
               rel="noopener noreferrer"
               aria-label={`${l.label}, ${c.links.newTab}`}
               data-receipt={l.mark}
-              copyRef={`how-this-was-built:links.items.${i}.label`}
+              copyRef={`${copyBase}.label`}
             >
               {l.label}
             </ArrowLink>
-            <p class="hb-links__note" data-copy={`how-this-was-built:links.items.${i}.note`}>{l.note}</p>
+            <p class="hb-links__note" data-copy={`${copyBase}.note`}>{l.note}</p>
           </li>
         );
       })}
-    </ul>
+      </ul>
+      );
+    })}
   </div>
 </Page>
 

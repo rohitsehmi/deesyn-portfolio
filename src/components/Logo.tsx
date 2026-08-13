@@ -36,7 +36,16 @@ const SHAPES: Record<'wordmark' | 'mark', { paths: BrandPath[]; viewBox: string;
  * says exactly the right thing; on a public URL it could imply an engagement
  * that does not exist.
  */
-export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi for Revolut' }: LogoProps) {
+/*
+  The default accessible name is brand-neutral, and has to be: it is baked into
+  the HTML at build time, while which brand a hostname shows is decided at
+  runtime, so any company named here would be wrong on every other hostname.
+
+  Nothing is lost. In the nav the anchor around this already carries
+  aria-label="Home", which is what a screen reader announces; this name only
+  surfaces where the mark stands alone. "Rohit Sehmi" is true on every host.
+*/
+export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi' }: LogoProps) {
   const { paths, viewBox, ratio } = SHAPES[variant];
   /*
     The lockup ships both logotypes and lets CSS choose, for the same reason

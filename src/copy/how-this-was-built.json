@@ -129,5 +129,21 @@
         "mark": "github"
       }
     ]
+  },
+  "brands": {
+    "wise": {
+      "links": {
+        "heading": "The receipts",
+        "intro": "The Figma file this site is built from. The repository and the Storybook are shared across every brand here, so they are not linked from this one yet.",
+        "items": [
+          {
+            "label": "The Figma file",
+            "note": "Tokens, components and the banding system",
+            "href": "https://www.figma.com/design/G3HBCm7Dsa6gQ2PKv0Y8g4/Wise?node-id=56-4387",
+            "mark": "figma"
+          }
+        ]
+      }
+    }
   }
 }

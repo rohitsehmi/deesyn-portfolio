@@ -86,3 +86,38 @@ body {
 :where(a, button, [role='button'], summary) {
   touch-action: manipulation;
 }
+
+/*
+  Per-brand content.
+
+  One prerendered build answers on every *.deesyn.com hostname, so anything
+  that differs by brand has to ship in both forms and be chosen at runtime.
+  Mark each version with data-brand-only and this picks; the inline script in
+  Base.astro sets [data-brand] on the root from location.hostname before the
+  first paint, so nothing is ever painted for the wrong brand.
+
+  Revolut is the default and carries no attribute, which means www, the apex,
+  any unrecognised subdomain and a client running no JavaScript all get it.
+
+  display:none rather than visibility or clipping, deliberately: a hidden
+  version must leave the accessibility tree completely, or a screen reader
+  would read both headings and both link lists.
+
+  This is isolation by routing, not by build. Both versions are in the HTML of
+  every page. Fine while every brand here is the author's own framing; not a
+  substitute for separate builds when one client's content must not reach
+  another.
+*/
+/*
+  THE DOUBLED ATTRIBUTE IS LOAD-BEARING. Do not "tidy" it to a single one.
+
+  A single [data-brand-only='wise'] is one attribute selector, exactly as
+  specific as a class, and this file loads before component styles. So
+  `.hb-links { display: grid }` beat it on source order alone and both link
+  lists rendered at once — the Revolut page showed the Wise receipt. Repeating
+  the attribute costs nothing, changes what is matched not at all, and puts
+  these rules above any single class that sets display.
+*/
+[data-brand-only='wise'][data-brand-only] { display: none; }
+[data-brand='wise'] [data-brand-only='revolut'][data-brand-only] { display: none; }
+[data-brand='wise'] [data-brand-only='wise'][data-brand-only] { display: revert; }

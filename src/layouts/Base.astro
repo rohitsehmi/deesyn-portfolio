@@ -118,7 +118,19 @@ const structuredData = article
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Ro x Revolut" />
+    {/*
+      Brand-neutral, and it has to be. Meta tags are read out of the HTML by a
+      crawler that never runs the script deciding which brand a hostname shows,
+      so anything naming a company would be wrong on every other hostname.
+
+      The card image itself is still the Revolut lockup, and that IS a leak on
+      another brand's hostname — og:image is one build-time URL and cannot vary
+      per host. It is contained rather than solved: robots.txt disallows every
+      agent, so the compliant unfurlers never fetch the page and never see it.
+      A per-brand card needs the card generated per brand, which is part of the
+      brand-pack split rather than something to bodge here.
+    */}
+    <meta property="og:image:alt" content="Rohit Sehmi" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={cardTitle} />
     <meta name="twitter:description" content={description} />

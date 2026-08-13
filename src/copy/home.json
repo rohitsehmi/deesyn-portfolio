@@ -1,5 +1,11 @@
 {
   "_comment": "Editable copy for the home page. Rendered with data-copy attributes so it can be edited in the browser under `npm run dev` — see tools/copy-editor.mjs. Case study titles and summaries are not here: they live in src/data/studies.ts, which is already one readable file and is shared with the next-study rotation.",
   "heroTitle": "Two case studies, for Revolut.",
-  "heroStandfirst": "One on the design system, the other on product design."
+  "heroStandfirst": "One on the design system, the other on product design.",
+  "_brands": "Per-brand overrides. Rendered alongside the default and chosen at runtime by [data-brand]; see base.css. Only strings that name a company belong here.",
+  "brands": {
+    "wise": {
+      "heroTitle": "Two case studies, for Wise."
+    }
+  }
 }

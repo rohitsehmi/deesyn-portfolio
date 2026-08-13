@@ -20,6 +20,21 @@
 import { track } from '@vercel/analytics';
 
 /**
+ * Which brand's site this event happened on.
+ *
+ * One deployment answers every hostname, so a page view alone cannot say which
+ * brand a reader saw. Vercel records the hostname and the dashboard can filter
+ * on it, which covers views — but the two custom events below carry no host, so
+ * without this "12 people read the product study" could not be split between
+ * the sites it was read on.
+ *
+ * Read off the same [data-brand] the stylesheet uses rather than re-deriving it
+ * from location.hostname, so the analytics can never disagree with what was
+ * actually on screen. Absent means Revolut, exactly as it does in CSS.
+ */
+const brand = (): string => document.documentElement.dataset.brand ?? 'revolut';
+
+/**
  * Which artefact someone opened from "The receipts".
  *
  * The page argues that the work is inspectable; this measures whether anyone
@@ -30,7 +45,7 @@ export function trackReceipts(): void {
   document.addEventListener('click', (e) => {
     const link = (e.target as Element | null)?.closest<HTMLElement>('[data-receipt]');
     if (!link) return;
-    track('receipt_open', { artefact: link.dataset.receipt ?? 'unknown' });
+    track('receipt_open', { artefact: link.dataset.receipt ?? 'unknown', brand: brand() });
   });
 }
 
@@ -64,7 +79,7 @@ export function trackReadDepth(): void {
           timer = window.setTimeout(() => {
             fired = true;
             observer.disconnect();
-            track('study_read', { study: slug });
+            track('study_read', { study: slug, brand: brand() });
           }, 3000);
         } else if (!entry.isIntersecting && timer) {
           window.clearTimeout(timer);

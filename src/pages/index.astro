@@ -112,7 +112,17 @@ const covers = new Map(
       range="exit"
       drift="140px"
     >
-      <h1 class="home-hero__title" data-copy="home:heroTitle">{copy.heroTitle}</h1>
+      {/*
+        One h1 with two spans, not two h1s. Both versions ship because the
+        build is prerendered and one deployment answers every hostname; the
+        hidden one is display:none, so it leaves the accessibility tree
+        entirely and the page still has exactly one heading with one name.
+        See base.css for how [data-brand] chooses.
+      */}
+      <h1 class="home-hero__title">
+        <span data-brand-only="revolut" data-copy="home:heroTitle">{copy.heroTitle}</span>
+        <span data-brand-only="wise" data-copy="home:brands.wise.heroTitle">{copy.brands.wise.heroTitle}</span>
+      </h1>
       <p class="home-hero__standfirst" data-copy="home:heroStandfirst">{copy.heroStandfirst}</p>
     </Parallax>
 
