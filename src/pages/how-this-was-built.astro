@@ -240,16 +240,21 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
       accessible name still starts with the visible text (WCAG 2.5.3).
     */}
     {/*
-      The receipts differ by brand, and this is the one place on the site where
-      that is about more than a name.
+      The receipts differ by brand: each hostname links its own Figma file.
 
-      The repository and the Storybook are shared across every brand here. The
-      repo carries the Revolut tokens, their icon set and their lockup; the
-      Storybook renders those components in those tokens. Linking either from a
-      hostname that is meant to be about a different company hands that
-      company the other one's work, which is exactly what the per-brand
-      hostnames are for. They come back per brand once the framework and the
-      brand packs are separate repositories.
+      The Storybook and the repository are deliberately the SAME on every
+      brand, which is a decision rather than an oversight. Both are shared
+      artefacts today — the repo carries one set of tokens, one icon set and
+      one lockup, and the Storybook renders those components in those tokens —
+      so from another brand's hostname they show work done under the first
+      brand's name. That was weighed and accepted: the shared engineering is
+      the point of the receipts, and a reader who follows one is looking at how
+      the site is built rather than at whose logo is in it.
+
+      It stops being a judgement call and starts being a leak the moment the
+      brands hold different CLIENT work rather than different framing of the
+      same work. At that point they need to be per-brand, which is what
+      splitting the framework from the brand packs is for.
     */}
     {(['revolut', 'wise'] as const).map((brand) => {
       const links = brand === 'revolut' ? c.links : (c as any).brands[brand].links;

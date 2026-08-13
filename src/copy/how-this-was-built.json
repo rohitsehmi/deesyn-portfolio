@@ -134,13 +134,24 @@
     "wise": {
       "links": {
         "heading": "The receipts",
-        "intro": "The Figma file this site is built from. The repository and the Storybook are shared across every brand here, so they are not linked from this one yet.",
         "items": [
           {
             "label": "The Figma file",
-            "note": "Tokens, components and the banding system",
+            "note": "Tokens, components, banding and motion",
             "href": "https://www.figma.com/design/G3HBCm7Dsa6gQ2PKv0Y8g4/Wise?node-id=56-4387",
             "mark": "figma"
+          },
+          {
+            "label": "Storybook, on Chromatic",
+            "note": "Every component, both themes",
+            "href": "https://main--6a70c473fc9430ebb1214df6.chromatic.com",
+            "mark": "storybook"
+          },
+          {
+            "label": "The repository",
+            "note": "The site, the token pipeline and the checks",
+            "href": "https://github.com/rohitsehmi/deesyn-portfolio",
+            "mark": "github"
           }
         ]
       }
