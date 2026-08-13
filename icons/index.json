@@ -1,12 +1,12 @@
 {
   "$description": "Contracts for Figma page \"Icons\". Generated — do not edit by hand. Run node design/build.mjs.",
   "figmaPage": "Icons",
-  "generated": "2026-08-10",
+  "generated": "2026-08-13",
   "components": [
     {
       "name": "Icon",
       "slug": "icon",
-      "variants": 14,
+      "variants": 15,
       "axes": [
         "name"
       ],

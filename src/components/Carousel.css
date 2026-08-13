@@ -142,10 +142,6 @@
 }
 .carousel__arrows [data-carousel-prev] { left: var(--carousel-arrow-inset); }
 .carousel__arrows [data-carousel-next] { right: var(--carousel-arrow-inset); }
-/* No chevron-left in the icon set, so prev is the same asset mirrored. Applied
-   to the glyph, not the button, or the focus ring and the press scale would be
-   mirrored with it. */
-.carousel__arrows [data-carousel-prev] svg { transform: scaleX(-1); }
 
 /* Press feedback has to compose with the centring transform, not replace it —
    a bare `scale(0.97)` here would drop translateY and the button would jump

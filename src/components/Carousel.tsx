@@ -129,15 +129,17 @@ export function Carousel({ slides, label, sizes, backdrop, autoplayMs = 0, capti
           inset-0 and pointer-events:none — without that it would swallow the
           swipe it is sitting on top of.
 
-          Both are chevron-right: the icon set has no chevron-left, and prev is
-          mirrored in CSS. Same move as `arrow-up-right`, which is ArrowThinRight
-          rotated 45 degrees because Revolut ships no diagonal arrow. The
-          alternative is a real chevron-left in the Figma set, which is a change
-          to a checksummed component and worth doing deliberately, not in
-          passing.
+          Both arrows are real assets. Until 2026-08-13 prev was chevron-right
+          with `scaleX(-1)` on the glyph, because the icon set had no
+          chevron-left; it has one now, mirrored from chevron-right as path data
+          and checked vertex by vertex against Figma's own export. The CSS flip
+          was always the weaker answer: it is invisible to the contract, so the
+          published spec said the button used a right-pointing chevron, and
+          anything else that ever transformed that glyph would have had to
+          remember to compose with it.
         */}
         <div className="carousel__arrows" data-carousel-controls aria-hidden="false">
-          <IconButton icon="chevron-right" aria-label="Previous screen" variant="secondary" size="md" data-carousel-prev />
+          <IconButton icon="chevron-left" aria-label="Previous screen" variant="secondary" size="md" data-carousel-prev />
           <IconButton icon="chevron-right" aria-label="Next screen" variant="secondary" size="md" data-carousel-next />
         </div>
         <ul className="carousel__track" data-carousel-track tabIndex={0}>

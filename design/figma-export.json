@@ -1,13 +1,13 @@
 {
   "_comment": "Design-system contracts extracted from Figma file UnybX8G5sQIEhLLZN2YFl6. Source of truth. Regenerate with design/figma-export.snippet.js, then run `node design/build.mjs`.",
-  "_exported": "2026-08-10",
+  "_exported": "2026-08-13",
   "_note": "Domains mirror Figma pages one-to-one. tokenSets is a shared dedupe pool; each variant's `t` indexes into it. Values are TOKEN NAMES, not literals — resolve against tokens/tokens.json.",
   "domains": {
     "icons": {
       "page": "Icons",
       "components": {
         "Icon": {
-          "description": "Every icon is a real Revolut asset from assets.revolut.com, used verbatim — filled paths, matching Revolut's own fill-based mono system. No hand-drawn approximations.\n\nThe one exception is arrow-up-right: Revolut ships no diagonal arrow, so it is ArrowThinRight rotated -45°, which keeps the exact weight and geometry of the real asset.\n\nRevolut has no plain ArrowRight either — the thin arrow IS its arrow, which is why arrow-right and arrow-left do not exist here.\n\nFill binds to fg/primary. Components tint whichever paint a vector uses.",
+          "description": "Every icon is a real Revolut asset from assets.revolut.com, used verbatim — filled paths, matching Revolut's own fill-based mono system. No hand-drawn approximations.\n\nThe one exception is arrow-up-right: Revolut ships no diagonal arrow, so it is ArrowThinRight rotated -45°, which keeps the exact weight and geometry of the real asset.\n\nRevolut has no plain ArrowRight either — the thin arrow IS its arrow, which is why arrow-right and arrow-left do not exist here.\n\nchevron-left is chevron-right mirrored about the vertical centre, as real path data rather than a CSS or transform flip. That is not an approximation: Revolut's own set relates chevron-up and chevron-down as exact vertical mirrors of each other, so a mirrored chevron-right is the geometry Revolut would ship. It exists because the carousel's previous control needs it, and faking it with scaleX(-1) at render time mirrors the focus ring and press scale along with the glyph.\n\nFill binds to fg/primary. Components tint whichever paint a vector uses.",
           "props": {
             "name": {
               "type": "VARIANT",
@@ -25,7 +25,8 @@
                 "chevron-up",
                 "link",
                 "moon",
-                "sun"
+                "sun",
+                "chevron-left"
               ]
             }
           },
@@ -59,6 +60,13 @@
               "t": 0
             },
             "name=chevron-right": {
+              "size": [
+                24,
+                24
+              ],
+              "t": 0
+            },
+            "name=chevron-left": {
               "size": [
                 24,
                 24

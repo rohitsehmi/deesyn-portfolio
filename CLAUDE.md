@@ -85,7 +85,7 @@ Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development
 
 ## Repository
 
-`https://github.com/rohitsehmi/revolut-case-studies` — **public as of 2026-08-07.**
+`https://github.com/rohitsehmi/deesyn-portfolio` — **public as of 2026-08-07.** Renamed from `revolut-case-studies` on 2026-08-13: the old name announced who the work was for from the URL alone, before anyone clicked. GitHub 301-redirects the old address, so existing links survive; the live site's link was updated at the same time, because a rename that leaves the old URL rendered on the page has changed nothing.
 
 It was private up to that point, and going public set one standing rule: **the repo is read by the same people who read the site.** Working notes about what a page is weak at, or what a claim is inferred from, belong in a conversation and not in a tracked file. The technical record — why a token is shaped a certain way, why a check exists, what broke and how it was caught — is the part worth publishing, and it is most of what is here.
 
@@ -135,9 +135,9 @@ Machine-readable, same pattern as banding: `page.getSharedPluginData('motion', '
 
 Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Variant props are **lowercase** (`variant=primary, size=lg`), booleans kebab-case, slot names lowercase nouns.
 
-**96 variants across 12 sets, split across three pages:**
+**97 variants across 12 sets, split across three pages:**
 
-- **Icons** (`icons/`) — `Icon` (14). Real Revolut assets, filled paths, verbatim from `assets.revolut.com`. `arrow-up-right` is `ArrowThinRight` rotated +45°; Revolut ships no diagonal arrow and no plain `ArrowRight` either.
+- **Icons** (`icons/`) — `Icon` (15). Real Revolut assets, filled paths, verbatim from `assets.revolut.com`. `arrow-up-right` is `ArrowThinRight` rotated +45°; Revolut ships no diagonal arrow and no plain `ArrowRight` either. `chevron-left` is `chevron-right` mirrored about x=12 as real path data — added 2026-08-13, see below.
 - **Marks** (`marks/`) — `Brand/Logo` (2). `wordmark` is now the **Ro × Revolut lockup** (233×48), `mark` is Rohit's disc alone (48×48). Both exported from Figma node `21:4229` into `src/components/logo-paths.ts`; the RS text stand-in is gone. The disc is a single `evenodd` path with the script cut out rather than drawn on top, which is what lets the whole thing take `fill: currentColor` and still read on an inverse band. Variant names are kept from the Figma set even though `lockup` would now be more accurate than `wordmark`.
 - **Components** (`components/`) — `Action/Button` (27), `Action/Icon Button` (27), `Action/Link` (2), `Action/Arrow Link` (2), `Content/Tag` (2), `Content/Media` (8), `Layout/Card` (4), `Chrome/Nav` (4), `Chrome/Footer` (2), `Chrome/Theme Toggle` (2).
 
@@ -165,7 +165,9 @@ Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Varia
 
 **Targets and contrast are measured, not asserted.** Arrows 44×44 (WCAG 2.5.5, and Apple's 44pt), dots 24×24 (WCAG 2.5.8). The dots were 16×16 and **failed** — the hit area and the visible dot were the same box. The arrows overlay a photographic backdrop, so 1.4.11 applies: the button fill is only 4% black in light and 14% white in dark, so the plate is 1.07:1 against the backdrop and the **border** carries the boundary at 12.97:1 light and 8.61:1 dark, with the glyph at 12.15:1 and 5.54:1.
 
-**There is no `chevron-left` in the icon set**, so previous is `chevron-right` mirrored with `scaleX(-1)` on the glyph — not the button, or the focus ring and press scale would mirror with it. Precedent exists (`arrow-up-right` is `ArrowThinRight` rotated 45°), but a real `chevron-left` in the Figma set is the proper fix and is outstanding.
+**`chevron-left` is a real asset as of 2026-08-13**, and the carousel's previous button uses it. It is `chevron-right` mirrored about x=12 as path data, not a transform: Revolut's own `chevron-up` and `chevron-down` are exact vertical mirrors of each other, so mirroring is how this set relates its chevrons and the result is the geometry Revolut would ship. Every vertex was checked against the SVG Figma exports for the node, 11 of 11 in order, and the repo checksum reproduces Figma's (`4180069571`).
+
+It replaced a `scaleX(-1)` on the glyph, which worked and had precedent but was the weaker answer for a reason worth keeping: **a CSS flip is invisible to the contract.** The published spec said that button used a right-pointing chevron, because the spec is measured from Figma and Figma had no idea. Anything else that later transformed that glyph would also have had to remember to compose with it.
 
 **`carousel-controls.ts`, not `carousel.ts`.** macOS is case-insensitive, so `./Carousel` resolved to the script rather than the component and the build broke. It is a `.ts` for the same reason as `number-ticker.ts` — it must move neither the component count nor the contract count.
 
@@ -242,9 +244,9 @@ Not in `verify`, and `design/.dist-baseline.json` is gitignored: a baseline is a
 
 **Deprecating a component:** set `setSharedPluginData('spec', 'status', 'deprecated')` on the set in Figma and rename it out of the live namespace. It stays in the file and leaves the published contract; the export lists it under `deprecated` and `verify.mjs` prints it, so its absence is recorded rather than silent. `Deprecated/Brand Logo` (was `XX · Brand/Logo`) is the first.
 
-`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma: `2940174491`, 132 entries, matched 2026-08-10. See `design/README.md`. (An earlier `1567749477` was recorded here against the same entry count and was stale — **re-read a checksum from `verify.mjs` rather than trusting this file**, which is the only reason these are written down at all.)
+`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma: `4180069571`, 133 entries, matched 2026-08-13. See `design/README.md`. (An earlier `1567749477` was recorded here against the same entry count and was stale — **re-read a checksum from `verify.mjs` rather than trusting this file**, which is the only reason these are written down at all.)
 
-**Three checksums, three sources.** Tokens `2836674598`. Figma components `2940174491`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `2397650938` (was `2975374804` before `Content/Carousel` joined them) but have no Figma counterpart to match, by definition.
+**Three checksums, three sources.** Tokens `2836674598`. Figma components `4180069571`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print `2397650938` (was `2975374804` before `Content/Carousel` joined them) but have no Figma counterpart to match, by definition.
 
 **Nine components exist only in code**, with no Figma set: `Content/Section Heading`, `Prose`, `Metrics`, `Explorations`, `Hindsight`, `Contribution`, `CaseStudyTile`, `Parallax` and `Carousel`. Their contracts are things a variant cannot express, so building them in Figma would document them *less* precisely. `design/build-code-specs.mjs` measures them from source instead: props from the TypeScript declarations, tokens from their own stylesheets, don'ts from `usage-rules.json` like every other component. **21 React components, 21 with a published contract** — this file said six and 17/17 until 2026-08-10, when `CaseStudyTile` and `Parallax` had joined the list without it being written down, and said 20/20 until 2026-08-13.
 
@@ -478,9 +480,8 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
 
 1. **Real screens for the second interface block.** `making-the-app-testable` shows the home across three generations; the three adaptive results layouts have no capture, so that block stays out of the arrangement rather than rendering an empty frame.
 2. **Two provenance questions on the exploration imagery.** The Hotels.com comparison graphics carry per-variant percentages that no written source backs; either they are real and belong in the copy with a citation, or they are illustrative and should come off the pictures. Separately, the three EGDS "Decisions" panels are recreations rather than captures.
-3. **Add `chevron-left` to the Figma icon set.** The carousel's previous button is `chevron-right` mirrored in CSS, which works and has precedent, but a real asset is the fix. It needs Figma Desktop with the Bridge plugin open, then a re-export and a new components checksum. **Do not add it to `icon-paths.ts` alone** — `verify.mjs` never reads that file, so 15 icons in code against 14 in Figma would drift with nothing to catch it.
-4. **`/about` builds but is linked from nowhere.** One entry in `src/data/nav.ts` brings it back; it was unlinked while it was a stub and has been written since.
-5. **Every subdomain of `deesyn.com` serves this build.** `*.deesyn.com` is attached to the Vercel project, so `revolut.deesyn.com` is live — and so is any name someone guesses. Decide whether unmatched hosts should redirect to the apex before a company subdomain is shared with anyone.
+3. **`/about` builds but is linked from nowhere.** One entry in `src/data/nav.ts` brings it back; it was unlinked while it was a stub and has been written since.
+4. **Every subdomain of `deesyn.com` serves this build.** `*.deesyn.com` is attached to the Vercel project, so `revolut.deesyn.com` is live — and so is any name someone guesses. Decide whether unmatched hosts should redirect to the apex before a company subdomain is shared with anyone.
 
 **Smaller, none blocking:** `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); the hero and both index covers are still stand-in imagery.
 

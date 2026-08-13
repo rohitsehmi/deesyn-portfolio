@@ -8,7 +8,7 @@
     "set": "Icon",
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
-  "description": "Every icon is a real Revolut asset from assets.revolut.com, used verbatim — filled paths, matching Revolut's own fill-based mono system. No hand-drawn approximations.\n\nThe one exception is arrow-up-right: Revolut ships no diagonal arrow, so it is ArrowThinRight rotated -45°, which keeps the exact weight and geometry of the real asset.\n\nRevolut has no plain ArrowRight either — the thin arrow IS its arrow, which is why arrow-right and arrow-left do not exist here.\n\nFill binds to fg/primary. Components tint whichever paint a vector uses.",
+  "description": "Every icon is a real Revolut asset from assets.revolut.com, used verbatim — filled paths, matching Revolut's own fill-based mono system. No hand-drawn approximations.\n\nThe one exception is arrow-up-right: Revolut ships no diagonal arrow, so it is ArrowThinRight rotated -45°, which keeps the exact weight and geometry of the real asset.\n\nRevolut has no plain ArrowRight either — the thin arrow IS its arrow, which is why arrow-right and arrow-left do not exist here.\n\nchevron-left is chevron-right mirrored about the vertical centre, as real path data rather than a CSS or transform flip. That is not an approximation: Revolut's own set relates chevron-up and chevron-down as exact vertical mirrors of each other, so a mirrored chevron-right is the geometry Revolut would ship. It exists because the carousel's previous control needs it, and faking it with scaleX(-1) at render time mirrors the focus ring and press scale along with the glyph.\n\nFill binds to fg/primary. Components tint whichever paint a vector uses.",
   "donts": [
     "Never hand-draw one. Every icon here is a real Revolut asset; an approximation sits next to the real thing and loses.",
     "Do not restroke them. They are filled paths — Revolut's system is fill-based, not stroke-based.",
@@ -29,12 +29,13 @@
       "chevron-up",
       "link",
       "moon",
-      "sun"
+      "sun",
+      "chevron-left"
     ]
   },
   "props": {},
   "slots": [],
-  "variantCount": 14,
+  "variantCount": 15,
   "variants": {
     "name=arrow-thin-right": {
       "size": {
@@ -105,6 +106,23 @@
       }
     },
     "name=chevron-right": {
+      "size": {
+        "width": 24,
+        "height": 24
+      },
+      "tokens": {
+        "Vector": {
+          "fg": {
+            "token": "fg/primary",
+            "ref": "semantic.*.fg.primary",
+            "type": "color",
+            "light": "#191c1f",
+            "dark": "#ffffff"
+          }
+        }
+      }
+    },
+    "name=chevron-left": {
       "size": {
         "width": 24,
         "height": 24
