@@ -9,7 +9,7 @@
       "missing": [
         {
           "type": "host",
-          "value": "(www\\.|wise\\.|revolut\\.)?deesyn\\.com|.*\\.vercel\\.app"
+          "value": "^(?:(?:www|wise|revolut|healf)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
         }
       ],
       "destination": "https://www.deesyn.com/:path*",
