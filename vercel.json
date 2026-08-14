@@ -5,14 +5,14 @@
   "framework": "astro",
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "missing": [
         {
           "type": "host",
           "value": "^(?:(?:www|wise|revolut|healf)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
         }
       ],
-      "destination": "https://www.deesyn.com/:path*",
+      "destination": "https://www.deesyn.com/$1",
       "permanent": false
     }
   ],
