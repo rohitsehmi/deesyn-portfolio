@@ -50,7 +50,7 @@ Rule: **measure the live site; don't trust secondhand design docs.** A third-par
 
 ## Figma
 
-File **"Revolut"** — `UnybX8G5sQIEhLLZN2YFl6`. Pages, and the repo folder each mirrors:
+File **"Revolut"** — `UnybX8G5sQIEhLLZN2YFl6`. This is the file everything below is measured from; the Wise file is a lockup swap and nothing in the repo reads it (see § Brands). Pages, and the repo folder each mirrors:
 
 | Page | Repo | Holds |
 |---|---|---|
@@ -92,6 +92,32 @@ It was private up to that point, and going public set one standing rule: **the r
 The design system reconstructs Revolut's public brand values under their name, from their live CSS, as a study. See `docs/revolut-design-foundations.md`.
 
 `memory` (symlink to `~/.claude/projects/…`) and `.claude/settings.local.json` are gitignored on purpose — the first would commit a broken absolute path, the second is machine-specific.
+
+## Brands
+
+**One build serves two brands, chosen by hostname — live since 2026-08-13.** `www.deesyn.com` shows Ro × Revolut; `wise.deesyn.com` shows Ro × Wise, with its own hero copy and its own Figma receipt. Both hosts verified live.
+
+The site is prerendered and **one Vercel deployment answers every `*.deesyn.com` host**, so the brand cannot be decided at build time. Everything brand-specific therefore ships in *both* forms, marked `data-brand-only="revolut|wise"`, and a blocking inline script in `Base.astro` sets `[data-brand]` on the root from `location.hostname` before the first paint — the same no-flash pattern as the theme. The rules are three lines at the foot of `src/styles/base.css`.
+
+**Revolut is the default and carries no attribute**, so www, the apex, any unrecognised subdomain and a client running no JavaScript all get it.
+
+Why one project rather than one per brand: a second Vercel project means a second certificate, and **a hostname enters the public Certificate Transparency log the moment it is issued one**. A single wildcard cert keeps company names out of it.
+
+- **The rules only ever hide.** Nothing declares a `display` value on the version that is showing, so a brand variant keeps whatever its own component stylesheet gives it and lays out identically on every host. Each rule selects the version that does *not* belong to the current brand, via `:not()`.
+- **`display: revert` is what that replaced, and it was a real bug** — fixed 2026-08-14, found on the live Wise host. `revert` goes back to the **user-agent** stylesheet, not to the author rule it was overriding, so a shown element got the browser default for its tag. The three receipts on `/how-this-was-built` are a `ul` that `.hb-links` lays out as a grid, three across above 768px; reverted to the UA `display: block` they stacked full-width with no columns and no grid gap, so Wise rendered them misaligned while Revolut was correct. **The hero spans escaped it only because a `span` is inline either way**, which is how it stayed hidden — the one element that had a layout to lose was the one that lost it.
+- **Specificity is still load-bearing**, and `:not()` carries it now. `.hb-links { display: grid }` is one class and `base.css` loads before component styles, so a single `[data-brand-only]` loses on source order and both link lists render at once — that is the bug this had first, and the Revolut page showed the Wise receipts. Each rule is three or four attribute selectors, which clears any single class.
+- **`display: none`, not `visibility` or clipping.** The version that is not showing has to leave the accessibility tree completely, or a screen reader reads both headings and both link lists.
+- **`Logo` ships both logotypes in one SVG.** `wordmark` renders Rohit's disc, the `×`, and then both companies' logotypes as sibling paths, each tagged `data-brand-only`. The default accessible name is brand-neutral because it is baked in at build time.
+- **The analytics events carry `brand`, read off `[data-brand]`** rather than re-derived from `location.hostname`, so the number can never disagree with what was on screen. Views were always splittable by hostname in the Vercel dashboard; the custom events were not.
+- **Per-brand copy lives under `brands.<brand>` in the same JSON file**, keyed to mirror the default path — `home:brands.wise.heroTitle` beside `home:heroTitle` — so the browser editor and the markdown round trip reach both without a second mechanism.
+
+**This is isolation by routing, not isolation by build**, and the distinction is the whole risk. Both brands' content is in every page's HTML on every host. That is fine while the brands are different framings of the *same* work and becomes a leak the day they hold different clients' work. `design/paths.mjs` grouping paths into framework / brand pack / content is the first step of the split that would fix it; there is deliberately **no brand switch** wired up yet, because a configuration path nothing exercises is a path that does not work.
+
+**The Storybook and the repository are the same on every brand, deliberately.** They were briefly pulled from the Wise host on the grounds that they show work made under another brand's name, then reinstated: the shared engineering is what the receipts are *for*, and a reader who follows one is looking at how the site is built rather than at whose logo is in it. Recorded on the page rather than left implicit, including the condition that reverses it. The Figma link is the one receipt that does differ per host.
+
+**The Wise Figma file is `G3HBCm7Dsa6gQ2PKv0Y8g4`**, cover node `56:4387` — a structural copy of the Revolut file with a Ro × Wise lockup at 224×48 bound to its own `fg/primary`. **Its tokens are still Revolut's blue.** It is a lockup swap, not a brand pack.
+
+**What is still Revolut-only on every host:** `og.png` (see below), the tokens, the icon set, and the Storybook's `Marks/Logo` stories.
 
 ## Tokens
 
@@ -372,6 +398,8 @@ Light only, deliberately: a social card is composited onto whatever surface the 
 
 **`robots.txt` is the one thing that does gate this.** It carries `Disallow: /` for every user agent, and the compliant unfurlers (Slack, Twitter, LinkedIn) honour it, so they will not fetch the page and will never read the tags. The tags are correct and ready; whether to add an allow-list for those specific bots is a decision about the `x` lockup and Revolut's assets, not a technical one, and it has not been made.
 
+**The meta tags are brand-neutral and have to be**, because they are read out of the HTML by a crawler that never runs the script deciding which brand a hostname shows. **The card image is not**: `og:image` is one build-time URL and cannot vary per host, so `/og.png` is the Revolut lockup on the Wise hostname too. Contained rather than solved — `robots.txt` means the compliant unfurlers never fetch it — and the real fix is generating the card per brand, which belongs with the brand-pack split rather than a bodge in `Base.astro`.
+
 Structured data is `WebSite` on ordinary pages and `Article` on a case study, with `articleSection` carrying the discipline from `studies.ts`. Deliberately modest — schema.org rewards inventing properties you cannot support, and every value emitted is already on the page in words. `socialTitle` exists so `og:title` and the Article `headline` carry the page's own name without the `· Rohit Sehmi` suffix that `<title>` needs.
 
 ## Analytics
@@ -380,8 +408,10 @@ Structured data is `WebSite` on ordinary pages and `Article` on a case study, wi
 
 **Two custom events, because page views answer the wrong questions.** Views tell you someone opened a page; they do not tell you whether anyone reached the end of a case study or opened the artefacts it points at, which are the only two things worth knowing here.
 
-- `receipt_open` — `{ artefact }`, from `[data-receipt]` on the three links on `/how-this-was-built`. One delegated listener on the document, so it survives the list changing length.
-- `study_read` — `{ study }`, when the impact section has been on screen for **three seconds**, not on first intersection. Scrolling past something is not reading it, and a fire-on-touch event reports a fast scroll to the footer as a full read. Impact rather than hindsight, because hindsight is the last block before the footer and anyone reaching the bottom passes through it.
+- `receipt_open` — `{ artefact, brand }`, from `[data-receipt]` on the three links on `/how-this-was-built`. One delegated listener on the document, so it survives the list changing length.
+- `study_read` — `{ study, brand }`, when the impact section has been on screen for **three seconds**, not on first intersection. Scrolling past something is not reading it, and a fire-on-touch event reports a fast scroll to the footer as a full read. Impact rather than hindsight, because hindsight is the last block before the footer and anyone reaching the bottom passes through it.
+
+**`brand` is read off `[data-brand]` in the DOM, never re-derived from the hostname** — see § Brands. One deployment answers every host, so without it "12 people read the product study" could not be split between the sites it was read on.
 
 **`src/components/analytics.ts` is a `.ts`, not a `.tsx`, and that is load-bearing** — same reason as `service-marks.ts`. The component count on `/how-this-was-built` is computed by counting `.tsx` files and `build-code-specs.mjs` writes a contract for each one. Analytics is plumbing, not a component, and must move neither number.
 
@@ -476,13 +506,14 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
 
 ## Next up
 
-**The system and the site are finished; content is what moves the needle.** 9 pages, 21 components, every check green, no gaps rendering on any live page.
+**The system, the site and the multi-brand pipeline are all finished; content is what moves the needle.** 9 pages, 21 components, every check green, no gaps rendering on any live page, two brands live.
 
-1. **Real screens for the second interface block.** `making-the-app-testable` shows the home across three generations; the three adaptive results layouts have no capture, so that block stays out of the arrangement rather than rendering an empty frame.
-2. **Two provenance questions on the exploration imagery.** The Hotels.com comparison graphics carry per-variant percentages that no written source backs; either they are real and belong in the copy with a citation, or they are illustrative and should come off the pictures. Separately, the three EGDS "Decisions" panels are recreations rather than captures.
-3. **`/about` builds but is linked from nowhere.** One entry in `src/data/nav.ts` brings it back; it was unlinked while it was a stub and has been written since.
-4. **Every subdomain of `deesyn.com` serves this build.** `*.deesyn.com` is attached to the Vercel project, so `revolut.deesyn.com` is live — and so is any name someone guesses. Decide whether unmatched hosts should redirect to the apex before a company subdomain is shared with anyone.
+1. **Copy across both brands.** The last content job, and the only one that changes what a reader thinks. The per-brand override mechanism exists for anything naming a company — write it through the markdown round trip, not a field at a time.
+2. **Every subdomain of `deesyn.com` serves this build.** `*.deesyn.com` is attached to the Vercel project, so `revolut.deesyn.com` is live — and so is any name someone guesses. Decide whether unmatched hosts should redirect to the apex before a company subdomain is shared with anyone.
+3. **`og.png` is the Revolut card on every host.** See § Social and structured data — contained by `robots.txt`, not solved.
+4. **Two provenance questions on the exploration imagery.** The Hotels.com comparison graphics carry per-variant percentages that no written source backs; either they are real and belong in the copy with a citation, or they are illustrative and should come off the pictures. Separately, the three EGDS "Decisions" panels are recreations rather than captures.
+5. **No README, so GitHub opens on a bare file tree** with a 70KB `CLAUDE.md` one click away that names Revolut throughout. A README would control the first impression and make this file read as the working record it is. **Do not sanitise `CLAUDE.md`** — it is the technical record and most of the reason the repo is worth linking.
 
-**Smaller, none blocking:** `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); the hero and both index covers are still stand-in imagery.
+**Smaller, none blocking:** the Storybook's `Marks/Logo` stories show the Ro × Revolut lockup only, and a brand toolbar alongside the existing theme one would make that a demonstration rather than something to hide; `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); the hero and both index covers are still stand-in imagery. `/about` stays unlinked deliberately — the reasoning is at the top of `src/data/nav.ts`, and one entry brings it back.
 
-**Settle the `Ro × Revolut` lockup.** An `×` lockup conventionally reads as a partnership, which would imply an engagement that does not exist. Shared directly with a person it is fine; on an open URL it is not. The same question governs making the Storybook public.
+**Settle the `×` lockup.** An `×` lockup conventionally reads as a partnership, which would imply an engagement that does not exist. Shared directly with a person it is fine; on an open URL it is not. The same question governs making the Storybook public, and it is now asked twice — Ro × Revolut and Ro × Wise, on two hostnames.
