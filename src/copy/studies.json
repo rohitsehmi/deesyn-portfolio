@@ -18,6 +18,12 @@
     "discipline": "Product design",
     "coverAlt": "An abstract still life in sage green and off-white: frosted glass panels showing a search field over a list of results, a detail view, a set of filters and a bar chart, linked by glowing cables."
   },
+  "wise-placeholder": {
+    "title": "A third study, reserved for Wise",
+    "summary": "A placeholder, and it says so on the page. It exists to hold the slot for a study written for Wise, and to prove that a whole case study can belong to one hostname while the rest of the site stays as it was.",
+    "discipline": "Product design",
+    "coverAlt": ""
+  },
   "scaling-a-system": {
     "title": "Consolidating four design systems into one",
     "summary": "A brand consolidation meant collapsing several independent design systems into a single platform, without flattening the brands that depended on them.",

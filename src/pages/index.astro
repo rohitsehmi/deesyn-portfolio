@@ -5,7 +5,8 @@ import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
 import { Parallax } from '../components/Parallax';
-import { liveStudies, studyPath, studyCopyBase } from '../data/studies';
+import { liveStudies, studiesFor, studyPath, studyCopyBase } from '../data/studies';
+import { BRANDS, DEFAULT_BRAND } from '../data/brands';
 import { linksFor } from '../data/nav';
 import copy from '../copy/home.json';
 import { getImage } from 'astro:assets';
@@ -52,6 +53,20 @@ const hero = await getImage({
   `sizes` has to describe that or the browser picks from the srcSet against a
   100vw assumption and downloads the widest candidate for a half-width slot.
 */
+/*
+  How many tiles each brand actually sees. The default brand's count keeps the
+  plain `data-count`, so its rules are the ones already written; every other
+  brand gets `data-count-<brand>` and a scoped copy of them. See the note on the
+  <ul> below for why one number cannot serve both.
+*/
+const counts = Object.fromEntries(BRANDS.map((b) => [b, studiesFor(b).length])) as Record<
+  (typeof BRANDS)[number],
+  number
+>;
+const brandCounts = Object.fromEntries(
+  BRANDS.filter((b) => b !== DEFAULT_BRAND).map((b) => [`data-count-${b}`, counts[b]])
+);
+
 const COVER_SIZES = '(min-width: 1024px) 480px, (min-width: 768px) 45vw, calc(100vw - 40px)';
 const covers = new Map(
   await Promise.all(
@@ -128,9 +143,33 @@ const covers = new Map(
 
     {/* base, because the hero above resolves dark. */}
     <Band role="base" scale="default">
-      <ul class="work" data-count={liveStudies.length}>
+      {/*
+        One count per brand, not one count for the page.
+
+        The grid picks its columns from how many tiles there are, and each brand
+        sees a different number of them — so a single data-count is wrong for
+        every brand but one. It shipped that way for an afternoon and gave the
+        default brand a three-column grid holding two tiles, with the third
+        column standing empty exactly where the Wise-only tile is hidden.
+
+        `display: none` removes a grid ITEM but cannot remove a TRACK, which is
+        the whole trap: hiding the tile is not the same as not having counted
+        it. So the count is emitted once per brand and the stylesheet reads the
+        one belonging to the hostname.
+      */}
+      <ul class="work" data-count={counts[DEFAULT_BRAND]} {...brandCounts}>
+        {/*
+          Every live study across every brand, with the brand-specific ones
+          marked so CSS can drop them. It has to be this way round: one build
+          answers every hostname, so the tile a brand does not get still ships
+          in the HTML and is hidden rather than never rendered.
+
+          data-brand-only sits on the <li> rather than on the tile, so the grid
+          item goes with it. Hiding the tile alone would leave an empty cell,
+          which on a two-column grid is not a smaller list — it is a hole.
+        */}
         {liveStudies.map((s) => (
-          <li>
+          <li data-brand-only={s.brand}>
             <CaseStudyTile
               title={s.title}
               summary={s.summary}
@@ -200,7 +239,20 @@ const covers = new Map(
     .home-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
   }
 
-  /* Columns follow the item count, so the last row is never ragged. */
+  /*
+    Columns follow the item count, so the last row is never ragged.
+
+    Each brand sees a different number of tiles, and the count it goes by is the
+    one attribute belonging to it: `data-count` for the default brand,
+    `data-count-<brand>` for the rest. The default's rules are guarded with
+    :root:not(...) so they stop applying on another brand's hostname — without
+    that guard both counts match at once and the wider one wins, which is a
+    silent way to get the bug this replaced.
+
+    Adding a brand means a third arm here. That is the cost of laying out at
+    build time what is chosen at runtime, and it is cheap enough at two brands
+    to prefer over making the grid count its own visible children.
+  */
   .work {
     list-style: none;
     margin: 0;
@@ -210,13 +262,17 @@ const covers = new Map(
     gap: var(--primitive-layout-l64);
   }
   @media (min-width: 768px) {
-    .work[data-count='2'], .work[data-count='4'] {
+    :root:not([data-brand='wise']) .work[data-count='2'],
+    :root:not([data-brand='wise']) .work[data-count='4'],
+    [data-brand='wise'] .work[data-count-wise='2'],
+    [data-brand='wise'] .work[data-count-wise='4'] {
       grid-template-columns: repeat(2, 1fr);
       gap: var(--primitive-layout-l48);
     }
   }
   @media (min-width: 1024px) {
-    .work[data-count='3'] {
+    :root:not([data-brand='wise']) .work[data-count='3'],
+    [data-brand='wise'] .work[data-count-wise='3'] {
       grid-template-columns: repeat(3, 1fr);
       gap: var(--primitive-layout-l48);
     }

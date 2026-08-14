@@ -1,0 +1,103 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import { SectionHeading } from '../../components/SectionHeading';
+import { Prose } from '../../components/Prose';
+import { Hindsight } from '../../components/Hindsight';
+import { Contribution } from '../../components/Contribution';
+import c from '../../copy/wise-placeholder.json';
+
+/**
+ * PLACEHOLDER. Wise only, added 2026-08-14.
+ *
+ * It holds the slot for a study written for Wise, and while it is here it is
+ * the test of whether the brand mechanism carries a whole entity rather than
+ * the spans and link lists it had held until now.
+ *
+ * Deliberately the plainest arrangement on the site: five named slots, each a
+ * heading and prose, and nothing else. No Metrics, because every number here is
+ * measured and carries its source, and a placeholder is exactly where that
+ * would be easiest to quietly drop. No Explorations, because each item requires
+ * `why` and there is no rejected path to explain. No Media, because there is no
+ * screen. Each of those omissions is the type system or a convention refusing
+ * to let a fixture look like finished work, which is the whole point of them.
+ *
+ * The page IS reachable at this address on every hostname — it is prerendered
+ * once and one deployment answers every host. What Wise gets that www does not
+ * is the tile on the index and the place in the next-study rotation. That
+ * limit is stated in the copy rather than only here, because it is the honest
+ * boundary of the approach and a reader checking the work should not have to
+ * open the repo to find it.
+ *
+ * Delete this file with src/copy/wise-placeholder.json and the entry in
+ * src/data/studies.ts when the real study lands.
+ */
+const F = 'wise-placeholder';
+---
+
+<CaseStudy
+  title={c.title}
+  slug="wise-placeholder"
+  standfirst={c.standfirst}
+  titleCopyRef={`${F}:title`}
+  standfirstCopyRef={`${F}:standfirst`}
+>
+  <Contribution slot="contribution" items={c.contribution} copyBase={`${F}:contribution`} />
+
+  <div class="cs-section" slot="problem">
+    <SectionHeading
+      standfirst={c.problem.standfirst}
+      copyRef={`${F}:problem.heading`}
+      standfirstCopyRef={`${F}:problem.standfirst`}
+    >
+      {c.problem.heading}
+    </SectionHeading>
+    <Prose lead>
+      {c.problem.paras.map((p, i) => <p data-copy={`${F}:problem.paras.${i}`}>{p}</p>)}
+    </Prose>
+  </div>
+
+  <div class="cs-section" slot="process">
+    <SectionHeading
+      standfirst={c.process.standfirst}
+      copyRef={`${F}:process.heading`}
+      standfirstCopyRef={`${F}:process.standfirst`}
+    >
+      {c.process.heading}
+    </SectionHeading>
+    <Prose>
+      {c.process.paras.map((p, i) => <p data-copy={`${F}:process.paras.${i}`}>{p}</p>)}
+    </Prose>
+  </div>
+
+  <div class="cs-section" slot="interface">
+    <SectionHeading
+      standfirst={c.interface.standfirst}
+      copyRef={`${F}:interface.heading`}
+      standfirstCopyRef={`${F}:interface.standfirst`}
+    >
+      {c.interface.heading}
+    </SectionHeading>
+    <Prose>
+      {c.interface.paras.map((p, i) => <p data-copy={`${F}:interface.paras.${i}`}>{p}</p>)}
+    </Prose>
+  </div>
+
+  <div class="cs-section" slot="impact">
+    <SectionHeading
+      standfirst={c.impact.standfirst}
+      copyRef={`${F}:impact.heading`}
+      standfirstCopyRef={`${F}:impact.standfirst`}
+    >
+      {c.impact.heading}
+    </SectionHeading>
+    <Prose>
+      {c.impact.paras.map((p, i) => <p data-copy={`${F}:impact.paras.${i}`}>{p}</p>)}
+    </Prose>
+  </div>
+
+  <div class="cs-section" slot="hindsight">
+    <Hindsight>
+      {c.hindsight.paras.map((p, i) => <p data-copy={`${F}:hindsight.paras.${i}`}>{p}</p>)}
+    </Hindsight>
+  </div>
+</CaseStudy>

@@ -1,0 +1,60 @@
+{
+  "_comment": "PLACEHOLDER copy for a Wise-only case study, added 2026-08-14. It is deliberately about itself: it explains what slot it is holding and how it is being shown, rather than describing work that has not been written yet. Placeholder prose that reads like a real study is a lie waiting for someone to quote it, and this site's whole argument is that its claims are checkable. No [NEEDS:] markers, because those mean 'a real fact is missing here' and would put this page in verify-gaps alongside the two studies that matter. Overwrite the whole file when the real study lands, or delete it with its entry in src/data/studies.ts and src/copy/studies.json.",
+  "title": "A third study, reserved for Wise",
+  "standfirst": "This is a placeholder. It holds the slot for a case study written for Wise, and while it is here it does one useful job: it proves a whole study can belong to one hostname.",
+
+  "contribution": [
+    {
+      "term": "Status",
+      "detail": "Placeholder. Nothing on this page describes work that has been done, and nothing here should be read as a claim."
+    },
+    {
+      "term": "What it is for",
+      "detail": "Holding the slot for a case study written for Wise, and testing whether a whole study can belong to one hostname."
+    },
+    { "term": "Added", "detail": "2026-08-14" }
+  ],
+
+  "problem": {
+    "heading": "What this page is",
+    "standfirst": "Not a case study. A slot with the shape of one.",
+    "paras": [
+      "Everything you can read here is placeholder text, and it will stay that way until there is a real study to put in its place. It carries no claims, no numbers and no screens, because a placeholder that reads like finished work is worse than an obviously empty page: it is the kind of thing someone quotes back to you.",
+      "The two studies on this site are the argument. This one is a fixture, and the only thing it demonstrates is the mechanism described below."
+    ]
+  },
+
+  "process": {
+    "heading": "How it is being shown",
+    "standfirst": "One build, two hostnames, and a list that answers differently depending on which one you are reading.",
+    "paras": [
+      "The site is prerendered once and a single deployment answers every hostname, so nothing about a page can be decided by the address it is served from at build time. What the address decides is which version of the page is visible: a small script sets the brand on the document before the first paint, and the stylesheet hides whatever belongs to the other brand.",
+      "Until now that mechanism had only ever carried a heading and a list of links. This page is the first thing that tests it with a whole entity, which means a tile on the index, a place in the rotation at the foot of the other studies, and a page of its own. On www.deesyn.com none of that appears and the site reads exactly as it did before.",
+      "The honest limit is worth stating on the page rather than in a commit message: this is isolation by routing, not by build. This page exists at its address on every hostname, whether or not that hostname offers a link to it. That is fine while every brand here is a different framing of the same work, and it would not be fine for work belonging to different clients, which needs separate builds rather than a better rule."
+    ]
+  },
+
+  "interface": {
+    "heading": "What replaces it",
+    "standfirst": "A study in the same shape as the other two.",
+    "paras": [
+      "A problem worth solving, stated as an insight rather than a brief someone handed over. The explorations that were rejected and the reason each one lost. A complex flow made simple, shown as real screens. A specific personal contribution, and results with a number and a source attached. Then hindsight, which is the section most portfolios leave out and the cheapest one to be honest in.",
+      "That is the order the questions get asked in, and the layout enforces it: the sections are named slots, so a study cannot quietly ship without its heaviest ones."
+    ]
+  },
+
+  "impact": {
+    "heading": "Results",
+    "standfirst": "None to report, and nothing invented to fill the gap.",
+    "paras": [
+      "There are no metrics here. Every number on this site is measured and carries the source it came from, and a placeholder is exactly where that discipline would be easiest to quietly drop."
+    ]
+  },
+
+  "hindsight": {
+    "paras": [
+      "The mechanism was built before there was anything to put through it, which is the right order here: the question was whether a brand-specific study works at all, and a fixture answers that faster than a finished piece of writing would. It becomes the wrong order the moment the fixture is allowed to stay.",
+      "The thing it proved is smaller than it looks. Showing a study on one hostname and not another is a matter of what gets offered, not of what exists, and this page is prerendered at its address on every host either way. That is a real limit rather than an implementation detail, and it decides what this approach can safely be used for."
+    ]
+  }
+}

@@ -4,7 +4,7 @@ import { Nav } from '../components/Nav';
 import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
-import { studies, nextStudy, studyPath, studyCopyBase } from '../data/studies';
+import { studies, nextStudyByBrand, studyPath, studyCopyBase } from '../data/studies';
 import { readingTime } from '../data/reading-time';
 import { linksFor } from '../data/nav';
 
@@ -43,15 +43,51 @@ const { title, standfirst, description, slug, titleCopyRef, standfirstCopyRef } 
 
 const links = linksFor(Astro.url.pathname);
 
-// Offered by the layout rather than repeated on every page, and read from the
-// one list in src/data/studies.ts so it cannot disagree with the index.
-const next = nextStudy(slug);
+/*
+  Offered by the layout rather than repeated on every page, and read from the
+  one list in src/data/studies.ts so it cannot disagree with the index.
 
-/**
- * Rule 1 says no two consecutive bands share a fill, so the footer's role
- * depends on whether the next-study band is above it.
- */
-const footerRole = next ? 'base' : 'sunken';
+  One answer per brand, because a brand can be offered a different set of
+  studies and the foot of a page must never point at one this hostname does not
+  show. All of them render and CSS picks, the same as everywhere else — the
+  brand is a runtime fact and this is a prerendered page.
+*/
+const nexts = nextStudyByBrand(slug);
+
+/*
+  When every brand lands on the same study there is nothing to choose between,
+  so it renders once with no gate. That is the case on every page today; the
+  branch below is what carries a brand-specific study.
+
+  With two brands, a group is either all of them or one of them, so a single
+  data-brand-only value always suffices. A third brand would break that — two
+  brands sharing a next that a third does not is not expressible in one
+  attribute — and the fix then is a value per brand rather than a cleverer
+  selector.
+*/
+const sharedNext = new Set(nexts.map((n) => n.study?.slug)).size === 1 ? nexts[0].study : undefined;
+
+/*
+  Rule 1 says no two consecutive bands share a fill, so the footer's role
+  depends on whether the next-study band is above it.
+
+  Which means every brand has to agree about whether that band exists. A band
+  is one element in one prerendered document; `data-brand-only` can hide what is
+  inside it, but the footer's fill is decided here, at build time, once for
+  every hostname. `nextStudy` is written so this cannot happen — a live study
+  outside a brand's rotation falls back to that brand's first study rather than
+  returning nothing — and this is the assertion that says so out loud instead of
+  leaving a silent adjacency bug for the band linter to find on one host only.
+*/
+const withNext = nexts.filter((n) => n.study).length;
+if (withNext !== 0 && withNext !== nexts.length) {
+  throw new Error(
+    `${slug}: brands disagree about whether a next study exists ` +
+      `(${nexts.map((n) => `${n.brand}=${n.study?.slug ?? 'none'}`).join(', ')}). ` +
+      `The next-study band is one element for every brand, so its presence cannot vary by hostname.`
+  );
+}
+const footerRole = withNext ? 'base' : 'sunken';
 
 /**
  * Measured off this study's copy file — see src/data/reading-time.ts. It is
@@ -145,16 +181,38 @@ const discipline = studies.find((s) => s.slug === slug)?.discipline;
 
     {/* Omitted entirely when there is nothing to offer. An empty band is not
         neutral: it renders as a stripe of padding that reads as a layout bug. */}
-    {next && (
+    {withNext > 0 && (
       <Band role="sunken" scale="default">
         <p class="cs-next__label">Next</p>
-        <CaseStudyTile
-          title={next.title}
-          summary={next.summary}
-          discipline={next.discipline}
-          copyBase={studyCopyBase(next)}
-          href={studyPath(next)}
-        />
+        {/*
+          One band, with the tile inside it chosen by brand — not one band per
+          brand. Two bands would be two SUNKEN bands next to each other in the
+          document, which breaks adjacency rule 1 for the band linter and for
+          anyone reading the HTML, and hiding one with CSS does not change what
+          is written down. The label is shared because it says the same thing
+          whichever tile follows it.
+        */}
+        {sharedNext ? (
+          <CaseStudyTile
+            title={sharedNext.title}
+            summary={sharedNext.summary}
+            discipline={sharedNext.discipline}
+            copyBase={studyCopyBase(sharedNext)}
+            href={studyPath(sharedNext)}
+          />
+        ) : (
+          nexts.map(({ brand, study }) => study && (
+            <div data-brand-only={brand}>
+              <CaseStudyTile
+                title={study.title}
+                summary={study.summary}
+                discipline={study.discipline}
+                copyBase={studyCopyBase(study)}
+                href={studyPath(study)}
+              />
+            </div>
+          ))
+        )}
       </Band>
     )}
   </main>

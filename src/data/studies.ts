@@ -16,6 +16,7 @@
  * exists and in what order, that file decides what it says.
  */
 import copy from '../copy/studies.json';
+import { BRANDS, DEFAULT_BRAND, type Brand } from './brands';
 import coverMachineReadable from '../assets/cover-machine-readable-components.png';
 import coverSearch from '../assets/cover-search-experience.png';
 
@@ -37,6 +38,25 @@ export interface Study {
   discipline: string;
   /** Off the index and the next-study rotation, still built, still reachable. */
   archived?: boolean;
+  /**
+   * Which brand's site shows this study. Absent means every brand, which is the
+   * right default: a study is work, and the brand is only the framing it is
+   * being shown under.
+   *
+   * BUILD-TIME LISTS, RUNTIME BRAND. One build serves every hostname, so this
+   * cannot remove a study from the HTML — the index renders every live tile and
+   * marks the brand-specific ones `data-brand-only`, and CSS hides the ones
+   * that do not belong to the hostname being read. The page itself is
+   * prerendered at its URL on every host and stays reachable there.
+   *
+   * So this decides what a brand is OFFERED, not what it could reach by typing
+   * an address. That is the same isolation-by-routing limit the rest of the
+   * multi-brand work has, and it is fine while the brands are different
+   * framings of the same work. It stops being fine the day one holds another
+   * client's material, and no amount of gating here would fix that — it needs
+   * separate builds.
+   */
+  brand?: Brand;
 }
 
 /**
@@ -48,7 +68,7 @@ export interface Study {
 type StudySlug = Exclude<keyof typeof copy, '_comment'>;
 
 /** Structure only. Everything a reader sees comes from src/copy/studies.json. */
-const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean }[] = [
+const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; brand?: Brand }[] = [
   { slug: 'machine-readable-components', coverSrc: coverMachineReadable },
   /*
     Borrowing the search cover, deliberately and temporarily. Every cover on the
@@ -87,10 +107,26 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean }[]
     Not deleted. It still builds, is still reachable at /work/scaling-a-system,
     and can come back by removing one line.
   */
-  { slug: 'scaling-a-system', archived: true }
+  { slug: 'scaling-a-system', archived: true },
+  /*
+    PLACEHOLDER, added 2026-08-14, and Wise only.
+
+    It is here to prove the brand mechanism carries a whole entity rather than
+    the spans and link lists it has held so far: a study that appears on the
+    index, enters the rotation and takes a page, on one hostname and not the
+    other. Its copy says as much on the page, in place of the work it is
+    standing in for — a placeholder that reads like a real study is a lie
+    waiting for someone to quote it.
+
+    Delete this entry and its two copy files when the real Wise study lands, or
+    rename the slug and write over them. It is the one thing here that IS safe
+    to delete, because the rule above protects a record of real work and there
+    is none in this.
+  */
+  { slug: 'wise-placeholder', brand: 'wise' }
 ];
 
-export const studies: Study[] = order.map(({ slug, coverSrc, archived }) => {
+export const studies: Study[] = order.map(({ slug, coverSrc, archived, brand }) => {
   const c = copy[slug];
   return {
     slug,
@@ -98,12 +134,25 @@ export const studies: Study[] = order.map(({ slug, coverSrc, archived }) => {
     summary: c.summary,
     discipline: c.discipline,
     ...(coverSrc ? { cover: { src: coverSrc, alt: c.coverAlt } } : {}),
-    ...(archived ? { archived } : {})
+    ...(archived ? { archived } : {}),
+    ...(brand ? { brand } : {})
   };
 });
 
-/** What the site shows. Archived studies stay in the list above. */
+/**
+ * What the site shows, across every brand. Archived studies stay in the list
+ * above.
+ *
+ * This is what the index iterates, and it has to be: one build serves every
+ * hostname, so every live tile ships in the HTML and CSS hides the ones that do
+ * not belong to the brand being read. Use `studiesFor` to ask what one brand is
+ * offered.
+ */
 export const liveStudies = studies.filter((s) => !s.archived);
+
+/** The live studies one brand is offered, in order. */
+export const studiesFor = (brand: Brand): Study[] =>
+  liveStudies.filter((s) => !s.brand || s.brand === brand);
 
 export const studyPath = (s: Study) => `/work/${s.slug}`;
 
@@ -113,12 +162,40 @@ export const studyCopyBase = (s: Study) => `studies:${s.slug}`;
 /**
  * The next study to offer at the foot of one, wrapping at the end.
  *
- * Rotates through live studies only, and returns nothing when the current study
- * is archived or is the only one left, so an archived page never advertises
- * itself and a lone study never links to itself.
+ * Rotates through the live studies THIS BRAND is offered, so the foot of a page
+ * never points at a study the reader's hostname does not show. Every brand gets
+ * its own answer for the same page, and the layout renders all of them and lets
+ * CSS pick — see src/layouts/CaseStudy.astro.
+ *
+ * Returns nothing when the study is archived or when the brand has fewer than
+ * two, so an archived page never advertises itself and a lone study never links
+ * to itself.
+ *
+ * The one case that needs explaining is a live study belonging to ANOTHER
+ * brand, which is reachable here because every page is prerendered on every
+ * host. It is not in this brand's rotation, so there is no "next" in the
+ * sequence sense; it offers the brand's first study instead. Returning nothing
+ * would be the tidier-looking answer and is worse in both directions: it
+ * strands a reader who followed a link with no way back into the work, and it
+ * makes the presence of the next-study band differ by brand on one page, which
+ * is a band-adjacency question CSS cannot answer — see the footer role in the
+ * layout.
  */
-export function nextStudy(slug: string): Study | undefined {
-  if (liveStudies.length < 2) return undefined;
-  const i = liveStudies.findIndex((s) => s.slug === slug);
-  return i === -1 ? undefined : liveStudies[(i + 1) % liveStudies.length];
+export function nextStudy(slug: string, brand: Brand = DEFAULT_BRAND): Study | undefined {
+  const live = studiesFor(brand);
+  if (live.length < 2) return undefined;
+
+  const i = live.findIndex((s) => s.slug === slug);
+  if (i !== -1) return live[(i + 1) % live.length];
+
+  const study = studies.find((s) => s.slug === slug);
+  if (!study || study.archived) return undefined;
+  return live[0];
 }
+
+/**
+ * Every brand's answer for one page, for a layout that has to render all of
+ * them and gate them.
+ */
+export const nextStudyByBrand = (slug: string) =>
+  BRANDS.map((brand) => ({ brand, study: nextStudy(slug, brand) }));
