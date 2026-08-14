@@ -3,6 +3,19 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "astro",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "missing": [
+        {
+          "type": "host",
+          "value": "(www\\.|wise\\.|revolut\\.)?deesyn\\.com|.*\\.vercel\\.app"
+        }
+      ],
+      "destination": "https://www.deesyn.com/:path*",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -125,6 +125,13 @@ Why one project rather than one per brand: a second Vercel project means a secon
 
 **The Wise Figma file is `G3HBCm7Dsa6gQ2PKv0Y8g4`**, cover node `56:4387` — a structural copy of the Revolut file with a Ro × Wise lockup at 224×48 bound to its own `fg/primary`. **Its tokens are still Revolut's blue.** It is a lockup swap, not a brand pack.
 
+**Unmatched hostnames redirect to the apex, added 2026-08-14.** `*.deesyn.com` is attached to the project, so before this every name someone guessed — `healf.deesyn.com`, `monzo.deesyn.com` — served the whole site. `vercel.json` now carries a redirect whose `missing.host` names the four hosts that are real (`deesyn.com`, `www`, `wise`, `revolut`) and sends everything else to `https://www.deesyn.com`. Four things about it that are decisions rather than syntax:
+
+- **A redirect, not a 404.** A 404 confirms the name you guessed was interesting enough to be handled specially; a redirect makes a guessed hostname look like an ordinary wildcard, and it also catches a typo like `wsie.` and lands it somewhere useful.
+- **`missing`, not `has`.** "Any host except these" is a negation, and Vercel's host matching is RE2 — no lookaheads — so it cannot be written as a `has` regex. `missing` is the only way to express it.
+- **`*.vercel.app` is on the allowlist**, and it has to be: without it every preview deployment bounces to production and there is no way to look at a build before promoting it. The cost is that this rule cannot be tested on a preview, which is why the next point matters.
+- **`permanent: false` on purpose.** A 308 is cached by the browser and is very hard to take back if the pattern is wrong; a 307 costs one deploy to fix. It stays temporary until it has been checked against every real host in production, and moving it to permanent is a deliberate second step rather than the default.
+
 **What is still Revolut-only on every host:** `og.png` (see below), the tokens, the icon set, and the Storybook's `Marks/Logo` stories.
 
 ## Tokens
