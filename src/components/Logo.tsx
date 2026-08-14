@@ -1,5 +1,5 @@
 import './Logo.css';
-import { MARK_PATHS, LOCKUP_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, WISE_WORDMARK, type BrandPath } from './logo-paths';
+import { MARK_PATHS, LOCKUP_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, PARTNER_WORDMARKS, type BrandPath } from './logo-paths';
 
 export interface LogoProps {
   /**
@@ -80,7 +80,10 @@ export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi' 
           {...(p.evenOdd ? { fillRule: 'evenodd' as const, clipRule: 'evenodd' as const } : {})}
         />
       ))}
-      {isLockup && <path d={WISE_WORDMARK.d} data-brand-only="wise" />}
+      {isLockup &&
+        Object.entries(PARTNER_WORDMARKS).map(([brand, p]) => (
+          <path key={brand} d={p.d} data-brand-only={brand} />
+        ))}
     </svg>
   );
 }

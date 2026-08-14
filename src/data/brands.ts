@@ -22,7 +22,7 @@
  * build-code-specs.mjs writes a contract for each one. This is data, not a
  * component, and must move neither number.
  */
-export const BRANDS = ['revolut', 'wise'] as const;
+export const BRANDS = ['revolut', 'wise', 'healf'] as const;
 
 export type Brand = (typeof BRANDS)[number];
 

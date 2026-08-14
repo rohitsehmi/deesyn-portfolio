@@ -8,6 +8,7 @@ import { ArrowLink } from '../components/Link';
 import { SERVICE_MARKS } from '../components/service-marks';
 import { hash } from '../../design/hash.mjs';
 import c from '../copy/how-this-was-built.json';
+import { BRANDS, DEFAULT_BRAND } from '../data/brands';
 
 /**
  * Every number on this page is computed here, at build time, from the files it
@@ -256,13 +257,13 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
       same work. At that point they need to be per-brand, which is what
       splitting the framework from the brand packs is for.
     */}
-    {(['revolut', 'wise'] as const).map((brand) => {
-      const links = brand === 'revolut' ? c.links : (c as any).brands[brand].links;
+    {BRANDS.map((brand) => {
+      const links = brand === DEFAULT_BRAND ? c.links : (c as any).brands[brand].links;
       return (
       <ul class="hb-links" data-brand-only={brand}>
       {links.items.map((l: any, i: number) => {
         const mark = SERVICE_MARKS[l.mark];
-        const copyBase = brand === 'revolut'
+        const copyBase = brand === DEFAULT_BRAND
           ? `how-this-was-built:links.items.${i}`
           : `how-this-was-built:brands.${brand}.links.items.${i}`;
         return (

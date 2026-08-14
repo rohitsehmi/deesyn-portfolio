@@ -138,9 +138,18 @@ body {
   version must leave the accessibility tree completely, or a screen reader
   would read both headings and both link lists.
 
-  Written so the two brands are symmetrical rather than special-cased: adding a
-  brand is one more rule of the same shape, and the default arm needs no edit
-  because it names the brand it keeps, not the ones it drops.
+  The default arm keys off the ABSENCE of [data-brand], not off "is not wise".
+  That distinction only showed when a third brand arrived, and it was a real
+  bug in waiting: with `:root:not([data-brand='wise'])`, the healf hostname
+  matched the default arm too, so the default arm hid healf's content and
+  healf's own arm hid revolut's, and the page rendered NEITHER. Absence is what
+  the default actually is — the inline script sets the attribute for every
+  brand except the default one — so that is what the selector should test.
+
+  Adding a brand is now one more rule of the same shape, and the default arm
+  never needs editing because it names the brand it keeps rather than the ones
+  it drops.
 */
-:root:not([data-brand='wise']) [data-brand-only]:not([data-brand-only='revolut']) { display: none; }
+:root:not([data-brand]) [data-brand-only]:not([data-brand-only='revolut']) { display: none; }
 [data-brand='wise'] [data-brand-only]:not([data-brand-only='wise']) { display: none; }
+[data-brand='healf'] [data-brand-only]:not([data-brand-only='healf']) { display: none; }

@@ -128,15 +128,26 @@ const covers = new Map(
       drift="140px"
     >
       {/*
-        One h1 with two spans, not two h1s. Both versions ship because the
-        build is prerendered and one deployment answers every hostname; the
-        hidden one is display:none, so it leaves the accessibility tree
-        entirely and the page still has exactly one heading with one name.
-        See base.css for how [data-brand] chooses.
+        One h1 with one span per brand, not one h1 per brand. Every version
+        ships because the build is prerendered and one deployment answers every
+        hostname; the hidden ones are display:none, so they leave the
+        accessibility tree entirely and the page still has exactly one heading
+        with one name. See base.css for how [data-brand] chooses.
+
+        Driven off BRANDS rather than written out, because the hardcoded version
+        silently dropped a brand: the copy for a third one was added and the
+        markup was not, so that hostname rendered an empty h1 — a heading with
+        no name at all, which is worse than the wrong name.
       */}
       <h1 class="home-hero__title">
-        <span data-brand-only="revolut" data-copy="home:heroTitle">{copy.heroTitle}</span>
-        <span data-brand-only="wise" data-copy="home:brands.wise.heroTitle">{copy.brands.wise.heroTitle}</span>
+        {BRANDS.map((brand) => (
+          <span
+            data-brand-only={brand}
+            data-copy={brand === DEFAULT_BRAND ? 'home:heroTitle' : `home:brands.${brand}.heroTitle`}
+          >
+            {brand === DEFAULT_BRAND ? copy.heroTitle : (copy.brands as any)[brand].heroTitle}
+          </span>
+        ))}
       </h1>
       <p class="home-hero__standfirst" data-copy="home:heroStandfirst">{copy.heroStandfirst}</p>
     </Parallax>
@@ -262,17 +273,20 @@ const covers = new Map(
     gap: var(--primitive-layout-l64);
   }
   @media (min-width: 768px) {
-    :root:not([data-brand='wise']) .work[data-count='2'],
-    :root:not([data-brand='wise']) .work[data-count='4'],
+    :root:not([data-brand]) .work[data-count='2'],
+    :root:not([data-brand]) .work[data-count='4'],
     [data-brand='wise'] .work[data-count-wise='2'],
-    [data-brand='wise'] .work[data-count-wise='4'] {
+    [data-brand='wise'] .work[data-count-wise='4'],
+    [data-brand='healf'] .work[data-count-healf='2'],
+    [data-brand='healf'] .work[data-count-healf='4'] {
       grid-template-columns: repeat(2, 1fr);
       gap: var(--primitive-layout-l48);
     }
   }
   @media (min-width: 1024px) {
-    :root:not([data-brand='wise']) .work[data-count='3'],
-    [data-brand='wise'] .work[data-count-wise='3'] {
+    :root:not([data-brand]) .work[data-count='3'],
+    [data-brand='wise'] .work[data-count-wise='3'],
+    [data-brand='healf'] .work[data-count-healf='3'] {
       grid-template-columns: repeat(3, 1fr);
       gap: var(--primitive-layout-l48);
     }
