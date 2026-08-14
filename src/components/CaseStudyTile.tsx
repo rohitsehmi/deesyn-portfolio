@@ -1,5 +1,6 @@
 import { Media, type MediaRatio } from './Media';
 import { Icon } from './Icon';
+import { Tag } from './Tag';
 import './CaseStudyTile.css';
 
 export interface CaseStudyTileProps {
@@ -65,7 +66,19 @@ export function CaseStudyTile({
         </div>
       )}
       <div className="tile__body">
-        <p className="tile__discipline" data-copy={copyBase && `${copyBase}.discipline`}>{discipline}</p>
+        {/*
+          A Tag, not styled text. The discipline is metadata about the study —
+          the same kind of thing as a role or a year — which is exactly what Tag
+          is for, and rendering it as accent-coloured text meant the one label on
+          the tile that is not prose was the one thing dressed as prose.
+
+          The wrapper stays a block so the tile's flex column keeps its own
+          spacing and the tag hugs its text instead of stretching to the column
+          width. Its class carries no type or colour any more; the Tag owns both.
+        */}
+        <p className="tile__discipline">
+          <Tag copyRef={copyBase && `${copyBase}.discipline`}>{discipline}</Tag>
+        </p>
         <h2 className="tile__title">
           <a className="tile__link" href={href} data-copy={copyBase && `${copyBase}.title`}>{title}</a>
         </h2>

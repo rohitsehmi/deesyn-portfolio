@@ -56,9 +56,7 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.tile__media .media__frame` | transition | `semantic.*.duration.dropdown` |
 | `.tile__media .media__frame` | transition | `semantic.*.easing.out` |
 | `.tile__body` | gap | `primitive.space.sp200` |
-| `.tile__discipline` | font | `typography.emphasis.2` |
-| `.tile__discipline` | letter-spacing | `typography.emphasis.2` |
-| `.tile__discipline` | color | `semantic.*.fg.accent` |
+| `.tile__discipline` | margin | `primitive.space.sp200` |
 | `.tile__title` | font | `typography.heading.m` |
 | `.tile__title` | letter-spacing | `typography.heading.m` |
 | `.tile__title` | color | `semantic.*.fg.primary` |

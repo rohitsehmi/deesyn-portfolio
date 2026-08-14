@@ -95,19 +95,9 @@
     ],
     ".tile__discipline": [
       {
-        "property": "font",
-        "var": "--type-emphasis-2",
-        "ref": "typography.emphasis.2"
-      },
-      {
-        "property": "letter-spacing",
-        "var": "--type-emphasis-2-tracking",
-        "ref": "typography.emphasis.2"
-      },
-      {
-        "property": "color",
-        "var": "--semantic-fg-accent",
-        "ref": "semantic.*.fg.accent"
+        "property": "margin",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
       }
     ],
     ".tile__title": [

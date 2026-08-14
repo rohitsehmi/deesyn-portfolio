@@ -54,11 +54,19 @@
   flex: 1;                             /* lets the cue sit at the bottom */
 }
 
+/*
+  Layout only. The Tag inside owns the type, the fill and the foreground.
+
+  It takes one step on the scale beyond the column's own gap, and that is about
+  the tag rather than about the rhythm. The gap was set against a line of text,
+  where the leading above the title's cap height does half the separating; a
+  filled pill ends at a hard edge with its padding inside the box, so the same
+  6px reads as the pill crowding the heading. The margin adds to the flex gap
+  rather than replacing it, which keeps every other pair in the column on the
+  one value.
+*/
 .tile__discipline {
-  margin: 0;
-  font: var(--type-emphasis-2);
-  letter-spacing: var(--type-emphasis-2-tracking);
-  color: var(--semantic-fg-accent);
+  margin: 0 0 var(--primitive-space-sp200);
 }
 
 .tile__title {
