@@ -109,15 +109,38 @@ body {
   another.
 */
 /*
-  THE DOUBLED ATTRIBUTE IS LOAD-BEARING. Do not "tidy" it to a single one.
+  THESE RULES ONLY EVER HIDE. Nothing here declares a display value on the
+  version that is showing, and that is the whole design.
 
-  A single [data-brand-only='wise'] is one attribute selector, exactly as
-  specific as a class, and this file loads before component styles. So
-  `.hb-links { display: grid }` beat it on source order alone and both link
-  lists rendered at once — the Revolut page showed the Wise receipt. Repeating
-  the attribute costs nothing, changes what is matched not at all, and puts
-  these rules above any single class that sets display.
+  The first attempt did: it hid every [data-brand-only='wise'] by default and
+  then set `display: revert` on the wise one when [data-brand='wise'] matched.
+  `revert` reverts to the USER-AGENT stylesheet, not to the author rule it was
+  overriding, so the shown element got the UA default for its tag and lost its
+  own styling. The three receipts on /how-this-was-built are a `ul` that
+  `.hb-links` lays out as a grid, three across above 768px; reverted to the UA
+  `display: block` they stacked with no grid gap and no columns, and the Wise
+  host rendered them misaligned while the Revolut host was correct. The hero
+  spans escaped it only because `span` is inline either way, which is exactly
+  how a bug like this stays hidden.
+
+  So each rule matches the version that does NOT belong to the current brand
+  and takes it out. The version that belongs is never selected at all, and
+  keeps whatever its own component stylesheet gives it — which means a brand
+  variant of any element lays out identically on every host, for free.
+
+  Specificity is still load-bearing, and :not() carries it. `.hb-links
+  { display: grid }` is one class, and this file loads before component styles,
+  so a single [data-brand-only] would lose on source order and both link lists
+  would render at once. Each rule below is three or four attribute selectors,
+  which clears any single class.
+
+  display:none rather than visibility or clipping, deliberately: a hidden
+  version must leave the accessibility tree completely, or a screen reader
+  would read both headings and both link lists.
+
+  Written so the two brands are symmetrical rather than special-cased: adding a
+  brand is one more rule of the same shape, and the default arm needs no edit
+  because it names the brand it keeps, not the ones it drops.
 */
-[data-brand-only='wise'][data-brand-only] { display: none; }
-[data-brand='wise'] [data-brand-only='revolut'][data-brand-only] { display: none; }
-[data-brand='wise'] [data-brand-only='wise'][data-brand-only] { display: revert; }
+:root:not([data-brand='wise']) [data-brand-only]:not([data-brand-only='revolut']) { display: none; }
+[data-brand='wise'] [data-brand-only]:not([data-brand-only='wise']) { display: none; }
