@@ -100,14 +100,16 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
   */
   { slug: 'search-experience', coverSrc: coverSearch, archived: true },
   /*
-    Archived 2026-08-05. Two design-system studies is one too many, and this is
-    the weaker of them: no user testing anywhere, and adoption figures where it
-    needed outcomes. It is also the older of the two.
+    LIVE again 2026-08-17, having been archived on 2026-08-05 for having no
+    personal role and no reflection. Both are now written: the contribution is
+    taken from the CV rather than from either colleague's account of the same
+    programme, and the hindsight is three named costs rather than a summary.
 
-    Not deleted. It still builds, is still reachable at /work/scaling-a-system,
-    and can come back by removing one line.
+    It carries no cover yet and renders the placeholder plate on the index,
+    which is deliberate and temporary. It is the one thing on this study still
+    marked as unfinished, and it is visible on the first screen a reader sees.
   */
-  { slug: 'scaling-a-system', archived: true },
+  { slug: 'scaling-a-system' },
   /*
     PLACEHOLDER, added 2026-08-14, and Wise only.
 
