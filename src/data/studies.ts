@@ -109,23 +109,7 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
     which is deliberate and temporary. It is the one thing on this study still
     marked as unfinished, and it is visible on the first screen a reader sees.
   */
-  { slug: 'scaling-a-system' },
-  /*
-    PLACEHOLDER, added 2026-08-14, and Wise only.
-
-    It is here to prove the brand mechanism carries a whole entity rather than
-    the spans and link lists it has held so far: a study that appears on the
-    index, enters the rotation and takes a page, on one hostname and not the
-    other. Its copy says as much on the page, in place of the work it is
-    standing in for — a placeholder that reads like a real study is a lie
-    waiting for someone to quote it.
-
-    Delete this entry and its two copy files when the real Wise study lands, or
-    rename the slug and write over them. It is the one thing here that IS safe
-    to delete, because the rule above protects a record of real work and there
-    is none in this.
-  */
-  { slug: 'wise-placeholder', brand: 'wise' }
+  { slug: 'scaling-a-system' }
 ];
 
 export const studies: Study[] = order.map(({ slug, coverSrc, archived, brand }) => {
