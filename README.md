@@ -1,0 +1,58 @@
+# deesyn-portfolio
+
+A design portfolio built as a working system, containing two case studies written up properly rather than a gallery of screenshots.
+
+## What this is
+
+The site presents a small number of recent, complex screen flows and answers the same questions about each of them in the same order, because that is the order someone reads them in: the problem, the process including the alternatives that were rejected and why, the interface, the measured impact, and finally hindsight. The last of those is the section most portfolios leave out, and it is the cheapest one to be honest in.
+
+Underneath the case studies there is a design system, comprising 249 tokens exported from Figma, 21 components, and a published contract for every one of them. It answers none of the questions above directly, and no reader asks about tokens or visual regression, so it is deliberately kept out of the way. It exists because it buys consistent, polished visuals cheaply, and because a system that verifies itself is a reasonable thing for a design engineer to be able to show.
+
+**On the branding.** The design foundations here reconstruct Revolut's public brand values, under their name, from their live CSS, as a study. This is independent work and was not commissioned by, affiliated with, or endorsed by any of the companies named in it. Two sibling hostnames present the same case studies under Wise and Healf lockups, which is a demonstration of the multi-brand pipeline described below rather than a claim of any engagement.
+
+## Running it
+
+```bash
+npm install
+npm run dev          # Astro dev server
+npm run storybook    # component workshop
+npm run verify       # typecheck, tokens, components, CSS, contracts
+npm run build        # production build
+```
+
+The full script list, including the token pipeline and the Figma export snippets, is documented in `CLAUDE.md`.
+
+## How it is built
+
+**Astro for the site, plain React for the components.** Astro so that pages ship no JavaScript unless a component explicitly opts in, and unmodified React so that Storybook and Chromatic work normally. There is no MDX; a case study is an `.astro` arrangement over JSON copy, which keeps the writing and the layout separable.
+
+**Every word the site renders lives in `src/copy/*.json`, in reading order.** A page is the arrangement and the JSON is the writing. The copy can be edited in the browser during development, or exported to one markdown document per page and imported back, which is the right instrument when a whole case study needs rewriting and a field at a time is too bitty to judge a voice by.
+
+**Tokens are exported from Figma and checksum-verified against it**, so the design file and the repository cannot drift apart quietly. Components reference semantic tokens and never primitives, which is what makes re-theming a change to one file.
+
+**Contracts are measured, not written.** Each component publishes a specification generated from its bound Figma variables, or, for the nine components that exist only in code, from its own TypeScript declarations and stylesheet. Prose describing a component would document it less precisely than the thing itself does, and would go stale without anything noticing.
+
+**Layout is a banding system.** A band declares a tonal role rather than a colour, and the theme resolves it, so an inverse band is the same band in the other theme rather than a separate set of fills. A band owns the foreground of everything inside it, which means a component dropped into one inverts at zero overrides. Adjacency rules are linted off the built HTML.
+
+**One build serves three brands, chosen by hostname.** The site is prerendered and a single deployment answers every `*.deesyn.com` host, so the brand is a runtime fact rather than a build-time one. Everything brand-specific ships in every document and a blocking inline script sets the brand on the root element before the first paint. This is isolation by routing rather than by build, which is appropriate while the brands are different framings of the same work, and is documented as such.
+
+## What is checked
+
+Eight checks run on every push, and the build fails rather than warns:
+
+- **Types.** `tsc` over the `.ts` and `.tsx` sources, because nothing else in the repository reads TypeScript.
+- **Secrets.** Tracked files only, so that the one file legitimately holding a token is not flagged and taught to be ignored.
+- **Tokens.** Checksum and alias integrity against the Figma export.
+- **Components.** Token integrity, a checksum, and an assertion that no value is a literal.
+- **CSS.** Every custom property reference in `src/` resolves, and every font value binds to the type scale. A mistyped custom property is not a CSS error, it renders as an inherited default and looks deliberate.
+- **Contracts.** Every component has one, asked per component rather than by comparing two totals, which had previously agreed by arithmetic coincidence.
+- **Generated files.** Anything derived from source is regenerated and compared, because a stale generated file is invisible in a diff.
+- **Bands.** Adjacency rules, read from the Figma specification rather than transcribed.
+
+Visual regression runs separately on Chromatic, which snapshots all 58 stories in both light and dark.
+
+## Reading further
+
+`CLAUDE.md` is the working technical record, and it is long. It carries the reasoning behind the decisions above, the traps that cost real time, and the bugs that reached production along with how each one was caught. It is deliberately not sanitised, because the account of what broke is most of what makes it worth reading.
+
+Supporting documents live alongside it: `docs/revolut-design-foundations.md` for the brand values and how they were verified, `docs/banding-system.md` for the layout system, and `tokens/README.md` and `design/README.md` for the token pipeline and the contract build respectively.
