@@ -54,34 +54,30 @@ const hero = await getImage({
   100vw assumption and downloads the widest candidate for a half-width slot.
 */
 /*
-  How many tiles each brand actually sees. The default brand's count keeps the
-  plain `data-count`, so its rules are the ones already written; every other
-  brand gets `data-count-<brand>` and a scoped copy of them. See the note on the
-  <ul> below for why one number cannot serve both.
-*/
-const counts = Object.fromEntries(BRANDS.map((b) => [b, studiesFor(b).length])) as Record<
-  (typeof BRANDS)[number],
-  number
->;
-const brandCounts = Object.fromEntries(
-  BRANDS.filter((b) => b !== DEFAULT_BRAND).map((b) => [`data-count-${b}`, counts[b]])
-);
+  How many tiles each brand actually sees, which only the hero sentence needs.
 
-/*
-  The hero states that same number in words, and it is the same bug one layer up.
+  The grid used to need it too, and emitted it as `data-count` plus a
+  `data-count-<brand>` per brand so that the column count could follow the item
+  count. The grid is capped at two columns now and lays out identically whatever
+  the number is, so those attributes have no consumer and are gone. See the note
+  on .work in the stylesheet below.
 
-  `data-count` was made per brand because the grid picks its columns from how
-  many tiles there are and each brand sees a different number. The sentence above
-  the grid counts them too — and it was written once, for the default brand, and
-  copied. So wise.deesyn.com read "Two case studies, for Wise." above three
-  tiles, because the placeholder study is Wise-only and nothing connected the
-  prose to the list. CLAUDE.md had already called this shape of bug: anything
-  derived from how many things a brand sees has it waiting.
+  The hero still counts, because it says the number out loud.
+
+  It was written once, for the default brand, and copied, so wise.deesyn.com read
+  "Two case studies, for Wise." above three tiles: the placeholder study is Wise
+  only and nothing connected the prose to the list. CLAUDE.md had already called
+  this shape of bug, that anything derived from how many things a brand sees has
+  it waiting.
 
   So the number is substituted from studiesFor(), never typed. The copy keeps the
   whole sentence in one editable string around a {count} token, which is the
   pattern how-this-was-built.astro already uses for its build-time figures.
 */
+const counts = Object.fromEntries(BRANDS.map((b) => [b, studiesFor(b).length])) as Record<
+  (typeof BRANDS)[number],
+  number
+>;
 const NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 
 const heroTitleFor = (brand: (typeof BRANDS)[number]) => {
@@ -219,20 +215,18 @@ const covers = new Map(
     {/* base, because the hero above resolves dark. */}
     <Band role="base" scale="default">
       {/*
-        One count per brand, not one count for the page.
+        No count on the list, deliberately, and this is where one used to be.
 
-        The grid picks its columns from how many tiles there are, and each brand
-        sees a different number of them — so a single data-count is wrong for
-        every brand but one. It shipped that way for an afternoon and gave the
-        default brand a three-column grid holding two tiles, with the third
-        column standing empty exactly where the Wise-only tile is hidden.
+        The grid picked its columns from how many tiles there were, so the count
+        had to be emitted once per brand: each brand sees a different number, and
+        `display: none` removes a grid ITEM but cannot remove a TRACK, so a tile
+        hidden from a brand still left an empty column on that brand's hostname.
 
-        `display: none` removes a grid ITEM but cannot remove a TRACK, which is
-        the whole trap: hiding the tile is not the same as not having counted
-        it. So the count is emitted once per brand and the stylesheet reads the
-        one belonging to the hostname.
+        Capping the grid at two columns removes the dependency rather than
+        guarding it. Nothing here needs to know how many tiles this brand sees,
+        so nothing can get that number wrong.
       */}
-      <ul class="work" data-count={counts[DEFAULT_BRAND]} {...brandCounts}>
+      <ul class="work">
         {/*
           Every live study across every brand, with the brand-specific ones
           marked so CSS can drop them. It has to be this way round: one build
@@ -315,18 +309,24 @@ const covers = new Map(
   }
 
   /*
-    Columns follow the item count, so the last row is never ragged.
+    Two columns at most, whatever the count, so a third tile drops underneath
+    the first two rather than squeezing the row to thirds.
 
-    Each brand sees a different number of tiles, and the count it goes by is the
-    one attribute belonging to it: `data-count` for the default brand,
-    `data-count-<brand>` for the rest. The default's rules are guarded with
-    :root:not(...) so they stop applying on another brand's hostname — without
-    that guard both counts match at once and the wider one wins, which is a
-    silent way to get the bug this replaced.
+    This replaced a set of rules that picked the column count from how many
+    tiles the brand could see, which is why `data-count` and a `data-count-<brand>`
+    per brand used to be emitted here. Three across was tried and read as
+    cramped: a case-study tile carries a cover, a title and a summary, and at a
+    third of the measure the summary breaks to five or six lines while the cover
+    loses the detail that makes it worth showing.
 
-    Adding a brand means a third arm here. That is the cost of laying out at
-    build time what is chosen at runtime, and it is cheap enough at two brands
-    to prefer over making the grid count its own visible children.
+    Capping at two also deletes a whole class of bug rather than fixing another
+    instance of it. The count rules had to be written once per brand and guarded
+    with :root:not(...) so that two counts could not match at once, because
+    `display: none` removes a grid item but cannot remove a track, so a tile
+    hidden from one brand still left a column behind on that brand's hostname.
+    None of that reasoning is needed once the track count stops depending on how
+    many things a brand sees. A ragged last row is the correct trade: it is what
+    a list of three looks like, and it costs nothing to read.
   */
   .work {
     list-style: none;
@@ -337,21 +337,8 @@ const covers = new Map(
     gap: var(--primitive-layout-l64);
   }
   @media (min-width: 768px) {
-    :root:not([data-brand]) .work[data-count='2'],
-    :root:not([data-brand]) .work[data-count='4'],
-    [data-brand='wise'] .work[data-count-wise='2'],
-    [data-brand='wise'] .work[data-count-wise='4'],
-    [data-brand='healf'] .work[data-count-healf='2'],
-    [data-brand='healf'] .work[data-count-healf='4'] {
+    .work {
       grid-template-columns: repeat(2, 1fr);
-      gap: var(--primitive-layout-l48);
-    }
-  }
-  @media (min-width: 1024px) {
-    :root:not([data-brand]) .work[data-count='3'],
-    [data-brand='wise'] .work[data-count-wise='3'],
-    [data-brand='healf'] .work[data-count-healf='3'] {
-      grid-template-columns: repeat(3, 1fr);
       gap: var(--primitive-layout-l48);
     }
   }
