@@ -77,12 +77,18 @@ type StudySlug = Exclude<keyof typeof copy, '_comment'>;
 const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; brands?: Brand[] }[] = [
   { slug: 'machine-readable-components', coverSrc: coverMachineReadable },
   /*
-    Borrowing the search cover, deliberately and temporarily. Every cover on the
-    site is a placeholder, and this one is off-subject on top of that: it draws
-    a search field over a list of results, which is the study this one replaced.
-    It is here so the index does not render one tile with an image beside one
-    without, which reads as a build error rather than as a draft. Replace it
-    with this study's own before anything is sent.
+    Shares cover-search-experience.png with the archived study of that name, and
+    that is now correct rather than borrowed. The comment here used to call it
+    off-subject on the grounds that it depicts search, which was the study this
+    one replaced. That stopped being true the moment the two were read as one
+    argument: search's material IS this study, so a picture of a results list,
+    a detail view, filters and a bar chart is exactly its subject.
+
+    Both entries carry the same alt text, which is right and not duplication to
+    tidy away: alt describes the image, and it is one image.
+
+    Still a placeholder in the sense that every cover here is, and a cover of
+    its own would be better. It is no longer wrong.
   */
   { slug: 'making-the-app-testable', coverSrc: coverSearch },
   /*
