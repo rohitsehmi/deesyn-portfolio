@@ -19,6 +19,7 @@ import copy from '../copy/studies.json';
 import { BRANDS, DEFAULT_BRAND, type Brand } from './brands';
 import coverMachineReadable from '../assets/cover-machine-readable-components.png';
 import coverSearch from '../assets/cover-search-experience.png';
+import coverScaling from '../assets/cover-scaling-a-system.png';
 
 export interface Study {
   slug: string;
@@ -110,16 +111,17 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
     taken from the CV rather than from either colleague's account of the same
     programme, and the hindsight is three named costs rather than a summary.
 
-    It carries no cover yet and renders the placeholder plate on the index,
-    which is deliberate and temporary. It is the one thing on this study still
-    marked as unfinished, and it is visible on the first screen a reader sees.
+    Cover added 2026-08-17, and it is this study's own rather than borrowed:
+    four panels feeding one lit tile feeding four labelled cards, which is the
+    argument the page makes. Red, where the other two are violet and sage, so
+    the three are told apart at a glance on the index.
 
     Wise and Healf only, from 2026-08-17. The default brand keeps two studies,
     one per discipline, which is the tighter argument: a third tile there would
     have been a second design-system study sitting under the same tag as the
     first. The other two hostnames show all three.
   */
-  { slug: 'scaling-a-system', brands: ['wise', 'healf'] }
+  { slug: 'scaling-a-system', coverSrc: coverScaling, brands: ['wise', 'healf'] }
 ];
 
 export const studies: Study[] = order.map(({ slug, coverSrc, archived, brands }) => {
