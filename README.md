@@ -55,4 +55,4 @@ Visual regression runs separately on Chromatic, which snapshots all 58 stories i
 
 `CLAUDE.md` is the working technical record, and it is long. It carries the reasoning behind the decisions above, the traps that cost real time, and the bugs that reached production along with how each one was caught. It is deliberately not sanitised, because the account of what broke is most of what makes it worth reading.
 
-Supporting documents live alongside it: ` `docs/banding-system.md` for the layout system, and `tokens/README.md` and `design/README.md` for the token pipeline and the contract build respectively.
+Supporting documents live alongside it: `docs/banding-system.md` for the layout system, and `tokens/README.md` and `design/README.md` for the token pipeline and the contract build respectively.
