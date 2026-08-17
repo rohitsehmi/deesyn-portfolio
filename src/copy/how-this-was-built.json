@@ -94,6 +94,10 @@
       {
         "label": "Bands.",
         "text": "The built pages are linted against the layout rules, and those rules are read from Figma rather than copied. Adding a rule there fails the build here until someone implements it."
+      },
+      {
+        "label": "Gaps.",
+        "text": "A missing fact renders on the page as a marker rather than hiding in a comment, so it cannot be quietly forgotten. This reads the built pages and fails if one would ship, which matters most when a new case study is being written and the holes are still being filled."
       }
     ]
   },

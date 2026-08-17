@@ -83,6 +83,17 @@ jobs:
       - name: Bands — adjacency rules
         run: node design/verify-bands.mjs
 
+      # [NEEDS: …] markers are deliberately rendered on the page rather than
+      # hidden in a comment, so a missing fact cannot be lost. The cost is that
+      # nothing stopped one shipping — this is what stops one shipping.
+      #
+      # Reads dist/ rather than src/copy/, which is why it sits after the build
+      # beside the band linter rather than in `npm run verify`: a marker only
+      # matters once an arrangement actually renders it. Archived studies are
+      # reported but do not fail, being off the index and out of the rotation.
+      - name: Gaps — no [NEEDS:] marker on a live page
+        run: node design/verify-gaps.mjs
+
   chromatic:
     name: Visual regression
     runs-on: ubuntu-latest
