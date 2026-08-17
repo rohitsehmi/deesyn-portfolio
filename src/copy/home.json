@@ -1,14 +1,15 @@
 {
-  "_comment": "Editable copy for the home page. Rendered with data-copy attributes so it can be edited in the browser under `npm run dev` — see tools/copy-editor.mjs. Case study titles and summaries are not here: they live in src/data/studies.ts, which is already one readable file and is shared with the next-study rotation.",
-  "heroTitle": "Two case studies, for Revolut.",
+  "_comment": "Editable copy for the home page. Rendered with data-copy attributes so it can be edited in the browser under `npm run dev` — see tools/copy-editor.mjs. The one exception is heroTitle, which renders with its {count} substituted and so is deliberately NOT browser-editable: see _count below, and edit it through `npm run copy:export` instead. Case study titles and summaries are not here: they live in src/data/studies.ts, which is already one readable file and is shared with the next-study rotation.",
+  "heroTitle": "{count} case studies, for Revolut.",
   "heroStandfirst": "One on the design system, the other on product design.",
   "_brands": "Per-brand overrides. Rendered alongside the default and chosen at runtime by [data-brand]; see base.css. Only strings that name a company belong here.",
+  "_count": "The {count} token is how many tiles THIS brand sees, spelled as a word and substituted in index.astro. Keep the braces and never type a number: each brand is offered a different number of studies, so a typed count is right for one hostname and wrong for the rest. Not hypothetical — the Wise hero read \"Two case studies\" above a three-tile grid until 2026-08-17.",
   "brands": {
     "wise": {
-      "heroTitle": "Two case studies, for Wise."
+      "heroTitle": "{count} case studies, for Wise."
     },
     "healf": {
-      "heroTitle": "Two case studies, for Healf."
+      "heroTitle": "{count} case studies, for Healf."
     }
   }
 }

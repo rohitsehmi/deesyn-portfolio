@@ -67,6 +67,65 @@ const brandCounts = Object.fromEntries(
   BRANDS.filter((b) => b !== DEFAULT_BRAND).map((b) => [`data-count-${b}`, counts[b]])
 );
 
+/*
+  The hero states that same number in words, and it is the same bug one layer up.
+
+  `data-count` was made per brand because the grid picks its columns from how
+  many tiles there are and each brand sees a different number. The sentence above
+  the grid counts them too — and it was written once, for the default brand, and
+  copied. So wise.deesyn.com read "Two case studies, for Wise." above three
+  tiles, because the placeholder study is Wise-only and nothing connected the
+  prose to the list. CLAUDE.md had already called this shape of bug: anything
+  derived from how many things a brand sees has it waiting.
+
+  So the number is substituted from studiesFor(), never typed. The copy keeps the
+  whole sentence in one editable string around a {count} token, which is the
+  pattern how-this-was-built.astro already uses for its build-time figures.
+*/
+const NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+
+const heroTitleFor = (brand: (typeof BRANDS)[number]) => {
+  const raw: string =
+    brand === DEFAULT_BRAND ? copy.heroTitle : (copy.brands as any)[brand].heroTitle;
+
+  /*
+    A hardcoded number renders as a plausible sentence and is invisible in review
+    — which is exactly how the original survived. Refuse it at build time rather
+    than substituting nothing and shipping whichever count was typed.
+  */
+  if (!raw.includes('{count}')) {
+    throw new Error(
+      `index: the ${brand} hero title must carry the {count} token rather than a ` +
+      `typed number, because each brand is offered a different number of studies. ` +
+      `Edit it in src/copy/home.json.`
+    );
+  }
+
+  const n = counts[brand];
+
+  /*
+    The noun is plural in the copy, so one study would render "One case studies".
+    Every brand has at least two today and nextStudy() already guards the same
+    boundary, so this fails the build with the instruction rather than carrying a
+    pluralisation engine for a case that does not exist yet.
+  */
+  if (n === 1) {
+    throw new Error(
+      `index: ${brand} is offered one study, and the hero copy reads "case studies". ` +
+      `Rewrite that string in src/copy/home.json for the singular.`
+    );
+  }
+
+  /*
+    Capitalised only when the token opens the sentence, which is where all three
+    brands have it today. Doing it unconditionally would silently produce "Just
+    Two case studies" the first time someone writes a lead-in.
+  */
+  const word = NUMBER_WORDS[n] ?? String(n);
+  const cased = raw.startsWith('{count}') ? word.charAt(0).toUpperCase() + word.slice(1) : word;
+  return raw.replace('{count}', cased);
+};
+
 const COVER_SIZES = '(min-width: 1024px) 480px, (min-width: 768px) 45vw, calc(100vw - 40px)';
 const covers = new Map(
   await Promise.all(
@@ -138,15 +197,20 @@ const covers = new Map(
         silently dropped a brand: the copy for a third one was added and the
         markup was not, so that hostname rendered an empty h1 — a heading with
         no name at all, which is worse than the wrong name.
+
+        NOT browser-editable, and deliberately so — same rule as the facts block
+        on how-this-was-built. What renders here has had its {count} substituted,
+        so blurring an edit would write "Two case studies" back into the JSON,
+        bake today's number into the copy and stop the page recomputing it. That
+        is the bug this markup was just fixed for, and a data-copy attribute
+        would hand it straight back.
+
+        Edit it through the markdown round trip instead — `npm run copy:export`
+        works on the JSON, so the token survives. Keep the braces.
       */}
       <h1 class="home-hero__title">
         {BRANDS.map((brand) => (
-          <span
-            data-brand-only={brand}
-            data-copy={brand === DEFAULT_BRAND ? 'home:heroTitle' : `home:brands.${brand}.heroTitle`}
-          >
-            {brand === DEFAULT_BRAND ? copy.heroTitle : (copy.brands as any)[brand].heroTitle}
-          </span>
+          <span data-brand-only={brand}>{heroTitleFor(brand)}</span>
         ))}
       </h1>
       <p class="home-hero__standfirst" data-copy="home:heroStandfirst">{copy.heroStandfirst}</p>
