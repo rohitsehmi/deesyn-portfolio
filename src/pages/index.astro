@@ -238,7 +238,7 @@ const covers = new Map(
           which on a two-column grid is not a smaller list — it is a hole.
         */}
         {liveStudies.map((s) => (
-          <li data-brand-only={s.brand}>
+          <li data-brand-only={s.brands?.join(' ')}>
             <CaseStudyTile
               title={s.title}
               summary={s.summary}

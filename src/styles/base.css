@@ -149,7 +149,17 @@ body {
   Adding a brand is now one more rule of the same shape, and the default arm
   never needs editing because it names the brand it keeps rather than the ones
   it drops.
+
+  ~= rather than =, since 2026-08-17, so the attribute holds a LIST of brands
+  rather than exactly one. `[data-brand-only='wise']` is an exact-string match
+  and cannot express a thing that belongs to two brands out of three, which is
+  what a case study shown on Wise and Healf but not the default needs. `~=`
+  matches one whitespace-separated token, so `data-brand-only="wise healf"`
+  matches under both arms and a single value still matches exactly as before.
+
+  Everything that emitted one value keeps working untouched, which is why this
+  was a change to three selectors rather than to every call site.
 */
-:root:not([data-brand]) [data-brand-only]:not([data-brand-only='revolut']) { display: none; }
-[data-brand='wise'] [data-brand-only]:not([data-brand-only='wise']) { display: none; }
-[data-brand='healf'] [data-brand-only]:not([data-brand-only='healf']) { display: none; }
+:root:not([data-brand]) [data-brand-only]:not([data-brand-only~='revolut']) { display: none; }
+[data-brand='wise'] [data-brand-only]:not([data-brand-only~='wise']) { display: none; }
+[data-brand='healf'] [data-brand-only]:not([data-brand-only~='healf']) { display: none; }

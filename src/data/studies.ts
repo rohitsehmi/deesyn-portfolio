@@ -39,9 +39,14 @@ export interface Study {
   /** Off the index and the next-study rotation, still built, still reachable. */
   archived?: boolean;
   /**
-   * Which brand's site shows this study. Absent means every brand, which is the
+   * Which brands' sites show this study. Absent means every brand, which is the
    * right default: a study is work, and the brand is only the framing it is
    * being shown under.
+   *
+   * A LIST rather than a single brand, since 2026-08-17. The first real user of
+   * this field needed to appear on two hostnames out of three, which a single
+   * value cannot say, and "every brand except one" is a shape that recurs. A
+   * one-element list still works and reads the same.
    *
    * BUILD-TIME LISTS, RUNTIME BRAND. One build serves every hostname, so this
    * cannot remove a study from the HTML — the index renders every live tile and
@@ -56,7 +61,7 @@ export interface Study {
    * client's material, and no amount of gating here would fix that — it needs
    * separate builds.
    */
-  brand?: Brand;
+  brands?: Brand[];
 }
 
 /**
@@ -68,7 +73,7 @@ export interface Study {
 type StudySlug = Exclude<keyof typeof copy, '_comment'>;
 
 /** Structure only. Everything a reader sees comes from src/copy/studies.json. */
-const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; brand?: Brand }[] = [
+const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; brands?: Brand[] }[] = [
   { slug: 'machine-readable-components', coverSrc: coverMachineReadable },
   /*
     Borrowing the search cover, deliberately and temporarily. Every cover on the
@@ -108,11 +113,16 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
     It carries no cover yet and renders the placeholder plate on the index,
     which is deliberate and temporary. It is the one thing on this study still
     marked as unfinished, and it is visible on the first screen a reader sees.
+
+    Wise and Healf only, from 2026-08-17. The default brand keeps two studies,
+    one per discipline, which is the tighter argument: a third tile there would
+    have been a second design-system study sitting under the same tag as the
+    first. The other two hostnames show all three.
   */
-  { slug: 'scaling-a-system' }
+  { slug: 'scaling-a-system', brands: ['wise', 'healf'] }
 ];
 
-export const studies: Study[] = order.map(({ slug, coverSrc, archived, brand }) => {
+export const studies: Study[] = order.map(({ slug, coverSrc, archived, brands }) => {
   const c = copy[slug];
   return {
     slug,
@@ -121,7 +131,7 @@ export const studies: Study[] = order.map(({ slug, coverSrc, archived, brand }) 
     discipline: c.discipline,
     ...(coverSrc ? { cover: { src: coverSrc, alt: c.coverAlt } } : {}),
     ...(archived ? { archived } : {}),
-    ...(brand ? { brand } : {})
+    ...(brands ? { brands } : {})
   };
 });
 
@@ -138,7 +148,7 @@ export const liveStudies = studies.filter((s) => !s.archived);
 
 /** The live studies one brand is offered, in order. */
 export const studiesFor = (brand: Brand): Study[] =>
-  liveStudies.filter((s) => !s.brand || s.brand === brand);
+  liveStudies.filter((s) => !s.brands || s.brands.includes(brand));
 
 export const studyPath = (s: Study) => `/work/${s.slug}`;
 
