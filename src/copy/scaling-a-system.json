@@ -1,0 +1,104 @@
+{
+  "_comment": "Copy for /work/scaling-a-system, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. ARCHIVED and still carrying [NEEDS:] markers, which is why it is off the index: verify-gaps fails the build on a marker that would render on a live page, so this cannot be un-archived until the gaps below are closed. Every project-level fact here comes from two colleagues' published accounts of the same programme, heeranmaster.com/home/scaling-a-system and madebyjoe.uk/work/egds, and nothing has been invented. What those pages cannot supply is Rohit's own contribution, because each describes its own author's, so every claim about what he personally decided is a marker rather than a guess. Tooling, the typeahead component and the workshops are deliberately left out: those are the parts of Joe's account that were his own work.",
+  "title": "Four design systems, consolidated into one",
+  "standfirst": "Expedia Group ran four design systems that were solving the same problems separately. Merging them meant choosing what every brand would share, and what each one was still allowed to keep.",
+  "contribution": [
+    {
+      "term": "Role",
+      "detail": "Senior Design Systems Designer, Expedia Group Design System, having moved across from Hotels.com"
+    },
+    {
+      "term": "What I owned",
+      "detail": "[NEEDS: the specific component family, token layer or brand you personally led, and the decisions that were yours to make. This is the single most important gap on the page. Two colleagues have published their own accounts of this programme, so a reader who finds them will be looking for what separates yours, and right now the page describes the merge without saying which part of it you did.]"
+    },
+    {
+      "term": "What the team owned",
+      "detail": "A design system community working in squads grouped by component family, across offices in Seattle, Brisbane, Gurgaon and London"
+    },
+    {
+      "term": "Duration",
+      "detail": "2021 to 2023, within a programme that ran to 2026"
+    }
+  ],
+  "problem": {
+    "heading": "The problem",
+    "standfirst": "Four systems, four answers to every question, and no way for a brand to borrow one.",
+    "paras": [
+      "Expedia Group ran four separate design systems, one each for Expedia, Hotels.com, Vrbo and the partner and supply side. Each had its own date picker, its own search field and its own interpretation of what accessible meant, and each team was solving those problems again from the beginning while the others did the same.",
+      "The reorganisation gave the reason the company acted, which was duplication and cost, but that is not the same as the reason the work was hard. The difficulty was that all four answers were defensible. A date picker built for Vrbo was not a worse date picker, it was one built for a brand that rents whole homes by the week rather than rooms by the night, and a merge that treated those differences as waste would have produced one component that suited nobody.",
+      "[NEEDS: the number that made this concrete for you. Duplicate component counts across the four systems, how far the brands had diverged on a shared component, or engineering time lost to rebuilding the same thing. One measured figure here turns a reorganisation mandate into a problem worth solving, and it is the first thing a reader looks for.]"
+    ]
+  },
+  "process": {
+    "heading": "How the merge was decided",
+    "standfirst": "Five ways to converge, a recommendation the business overruled, and a rebuild that had to be abandoned halfway.",
+    "paras": [
+      "The design system leads from each brand worked up five convergence scenarios, running from the cautious option, where the four systems stayed independent and shared only foundational tokens, to the most ambitious, a single enterprise system with the whole organisation re-platformed onto it. We recommended one of the middle options. The business chose the most ambitious one.",
+      "That decision is worth stating plainly, because it set the constraint everything afterwards was solving for. We were not converging gradually with an escape route, we were replatforming an organisation, and the schedule assumed a rebuild we had not yet proved was possible.",
+      "The mechanism that made it possible was a three-tier token architecture. Foundation tokens hold the raw values, semantic tokens are built on those and carry meaning rather than appearance, and feature tokens sit at component level. A brand differentiates itself by overriding tokens rather than by rewriting components, which is what let one component library render as more than a hundred brands and white-label partners without a fork for any of them.",
+      "Bringing a component onto that platform was called graduating it, and the bar was deliberately high: WCAG 2.2 with automated tests, theming for every brand through feature tokens, parity across Figma, iOS, Android and web, dark mode with accessible token pairings, localisation including bidirectional layouts, dynamic scaling down to a 320px screen, and performance testing. Fifty-five components cleared it."
+    ],
+    "explorationsHeading": "Directions we did not take",
+    "explorationsIntro": "The interesting decisions on this programme were about what to give up, and the largest one was made after the work had already started.",
+    "explorations": [
+      {
+        "title": "Building all four design languages into every component",
+        "why": "Abandoned partway through. The original plan built each brand's visual identity into the components themselves, so no brand would need a redesign to adopt the system. It is the approach that respects the brands most, and it was the reason the ambitious scenario looked survivable at all. It proved far more complex than the early assessment suggested, because every component then carried four sets of decisions and every later change had to be correct in four places at once. We pivoted to fast-track graduation, taking Expedia's UDS component as the base and adding brand tokens on top, which cost the brands some fidelity and bought a system that could ship.",
+        "imageAlt": "Placeholder for a diagram comparing the four-design-language component structure against the fast-track approach built on a single base component"
+      },
+      {
+        "title": "The middle convergence scenario we actually recommended",
+        "why": "Rejected by the business rather than by us, and worth recording because the trade-off it was offering is the one the programme later had to make anyway. It kept the four systems independent on a shared token foundation, which would have been slower to show a single library and much cheaper to reverse. Choosing full re-platforming meant the abandonment above was a mid-flight correction on a committed schedule rather than a scoped experiment.",
+        "imageAlt": "Placeholder for the five convergence scenarios, from independent systems sharing tokens through to a single enterprise platform"
+      },
+      {
+        "title": "[NEEDS: a component-level decision that was yours]",
+        "why": "[NEEDS: the two options, what separated them, and what evidence settled it. The two entries above are programme-level decisions taken by the leads collectively, which a reader can also find on two colleagues' sites. This slot is for one you made inside your own component family, at whatever scale, because a specific decision you can explain end to end is worth more here than a strategic one you shared with eight other people.]",
+        "imageAlt": "Placeholder for a rejected component-level exploration"
+      }
+    ]
+  },
+  "interface": {
+    "heading": "What shipped",
+    "standfirst": "One component library, themed per brand through tokens, with a governance model deciding what was allowed to join it.",
+    "mediaAlt": "Placeholder for foundation colour ramps and the semantic and feature token layers that theme a component per brand",
+    "mediaCaption": "[NEEDS: real exports. A reader asks to see a complex thing made simple, and token ramps alone show the machinery rather than the result. At least one component rendered across several brands from the same source would carry this section.]",
+    "paras": [
+      "Governance was three tiers, and it mattered as much as the components. A product team could build on EGDS foundations inside its own workspace at the team tier. Teams working on similar problems promoted components to a shared tier and developed them together rather than separately. Only components that met the acceptance criteria and survived RICE ranking reached the core tier and took on full system maintenance, through an eight-week cycle of proposal, review, ranking, a betting decision, migration and publication.",
+      "Few components ever completed that full journey, which sounds like a failure and was the most useful thing the tier system did. A component sitting at the shared tier with three teams attached to it was a visible signal that three teams were solving the same problem, and that signal is what the four separate systems had never been able to produce.",
+      "Components were structured around slots, so a team could replace a defined part without forking the whole thing, and pre-built patterns could fill those slots. Figma's own slots feature arrived in beta while this was being built, which is the same architectural idea the later machine-readable component work was designed around."
+    ]
+  },
+  "impact": {
+    "heading": "Impact",
+    "standfirst": "Adoption held across the organisation. What it did for the people using the products is the part still missing.",
+    "metrics": [
+      {
+        "value": "55",
+        "label": "components graduated to the full bar for accessibility, theming, platform parity, dark mode and localisation"
+      },
+      {
+        "value": "1,000+",
+        "label": "designers and engineers working in the system across the organisation"
+      },
+      {
+        "value": "100+",
+        "label": "brands and white-label partners themed from one shared token foundation"
+      }
+    ],
+    "metricsSource": "Programme figures as published by two colleagues who worked on it, at heeranmaster.com and madebyjoe.uk. They are outputs and adoption, not outcomes for travellers. [NEEDS: the measurement window for all three, and one outcome metric. The honest version of this section may be that no baseline was taken, which the hindsight below already says, in which case say so here rather than letting three adoption numbers stand in for a result.]",
+    "paras": [
+      "Four systems became one, and every brand and partner was themed from a shared token foundation rather than from its own library. The components every brand needed and every brand had been building separately, the date pickers and the search fields, were built once.",
+      "The clearest single gain is the one that is hardest to put a number against. Accessibility went from four separate interpretations to one standard with automated tests behind it, and dark mode became a thing maintained in the token layer rather than four times over in four codebases. A brand that had never shipped dark mode got it by adopting the system.",
+      "[NEEDS: what any of this did for a traveller, or for the teams using it. Delivery time for a new screen, defect counts, accessibility audit results before and against after. Three adoption figures tell a reader the system was taken up, which is not the same as telling them it was worth building.]"
+    ]
+  },
+  "hindsight": {
+    "paras": [
+      "The pivot away from building four design languages into every component was correct and came months later than it should have. The early assessment was optimistic in a way that was hard to see from inside it, because each component looked achievable on its own and the cost only appeared in aggregate. A cheaper way to find that out would have been to build the two most complicated components all four ways first, deliberately, and treat that as the test of the plan rather than the start of the work.",
+      "The savings were real and were only measured afterwards. Nobody took a baseline before the merge, so every later pitch for system work argued from a position it could not evidence, and the figures above are outputs rather than the before-and-after that would have settled it. Two weeks spent measuring duplicate effort at the start would have been worth more than any presentation made in the two years after.",
+      "Shape Up cycles suited the new problems and served maintenance badly. Standing work had to be re-pitched against fresh proposals every eight weeks, which is a competition it structurally loses, and the answer is a standing team for the parts that are never finished rather than a better pitch.",
+      "[NEEDS: your own, and it should replace or sit above these three. The reflections here are drawn from a colleague's published account of the same programme, so they are honest about the work and they are not yours. A reader who has found his page will notice. The one worth writing is about a decision you personally got wrong or would take differently, at whatever scale.]"
+    ]
+  }
+}

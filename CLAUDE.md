@@ -339,7 +339,7 @@ An earlier version of that matcher tested `slug.endsWith()`, which looked tidy a
 | `machine-readable-components` | Design systems | **Live.** Expedia's New Component Architecture pod, 2025 into Q1 2026 |
 | `making-the-app-testable` | Product design | **Live.** Hotels.com app home and results page, read as one argument. Carries the only hard metrics in the portfolio |
 | `search-experience` | Product design | **Archived 2026-08-06.** Absorbed into `making-the-app-testable`; its own page keeps the longer version |
-| `scaling-a-system` | Design systems | **Archived 2026-08-05.** Two design-system studies was one too many |
+| `scaling-a-system` | Design systems | **Rewritten 2026-08-17, still archived.** The EGDS four-system consolidation. Off the index because it still carries 8 `[NEEDS:]` markers, and `verify-gaps` now fails the build on a marker that would render live |
 | `wise-placeholder` | Product design | **Placeholder, Wise only, 2026-08-14.** Holds the slot and proves a study can be brand-scoped. Safe to delete — it records no real work |
 
 **Nothing is ever deleted from `studies.ts`** — with one exception, `wise-placeholder`, which is safe to delete precisely because the rule protects a record of real work and there is none in it. `archived: true` takes a study off the index and out of the next-study rotation; it keeps building and stays reachable at its URL. Which studies make the final cut is a content decision to be made late, and deleting an entry removes the option before then. Reversible by removing one line.
