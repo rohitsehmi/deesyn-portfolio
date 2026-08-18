@@ -15,9 +15,48 @@ const withBand: Decorator = (Story, ctx) => (
   </div>
 );
 
+/**
+ * One build serves three brands, chosen by hostname. The workshop had no way to
+ * show that: `Marks/Logo` rendered the Ro × Revolut lockup only, so the one
+ * component whose whole job is to differ per brand was the one you could not
+ * see differ. This makes the multi-brand system a demonstration rather than
+ * something the workshop hides.
+ *
+ * It sets the attribute on the ROOT, not on a wrapper, and that is forced
+ * rather than tidy. The default arm in base.css is
+ * `:root:not([data-brand]) [data-brand-only]:not([data-brand-only~='revolut'])`,
+ * which keys off the absence of the attribute on the root itself. Put
+ * `data-brand="wise"` on a div and that rule still matches — so the Revolut
+ * arm would hide the Wise logotype at the same moment the Wise arm showed it,
+ * and the lockup would render with no partner mark at all.
+ *
+ * Revolut is the default and carries no attribute, exactly as it does live.
+ */
+const withBrand: Decorator = (Story, ctx) => {
+  const brand = ctx.globals.brand;
+  React.useEffect(() => {
+    const root = document.documentElement;
+    if (brand && brand !== 'revolut') root.dataset.brand = brand;
+    else delete root.dataset.brand;
+  }, [brand]);
+  return <Story />;
+};
+
 const preview: Preview = {
-  decorators: [withBand],
+  decorators: [withBand, withBrand],
   globalTypes: {
+    brand: {
+      description: 'Hostname brand — the lockup should swap with no override',
+      defaultValue: 'revolut',
+      toolbar: {
+        title: 'Brand',
+        items: [
+          { value: 'revolut', title: 'Ro × Revolut (default)' },
+          { value: 'wise', title: 'Ro × Wise' },
+          { value: 'healf', title: 'Ro × Healf' }
+        ]
+      }
+    },
     band: {
       description: 'Band role — the component should flip with no override',
       defaultValue: 'base',

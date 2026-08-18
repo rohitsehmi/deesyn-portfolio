@@ -444,7 +444,15 @@ Light only, deliberately: a social card is composited onto whatever surface the 
 
 **`robots.txt` is the one thing that does gate this.** It carries `Disallow: /` for every user agent, and the compliant unfurlers (Slack, Twitter, LinkedIn) honour it, so they will not fetch the page and will never read the tags. The tags are correct and ready; whether to add an allow-list for those specific bots is a decision about the `x` lockup and Revolut's assets, not a technical one, and it has not been made.
 
-**The meta tags are brand-neutral and have to be**, because they are read out of the HTML by a crawler that never runs the script deciding which brand a hostname shows. **The card image is not**: `og:image` is one build-time URL and cannot vary per host, so `/og.png` is the Revolut lockup on the Wise hostname too. Contained rather than solved — `robots.txt` means the compliant unfurlers never fetch it — and the real fix is generating the card per brand, which belongs with the brand-pack split rather than a bodge in `Base.astro`.
+**The meta tags are brand-neutral and have to be**, because they are read out of the HTML by a crawler that never runs the script deciding which brand a hostname shows.
+
+**The card is now per brand, fixed 2026-08-18 — at the edge, not in the page.** `og:image` is one build-time URL and the brand is a runtime decision, so no amount of work in `Base.astro` can show a crawler the right card. `build-og-image.mjs` emits one file per brand and **`vercel.json` rewrites `/og.png` per host**, which happens server-side and therefore applies to an unfurler exactly as it does to a browser. The tag in the HTML stays `/og.png` on every host; only what that path serves changes.
+
+**A rewrite, not a redirect**: the URL a client asked for is the URL it keeps, and some unfurlers will not follow a redirect for `og:image`. **Revolut needs no entry** — it is the default and `og.png` *is* its card, which is also what the apex, www, an unrecognised subdomain and a client with no JavaScript get. Same rule as `[data-brand]` carrying no attribute.
+
+**Only the last path differs.** The disc, the script and the `x` are shared; `PARTNER_WORDMARKS` holds the partner logotype in the same `0 0 233 48` viewBox, so a brand card is `LOCKUP_PATHS.slice(0, -1)` plus one entry rather than a second lockup.
+
+This stays belt-and-braces while `robots.txt` disallows everything: the compliant unfurlers never fetch the page and so never read the tag. It is done so that the day that changes, the cards are already right.
 
 Structured data is `WebSite` on ordinary pages and `Article` on a case study, with `articleSection` carrying the discipline from `studies.ts`. Deliberately modest — schema.org rewards inventing properties you cannot support, and every value emitted is already on the page in words. `socialTitle` exists so `og:title` and the Article `headline` carry the page's own name without the `· Rohit Sehmi` suffix that `<title>` needs.
 
@@ -497,6 +505,10 @@ npm run chromatic     # publish a build (needs CHROMATIC_PROJECT_TOKEN)
 ```
 
 **Public as of 2026-08-07**, alongside the repo. 58 stories across 21 components, both themes.
+
+**A brand toolbar sits beside the theme one, added 2026-08-18**, and it closes the gap that `Marks/Logo` showed the Ro × Revolut lockup only — the one component whose whole job is to differ per brand was the one the workshop could not show differing. Revolut, Wise and Healf, with Revolut the default.
+
+**The decorator sets `[data-brand]` on the ROOT, not on a wrapper, and that is forced rather than tidy.** The default arm in `base.css` is `:root:not([data-brand]) [data-brand-only]:not([data-brand-only~='revolut'])`, which keys off the *absence* of the attribute on the root itself. Put `data-brand="wise"` on a div and that rule still matches, so the Revolut arm hides the Wise logotype at the same moment the Wise arm shows it, and the lockup renders with no partner mark at all. Setting it on the root is also exactly what the live inline script does.
 
 **Link the branch permalink, `https://main--<appId>.chromatic.com`, not `chromatic.com/library?appId=`.** The library is the build history and sits behind a login, so it reads as a closed door to anyone without an account; the permalink is the Storybook itself and needs none. Per-build URLs are worse again — they go stale.
 

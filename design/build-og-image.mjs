@@ -24,7 +24,8 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 // Brand pack. Static, so it cannot take a runtime path — see LOGO_PATHS in
 // paths.mjs for why converting it early would buy an untested code path.
-import { LOCKUP_PATHS, LOCKUP_VIEWBOX } from '../src/components/logo-paths.ts';
+import { LOCKUP_PATHS, LOCKUP_VIEWBOX, PARTNER_WORDMARKS } from '../src/components/logo-paths.ts';
+import { BRANDS, DEFAULT_BRAND } from '../src/data/brands.ts';
 import { TOKENS, FAVICON_OUT } from './paths.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -56,18 +57,43 @@ const LOCKUP_H = Math.round((LOCKUP_W / vbW) * vbH);
 const x = Math.round((W - LOCKUP_W) / 2);
 const y = Math.round((H - LOCKUP_H) / 2);
 
-const paths = LOCKUP_PATHS.map(
-  (p) => `<path d="${p.d}"${p.evenOdd ? ' fill-rule="evenodd" clip-rule="evenodd"' : ''}/>`
-).join('');
+/**
+ * One card per brand.
+ *
+ * `og:image` is a single build-time URL and the brand is decided at runtime by
+ * a script, so a crawler — which runs no JavaScript — cannot be shown the right
+ * card by the page alone. That was left as an open cost: /og.png was the
+ * Revolut lockup on the Wise and Healf hostnames too.
+ *
+ * It is fixed at the edge instead. Each brand gets its own file, and vercel.json
+ * rewrites /og.png per host, which happens server-side and so applies to a
+ * crawler exactly as it does to a browser. The tag in the HTML stays one URL.
+ *
+ * Only the LAST path differs: the disc, the script and the `x` are shared, and
+ * PARTNER_WORDMARKS holds the partner logotype in the same 0 0 233 48 viewBox.
+ * Revolut is not in that map because its logotype IS the last entry of
+ * LOCKUP_PATHS — the default, and what a client with no JavaScript renders.
+ */
+const shared = LOCKUP_PATHS.slice(0, -1);
+const lockupFor = (brand) =>
+  brand === DEFAULT_BRAND ? LOCKUP_PATHS : [...shared, PARTNER_WORDMARKS[brand]];
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+const pub = join(root, FAVICON_OUT);
+mkdirSync(pub, { recursive: true });
+
+for (const brand of BRANDS) {
+  const paths = lockupFor(brand)
+    .map((p) => `<path d="${p.d}"${p.evenOdd ? ' fill-rule="evenodd" clip-rule="evenodd"' : ''}/>`)
+    .join('');
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
 <rect width="${W}" height="${H}" fill="${bg}"/>
 <g transform="translate(${x} ${y}) scale(${LOCKUP_W / vbW})" fill="${fg}">${paths}</g>
 </svg>
 `;
-
-const pub = join(root, FAVICON_OUT);
-mkdirSync(pub, { recursive: true });
-await sharp(Buffer.from(svg), { density: 384 }).resize(W, H).png().toFile(join(pub, 'og.png'));
-
-console.log(`og.png               ${W}x${H}, lockup ${LOCKUP_W}x${LOCKUP_H}, ${fg} on ${bg}`);
+  // The default keeps the bare name, so nothing that already points at /og.png
+  // has to change and the rewrite is what varies it.
+  const file = brand === DEFAULT_BRAND ? 'og.png' : `og-${brand}.png`;
+  await sharp(Buffer.from(svg), { density: 384 }).resize(W, H).png().toFile(join(pub, file));
+  console.log(`${file.padEnd(20)} ${W}x${H}, lockup ${LOCKUP_W}x${LOCKUP_H}, ${fg} on ${bg}`);
+}
