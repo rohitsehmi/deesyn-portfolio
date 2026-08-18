@@ -86,11 +86,17 @@ Inside a frame the tree is `Backdrop` (`Mesh 1–4`, `Base`) and either `Capture
 
 Connect via the **Figma Console MCP**: Figma desktop → Plugins → Development → **Figma Desktop Bridge** (manifest `~/.figma-console-mcp/plugin/manifest.json`). The plugin window must stay open.
 
-`FIGMA_ACCESS_TOKEN` is **not configured**, so every REST-backed tool *on that server* 403s — including `figma_get_file_data` and `figma_take_screenshot`. Use instead:
+`FIGMA_ACCESS_TOKEN` is **configured and working as of 2026-08-18**, so the REST-backed tools answer: `figma_get_file_data`, the version history, and the images endpoint. It had been set to the literal placeholder `figd_YOUR_TOKEN_HERE` for months, and this file recorded that as "not configured" — which is why every REST call 403'd and why the two paragraphs below described a limit that was really a broken credential. **The same lesson as the Chromatic token: the only proof a credential works is using it.** The plugin-sandbox tools remain the right default for reads and writes, because they see the live document rather than the last saved version:
 - `figma_execute` for all reads and writes (plugin sandbox)
 - `figma_capture_screenshot` for visuals (plugin `exportAsync`, not REST)
 
-**Image bytes cannot be moved from Figma into the repo by tooling.** There is no disk cache and a 1448×1086 PNG as base64 is far too large to return, so `exportAsync` bytes cannot cross. `figma_capture_screenshot` can *show* an image but cannot write a file. Real asset exports are done by hand: set `exportSettings` on the frames so the layer name becomes the filename, then export from Figma. They land in `~/Downloads`.
+**Image bytes CAN be moved from Figma into the repo, corrected 2026-08-18.** This file said they could not, and that was true only of the plugin bridge: there is no disk cache and a 1448×1086 PNG as base64 is far too large to return, so `exportAsync` bytes genuinely cannot cross and `figma_capture_screenshot` can *show* an image without writing a file. All of that still holds.
+
+What was wrong was the conclusion. **The REST images endpoint renders a node and returns a URL**, which curls straight to disk — `GET /v1/images/:key?ids=<node>&format=png&scale=2`, then fetch the S3 URL it hands back. Verified by pulling `hcom-exploration-gallery-light` at 2896×2172, 2.6MB, and opening it. **The manual `~/Downloads` round trip is no longer necessary for anything that lives in Figma.**
+
+Two things that follow. Artwork made *outside* Figma still has to get in there first, so a generated diagram is unaffected until it is placed in the file. And **provenance now has a second pair of eyes** — `design/asset-provenance.json` says artwork is checked by a person opening the file or not at all, and an agent can now open it too. That does not retire the manifest, which exists to force the claim to be *written*; it means the claim can be corroborated.
+
+There is deliberately **no export script yet**. Nothing outstanding needs one — the remaining diagrams are generated outside Figma — and a path nothing exercises is a path that does not work. It is a short job the day there is an asset to pull.
 
 ### Plugin API gotchas that cost rebuild cycles
 
