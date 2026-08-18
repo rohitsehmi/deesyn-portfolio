@@ -204,9 +204,36 @@ const covers = new Map(
         Edit it through the markdown round trip instead — `npm run copy:export`
         works on the JSON, so the token survives. Keep the braces.
       */}
+      {/*
+        The spans are joined by a space, and it is not cosmetic.
+
+        One prerendered build serves three brands, so all three headlines ship
+        and CSS hides the two that do not apply. A screen reader is unaffected —
+        `display: none` removes those nodes from the accessibility tree, which
+        is the whole reason the rules hide rather than clip. But anything
+        reading the raw HTML sees every span, and with no separator between them
+        the h1's text content came out fused:
+
+          "Two case studies, for Revolut.Three case studies, for Wise.Three…"
+
+        That matters here more than it would elsewhere. This URL travels one
+        way — pasted to a named person — and increasingly that means pasted into
+        an agent, which fetches the HTML and never runs the stylesheet. A single
+        space turns one garbled run-on into three complete sentences, each
+        naming the brand it belongs to.
+
+        A space, and not the tidier-looking options. `hidden` with a CSS
+        un-hide would mean declaring a `display` value on the version that
+        shows, which is the exact shape of the `display: revert` bug that
+        shipped misaligned receipts on the Wise host. `aria-hidden` cannot work
+        at all: the HTML is static and cannot know which brand will render it.
+      */}
       <h1 class="home-hero__title">
-        {BRANDS.map((brand) => (
-          <span data-brand-only={brand}>{heroTitleFor(brand)}</span>
+        {BRANDS.map((brand, i) => (
+          <>
+            {i > 0 && ' '}
+            <span data-brand-only={brand}>{heroTitleFor(brand)}</span>
+          </>
         ))}
       </h1>
       <p class="home-hero__standfirst" data-copy="home:heroStandfirst">{copy.heroStandfirst}</p>
