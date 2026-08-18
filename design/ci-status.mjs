@@ -75,10 +75,22 @@ try {
     }
   }
 
+  /*
+    An unfinished run is neither green nor red, and saying "green" about one is
+    worse than saying nothing — this printed "newest run is green" while Visual
+    regression was still in flight. Three states, not two, and only a completed
+    failure is worth a non-zero exit: a caller polling this should not treat
+    "still running" as a build failure.
+  */
   const newest = runs[0];
-  const bad = newest.status === 'completed' && newest.conclusion !== 'success';
-  console.log(`\n  ${bad ? 'newest run is NOT green' : 'newest run is green'}  ·  ${newest.html_url}\n`);
-  process.exit(bad ? 1 : 0);
+  const done = newest.status === 'completed';
+  const verdict = !done
+    ? `newest run is still ${newest.status.replace('_', ' ')}`
+    : newest.conclusion === 'success'
+      ? 'newest run is green'
+      : `newest run is NOT green (${newest.conclusion})`;
+  console.log(`\n  ${verdict}  ·  ${newest.html_url}\n`);
+  process.exit(done && newest.conclusion !== 'success' ? 1 : 0);
 } catch (e) {
   console.error(`\nci-status: ${e.message}\n`);
   process.exit(1);
