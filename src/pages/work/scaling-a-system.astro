@@ -7,26 +7,25 @@ import { Explorations } from '../../components/Explorations';
 import { Hindsight } from '../../components/Hindsight';
 import { Contribution } from '../../components/Contribution';
 import { Media } from '../../components/Media';
+import { getImage } from 'astro:assets';
+import imgTokenTiers from '../../assets/egds-token-tiers-light.png';
 import copy from '../../copy/scaling-a-system.json';
 
 /**
- * DRAFT, and ARCHIVED until the markers below are closed.
+ * LIVE since 2026-08-17, on the Wise and Healf hosts only — see `brands` in
+ * src/data/studies.ts. It carries zero [NEEDS: …] markers and must keep it:
+ * verify-gaps is a CI step and fails the build on a marker that would render
+ * on a live page, which is what makes "finished" a property the build checks
+ * rather than something somebody has to remember.
  *
- * Everything marked [NEEDS: …] renders visibly on the page on purpose: a gap
- * you can see in the browser gets closed, a gap in a comment does not. Because
- * verify-gaps is a CI step, a marker on a LIVE page fails the build, which is
- * the mechanism that keeps this study off the index until it is finished
- * rather than a note somebody has to remember. Removing `archived: true` in
- * src/data/studies.ts is the last step, not the first.
- *
- * PROVENANCE, and it is the reason several markers exist at all. Every
- * project-level fact here is taken from two colleagues' published accounts of
- * the same programme — heeranmaster.com/home/scaling-a-system and
+ * PROVENANCE, and it is the reason this study was archived for twelve days.
+ * Every project-level fact here is taken from two colleagues' published
+ * accounts of the same programme — heeranmaster.com/home/scaling-a-system and
  * madebyjoe.uk/work/egds — and nothing has been invented or rounded up. What
  * neither page can supply is Rohit's own contribution, since each describes
- * its author's, so anything about what he personally decided is a marker
- * rather than a plausible guess. The previous draft carried Heeran's job title
- * as the Role, which is exactly the failure this note exists to prevent.
+ * its author's, so everything about what he personally decided comes from his
+ * CV instead. The previous draft carried Heeran's job title as the Role, which
+ * is exactly the failure that separation exists to prevent.
  *
  * Tooling, the typeahead component and the workshops are deliberately absent.
  * Those are the parts of Joe's account that were his own work rather than the
@@ -34,6 +33,26 @@ import copy from '../../copy/scaling-a-system.json';
  */
 const F = 'scaling-a-system';
 const { contribution, problem, process, interface: iface, impact, hindsight } = copy;
+
+/*
+  Same pipeline as the other studies: WebP at each width, original pruned.
+
+  `natural`, never a cropping ratio. This is a diagram, so its title sits along
+  the top and its per-brand labels along the bottom, and those are precisely
+  the pixels `object-fit: cover` removes — see MediaProps.ratio.
+
+  NO srcDark YET. The artwork carries the theme in its own fills and sits on a
+  near-white plate, so on a dark page it currently reads as a bright panel mid
+  article. That is the case MediaProps.srcDark exists for and the dark export
+  is outstanding, not declined; wire it here the moment it lands.
+*/
+const FIGURE_SIZES = '(min-width: 1040px) 1000px, calc(100vw - 40px)';
+const tokenTiers = await getImage({
+  src: imgTokenTiers,
+  format: 'webp',
+  widths: [480, 720, 960, 1280, 1600],
+  sizes: FIGURE_SIZES
+});
 ---
 
 <CaseStudy
@@ -95,8 +114,11 @@ const { contribution, problem, process, interface: iface, impact, hindsight } = 
       {iface.heading}
     </SectionHeading>
     <Media
+      src={tokenTiers.src}
+      srcSet={tokenTiers.srcSet.attribute}
+      sizes={FIGURE_SIZES}
       alt={iface.mediaAlt}
-      ratio="16-9"
+      ratio="natural"
       caption={iface.mediaCaption}
       captionCopyRef={`${F}:interface.mediaCaption`}
     />
