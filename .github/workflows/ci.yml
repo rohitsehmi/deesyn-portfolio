@@ -34,65 +34,26 @@ jobs:
       # all. Move back to `npm ci` the day the lockfile is generated on Linux.
       - run: npm install --no-audit --no-fund
 
-      # Nothing else here reads TypeScript. `astro build` transpiles without
-      # checking, and Storybook renders a story whose props no longer exist
-      # rather than failing — which is how three stale `band` props on Parallax
-      # survived the change that removed the prop.
-      - name: Types
-        run: npm run typecheck
-
-      # This repo is public, so a committed token is harvested in minutes and
-      # the only cheap moment to catch one is before the push. Scans tracked
-      # files only -- .env is gitignored and holds the real token, and flagging
-      # it would train everyone to ignore this check.
-      - name: Secrets — no credentials in tracked files
-        run: node design/verify-secrets.mjs
-
-      # These are the checks that stop Figma and code drifting apart. Both exit
-      # non-zero on failure, so a renamed or deleted token breaks the build
-      # rather than quietly producing a component that references nothing.
-      - name: Tokens — checksum and alias integrity
-        run: node tokens/verify.mjs
-      - name: Components — token integrity, no literals, checksum
-        run: node design/verify.mjs
-      - name: CSS — token references resolve, font values bound
-        run: node design/verify-css.mjs
-
-      # /how-this-was-built states "N in code, M with a published contract".
-      # Those two numbers used to be counted from different things and agreed by
-      # coincidence; this fails the build if any component loses its contract,
-      # so the page cannot quietly start making a false claim about itself.
-      - name: Contracts — every component has one
-        run: node design/verify-contracts.mjs
-
-      # Regenerating must be a no-op. If it is not, someone hand-edited a
-      # generated file instead of changing Figma and re-exporting.
-      - name: Generated files are up to date
-        run: |
-          npm run tokens
-          npm run specs
-          git diff --exit-code -- src/styles/tokens.css tokens/tokens.json \
-            icons/ marks/ components/ public/ \
-            || (echo "::error::Generated files are stale — run npm run tokens && npm run specs" && exit 1)
-
-      - run: npx astro build
-
-      # Lints the built pages against the adjacency rules in
-      # docs/banding-system.md §3, on the output rather than the source so
-      # conditionally rendered bands are checked too.
-      - name: Bands — adjacency rules
-        run: node design/verify-bands.mjs
-
-      # [NEEDS: …] markers are deliberately rendered on the page rather than
-      # hidden in a comment, so a missing fact cannot be lost. The cost is that
-      # nothing stopped one shipping — this is what stops one shipping.
+      # ONE STEP, ON PURPOSE — and it is the fix for a real gap rather than
+      # tidying. This workflow used to list each check itself, which meant the
+      # local gate and the CI gate were two hand-maintained lists of the same
+      # thing. They had already diverged: `npm run verify` ran six checks while
+      # this file ran those plus a staleness check, a build, the band linter and
+      # the gap linter, so a clean local run predicted nothing and the only way
+      # to find out was to push. Every place this repo has kept two lists in step
+      # by hand, they have drifted -- the contract counts that agreed by
+      # coincidence, three stale checksums in CLAUDE.md.
       #
-      # Reads dist/ rather than src/copy/, which is why it sits after the build
-      # beside the band linter rather than in `npm run verify`: a marker only
-      # matters once an arrangement actually renders it. Archived studies are
-      # reported but do not fail, being off the index and out of the rotation.
-      - name: Gaps — no [NEEDS:] marker on a live page
-        run: node design/verify-gaps.mjs
+      # `verify:all` in package.json is now the single definition of "green", so
+      # what runs here is what runs on a laptop and in the pre-push hook, by
+      # construction. verify-gates.mjs (inside it) fails the build if anyone adds
+      # a step back into this file without adding it to the script.
+      #
+      # Losing the per-step names in the GitHub UI is the cost. It is small:
+      # every check prints its own heading and its own reasoning on failure, and
+      # each script carries the explanation that used to be duplicated here.
+      - name: Verify — the same gate that runs locally
+        run: npm run verify:all
 
   chromatic:
     name: Visual regression

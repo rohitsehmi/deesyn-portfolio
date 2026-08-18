@@ -7,6 +7,7 @@ import { Contribution } from '../components/Contribution';
 import { ArrowLink } from '../components/Link';
 import { SERVICE_MARKS } from '../components/service-marks';
 import { hash } from '../../design/hash.mjs';
+import { gateChecks } from '../../design/gate.mjs';
 import c from '../copy/how-this-was-built.json';
 import { BRANDS, DEFAULT_BRAND } from '../data/brands';
 
@@ -27,7 +28,7 @@ const tokens = JSON.parse(readFileSync('tokens/tokens.json', 'utf8'));
 const banding = JSON.parse(readFileSync('design/banding-export.json', 'utf8'));
 
 /**
- * How many checks run on a push, counted from the workflow that runs them.
+ * How many checks run on a push, resolved from the gate that runs them.
  *
  * This was the word "Four", typed into the copy, on a page whose facts block
  * opens by saying none of its numbers were typed in. It had been wrong for a
@@ -35,17 +36,20 @@ const banding = JSON.parse(readFileSync('design/banding-export.json', 'utf8'));
  * before Contracts was added on 2026-08-10, so the page was claiming four while
  * CI ran eight.
  *
- * Scoped to the `verify` job rather than counting `- name:` across the file.
- * The chromatic job has no named steps today, so a whole-file count would give
- * the right answer now and the wrong one the moment anyone named one.
+ * It then counted `- name:` steps inside ci.yml's verify job, which was true
+ * only while the workflow happened to list one check per step. On 2026-08-18 it
+ * collapsed to a single step calling `npm run verify:all` — so that count went
+ * to 1 while eleven checks still ran, and the build refused, which is the guard
+ * below doing its job.
+ *
+ * Counting the GATE rather than the workflow is what it should always have
+ * been. A step is a unit of CI plumbing; a check is the thing being claimed.
+ * design/gate.mjs resolves one from the other so this page, verify-gates.mjs
+ * and the pre-push hook cannot disagree about what "green" contains.
  */
-const workflow = readFileSync('.github/workflows/ci.yml', 'utf8');
-const verifyJob = workflow.slice(
-  workflow.indexOf('\n  verify:'),
-  workflow.indexOf('\n  chromatic:')
-);
-const checkCount = (verifyJob.match(/^\s+- name:/gm) ?? []).length;
-if (!checkCount) throw new Error('could not count check steps in .github/workflows/ci.yml');
+const checks = gateChecks();
+const checkCount = checks.length;
+if (!checkCount) throw new Error('could not resolve any checks from the verify:all gate');
 
 /*
   The count above and the list further down are two independent sources, and

@@ -21,10 +21,19 @@ npm run tokens       # tokens.json -> src/styles/tokens.css
 npm run specs        # Figma export + code-only components -> <domain>/specs/, plus the favicon
 npm run favicon      # brand mark + tokens -> public/favicon.svg and the PNG fallbacks
 npm run typecheck    # tsc --noEmit; nothing else in the repo reads TypeScript
-npm run verify       # typecheck + token, component and CSS integrity, exits non-zero on failure
+npm run verify:all   # THE GATE. Exactly what CI runs. Green here == green build
+npm run verify       # the source-only subset of it; no build, so no bands or gaps
 npm run verify:bands # band adjacency, linted off built HTML (run after build)
 npm run chromatic    # visual regression (needs CHROMATIC_PROJECT_TOKEN)
 ```
+
+**`npm run verify:all` is the one definition of green, added 2026-08-18**, and `.github/workflows/ci.yml` is now a single step that calls it. Before that the workflow listed each check itself, so the local gate and the CI gate were two hand-maintained lists of the same thing — and they had already diverged: `verify` ran six checks while CI ran those plus the staleness check, a build, the band linter and the gap linter. A clean local run predicted nothing, and the only way to find out was to push and wait. That is precisely the friction `.githooks/pre-commit` argues against in its own comment, sitting one level up from it.
+
+**`design/verify-gates.mjs` guards what collapsing the workflow could not.** Someone can still add a step back into `ci.yml` directly; this fails the build if what the workflow runs and what `verify:all` runs are not the same set. It resolves both through `design/gate.mjs`, which expands `npm run` chains out of `package.json` — so a check added to the script is counted everywhere, by one program, rather than by three lists agreeing. **Every place this repo has kept two lists in step by hand they have drifted**: the contract counts that agreed at 20 and 20 by coincidence, and three separate stale checksums in this file.
+
+**`.githooks/pre-push` runs the full gate and blocks**, which is the deliberate difference from `pre-commit`. `pre-commit` fixes what it can fix by itself and stages the result, because stopping you to ask for a command it could have run is friction for its own sake. Nothing at pre-push is auto-fixable — a failing check is a real disagreement between what you wrote and what the system measures. Escape hatch is `git push --no-verify`, and it exists because a gate with no way past it gets disabled wholesale rather than skipped once.
+
+**`/how-this-was-built` counts the gate now, not the workflow.** It used to count `- name:` steps in the verify job, which was true only while the workflow happened to list one check per step; collapsing to a single step took that count to **1** while eleven checks still ran, and the build refused — the guard catching its own foundation being moved. A step is a unit of CI plumbing, a check is the thing being claimed, and `gateChecks()` returns the latter.
 
 **The Chromatic project token is a write credential**, and this repo is public. It lives in `.env` (gitignored) and a GitHub Actions secret — never in a tracked file, never on a command line, because shell history is a file too. `.env.example` documents it. **Rotated 2026-08-13, and verified by a passing build rather than by a file timestamp.**
 
@@ -61,7 +70,7 @@ File **"Revolut"** — `UnybX8G5sQIEhLLZN2YFl6`. This is the file everything bel
 | **Components** | `components/` | the 10 UI components |
 | **Case study imagery** | `src/assets/` | Hotels.com app screens, exported as case-study artwork |
 
-The page is called **`Foundations`**, not `Foundations — Revolut`. It was renamed at some point and this file said otherwise until 2026-08-10. The Expedia EGDS template page that used to sit alongside it as reference scaffolding has been deleted; the eight pages in the file are now Cover, Case study imagery, a divider, Foundations, Icons, Marks, Components and Banding.
+The page is called **`Foundations`**, not `Foundations — Revolut`. It was renamed at some point and this file said otherwise until 2026-08-10. The Expedia EGDS template page that used to sit alongside it as reference scaffolding has been deleted; the file now holds Cover, Case study imagery, a divider, Foundations, Icons, Marks, Components, Banding and **Templates** (added 2026-08-18, see below).
 
 **`Case study imagery` is content, not system**, which is why it sits above the divider with Cover rather than below it with the design system. 22 frames, 11 compositions each existing as a light/dark pair, named `hcom-<subject>-<variant>-<theme>` so a frame name is the filename it exports to. All carry PNG @2x export settings with no suffix.
 
@@ -528,6 +537,94 @@ Getting it wrong is not a visible bug, which is why it needs a prop rather than 
 
 **The spec is machine-readable**: `page.getSharedPluginData('banding', 'spec')` returns the whole rule set as JSON, and every band node carries `getPluginData('band')` → `{role, scale}`. A page built from bands can be linted against the adjacency rules rather than checked by eye.
 
+### The layout export, and why it exists
+
+**`design/layout-export.json` states the page layout in numbers, added 2026-08-18.** Band padding per scale per breakpoint, the measure, the three vertical steps, which text style every page element resolves to at each breakpoint, and what colour it renders in. Generated by `design/build-layout-export.mjs`, part of `npm run specs`, in `GENERATED` so the staleness check covers it. Rendered on the Banding page as **`06 · Page layout`**, and carried as `getSharedPluginData('layout', 'spec')` on both that section and the page — same pattern as the banding spec beside it.
+
+**It goes on Banding rather than Foundations because `docs/banding-system.md` already declares that banding owns the vertical scale and the measure.** Foundations defines what `display/l` *is*; this says a case-study title *renders* it above 1024. A separate page would split one topic across two places.
+
+**It is parsed from the real stylesheets, not authored**, resolving every `var(--primitive-*)` through the generated `tokens.css`, so it cannot drift from what ships and cannot flatter the system. **It throws rather than emitting a partial spec** — a hole reads as "this element has no opinion" when it means "the parser lost it", and somebody builds to the gap. That fired immediately: `.prose p` is not `.prose > p`, and the refusal is what found it.
+
+**The gap it closes had a cost with a date on it.** On 2026-08-18 a full desktop case-study mock was built in Figma. The band **roles** were right first time because `verify-bands` publishes them; **seven dimensions were wrong** because nothing did — the 768px tier of the responsive scale used instead of the 1024px one, `.measure`'s `max-width` read as the content width when 40px of inline padding comes out of it, and four type steps stopped one step short. The mock looked plausible, which is why it survived being looked at. **The parts of the system that were machine-readable came out right; the parts living only in CSS came out wrong**, and that is the whole argument for this file.
+
+**Two values it publishes that are counter-intuitive and cost real time:**
+- **`max-width: 1000` includes the inline padding**, so the column you draw to is **920** at desktop, not 1000.
+- **Prose paragraphs render `fg/secondary`, not `fg/primary`**, and a `lead` block's first paragraph steps to `body/xl` at `fg/primary`.
+
+**`ch` is the one thing it cannot resolve for you.** The site caps measures in `ch` and Figma has no such unit, so the export carries the *count* and a Figma build must render the glyph run in the real text style and read the box. The px column on the canvas is that measurement at ≥1024 and moves if the type scale does.
+
+**It got a second half on 2026-08-18, and needing one is the lesson.** With the page chrome published, a Figma template still got three blocks wrong — because publishing the *chrome* only moved the guessing down one level, into the components that sit inside it. Each was wrong in a way that looked deliberate:
+
+- **`Contribution` is a labelled list, not a two-up grid.** A flex column of rows at `minmax(9rem, 14rem) 1fr`, gap 20, baseline-aligned, capped at 72ch. The template had it as a wrapping two-column grid at gap 40 — **with the term and detail styles swapped**, term on `emphasis/3 fg/secondary` when it is `emphasis/1 fg/primary` and detail the other way round.
+- **`Hindsight` is an accent-ruled callout that carries its own heading.** `bg/subtle`, a 3px `fg/accent` inline-start rule, 32 padding, r20, 72ch. The template had rendered it as a plain `SectionHeading` plus prose — **and the SectionHeading was itself the bug**, because `Hindsight.tsx` says in as many words that pairing one with it prints the same heading twice.
+- **`Metrics` items carry a top rule**, `1px border/default` with 12 above, gap 6, and the value steps to **`display/l`** at ≥1024. The template had no rule and stopped at `display/s`.
+
+**`components/specs/*` already published the token for every one of those properties and it was not enough.** That answers "is this hardcoded", which is a different question from "what does this look like" — a spec saying `gap → primitive.space.sp600` does not tell you the thing is a two-column list. The export now carries structure, type, colour and measure for `contribution`, `hindsight`, `metrics` and `explorations`, and its `raw` values name their tokens (`3px solid fg/accent`) rather than leaking `var(--semantic-fg-accent)`, because one is buildable in Figma and the other is not.
+
+### The `Templates` page, added 2026-08-18
+
+**A ninth page in the Figma file, after Banding**, holding `01 · Case study — desktop`: a 1440 build of `machine-readable-components` at the values the layout export publishes, for a designer to duplicate rather than rebuild. It is a composition rather than a system definition, which is why it is its own page and not a section on Banding.
+
+**It uses real component instances wherever Figma allows one** — 17 of them, drawing on `Chrome/Nav`, `Chrome/Footer`, `Content/Tag`, `Content/Media`, and through those, nested `Brand/Logo`, `Action/Button`, `Action/Arrow Link` and `Icon`.
+
+**Bands are frames, and that is forced rather than chosen.** `Layout/Band` has no SLOT property, and a Figma instance cannot take new children, so a band instance physically cannot hold page content. The frames carry the same bound variables, the same padding, and the same `getPluginData('band')` the linter reads — which is also what the live site does, since `Band.tsx` renders a `div`. **Giving `Layout/Band` a content SLOT would make it usable in a composition for the first time**, and is the single change that would let this template be instances end to end.
+
+**`Chrome/Footer` at `scale=compact` IS the closing `base/compact` band** — 1440×196 is 80 padding twice plus 36 of content. The template's own plugin data therefore reads seven bands, not eight; the eighth is inside the component.
+
+### The template linter, and the third round of the same mistake
+
+**`design/verify-figma-template.snippet.js` lints a Figma template against the published spec**, reading it from the Banding page's plugin data rather than embedding a second copy. Run it in Figma; it is the counterpart to `verify-bands.mjs`, which lints the built HTML. **Not in `npm run verify` and it cannot be** — it reads a live document over the plugin bridge, and there is no REST token.
+
+**It exists because building a template by hand produced the same class of failure three times, each invisible in a screenshot.** Publishing one layer only moved the guessing to the layer below it:
+
+1. Band padding, the measure and four type steps taken from the **768px tier instead of the 1024px one**. Fixed by publishing `layout-export.json`.
+2. `Contribution`, `Hindsight` and `Metrics` built from inference, because publishing the page *chrome* said nothing about the blocks inside it. Fixed by extending that export to components.
+3. **Every section one band out of place.** The roles ran in the correct legal sequence the whole way — `verify-bands` would have passed it — while the inverse band showed `interface` instead of `impact`.
+
+**The third is the one that argues for all of this. A sequence is not an assignment.** `layout-export.json` now carries `page.caseStudy`, parsed from `CaseStudy.astro`, stating which section sits in which band. Two that catch people: **the contribution list is inside the hero band**, and **the inverse band is impact**.
+
+**The nav is chrome, not a band.** It sits above the first band and carries no band plugin data, so the linter filters it out before comparing positions — without that, every band reads one place out and the checker invents eight failures.
+
+### Editing copy in Figma, and pushing it to a build
+
+**Yes, and it is the same mechanism as the other two routes rather than a new one.** Every text node in a template carries `setPluginData('copy', '<file>:<path>')` — the identical string `data-copy` carries on the live page — so a node maps to exactly one JSON key rather than to whichever string looks most similar.
+
+```bash
+# 1. in Figma: run design/figma-copy-export.snippet.js, save the JSON
+node design/figma-copy-import.mjs <file.json> --dry   # show what would change
+node design/figma-copy-import.mjs <file.json>         # write it back
+```
+
+**Three routes into the same words, each right for a different job.** The browser editor is for one sentence, the markdown round trip is for rewriting a whole page's voice, and this is for the case both are bad at: **editing copy while looking at it set** — at the real measure, in the real type, with the images beside it. A sentence that is fine in isolation can still be three words too long for the column it lands in, and nothing but seeing it typeset will tell you.
+
+**The guards are `copy-import.mjs`'s, deliberately, because the failure modes are identical**: a path that does not already exist is refused, a non-string target is refused, **an empty value over a non-empty one is refused**, and edge whitespace is carried from the JSON rather than taken from Figma — a text node cannot show a trailing space, and a few strings are fragments that join around an emphasised span. It refuses rather than guesses and still writes everything else. Verified by running it against three real references and three broken ones, and watching it accept the first three and name all three faults.
+
+**A node with no reference is skipped, never guessed at.** Reading time and the "Next" label are computed or structural; writing them back would bake a derived value into the copy, which is the trap the hero count and the facts block both avoid.
+
+### Two more the template got wrong, both fixed 2026-08-18
+
+**The next-study tile carries no image, and the placeholder I put there was the bug.** `image` is optional on `CaseStudyTile` and the next-study band passes none, so `{image && …}` renders nothing. An empty 16:9 `Content/Media` at the measure is 517px of near-invisible plate, which read on canvas as a huge unexplained gap between the "Next" label and the discipline tag. The linter now fails a next-study tile that has one.
+
+**`.tile__cue` is an Icon Button in Figma and deliberately not one in code.** The 48px circled arrow borrows the icon-button classes *precisely so the visual cannot drift from the real component*, while staying a `span` — a real button there would be interactive content nested inside an anchor, invalid, and a second tab stop for something the title link already does. Figma has no semantics to lose, so an `Action/Icon Button` instance at `secondary/lg` is the faithful build and the one that honours the stated intent.
+
+**`IconButton` renders in exactly two places on the whole site:** the Nav's mobile trigger and sheet close, and the Carousel's prev/next arrows at `secondary/md`. Neither appears on a desktop case study except through the carousel, which is why the templates had none until the carousel was built.
+
+**An `INSTANCE_SWAP` property takes the target component's NODE ID, not a variant name** — and this is the trap worth carrying. `setProperties({'icon#9:253': 'chevron-left'})` is silently invalid. Worse, it was written inside a `try/catch`, so the throw was swallowed and the carousel shipped **two identical right-pointing arrows** that looked deliberate. Resolve the id from the `Icon` set first, and **never wrap a `setProperties` call in a bare catch**: the whole value of the call is that it fails loudly when the argument is wrong.
+
+**An empty `Content/Media` in Figma is LESS faithful than a labelled one.** The real component renders a placeholder when it has no `src` — "Image needed", the alt text, and the ratio — precisely so a missing image cannot pass as a finished section. An unlabelled instance is `bg/widget` at 4% black, which on a sunken band is invisible: the interface section read as a caption floating in a void. The templates now carry a `media__placeholder` in the wrapper frame (an instance cannot take new children) with each slot's real alt string, which is both more readable and closer to what ships.
+
+**Mixed fills are legitimate and the linter had to learn it.** The one paragraph carrying a `<strong>` — `process.principle`, three copy keys in a single `<p>` — has two bound ranges, so `node.fills` returns `figma.mixed` rather than an array and a naive array check reports it as unbound. `getStyledTextSegments(['fills'])` is the correct test.
+
+**That paragraph is deliberately not copy-tagged.** It is three JSON keys in one node, split that way because editing is plain text and a `<strong>` inside one string would be stripped the first time anyone touched it. The importer is one-node-one-ref by design, so this one stays read-only in Figma and is edited through the JSON or the markdown round trip — the same rule as the computed values.
+
+### `Content/Media` did not hold its ratio, fixed 2026-08-18
+
+**Its `image` frame was `FILL` horizontally and `FIXED` vertically with no aspect-ratio lock**, so `ratio=4-3` was true only at the authored 400px width. At the real measure of 920 it rendered 920×300 instead of 920×690 — the variant axis the component exists for, wrong everywhere except where it was drawn. Worse, `resize()` on the instance child **failed silently**, returning no error and changing nothing, so a designer correcting it by hand would think they had.
+
+Fixed with `lockAspectRatio()` on the `image` frame of all eight variants, which is what makes an instance-side height override stick. **`targetAspectRatio` is read-only in the plugin API** — the setter is `lockAspectRatio()`, and trying to assign it throws "has only a getter".
+
+**The published contract did not move**, and that was verified rather than assumed: `design/figma-export.snippet.js` was re-run inside Figma and reproduced **`4180069571` across 133 entries**, unchanged. The checksum hashes each *variant's* size, and locking a child's ratio leaves all eight at 400×225/300/400/533.
+
 **The reasoning is on canvas too.** Section `00 · The system` renders the explanation from `docs/banding-system.md` in Figma, so the page is self-explaining without the repo open. Its role-table swatches are live — bound to `band/base` / `band/sunken` under explicit mode overrides — so "four roles, two variables" demonstrates itself instead of being claimed.
 
 ## Skills
@@ -554,6 +651,14 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
    - **The four EGDS `nca-*` panels are reconstructions, and stay as they are — settled, do not re-open.** The decision record they depict was a real artefact, kept outside Figma; the panel is an illustration of it. The images rebuild Figma's chrome closely enough to read as captures, and the "Decisions" tab in them is not a Figma feature, so the cost was raised and accepted: the underlying decisions are real work, and the artwork carries them better than a redrawn block would.
 
    **What that leaves as a standing hazard, and it is the transferable part:** `design/usage-rules.json` says "Never fake a product UI out of rectangles. Use a real screenshot or nothing", and `anti-slop` repeats it. These are PNGs rather than divs, so the rule's mechanism does not catch them — and **nothing in `verify` can**, because every check here reads text or tokens and this is a claim baked into a picture. Artwork provenance is checked by a person opening the file, or it is not checked.
+
+   **`design/asset-provenance.json` is what that hazard finally got, 2026-08-18**, enforced by `design/verify-provenance.mjs` in the gate. Every image in `src/assets/` declares a `kind` — `capture`, `reconstruction`, `diagram` or `illustration` — and a note saying what someone saw when they opened it. Currently 25 images: 14 captures, 6 illustrations, 4 reconstructions, 1 diagram.
+
+   **It cannot verify a claim and does not pretend to.** A person still has to open the file and be honest. What it removes is the option of never being asked: an undeclared image fails the build, so the claim gets made once, in writing, when the file lands rather than months later from memory. Exactly the trade `Metrics` makes by requiring `source` and `Explorations` by requiring `why` — nothing checks that a number is true, something checks that you said where it came from.
+
+   **It refuses orphans too**, an entry naming a file that no longer exists, because a manifest that keeps describing deleted artwork rots into fiction and the next reader takes it as a record of what is there.
+
+   **The four reconstructions print on every run rather than being silenced.** They are accepted, not hidden. The failure mode of an accepted risk is that it stops being visible and quietly becomes an assumption, which is how this one survived in the first place — and it is the same reason `verify.mjs` prints deprecated components instead of dropping them.
 5. **No README, so GitHub opens on a bare file tree** with a 70KB `CLAUDE.md` one click away that names Revolut throughout. A README would control the first impression and make this file read as the working record it is. **Do not sanitise `CLAUDE.md`** — it is the technical record and most of the reason the repo is worth linking.
 
 **Smaller, none blocking:** the Storybook's `Marks/Logo` stories show the Ro × Revolut lockup only, and a brand toolbar alongside the existing theme one would make that a demonstration rather than something to hide; `/cv` copy is not wired into the browser editor (it still reads `src/data/cv.ts`); the hero and both index covers are still stand-in imagery. `/about` stays unlinked deliberately — the reasoning is at the top of `src/data/nav.ts`, and one entry brings it back.

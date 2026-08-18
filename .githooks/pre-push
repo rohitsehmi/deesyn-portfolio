@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# Run the same gate CI runs, before the push rather than after it.
+#
+# This BLOCKS, where pre-commit deliberately does not, and the difference is the
+# point. pre-commit fixes something it can fix by itself -- it regenerates a
+# stale spec and stages it, because a hook that stops you to ask for a command it
+# could have run is friction for its own sake. Nothing here can be auto-fixed: a
+# failing check is a real disagreement between what you wrote and what the system
+# says, and the only useful response is to look at it.
+#
+# The reasoning is pre-commit's own, one level up: "a red build you have to come
+# back to is a worse tool than one that never goes red." CI takes minutes and
+# arrives after your attention has moved on; this takes seconds and arrives while
+# the change is still in your head.
+#
+# It is exactly `npm run verify:all` -- not a subset, not a faster approximation.
+# A hook that runs *some* of CI reintroduces the gap it exists to close, and a
+# green hook would once again mean nothing about a green build. verify-gates.mjs
+# runs inside it and fails if this stops being true.
+#
+# ESCAPE HATCH: `git push --no-verify`. Real reasons exist -- pushing a WIP
+# branch, or a machine without node_modules -- and a gate with no way past it
+# gets disabled wholesale rather than skipped once.
+
+command -v node >/dev/null 2>&1 || {
+  echo "pre-push: no node, skipping verification." >&2
+  exit 0
+}
+[ -d node_modules ] || {
+  echo "pre-push: no node_modules, skipping verification. Run npm install." >&2
+  exit 0
+}
+
+echo "pre-push: running the full gate (npm run verify:all) — same checks as CI."
+
+if npm run verify:all; then
+  echo "pre-push: green. CI will run exactly these checks."
+  exit 0
+fi
+
+cat >&2 <<'MSG'
+
+pre-push: BLOCKED — this would go red in CI.
+
+The output above names what failed and why. Fix it, or push with
+  git push --no-verify
+if you know you are pushing work in progress.
+MSG
+exit 1

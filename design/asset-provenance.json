@@ -1,0 +1,150 @@
+{
+  "_comment": [
+    "What each image in src/assets/ actually IS. Authored, never measured — this is",
+    "the one input to a check that a program cannot derive.",
+    "",
+    "WHY IT EXISTS. The repo publishes a rule — 'Never fake a product UI out of",
+    "rectangles. Use a real screenshot or nothing' — and nothing in `verify` can",
+    "enforce it, because every other check here reads text or tokens and this is a",
+    "claim baked into a picture. That left exactly one hazard with no mechanism:",
+    "artwork provenance was checked by a person opening the file, or it was not",
+    "checked. It went unchecked long enough for four reconstructions to ship, and",
+    "for a note claiming the Hotels.com captures carried invented figures to sit in",
+    "the record for days before anyone opened them and found it false.",
+    "",
+    "WHAT IT CAN AND CANNOT DO. It cannot verify a claim. A person still has to",
+    "open the file and be honest about what they see. What it removes is the option",
+    "of never being asked: an unclassified image fails the build, so the claim gets",
+    "made once, in writing, at the moment the asset lands rather than months later",
+    "when someone is trying to remember. Same move as `Metrics` requiring `source`",
+    "and `Explorations` requiring `why` — the type system cannot check that a number",
+    "is true either, only that somebody said where it came from.",
+    "",
+    "RECONSTRUCTIONS ARE REPORTED ON EVERY RUN, NOT SILENCED. They are accepted, not",
+    "hidden: a decision taken once tends to be forgotten, and the whole risk of a",
+    "reconstruction is that it stops looking like one. Printing them keeps an",
+    "accepted cost visible instead of letting it decay into an assumption.",
+    "",
+    "kind:",
+    "  capture        A real screenshot of software that actually shipped.",
+    "  reconstruction Rebuilt to look like a capture of a real interface. THE RISKY",
+    "                 ONE — a reader who knows the tool spots what is wrong, on a",
+    "                 site whose whole argument is that its claims are checkable.",
+    "  diagram        An explanatory chart. Presents itself as drawn and imitates no",
+    "                 product UI, so it makes no claim to be a capture.",
+    "  illustration   Abstract or decorative artwork. Depicts nothing and asserts",
+    "                 nothing.",
+    "",
+    "note: what a person saw when they opened it. Required, and 'ok' is not a note."
+  ],
+
+  "assets": {
+    "cover-machine-readable-components.png": {
+      "kind": "illustration",
+      "note": "Index cover. Abstract 3D still life in violet, generated. Depicts no interface and carries no text."
+    },
+    "cover-scaling-a-system.png": {
+      "kind": "illustration",
+      "note": "Index cover for the EGDS study. Abstract 3D still life, red on cream, generated. Chosen over a saturated red version so the three covers read as a set (violet, sage, red)."
+    },
+    "cover-search-experience.png": {
+      "kind": "illustration",
+      "note": "Index cover in sage, generated. Still referenced by the archived search-experience study."
+    },
+
+    "egds-token-tiers-light.png": {
+      "kind": "diagram",
+      "note": "Generated flat 2D chart of the three token tiers, wired 2026-08-18. Imitates no product UI. The swatches are illustrative and carry NO hex values — an earlier pass had a legend of hex codes and it was cut precisely because those values were of unverified provenance. Dark counterpart outstanding."
+    },
+
+    "hcom-backdrop-light.png": {
+      "kind": "illustration",
+      "note": "The carousel's backdrop plate, exported from the Figma `Backdrop` group alone. A mesh gradient, deliberately a sibling of the track rather than part of any slide so it cannot twitch between advances."
+    },
+    "hcom-backdrop-dark.png": {
+      "kind": "illustration",
+      "note": "Dark counterpart of the backdrop plate. Same box at 920x690, x=180, verified in both modes."
+    },
+
+    "hcom-exploration-gallery-light.png": {
+      "kind": "capture",
+      "note": "Genuine capture of the shipped Hotels.com app on the Figma `Screens` group, composited on transparency. Opened and read 2026-08-17: every figure on it is ordinary in-product content."
+    },
+    "hcom-exploration-gallery-dark.png": {
+      "kind": "capture",
+      "note": "Dark-theme pair of the above, same provenance."
+    },
+    "hcom-exploration-recap-light.png": {
+      "kind": "capture",
+      "note": "Genuine capture of the shipped Hotels.com app. Opened and read 2026-08-17."
+    },
+    "hcom-exploration-recap-dark.png": {
+      "kind": "capture",
+      "note": "Dark-theme pair of the above, same provenance."
+    },
+    "hcom-exploration-signin-light.png": {
+      "kind": "capture",
+      "note": "Genuine capture of the shipped Hotels.com app. Opened and read 2026-08-17."
+    },
+    "hcom-exploration-signin-dark.png": {
+      "kind": "capture",
+      "note": "Dark-theme pair of the above, same provenance."
+    },
+
+    "hcom-home-01-search-card-light.png": {
+      "kind": "capture",
+      "note": "Genuine capture of the shipped Hotels.com app home screen. Opened and read 2026-08-17: prices, review scores and the app's own marketing copy only, no overlaid test figures."
+    },
+    "hcom-home-02-recent-searches-light.png": {
+      "kind": "capture",
+      "note": "Genuine capture of the shipped Hotels.com app home screen. Opened and read 2026-08-17."
+    },
+    "hcom-home-03-contextual-light.png": {
+      "kind": "capture",
+      "note": "Genuine capture of the shipped Hotels.com app home screen. Opened and read 2026-08-17."
+    },
+
+    "hcom-results-01-compact-list-light.png": {
+      "kind": "capture",
+      "note": "Genuine capture of the shipped Hotels.com app results page. Opened and read 2026-08-17."
+    },
+    "hcom-results-02-filters-thumbnail-light.png": {
+      "kind": "capture",
+      "note": "Genuine capture of the shipped Hotels.com app results page. Opened and read 2026-08-17."
+    },
+    "hcom-results-03-image-left-light.png": {
+      "kind": "capture",
+      "note": "Capture of the shipped Hotels.com app results page. Part of the same export batch as the compositions read on 2026-08-17; this particular frame was not among the eight opened individually."
+    },
+    "hcom-results-04-full-bleed-light.png": {
+      "kind": "capture",
+      "note": "Capture of the shipped Hotels.com app results page. Part of the same export batch as the compositions read on 2026-08-17; this particular frame was not among the eight opened individually."
+    },
+    "hcom-results-05-destination-hero-light.png": {
+      "kind": "capture",
+      "note": "Capture of the shipped Hotels.com app results page. Part of the same export batch as the compositions read on 2026-08-17; this particular frame was not among the eight opened individually."
+    },
+
+    "hero-parallax.png": {
+      "kind": "illustration",
+      "note": "Homepage hero. Abstract still life in cream, off-white and deep blue, generated. Stand-in imagery. Depicts no interface; its contrast against overlaid type is measured separately by design/measure-media-contrast.mjs."
+    },
+
+    "nca-dialog-platforms.png": {
+      "kind": "reconstruction",
+      "note": "Rebuilds Figma's desktop chrome closely enough to read as a capture, and inserts a 'Decisions' tab that Figma does not have. The decision record it depicts was a real artefact kept outside Figma, so the panel illustrates something real. Cost raised and ACCEPTED by Rohit 2026-08-17 — settled, do not re-open."
+    },
+    "nca-exploration-dark-frame.png": {
+      "kind": "reconstruction",
+      "note": "Same Figma-chrome reconstruction as nca-dialog-platforms. Accepted 2026-08-17."
+    },
+    "nca-exploration-max-height.png": {
+      "kind": "reconstruction",
+      "note": "Same Figma-chrome reconstruction as nca-dialog-platforms. Accepted 2026-08-17."
+    },
+    "nca-exploration-vertical-offset.png": {
+      "kind": "reconstruction",
+      "note": "Same Figma-chrome reconstruction as nca-dialog-platforms. Accepted 2026-08-17."
+    }
+  }
+}

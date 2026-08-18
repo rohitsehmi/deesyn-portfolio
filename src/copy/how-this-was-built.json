@@ -52,7 +52,7 @@
       },
       {
         "term": "Checks",
-        "detail": "{checks} on every push, counted from the workflow that runs them rather than from memory. Any one of them failing stops the build."
+        "detail": "{checks} on every push, counted from the gate that runs them rather than from memory. The same gate runs on my machine before the push, so a green run here means the same thing as a green build there. Any one of them failing stops both."
       }
     ]
   },
@@ -86,6 +86,14 @@
       {
         "label": "Contracts.",
         "text": "Every component has a published contract somewhere. The number above says so, and until this check existed that number was right by coincidence rather than by measurement, because two ways of counting happened to cancel."
+      },
+      {
+        "label": "Provenance.",
+        "text": "Every image on the site has to say what it is, whether that is a real screenshot, a diagram, a piece of abstract artwork, or a reconstruction that imitates a real interface. Nothing here can check that the answer is honest, because a faked screen is a claim baked into a picture rather than into text, so what this enforces is narrower and still worth having: an image cannot ship until somebody has opened it and written down what they saw."
+      },
+      {
+        "label": "Gates.",
+        "text": "The checks that run on a push and the checks that run on this machine have to be the same checks. They were two separate lists for a while and they had already drifted apart, so a clean run here proved nothing about the build, which is the kind of gap that only ever announces itself long after the work has moved on."
       },
       {
         "label": "Generated files.",

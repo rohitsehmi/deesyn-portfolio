@@ -57,6 +57,18 @@ export const CODE_SPECS_DIR = 'components/specs';
 /** Authored failure modes, merged into every spec. Not measured, not branded. */
 export const USAGE_RULES = 'design/usage-rules.json';
 
+/**
+ * The page layout, parsed out of the stylesheets that render it.
+ *
+ * Framework rather than brand pack, and the reason is the same one that puts the
+ * code-only specs here: these are structural values — band padding, the measure,
+ * the vertical rhythm, which text style each element steps to — and they are
+ * identical whatever the tokens resolve to. A second brand pack changes what
+ * `display/l` looks like, not the fact that a case-study title renders it above
+ * 1024px.
+ */
+export const LAYOUT_EXPORT = 'design/layout-export.json';
+
 /* ------------------------------------------------------------------ *
  * BRAND PACK — one set of these per brand.
  * ------------------------------------------------------------------ */
@@ -93,6 +105,20 @@ export const ICON_PATHS = 'src/components/icon-paths.ts';
 /** Generated from the mark and the tokens, never drawn. */
 export const FAVICON_OUT = 'public';
 export const OG_IMAGE_OUT = 'public/og.png';
+
+/** `npm run tokens` writes this from TOKENS. Every var(--*) in src/ resolves here. */
+export const TOKENS_CSS = 'src/styles/tokens.css';
+
+/**
+ * Everything a generator owns, as git pathspecs.
+ *
+ * Regenerating must be a no-op; if it is not, someone hand-edited an output
+ * instead of changing the source and re-exporting. verify-generated.mjs diffs
+ * exactly this list, so a new generated artefact is added here once rather than
+ * in both the script and the CI workflow — which is the arrangement that let a
+ * checksum in CLAUDE.md go stale three times.
+ */
+export const GENERATED = [TOKENS_CSS, TOKENS, 'icons/', 'marks/', 'components/', FAVICON_OUT, LAYOUT_EXPORT];
 
 /* ------------------------------------------------------------------ *
  * CONTENT — the case studies. Shared pool, selected per site.
