@@ -57,3 +57,42 @@
 
 /* Same size as the nav, so the two lockups match down the page. */
 .footer .logo { height: var(--primitive-size-s32); width: auto; }
+
+/*
+  The two bottom-row links, grouped.
+
+  `.footer__bottom` is column-reverse below 768px so the links sit above the
+  mark. That was safe with one link because .footer__brand holds nothing
+  focusable, leaving the row a single tab stop — a second link in the reversed
+  container would put the visually-lower one first in the tab order. Grouping
+  them in a container that is NOT reversed keeps their order honest while the
+  group as a whole still sits above the mark.
+*/
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--primitive-space-sp600);
+}
+@media (min-width: 768px) {
+  .footer__links {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--primitive-layout-l40);
+    /*
+      Pushed to the trailing edge, so the bottom row reads mark-left /
+      links-right and mirrors the nav above it.
+
+      `margin-left: auto` rather than `justify-content: space-between` on the
+      parent, and that is the pattern this file already uses one rule up:
+      `.footer__columns` does the same thing against the same mark. It also
+      survives a third child — space-between would spread three items evenly
+      and quietly stop meaning "push these right".
+
+      Inside the breakpoint on purpose. Below 768px the row is column-reverse
+      with `align-items: flex-start`, where an auto inline margin would shove
+      the links to the right edge of a stacked layout.
+    */
+    margin-left: auto;
+  }
+}

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Logo } from './Logo';
+import { footerLinks, NEW_TAB, type FooterLink } from '../data/nav';
 import { ArrowLink } from './Link';
 import './Footer.css';
 
@@ -14,7 +15,7 @@ export interface FooterProps {
    * and the footer's one link is worth more pointing somewhere the reader
    * cannot get to otherwise.
    */
-  link?: { label: string; href: string };
+  links?: FooterLink[];
   /**
    * The path currently being rendered, so the footer can avoid linking to it.
    *
@@ -30,7 +31,7 @@ export interface FooterProps {
 }
 
 /** Offered instead of a self-link. The home page is the two case studies. */
-const FALLBACK_LINK = { label: 'Back to the work', href: '/' };
+const FALLBACK_LINK: FooterLink = { label: 'Back to the work', href: '/' };
 
 /**
  * Transparent by design — the band it sits in owns the surface, so the footer
@@ -40,7 +41,7 @@ const FALLBACK_LINK = { label: 'Back to the work', href: '/' };
 export function Footer({
   scale = 'full',
   columns,
-  link = { label: 'How this was built', href: '/how-this-was-built' },
+  links = footerLinks,
   currentPath
 }: FooterProps) {
   /*
@@ -49,8 +50,14 @@ export function Footer({
     never match, and the bug would look exactly like no fix at all.
   */
   const norm = (p: string) => p.replace(/\/+$/, '') || '/';
-  const resolved =
-    currentPath && norm(currentPath) === norm(link.href) ? FALLBACK_LINK : link;
+  /*
+    Only an internal link can be the page you are on, so an external one is
+    never swapped — and the fallback is offered once, for whichever entry
+    matched, rather than repeated.
+  */
+  const resolved = links.map((l) =>
+    !l.external && currentPath && norm(currentPath) === norm(l.href) ? FALLBACK_LINK : l
+  );
 
   /*
     The copyright sits under the mark, not beside it, so the two read as one
@@ -79,7 +86,34 @@ export function Footer({
         )}
         <div className="footer__bottom">
           {scale === 'compact' && brand}
-          <ArrowLink href={resolved.href}>{resolved.label}</ArrowLink>
+          {/*
+            The links are wrapped rather than sitting directly in the row, and
+            that is load-bearing rather than tidy. `.footer__bottom` is
+            column-reverse below 768px, which put the link above the mark; that
+            was safe only while the row had exactly ONE tab stop, because
+            .footer__brand holds nothing focusable. A second link in a reversed
+            container would be a real focus-order trap — the lower link taking
+            focus first. The wrapper is not reversed, so the links keep their
+            order relative to each other while the group still sits above the
+            mark.
+          */}
+          <div className="footer__links">
+            {resolved.map((l) => (
+              <ArrowLink
+                key={l.href}
+                href={l.href}
+                {...(l.external
+                  ? {
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                      'aria-label': `${l.label}, ${NEW_TAB}`
+                    }
+                  : {})}
+              >
+                {l.label}
+              </ArrowLink>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
