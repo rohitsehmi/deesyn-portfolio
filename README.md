@@ -39,7 +39,7 @@ The full script list, including the token pipeline and the Figma export snippets
 
 ## What is checked
 
-Eleven checks run on every push, and the build fails rather than warns. `npm run verify:all` is the one definition of green and the workflow is a single step calling it, so a clean run locally means the same thing as a green build:
+Twelve checks run on every push, and the build fails rather than warns. `npm run verify:all` is the one definition of green and the workflow is a single step calling it, so a clean run locally means the same thing as a green build:
 
 - **Types.** `tsc` over the `.ts` and `.tsx` sources, because nothing else in the repository reads TypeScript.
 - **Secrets.** Tracked files only, so that the one file legitimately holding a token is not flagged and taught to be ignored.
@@ -49,6 +49,7 @@ Eleven checks run on every push, and the build fails rather than warns. `npm run
 - **Contracts.** Every component has one, asked per component rather than by comparing two totals, which had previously agreed by arithmetic coincidence.
 - **Provenance.** Every image declares what it is: a real screenshot, a diagram, abstract artwork, or a reconstruction that imitates a real interface. Nothing can check that the answer is honest, so what this enforces is narrower and still worth having: an image cannot ship until somebody has opened it and written down what they saw.
 - **Gates.** The checks that run on a push and the checks that run locally have to be the same checks. They were two separate lists for a while and had already drifted apart.
+- **This file.** The numbers stated above are checked against the repository. They cannot be computed here, because this is markdown read on GitHub with no build step to substitute into, so instead they are typed and a program asks whether they are still true — which they twice were not.
 - **Generated files.** Anything derived from source is regenerated and compared, because a stale generated file is invisible in a diff.
 - **Bands.** Adjacency rules, read from the Figma specification rather than transcribed.
 - **Gaps.** A missing fact renders on the page as a visible marker rather than hiding in a comment, and this reads the built pages and fails if one would ship.

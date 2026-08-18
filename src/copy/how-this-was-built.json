@@ -96,6 +96,10 @@
         "text": "The checks that run on a push and the checks that run on this machine have to be the same checks. They were two separate lists for a while and they had already drifted apart, so a clean run here proved nothing about the build, which is the kind of gap that only ever announces itself long after the work has moved on."
       },
       {
+        "label": "The README.",
+        "text": "The numbers the repository's front page states are checked against the repository. That page is markdown read on GitHub with no build step to substitute into, so unlike this one it cannot compute them; they are typed, and a program asks whether they are still true. It had twice been wrong about how many checks there are, which is a plausible enough sentence that nobody reading it noticed."
+      },
+      {
         "label": "Generated files.",
         "text": "Regenerating everything has to change nothing. If it does, someone hand-edited a file that is supposed to be measured, and a stale generated file is invisible in a diff because the change you would be looking for is the one that never got made."
       },

@@ -8,6 +8,7 @@ import { ArrowLink } from '../components/Link';
 import { SERVICE_MARKS } from '../components/service-marks';
 import { hash } from '../../design/hash.mjs';
 import { gateChecks } from '../../design/gate.mjs';
+import { leaves, componentFiles, storyCount } from '../../design/counts.mjs';
 import c from '../copy/how-this-was-built.json';
 import { BRANDS, DEFAULT_BRAND } from '../data/brands';
 
@@ -71,21 +72,16 @@ if (c.checks.items.length !== checkCount) {
   );
 }
 
-const leaves = (node: any): number =>
-  Object.entries(node).reduce((n, [k, v]: [string, any]) => {
-    if (k.startsWith('$')) return n;
-    if (v && v.$value !== undefined) return n + 1;
-    return v && typeof v === 'object' ? n + leaves(v) : n;
-  }, 0);
 
 const specDirs = ['components/specs', 'icons/specs', 'marks/specs'];
 const specSlugs = new Set(
   specDirs.flatMap((d) => readdirSync(d).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)))
 );
 
-const componentFiles = readdirSync('src/components')
-  .filter((f) => f.endsWith('.tsx') && !f.endsWith('.stories.tsx'));
-const componentCount = componentFiles.length;
+/* Counted in design/counts.mjs so the page, README.md and verify-readme.mjs
+   cannot disagree — see the note there about the two counts that once agreed
+   at 20 and 20 by arithmetic coincidence. */
+const componentCount = componentFiles().length;
 
 /**
  * How many components actually have a published contract, checked one by one.
@@ -114,11 +110,9 @@ const hasContract = (file: string) => {
   if (slug in CONTRACT_ELSEWHERE) return true;
   return [...specSlugs].some((s) => s === slug || SPEC_DOMAINS.some((d) => s === `${d}-${slug}`));
 };
-const specCount = componentFiles.filter(hasContract).length;
+const specCount = componentFiles().filter(hasContract).length;
 
-const storyCount = readdirSync('src/components')
-  .filter((f) => f.endsWith('.stories.tsx'))
-  .reduce((n, f) => n + (readFileSync(`src/components/${f}`, 'utf8').match(/export const /g)?.length ?? 0), 0);
+
 
 /** Recomputed here rather than quoted, using the same hash the verifiers use. */
 const canonical = (v: any): string => {
@@ -142,7 +136,7 @@ const numbers: Record<string, string | number> = {
   components: componentCount,
   specs: specCount,
   checks: checkCount,
-  stories: storyCount,
+  stories: storyCount(),
   rules: banding.rules.length,
   checksum: hash(canonical(banding))
 };
