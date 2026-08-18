@@ -23,7 +23,10 @@
  *   node design/verify-gates.mjs
  */
 import { readFileSync } from 'node:fs';
-import { GATE, gateScripts } from './gate.mjs';
+import { GATE, gateScripts, gateChecks } from './gate.mjs';
+
+/** The checks alone — what the README and /how-this-was-built both count. */
+const checkCount = () => gateChecks().length;
 
 const root = new URL('../', import.meta.url).pathname;
 const WORKFLOW = '.github/workflows/ci.yml';
@@ -59,4 +62,37 @@ if (missingLocally.length || missingInCi.length) {
   process.exit(1);
 }
 
-console.log(`\ngates: ${WORKFLOW} and \`${GATE}\` run the same ${gate.size} checks\n`);
+/*
+  THE README COUNTS THE SAME CHECKS AND CANNOT COMPUTE.
+
+  /how-this-was-built resolves its number from the gate, so it cannot go stale.
+  README.md is markdown read on GitHub, with no build step to substitute into —
+  so it states a number, and it has now drifted twice: it said "Eight checks"
+  while nine ran, and was still saying eight when eleven ran. Both times it was
+  a plausible sentence in a file nobody re-reads.
+
+  This is the same fix as the page's, one level down: the number stays typed,
+  and a program checks it. It also counts the bullets, because a correct total
+  above a short list is the shape the page's own bug took.
+*/
+const readme = readFileSync(root + 'README.md', 'utf8');
+const WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine','ten',
+  'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+const expected = checkCount();
+const stated = readme.match(/^(\w+) checks run on every push/mi);
+if (!stated) {
+  console.error(`\nREADME.md no longer states a check count in the expected form.\n`);
+  process.exit(1);
+}
+const statedN = WORDS.indexOf(stated[1].toLowerCase());
+const bullets = (readme.match(/^- \*\*/gm) ?? []).length;
+if (statedN !== expected || bullets !== expected) {
+  console.error(`\nREADME.md disagrees with the gate:`);
+  if (statedN !== expected) console.error(`  says "${stated[1]} checks", the gate runs ${expected}`);
+  if (bullets !== expected) console.error(`  lists ${bullets} checks, the gate runs ${expected}`);
+  console.error(`\nUpdate "What is checked" in README.md.\n`);
+  process.exit(1);
+}
+
+console.log(`\ngates: ${WORKFLOW} and \`${GATE}\` run the same ${gate.size} checks`);
+console.log(`       README.md states ${expected} and lists ${bullets}\n`);

@@ -1,6 +1,6 @@
 # deesyn-portfolio
 
-A design portfolio built as a working system, containing two case studies written up properly rather than a gallery of screenshots.
+A design portfolio built as a working system, containing case studies written up properly rather than a gallery of screenshots.
 
 ## What this is
 
@@ -16,7 +16,8 @@ Underneath the case studies there is a design system, comprising 249 tokens expo
 npm install
 npm run dev          # Astro dev server
 npm run storybook    # component workshop
-npm run verify       # typecheck, tokens, components, CSS, contracts
+npm run verify:all   # the gate: exactly what CI runs, so green here is green there
+npm run verify       # its source-only subset; no build, so no bands or gaps
 npm run build        # production build
 ```
 
@@ -38,7 +39,7 @@ The full script list, including the token pipeline and the Figma export snippets
 
 ## What is checked
 
-Eight checks run on every push, and the build fails rather than warns:
+Eleven checks run on every push, and the build fails rather than warns. `npm run verify:all` is the one definition of green and the workflow is a single step calling it, so a clean run locally means the same thing as a green build:
 
 - **Types.** `tsc` over the `.ts` and `.tsx` sources, because nothing else in the repository reads TypeScript.
 - **Secrets.** Tracked files only, so that the one file legitimately holding a token is not flagged and taught to be ignored.
@@ -46,8 +47,11 @@ Eight checks run on every push, and the build fails rather than warns:
 - **Components.** Token integrity, a checksum, and an assertion that no value is a literal.
 - **CSS.** Every custom property reference in `src/` resolves, and every font value binds to the type scale. A mistyped custom property is not a CSS error, it renders as an inherited default and looks deliberate.
 - **Contracts.** Every component has one, asked per component rather than by comparing two totals, which had previously agreed by arithmetic coincidence.
+- **Provenance.** Every image declares what it is: a real screenshot, a diagram, abstract artwork, or a reconstruction that imitates a real interface. Nothing can check that the answer is honest, so what this enforces is narrower and still worth having: an image cannot ship until somebody has opened it and written down what they saw.
+- **Gates.** The checks that run on a push and the checks that run locally have to be the same checks. They were two separate lists for a while and had already drifted apart.
 - **Generated files.** Anything derived from source is regenerated and compared, because a stale generated file is invisible in a diff.
 - **Bands.** Adjacency rules, read from the Figma specification rather than transcribed.
+- **Gaps.** A missing fact renders on the page as a visible marker rather than hiding in a comment, and this reads the built pages and fails if one would ship.
 
 Visual regression runs separately on Chromatic, which snapshots all 58 stories in both light and dark.
 
