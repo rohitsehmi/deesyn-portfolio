@@ -39,7 +39,7 @@ The full script list, including the token pipeline and the Figma export snippets
 
 ## What is checked
 
-Thirteen checks run on every push, and the build fails rather than warns. `npm run verify:all` is the one definition of green and the workflow is a single step calling it, so a clean run locally means the same thing as a green build:
+Fourteen checks run on every push, and the build fails rather than warns. `npm run verify:all` is the one definition of green and the workflow is a single step calling it, so a clean run locally means the same thing as a green build:
 
 - **Types.** `tsc` over the `.ts` and `.tsx` sources, because nothing else in the repository reads TypeScript.
 - **Secrets.** Tracked files only, so that the one file legitimately holding a token is not flagged and taught to be ignored.
@@ -54,6 +54,7 @@ Thirteen checks run on every push, and the build fails rather than warns. `npm r
 - **Bands.** Adjacency rules, read from the Figma specification rather than transcribed.
 - **Gaps.** A missing fact renders on the page as a visible marker rather than hiding in a comment, and this reads the built pages and fails if one would ship.
 - **Deploy configuration.** `vercel.json` is validated by Vercel before install and before build, so a mistake in it fails the deployment without ever producing a build log, and every check above can stay green while the site quietly serves the previous build. That is not hypothetical: an unrecognised key cost eight deployments and a day of stale production. This reads the file — the top-level keys against the set Vercel accepts, and any rewrite whose source is shadowed by a real file in the build output, because the filesystem is matched before rewrites and a shadowed rule never runs.
+- **The working record.** `CLAUDE.md` states figures it cannot compute, among them four export checksums, and three of those have sat in it stale while the build printed something else. Each is now read back from the script that prints it rather than recomputed here, so there is no second implementation to drift, and a figure that has moved fails the build instead of sitting there reading as an ordinary sentence.
 
 Visual regression runs separately on Chromatic, which snapshots all 58 stories in both light and dark.
 

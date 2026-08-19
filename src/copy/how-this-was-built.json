@@ -114,6 +114,10 @@
       {
         "label": "Deploy configuration.",
         "text": "Vercel reads its own config file before it installs anything and before it builds, so a mistake in that one file fails the deployment without ever producing a build log, and every check above stays green while the site quietly keeps serving the build before it. That is how a comment written into it cost eight deployments and a day, found by asking the live site what it was serving rather than by looking at a badge. This reads it: the keys against the ones Vercel accepts, and any rewrite pointing at a path that also exists as a real file, because the file wins and the rule silently never runs."
+      },
+      {
+        "label": "The working record.",
+        "text": "CLAUDE.md is the long technical record sitting behind this page, and it states figures that it cannot compute for itself, among them four export checksums. Three of those had sat in it stale while the build was printing something else, each one reading as a perfectly ordinary sentence, so every figure is now read back from the script that prints it rather than trusted where it lies."
       }
     ]
   },
