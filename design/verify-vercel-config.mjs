@@ -37,7 +37,7 @@
  * instruction to refresh, which costs a minute, while an invented key is caught
  * immediately, which is the bug that cost a day.
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { DIST, VERCEL_CONFIG } from './paths.mjs';
 
 /*
@@ -162,6 +162,79 @@ for (const rule of config.rewrites ?? []) {
   }
 }
 
+/* ---------------------------------------------------------------- *
+ * 3. Per-host rewrites defeated by an absolute URL in the HTML.
+ * ---------------------------------------------------------------- *
+ *
+ * A rewrite can only run on the host that was asked. Section 2 covers a real
+ * file outranking the rule; this covers the other way the request never
+ * arrives -- the HTML naming one host outright, so every client asks THAT host
+ * whichever one served the page.
+ *
+ * It is section 2's bug one layer up, found the same day and the same way, by
+ * asking production what it served rather than by reading the config. og:image
+ * must be ABSOLUTE per the OpenGraph spec, Base.astro builds it from `site` in
+ * astro.config.mjs, and one prerendered build has exactly one value for that.
+ * So every host's HTML carried https://www.deesyn.com/og.png, an unfurler on
+ * wise.deesyn.com fetched www, and www's arm is the default one. Three per-host
+ * rules, all correct, all reachable, none ever reached.
+ *
+ * WHAT WOULD ACTUALLY FIX IT is a build per brand -- the brand-pack split
+ * already planned -- or an edge function rewriting the tag. Neither is worth it
+ * while robots.txt disallows every agent and the X-Robots-Tag header enforces
+ * it, so no compliant unfurler reads the tag at all. The pin is therefore
+ * DECLARED below rather than removed, and it prints on every run: an accepted
+ * risk that stops being visible has quietly become an assumption, which is why
+ * verify-provenance.mjs lists its reconstructions and verify.mjs prints
+ * deprecated components instead of dropping them.
+ */
+const ACCEPTED_PINS = {
+  '/og.png': [
+    'Accepted 2026-08-19. og:image must be absolute and one prerendered build has',
+    'one origin, so every host unfurls the Revolut card. Contained by robots.txt',
+    'and X-Robots-Tag, which stop a compliant unfurler reading the tag at all.',
+    'The fix is the brand-pack split, not middleware.'
+  ]
+};
+
+/* Only a source with at least one host condition is making a per-host promise.
+   A rewrite with no `has` is the default arm and cannot be defeated this way. */
+const perHost = new Set(
+  (config.rewrites ?? [])
+    .filter((r) => literal(r.source) && (r.has ?? []).some((c) => c.type === 'host'))
+    .map((r) => r.source)
+);
+
+const pinned = new Map();
+if (perHost.size) {
+  const pages = readdirSync(DIST, { recursive: true }).filter(
+    (f) => typeof f === 'string' && f.endsWith('.html')
+  );
+  for (const file of pages) {
+    for (const m of readFileSync(`${DIST}/${file}`, 'utf8').matchAll(/https?:\/\/[^"'\s<>]+/g)) {
+      let path;
+      try {
+        path = new URL(m[0]).pathname;
+      } catch {
+        continue;
+      }
+      if (!perHost.has(path)) continue;
+      if (!pinned.has(path)) pinned.set(path, { url: m[0], pages: new Set() });
+      pinned.get(path).pages.add(file);
+    }
+  }
+}
+
+for (const [path, hit] of pinned) {
+  if (ACCEPTED_PINS[path]) continue;
+  problems.push(
+    `the per-host rewrites of ${path} never run: ${hit.pages.size} built page(s) ` +
+    `name ${hit.url} outright, so every client asks that one host whichever host ` +
+    `served the page. Make the reference host-relative, or declare the pin in ` +
+    `ACCEPTED_PINS here with what contains it`
+  );
+}
+
 /* ---------------------------------------------------------------- */
 
 if (problems.length) {
@@ -173,4 +246,16 @@ if (problems.length) {
 
 const rewrites = (config.rewrites ?? []).length;
 const checked = Object.keys(config).length;
-console.log(`\nvercel.json: ${checked} top-level keys all legal, ${rewrites} rewrite${rewrites === 1 ? '' : 's'} not shadowed by ${DIST}/\n`);
+console.log(`\nvercel.json: ${checked} top-level keys all legal, ${rewrites} rewrite${rewrites === 1 ? '' : 's'} not shadowed by ${DIST}/`);
+
+const carried = [...pinned.keys()].filter((path) => ACCEPTED_PINS[path]);
+if (carried.length) {
+  console.log(`\nper-host rewrites pinned by an absolute URL — ${carried.length}, accepted`);
+  console.log('and live. The rules are correct and nothing ever reaches them:');
+  for (const path of carried) {
+    const hit = pinned.get(path);
+    console.log(`  ${path} — ${hit.pages.size} page(s) name ${hit.url}`);
+    ACCEPTED_PINS[path].forEach((line) => console.log(`    ${line}`));
+  }
+}
+console.log('');

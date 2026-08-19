@@ -123,12 +123,22 @@ const structuredData = article
       crawler that never runs the script deciding which brand a hostname shows,
       so anything naming a company would be wrong on every other hostname.
 
-      The card image itself is still the Revolut lockup, and that IS a leak on
-      another brand's hostname — og:image is one build-time URL and cannot vary
-      per host. It is contained rather than solved: robots.txt disallows every
-      agent, so the compliant unfurlers never fetch the page and never see it.
-      A per-brand card needs the card generated per brand, which is part of the
-      brand-pack split rather than something to bodge here.
+      The card image is generated per brand and vercel.json rewrites /og.png
+      per host, and an unfurler STILL gets the Revolut one. og:image must be
+      absolute per the OpenGraph spec, this builds it from `site`, and one
+      prerendered build has one origin — so every host's HTML names
+      www.deesyn.com, the crawler asks www, and www's arm is the default. The
+      rewrite is correct and nothing reaches it. Verified on all four hosts by
+      reading this tag out of production and fetching exactly what it names.
+
+      Not fixable here, and not a bodge worth attempting: an absolute URL pins
+      the host before any rewrite is consulted. It is contained rather than
+      solved — robots.txt disallows every agent and the X-Robots-Tag header
+      enforces it, so no compliant unfurler fetches the page at all — and the
+      brand-pack split fixes it for free, since each build would set its own
+      `site`. design/verify-vercel-config.mjs prints the pin on every run so it
+      cannot quietly become an assumption. See CLAUDE.md § Social and
+      structured data.
     */}
     <meta property="og:image:alt" content="Rohit Sehmi" />
     <meta name="twitter:card" content="summary_large_image" />
