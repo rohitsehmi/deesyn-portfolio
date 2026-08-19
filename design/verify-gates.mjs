@@ -59,4 +59,12 @@ if (missingLocally.length || missingInCi.length) {
   process.exit(1);
 }
 
-console.log(`\ngates: ${WORKFLOW} and \`${GATE}\` run the same ${gate.size} checks\n`);
+/*
+  "scripts", not "checks", and the distinction is the one gate.mjs draws: this
+  compares every .mjs the gate reaches, generators included, because a
+  generator dropping out of CI is drift too. The number of CHECKS is smaller
+  and is `gateChecks()` — it is what the README states and what
+  /how-this-was-built renders, so printing this total as "checks" would put two
+  disagreeing numbers on one screen.
+*/
+console.log(`\ngates: ${WORKFLOW} and \`${GATE}\` run the same ${gate.size} scripts\n`);

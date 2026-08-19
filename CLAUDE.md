@@ -251,7 +251,7 @@ Naming groups by purpose: `Layout/*`, `Action/*`, `Chrome/*`, `Content/*`. Varia
 
 **Targets and contrast are measured, not asserted.** Arrows 44×44 (WCAG 2.5.5, and Apple's 44pt), dots 24×24 (WCAG 2.5.8). The dots were 16×16 and **failed** — the hit area and the visible dot were the same box. The arrows overlay a photographic backdrop, so 1.4.11 applies: the button fill is only 4% black in light and 14% white in dark, so the plate is 1.07:1 against the backdrop and the **border** carries the boundary at 12.97:1 light and 8.61:1 dark, with the glyph at 12.15:1 and 5.54:1.
 
-**`chevron-left` is a real asset as of 2026-08-13**, and the carousel's previous button uses it. It is `chevron-right` mirrored about x=12 as path data, not a transform: Revolut's own `chevron-up` and `chevron-down` are exact vertical mirrors of each other, so mirroring is how this set relates its chevrons and the result is the geometry Revolut would ship. Every vertex was checked against the SVG Figma exports for the node, 11 of 11 in order, and the repo checksum reproduces Figma's (`4180069571`).
+**`chevron-left` is a real asset as of 2026-08-13**, and the carousel's previous button uses it. It is `chevron-right` mirrored about x=12 as path data, not a transform: Revolut's own `chevron-up` and `chevron-down` are exact vertical mirrors of each other, so mirroring is how this set relates its chevrons and the result is the geometry Revolut would ship. Every vertex was checked against the SVG Figma exports for the node, 11 of 11 in order, and the repo checksum reproduced Figma's at the time (`4180069571`, since moved by the footer change on 2026-08-19).
 
 It replaced a `scaleX(-1)` on the glyph, which worked and had precedent but was the weaker answer for a reason worth keeping: **a CSS flip is invisible to the contract.** The published spec said that button used a right-pointing chevron, because the spec is measured from Figma and Figma had no idea. Anything else that later transformed that glyph would also have had to remember to compose with it.
 
@@ -330,9 +330,29 @@ Not in `verify`, and `design/.dist-baseline.json` is gitignored: a baseline is a
 
 **Deprecating a component:** set `setSharedPluginData('spec', 'status', 'deprecated')` on the set in Figma and rename it out of the live namespace. It stays in the file and leaves the published contract; the export lists it under `deprecated` and `verify.mjs` prints it, so its absence is recorded rather than silent. `Deprecated/Brand Logo` (was `XX · Brand/Logo`) is the first.
 
-`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma: `4180069571`, 133 entries, matched 2026-08-13. See `design/README.md`. (An earlier `1567749477` was recorded here against the same entry count and was stale — **re-read a checksum from `verify.mjs` rather than trusting this file**, which is the only reason these are written down at all.)
+`design/verify.mjs` **cross-checks every token against `tokens/tokens.json` and exits non-zero if one is missing**, so the two systems cannot drift apart silently. It also asserts zero literals, and prints a checksum that `design/figma-export.snippet.js` reproduces from inside Figma: **`4147464933`**, 133 entries, matched 2026-08-19. See `design/README.md`. (An earlier `1567749477` was recorded here against the same entry count and was stale — **re-read a checksum from `verify.mjs` rather than trusting this file**, which is the only reason these are written down at all.)
 
-**Three checksums, three sources.** Tokens `2836674598`. Figma components `4180069571`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print **`2152362939`** across 9 components and 228 entries, but have no Figma counterpart to match, by definition.
+### Changing a component means changing it in BOTH places
+
+**A component's structure lives in two files, and nothing checks that they agree.** `verify.mjs` proves every value in a spec is a token and that the repo reproduces its own checksum; it compares the repo to itself. `verify-figma-template.snippet.js` lints templates against the layout spec. **Neither asks whether `Footer.tsx` and `Chrome/Footer` describe the same thing.**
+
+That gap was found on 2026-08-19, by Rohit, after a second link was added to the footer in code and Figma was left behind — in a session whose whole subject was drift. The loop is five steps and skipping any of them leaves the two sides disagreeing silently:
+
+1. change the component in `src/components/`
+2. make the matching change to the Figma component set
+3. **update the set's `description`** — it is published in the contract, and it is prose, so nothing will ever tell you it is stale
+4. re-run `design/figma-export.snippet.js` inside Figma, patch `design/figma-export.json`, `node design/build.mjs`
+5. carry the new checksum into this file
+
+**The change that exposed it also proved the code had ALREADY drifted.** Figma right-aligned the footer link with a grow spacer; the code rendered both links adjacent on the left. Nobody noticed until Rohit said he preferred them on the right — which was not a new preference, it was the build disagreeing with the design file. **The drift ran for an unknown length of time and no check could have caught it.**
+
+**Why there is still no automated check.** The export snippet needs `figma.variables` and plugin-only APIs, so it cannot run in CI as-is. REST could now do it — the token works as of 2026-08-18 — but the contract would have to be re-derived from `boundVariables` over REST and kept identical to the plugin version, which is a second implementation of the exact thing this repo keeps proving cannot be kept in step by hand. **Until that is written, this is a discipline, not a gate**, and it is written here because that is most of the enforcement it has.
+
+**The hook says so at the moment it matters, added 2026-08-19.** `.githooks/pre-commit` already fires on a staged `src/components/*.{tsx,css}`, and it was silent on the footer commit for a reason worth stating rather than patching over: its whole job is regenerating stale specs, and a Figma-measured spec does not regenerate from the component — `chrome-footer.json` is read off the set, so nothing went stale and there was nothing to say. It now names the Figma set behind every staged component and points at this section. **It is a notice, not a gate**: it cannot tell a structural change from a copy change, so it prints on both, which is why it is four lines rather than the five-step loop in full. A reminder that recites instructions on every commit is one people learn to scroll past.
+
+**`design/component-specs.mjs` holds the component → spec matcher, and `verify-contracts.mjs` imports it rather than keeping its own.** That matcher has been wrong once already — the `endsWith` test where `Button` matched `action-icon-button` — and a second copy of a rule this repo has got wrong before is the drift every other check in `design/` exists to stop. The refactor was proven inert by diffing the check's own output before and after, the same move as `dist-hash.mjs`.
+
+**Three checksums, three sources.** Tokens `2836674598`. Figma components `4147464933`. Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print **`2152362939`** across 9 components and 228 entries, but have no Figma counterpart to match, by definition.
 
 **That value was recorded here as `2397650938` and was stale, found 2026-08-17** by running `design/build-code-specs.mjs` and comparing. The regenerated specs were byte-identical to the ones committed, so the specs were right and only the number written down was wrong: a component changed at some point, the pre-commit hook regenerated and staged the specs exactly as designed, and nobody carried the new checksum up into this file. **This is the third time a stale checksum has sat in this document**, after `1567749477` and `2975374804`, which is the standing argument for re-reading one from the build rather than trusting the copy here.
 
@@ -651,7 +671,7 @@ node design/figma-copy-import.mjs <file.json>         # write it back
 
 Fixed with `lockAspectRatio()` on the `image` frame of all eight variants, which is what makes an instance-side height override stick. **`targetAspectRatio` is read-only in the plugin API** — the setter is `lockAspectRatio()`, and trying to assign it throws "has only a getter".
 
-**The published contract did not move**, and that was verified rather than assumed: `design/figma-export.snippet.js` was re-run inside Figma and reproduced **`4180069571` across 133 entries**, unchanged. The checksum hashes each *variant's* size, and locking a child's ratio leaves all eight at 400×225/300/400/533.
+**The published contract did not move**, and that was verified rather than assumed: `design/figma-export.snippet.js` was re-run inside Figma and reproduced **`4180069571` across 133 entries**, unchanged at the time. (That value has since moved to `4147464933` — the footer gained a second link on 2026-08-19.) The checksum hashes each *variant's* size, and locking a child's ratio leaves all eight at 400×225/300/400/533.
 
 **The reasoning is on canvas too.** Section `00 · The system` renders the explanation from `docs/banding-system.md` in Figma, so the page is self-explaining without the repo open. Its role-table swatches are live — bound to `band/base` / `band/sunken` under explicit mode overrides — so "four roles, two variables" demonstrates itself instead of being claimed.
 

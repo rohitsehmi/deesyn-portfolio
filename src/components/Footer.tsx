@@ -8,12 +8,12 @@ export interface FooterProps {
   scale?: 'compact' | 'full';
   columns?: ReactNode;
   /**
-   * The single link in the footer bottom row.
+   * The links in the footer's bottom row. Defaults to `footerLinks`.
    *
-   * It is not a contact address. Contact already has a nav item, so a mailto
-   * here would be a second affordance for an intent that is already served,
-   * and the footer's one link is worth more pointing somewhere the reader
-   * cannot get to otherwise.
+   * The bar for adding one lives in `nav.ts`, next to the list itself rather
+   * than only here, so it is stated where a link would actually be added: it
+   * has to point somewhere the reader cannot get to otherwise, which is why a
+   * mailto is not among them while Contact has a nav item.
    */
   links?: FooterLink[];
   /**

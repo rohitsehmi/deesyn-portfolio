@@ -25,6 +25,7 @@
  */
 import { readdirSync, existsSync } from 'node:fs';
 import { COMPONENTS_DIR, FIGMA_SPEC_DIRS } from './paths.mjs';
+import { DOMAINS, slugFor } from './component-specs.mjs';
 
 /*
   The one check that genuinely changes shape under a second brand. Components
@@ -55,9 +56,11 @@ const componentFiles = readdirSync(COMPONENTS_DIR).filter(
 /* Spec slugs are `<domain>-<name>`, and the match has to be on the whole name.
    A suffix test looked tidy and was wrong: `Button` matched `action-icon-button`
    as well as `action-button`, so IconButton was covering for Button and a
-   missing Button spec would not have been noticed. */
-const DOMAINS = ['action', 'content', 'layout', 'chrome', 'brand'];
-const slugFor = (file) => file.slice(0, -4).replace(/(?<!^)(?=[A-Z])/g, '-').toLowerCase();
+   missing Button spec would not have been noticed.
+
+   The rule lives in component-specs.mjs because .githooks/pre-commit needs the
+   same answer, and two copies of a matcher this repo has already got wrong once
+   is the drift every other check in here exists to stop. */
 
 const rows = [];
 const missing = [];

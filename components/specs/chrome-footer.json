@@ -8,7 +8,7 @@
     "set": "Chrome/Footer",
     "contract": "set.getSharedPluginData(\"spec\", \"contract\")"
   },
-  "description": "Transparent by design — the band it sits in owns the surface, so the footer inherits foreground with no override. Inner container caps at Size/Max Width (1000).\n\nThe copyright sits under the mark, not beside it. Side by side they read as two separate items with a gap between them; stacked, with their left edges aligned, they read as one block of attribution.\n\nThe single link is not a contact address. Contact already has a nav item, so a mailto here would be a second affordance for an intent that is already served, and the footer's one link is worth more pointing somewhere the reader cannot get to otherwise.\n\ncompact drops the columns slot and the rule: brand block, then the link. Use it on case-study pages where the footer should not compete with the next-study link. full moves the brand block up into the top row, which leaves the bottom row holding only the link — it justifies to the end rather than sitting alone on the left.\n\nCode-only props: href per column link, href on the arrow link.\n\nThe columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.\n\nMark size is 32 tall (155x32 for the lockup), matching the nav so the two read as one signature down the page.\n\nCODE-ONLY: below 768px the bottom row becomes a column-reverse — the \"How this was built\" link sits ABOVE the mark, so the one thing worth tapping is in the thumb's way and the signature stays where a signature belongs. Safe as a visual reversal because .footer__brand holds no focusable element: the mark is an inline SVG and the copyright is a paragraph, so the row has exactly one tab stop and reversing it cannot desynchronise focus order from the screen. Figma models the 1440 row only.",
+  "description": "Transparent by design — the band it sits in owns the surface, so the footer inherits foreground with no override. Inner container caps at Size/Max Width (1000).\n\nThe copyright sits under the mark, not beside it. Side by side they read as two separate items with a gap between them; stacked, with their left edges aligned, they read as one block of attribution.\n\nTWO links, and the bar for a third is the sentence that used to justify one: it has to point somewhere the reader cannot get to otherwise. A mailto would fail it, because Contact already has a nav item and a second affordance for an intent already served is a wasted slot. \"How this was built\" is contextual — code swaps it for \"Back to the work\" when you are already there, so it is never spent linking to the page you are reading. \"2025 FigJam Board\" is off-site, opens in a new tab, and is an easter egg: not announced in the nav, the README or on the build page.\n\nThey sit in a `links` wrapper with its gap bound to Layout/l40, and a grow spacer beside it does what margin-left: auto does in code. A spacer rather than SPACE_BETWEEN on the row, deliberately: with two children they look identical, but add a third and space-between silently changes meaning from \"push these right\" to \"spread these evenly\". The grow spacer keeps saying the same thing.\n\ncompact drops the columns slot and the rule: brand block, then the link. Use it on case-study pages where the footer should not compete with the next-study link. full moves the brand block up into the top row, which leaves the bottom row holding only the link — it justifies to the end rather than sitting alone on the left.\n\nCode-only props: href per column link, href on the arrow link.\n\nThe columns slot is 480x120. A SLOT cannot hug, so it carries an explicit size.\n\nMark size is 32 tall (155x32 for the lockup), matching the nav so the two read as one signature down the page.\n\nCODE-ONLY: below 768px the bottom row becomes a column-reverse — the links sit ABOVE the mark, so the thing worth tapping is in the thumb's way and the signature stays where a signature belongs. That reversal WAS safe because .footer__brand holds nothing focusable, leaving the row a single tab stop; a second link broke that precondition, since in a reversed container the visually-lower link takes focus first. The links are therefore wrapped in a container that is NOT reversed, so the group still sits above the mark while the two keep their order relative to each other. Figma models the 1440 row only.",
   "donts": [
     "Do not give it a surface. It is transparent so the band owns the background; setting a fill breaks the inverse case.",
     "Contact is a mailto, not a form. No backend, and a portfolio form converts worse than a copyable address."
@@ -92,7 +92,15 @@
             "dark": "#ffffffb2"
           }
         },
-        "inner/bottom/Action/Arrow Link": {
+        "inner/bottom/links": {
+          "gap": {
+            "token": "Layout/l40",
+            "ref": "primitive.layout.l40",
+            "type": "dimension",
+            "value": "40px"
+          }
+        },
+        "inner/bottom/links/Action/Arrow Link": {
           "gap": {
             "token": "Space/sp200",
             "ref": "primitive.space.sp200",
@@ -100,7 +108,7 @@
             "value": "6px"
           }
         },
-        "inner/bottom/Action/Arrow Link/label": {
+        "inner/bottom/links/Action/Arrow Link/label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
@@ -118,7 +126,7 @@
             "dark": "#6fa0ff"
           }
         },
-        "inner/bottom/Action/Arrow Link/trailing/Vector": {
+        "inner/bottom/links/Action/Arrow Link/trailing/Vector": {
           "fg": {
             "token": "fg/link",
             "ref": "semantic.*.fg.link",
@@ -209,7 +217,15 @@
             "value": "20px"
           }
         },
-        "inner/bottom/Action/Arrow Link": {
+        "inner/bottom/links": {
+          "gap": {
+            "token": "Layout/l40",
+            "ref": "primitive.layout.l40",
+            "type": "dimension",
+            "value": "40px"
+          }
+        },
+        "inner/bottom/links/Action/Arrow Link": {
           "gap": {
             "token": "Space/sp200",
             "ref": "primitive.space.sp200",
@@ -217,7 +233,7 @@
             "value": "6px"
           }
         },
-        "inner/bottom/Action/Arrow Link/label": {
+        "inner/bottom/links/Action/Arrow Link/label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
@@ -235,7 +251,7 @@
             "dark": "#6fa0ff"
           }
         },
-        "inner/bottom/Action/Arrow Link/trailing/Vector": {
+        "inner/bottom/links/Action/Arrow Link/trailing/Vector": {
           "fg": {
             "token": "fg/link",
             "ref": "semantic.*.fg.link",

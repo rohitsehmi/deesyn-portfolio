@@ -21,6 +21,17 @@ echo "$changed" | grep -qE '^src/components/.*\.(tsx|css)$|^design/(build|usage-
 command -v node >/dev/null 2>&1 || exit 0
 [ -d node_modules ] || exit 0
 
+# The twelve components measured from Figma regenerate NOTHING when their code
+# changes, so everything below this is silent for exactly the case where the two
+# sides can drift. That is not hypothetical: this hook ran on the commit that
+# added a second footer link, found no stale spec, and said nothing, while
+# Chrome/Footer in Figma was left describing one. Printed before `npm run specs`
+# rather than after, because that step exits early on failure and would swallow
+# the notice. It only ever prints -- nothing here is auto-fixable, since the
+# other half of the change is in a file this machine cannot reach.
+components=$(echo "$changed" | grep -E '^src/components/.*\.(tsx|css)$')
+[ -n "$components" ] && node design/component-specs.mjs $components
+
 npm run specs >/dev/null 2>&1 || {
   echo "pre-commit: npm run specs failed — commit anyway and fix, or run it by hand." >&2
   exit 0
