@@ -122,6 +122,110 @@ const heroTitleFor = (brand: (typeof BRANDS)[number]) => {
   return raw.replace('{count}', cased);
 };
 
+/*
+  The standfirst counts too, and it was counting the same way the title used to.
+
+  "One on the design system, the other on product design." was written for the
+  default brand, which is offered exactly one study per discipline. Wise and
+  Healf are offered `scaling-a-system` as well, which is a second design-system
+  study, so both hostnames read "One on the design system" above two of them.
+  Nothing rendered as broken; the sentence was simply false — the same shape,
+  and the same cause, as the "Two case studies" bug directly above.
+
+  So the number is derived here rather than typed, and the guards below refuse
+  the sentence shapes it cannot express instead of substituting something
+  plausible.
+
+  NAMING THE TWO DISCIPLINES IN CODE is the one uncomfortable part, because the
+  values themselves live in src/copy/studies.json and this is therefore a second
+  place that has to agree with a first. It is safe only because the guard makes
+  a disagreement loud: rename a discipline there and `systems + product` stops
+  equalling the total, which fails the build naming both files. That is the same
+  arrangement verify-readme.mjs uses, where a pattern that stops matching is
+  itself treated as the failure.
+*/
+const SYSTEMS = 'Design systems';
+const PRODUCT = 'Product design';
+
+const splitFor = (brand: (typeof BRANDS)[number]) => {
+  const seen = studiesFor(brand);
+  return {
+    total: seen.length,
+    systems: seen.filter((s) => s.discipline === SYSTEMS).length,
+    product: seen.filter((s) => s.discipline === PRODUCT).length
+  };
+};
+
+const heroStandfirstFor = (brand: (typeof BRANDS)[number]) => {
+  const raw: string = copy.heroStandfirst;
+
+  /* Same refusal as the title: a typed number is a plausible sentence and is
+     invisible in a diff, so it cannot be allowed to ship silently. */
+  if (!raw.includes('{systems}')) {
+    throw new Error(
+      `index: the hero standfirst must carry the {systems} token rather than a ` +
+      `typed number, because each brand is offered a different mix of studies. ` +
+      `Edit it in src/copy/home.json.`
+    );
+  }
+
+  const { total, systems, product } = splitFor(brand);
+
+  /* A discipline the sentence does not mention, or one of these constants gone
+     stale against studies.json. Either way the sentence no longer describes the
+     list, and guessing which half is wrong is not this file's job. */
+  if (systems + product !== total) {
+    throw new Error(
+      `index: ${brand} is offered ${total} studies but only ${systems + product} of ` +
+      `them are "${SYSTEMS}" or "${PRODUCT}", so the standfirst does not describe ` +
+      `the list. Either a discipline was renamed in src/copy/studies.json — update ` +
+      `SYSTEMS/PRODUCT here to match — or a third discipline now exists and the ` +
+      `sentence in src/copy/home.json needs rewriting to name it.`
+    );
+  }
+
+  /* "the other" is singular and asserts exactly one product-design study. Two
+     would render "Two on the design system, the other on product design" above
+     three tiles, which is this bug again one discipline across. Fails with the
+     instruction rather than carrying a pluralisation engine for a case that does
+     not exist — the same call as the singular guard on the title. */
+  if (product !== 1) {
+    throw new Error(
+      `index: ${brand} is offered ${product} product-design studies, and the hero ` +
+      `standfirst says "the other", which asserts exactly one. Rewrite that string ` +
+      `in src/copy/home.json so it counts both disciplines.`
+    );
+  }
+
+  if (systems < 1) {
+    throw new Error(
+      `index: ${brand} is offered no design-system studies, and the hero standfirst ` +
+      `names one. Rewrite that string in src/copy/home.json.`
+    );
+  }
+
+  const word = NUMBER_WORDS[systems] ?? String(systems);
+  const cased = raw.startsWith('{systems}') ? word.charAt(0).toUpperCase() + word.slice(1) : word;
+  return raw.replace('{systems}', cased);
+};
+
+/*
+  Brands reading identically share ONE span, via the whitespace-separated list
+  `data-brand-only` has matched with ~= since 2026-08-17.
+
+  The title renders one span per brand because all three differ — each names its
+  own company. These do not: Wise and Healf are offered the same mix, so writing
+  one span each would put the identical sentence in the raw HTML twice. That is
+  the audience the space separator on the title was added for, an agent fetching
+  the page and never running the stylesheet, and a duplicate paragraph reads as
+  a stutter to exactly that reader.
+*/
+const standfirstsByBrand = BRANDS.reduce((acc, brand) => {
+  const sentence = heroStandfirstFor(brand);
+  acc.set(sentence, [...(acc.get(sentence) ?? []), brand]);
+  return acc;
+}, new Map<string, string[]>());
+
 const COVER_SIZES = '(min-width: 1024px) 480px, (min-width: 768px) 45vw, calc(100vw - 40px)';
 const covers = new Map(
   await Promise.all(
@@ -236,7 +340,26 @@ const covers = new Map(
           </>
         ))}
       </h1>
-      <p class="home-hero__standfirst" data-copy="home:heroStandfirst">{copy.heroStandfirst}</p>
+      {/*
+        NOT browser-editable either, and for the reason the title is not: what
+        renders has had its {systems} token substituted, so blurring an edit
+        would write "Two on the design system" back into the JSON and stop the
+        page recomputing it — handing back the exact bug this markup fixes. Edit
+        it through `npm run copy:export`, which works on the JSON. Keep the
+        braces.
+
+        Spans joined by a space, same as the title above: every version ships and
+        CSS hides the ones that do not apply, so anything reading the raw HTML
+        sees them all and needs a separator to read them as sentences.
+      */}
+      <p class="home-hero__standfirst">
+        {[...standfirstsByBrand].map(([sentence, brands], i) => (
+          <>
+            {i > 0 && ' '}
+            <span data-brand-only={brands.join(' ')}>{sentence}</span>
+          </>
+        ))}
+      </p>
     </Parallax>
 
     {/* base, because the hero above resolves dark. */}
