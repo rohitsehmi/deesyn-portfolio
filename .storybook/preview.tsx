@@ -31,6 +31,19 @@ const withBand: Decorator = (Story, ctx) => (
  * and the lockup would render with no partner mark at all.
  *
  * Revolut is the default and carries no attribute, exactly as it does live.
+ *
+ * SETTING IT ON THE ROOT IS ALSO WHY BRAND PACKS NEEDED NO WORK HERE. Since
+ * tokens/brands/ landed, a brand changes the whole palette rather than just the
+ * lockup, and every rule that does it is scoped `:root[data-brand="x"]` in the
+ * generated tokens.css this file already imports. So the toolbar switched from
+ * swapping one logotype to re-theming every story, in both modes, with no
+ * change to the decorator — which is the clearest evidence that the packs sit
+ * in the token layer rather than in the components.
+ *
+ * What it does NOT do is snapshot per brand. Chromatic renders each story light
+ * and dark at the default brand, so a palette regression in Wise or Healf would
+ * not fail a build. Adding brand to that matrix triples the snapshot count, so
+ * it is a cost decision rather than an oversight — see CLAUDE.md.
  */
 const withBrand: Decorator = (Story, ctx) => {
   const brand = ctx.globals.brand;
@@ -46,7 +59,7 @@ const preview: Preview = {
   decorators: [withBand, withBrand],
   globalTypes: {
     brand: {
-      description: 'Hostname brand — the lockup should swap with no override',
+      description: 'Hostname brand — swaps the lockup AND the whole palette, with no override',
       defaultValue: 'revolut',
       toolbar: {
         title: 'Brand',

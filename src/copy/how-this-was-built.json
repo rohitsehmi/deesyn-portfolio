@@ -74,6 +74,10 @@
         "text": "Every alias resolves, and the export checksum matches the one Figma reproduces from inside the file. A renamed variable fails the build instead of silently rendering nothing."
       },
       {
+        "label": "Brand packs.",
+        "text": "A brand pack adds its own colours and repoints the same token names the components already use, which is what lets one build serve several brands without a component knowing that brands exist. Every value in a pack has to be an alias rather than a typed colour, both themes have to cover the same tokens, and the checksum has to match the one the brand Figma file produces, so the file and the repository cannot quietly disagree."
+      },
+      {
         "label": "Components.",
         "text": "Every value in every spec is a token reference. Zero literals, asserted rather than reviewed."
       },
@@ -82,6 +86,10 @@
         "text": "Every custom property resolves to a real token. A typo like",
         "code": "fg-secondry",
         "textAfter": "is not a CSS error, because it renders as an inherited default and looks deliberate, so nothing else would catch it."
+      },
+      {
+        "label": "Contrast.",
+        "text": "Every pairing of text and background the pages actually use, measured for every brand in both themes against the WCAG AA thresholds. See-through colours are composited over whatever sits beneath them first, because a white at seventy per cent is a different colour on every band. Decorative pairs like rules and placeholder outlines are measured and printed rather than failed, since a threshold applied to something it was never meant for gets satisfied by changing a value that was already correct."
       },
       {
         "label": "Contracts.",

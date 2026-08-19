@@ -190,12 +190,24 @@ const structuredData = article
 
       Anything not matched leaves the attribute unset, which renders Revolut —
       the correct default for www and for the apex.
+
+      ?brand= overrides the hostname, and exists because a hostname cannot
+      select a brand on localhost. Without it the only way to see a brand
+      before deploying is to edit a file, which means the version you review is
+      never the version you ship. Same gap the Storybook brand toolbar closed
+      for components, one level up at the whole page.
+
+      It is validated against the same list rather than assigned, so the
+      attribute can only ever hold a brand this build knows about, and it
+      leaks nothing: every brand's markup is already in every page's HTML on
+      every host, which is the property the paragraph above describes.
     */}
     <script is:inline>
       try {
         var t = localStorage.getItem('theme');
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
-        var h = location.hostname.split('.')[0];
+        var q = new URLSearchParams(location.search).get('brand');
+        var h = q || location.hostname.split('.')[0];
         if (h === 'wise' || h === 'healf') document.documentElement.dataset.brand = h;
       } catch (e) {}
     </script>

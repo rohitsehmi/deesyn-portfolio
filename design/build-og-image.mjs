@@ -27,6 +27,7 @@ import sharp from 'sharp';
 import { LOCKUP_PATHS, LOCKUP_VIEWBOX, PARTNER_WORDMARKS } from '../src/components/logo-paths.ts';
 import { BRANDS, DEFAULT_BRAND } from '../src/data/brands.ts';
 import { TOKENS, FAVICON_OUT } from './paths.mjs';
+import { loadPacks, resolvePack } from '../tokens/brands.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const tokens = JSON.parse(readFileSync(join(root, TOKENS), 'utf8'));
@@ -42,9 +43,29 @@ function resolve(node) {
   return v;
 }
 
-const fg = resolve(tokens.semantic.light.fg.primary);
-const bg = resolve(tokens.semantic.light.band.base);
-if (!fg || !bg) throw new Error('could not resolve fg/primary or band/base from tokens.json');
+/*
+  A brand pack repaints the card as well as the page, and it has to.
+
+  The card is generated from tokens rather than drawn, which is the argument of
+  this whole file, so a brand that repoints fg/primary and band/base has to
+  repoint them here too. Miss it and a teal site unfurls a card in the base
+  brand's near-black, on the one surface a reader sees BEFORE they open the
+  site: the first impression would be the only place the theming did not reach.
+
+  Resolution comes from tokens/brands.mjs, which css.mjs and the contrast check
+  also use, rather than a third copy of merge-and-follow-aliases living here.
+*/
+const PACKS = loadPacks();
+const EMPTY = { primitive: {}, semantic: { light: {}, dark: {} } };
+
+function coloursFor(brand) {
+  const found = PACKS.find((p) => p.brands.includes(brand));
+  const light = resolvePack(found ? found.pack : EMPTY).light;
+  const fg = light['fg.primary'];
+  const bg = light['band.base'];
+  if (!fg || !bg) throw new Error(`could not resolve fg/primary or band/base for ${brand}`);
+  return { fg, bg };
+}
 
 const W = 1200;
 const H = 630;
@@ -82,6 +103,7 @@ const pub = join(root, FAVICON_OUT);
 mkdirSync(pub, { recursive: true });
 
 for (const brand of BRANDS) {
+  const { fg, bg } = coloursFor(brand);
   const paths = lockupFor(brand)
     .map((p) => `<path d="${p.d}"${p.evenOdd ? ' fill-rule="evenodd" clip-rule="evenodd"' : ''}/>`)
     .join('');

@@ -72,7 +72,10 @@ const problems = [];
  */
 function printedChecksum(script) {
   const out = execFileSync('node', [script], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-  const m = out.match(/^checksum\s*:\s*(\d+)/m);
+  /* Leading whitespace allowed: verify-brands.mjs indents its checksum under
+     the pack it belongs to, and anchoring hard to column 0 silently found
+     nothing rather than failing loudly. */
+  const m = out.match(/^\s*checksum\s*:\s*(\d+)/m);
   if (!m) throw new Error(`${script} printed no checksum line — has its output changed shape?`);
   return Number(m[1]);
 }
@@ -100,7 +103,7 @@ const CLAIMS = [
   {
     what: 'tokens checksum (§ Contracts)',
     expected: () => printedChecksum('tokens/verify.mjs'),
-    re: /\*\*Three checksums, three sources\.\*\* Tokens `(\d+)`/,
+    re: /\*\*Four checksums, four sources\.\*\* Tokens `(\d+)`/,
     fix: 'node tokens/verify.mjs'
   },
   {
@@ -126,6 +129,12 @@ const CLAIMS = [
     expected: () => printedChecksum('design/build-code-specs.mjs'),
     re: /Code-only specs print \*\*`(\d+)`\*\*/,
     fix: 'node design/build-code-specs.mjs'
+  },
+  {
+    what: 'brand pack checksum',
+    expected: () => printedChecksum('tokens/verify-brands.mjs'),
+    re: /\*\*`(\d+)` across 107 entries, reproduced from inside Wise/,
+    fix: 'node tokens/verify-brands.mjs'
   },
   {
     what: 'brands (§ Brands)',

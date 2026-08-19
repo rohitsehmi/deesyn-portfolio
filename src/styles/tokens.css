@@ -554,6 +554,366 @@
   --semantic-easing-linear: var(--primitive-easing-linear);
 }
 
+/* ===== brand pack: wise, healf ===== extends the base, replaces nothing */
+:root {
+  --primitive-portfolio-teal-50: #e7f8f5;
+  --primitive-portfolio-teal-100: #c2ede7;
+  --primitive-portfolio-teal-200: #8eded4;
+  --primitive-portfolio-teal-300: #59cdc1;
+  --primitive-portfolio-teal-400: #41b7ac;
+  --primitive-portfolio-teal-500: #329b91;
+  --primitive-portfolio-teal-600: #267f76;
+  --primitive-portfolio-teal-700: #16625b;
+  --primitive-portfolio-teal-800: #0a4641;
+  --primitive-portfolio-teal-900: #01302c;
+  --primitive-portfolio-navy-50: #eef0f5;
+  --primitive-portfolio-navy-100: #d3dae5;
+  --primitive-portfolio-navy-200: #a9b4c8;
+  --primitive-portfolio-navy-300: #808fa9;
+  --primitive-portfolio-navy-400: #576a8d;
+  --primitive-portfolio-navy-500: #2f4671;
+  --primitive-portfolio-navy-600: #203357;
+  --primitive-portfolio-navy-700: #1d2e4e;
+  --primitive-portfolio-navy-800: #162542;
+  --primitive-portfolio-navy-900: #0e1728;
+  --primitive-portfolio-neutral-0: #ffffff;
+  --primitive-portfolio-neutral-50: #f5f6f8;
+  --primitive-portfolio-neutral-100: #ecedee;
+  --primitive-portfolio-neutral-200: #d9dbde;
+  --primitive-portfolio-neutral-300: #c6c8cc;
+  --primitive-portfolio-neutral-400: #b0b2b8;
+  --primitive-portfolio-neutral-500: #6b7080;
+  --primitive-portfolio-neutral-600: #4a4d56;
+  --primitive-portfolio-neutral-700: #2e3038;
+  --primitive-portfolio-neutral-800: #1a1a1c;
+  --primitive-portfolio-neutral-900: #0a0a0b;
+}
+
+:root[data-brand="wise"],
+:root[data-brand="healf"] {
+  --semantic-bg-canvas: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-subtle: var(--primitive-portfolio-neutral-50);
+  --semantic-bg-surface: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-surface-raised: var(--primitive-portfolio-neutral-50);
+  --semantic-bg-overlay: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-inverse: var(--primitive-portfolio-navy-900);
+  --semantic-bg-widget: var(--primitive-alpha-black-4);
+  --semantic-bg-widget-hover: var(--primitive-alpha-black-15);
+  --semantic-bg-scrim: var(--primitive-alpha-black-40);
+  --semantic-band-base: var(--primitive-portfolio-neutral-0);
+  --semantic-band-sunken: var(--primitive-portfolio-neutral-50);
+  --semantic-fg-primary: var(--primitive-portfolio-navy-900);
+  --semantic-fg-secondary: var(--primitive-portfolio-neutral-500);
+  --semantic-fg-tertiary: var(--primitive-portfolio-neutral-300);
+  --semantic-fg-inverse: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-accent: var(--primitive-portfolio-teal-700);
+  --semantic-fg-on-accent: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-link: var(--primitive-portfolio-teal-700);
+  --semantic-fg-link-hover: var(--primitive-portfolio-teal-800);
+  --semantic-border-subtle: var(--primitive-alpha-black-4);
+  --semantic-border-default: var(--primitive-portfolio-neutral-200);
+  --semantic-border-strong: var(--primitive-portfolio-neutral-400);
+  --semantic-border-focus: var(--primitive-portfolio-teal-600);
+  --semantic-action-primary-bg: var(--primitive-portfolio-navy-900);
+  --semantic-action-primary-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-accent-bg: var(--primitive-portfolio-teal-600);
+  --semantic-action-accent-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-secondary-bg: var(--primitive-alpha-black-4);
+  --semantic-action-secondary-fg: var(--primitive-portfolio-navy-900);
+  --semantic-action-disabled-bg: var(--primitive-portfolio-neutral-50);
+  --semantic-action-disabled-fg: var(--primitive-portfolio-neutral-400);
+  --semantic-action-primary-bg-hover: var(--primitive-portfolio-navy-700);
+  --semantic-action-secondary-bg-hover: var(--primitive-alpha-black-15);
+  --semantic-action-ghost-bg-hover: var(--primitive-alpha-black-4);
+  --semantic-status-info: var(--primitive-portfolio-teal-700);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-brand="wise"]:not([data-theme="light"]),
+  :root[data-brand="healf"]:not([data-theme="light"]) {
+    --semantic-bg-canvas: var(--primitive-portfolio-navy-900);
+    --semantic-bg-subtle: var(--primitive-portfolio-navy-800);
+    --semantic-bg-surface: var(--primitive-portfolio-navy-800);
+    --semantic-bg-surface-raised: var(--primitive-portfolio-navy-700);
+    --semantic-bg-overlay: var(--primitive-portfolio-navy-700);
+    --semantic-bg-inverse: var(--primitive-portfolio-neutral-0);
+    --semantic-bg-widget: var(--primitive-alpha-white-6);
+    --semantic-bg-widget-hover: var(--primitive-alpha-white-10);
+    --semantic-bg-scrim: var(--primitive-alpha-black-70);
+    --semantic-band-base: var(--primitive-portfolio-navy-900);
+    --semantic-band-sunken: var(--primitive-portfolio-navy-800);
+    --semantic-fg-primary: var(--primitive-portfolio-neutral-0);
+    --semantic-fg-secondary: var(--primitive-alpha-white-70);
+    --semantic-fg-tertiary: var(--primitive-alpha-white-50);
+    --semantic-fg-inverse: var(--primitive-portfolio-navy-900);
+    --semantic-fg-accent: var(--primitive-portfolio-teal-400);
+    --semantic-fg-on-accent: var(--primitive-portfolio-neutral-0);
+    --semantic-fg-link: var(--primitive-portfolio-teal-400);
+    --semantic-fg-link-hover: var(--primitive-portfolio-teal-300);
+    --semantic-border-subtle: var(--primitive-alpha-white-10);
+    --semantic-border-default: var(--primitive-portfolio-navy-700);
+    --semantic-border-strong: var(--primitive-portfolio-navy-500);
+    --semantic-border-focus: var(--primitive-portfolio-teal-400);
+    --semantic-action-primary-bg: var(--primitive-portfolio-neutral-0);
+    --semantic-action-primary-fg: var(--primitive-portfolio-navy-900);
+    --semantic-action-accent-bg: var(--primitive-portfolio-teal-600);
+    --semantic-action-accent-fg: var(--primitive-portfolio-neutral-0);
+    --semantic-action-secondary-bg: var(--primitive-alpha-white-14);
+    --semantic-action-secondary-fg: var(--primitive-portfolio-neutral-0);
+    --semantic-action-disabled-bg: var(--primitive-portfolio-navy-800);
+    --semantic-action-disabled-fg: var(--primitive-portfolio-navy-400);
+    --semantic-action-primary-bg-hover: var(--primitive-portfolio-neutral-100);
+    --semantic-action-secondary-bg-hover: var(--primitive-alpha-white-24);
+    --semantic-action-ghost-bg-hover: var(--primitive-alpha-white-6);
+    --semantic-status-info: var(--primitive-portfolio-teal-400);
+  }
+}
+
+:root[data-brand="wise"][data-theme="dark"],
+:root[data-brand="healf"][data-theme="dark"] {
+  --semantic-bg-canvas: var(--primitive-portfolio-navy-900);
+  --semantic-bg-subtle: var(--primitive-portfolio-navy-800);
+  --semantic-bg-surface: var(--primitive-portfolio-navy-800);
+  --semantic-bg-surface-raised: var(--primitive-portfolio-navy-700);
+  --semantic-bg-overlay: var(--primitive-portfolio-navy-700);
+  --semantic-bg-inverse: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-widget: var(--primitive-alpha-white-6);
+  --semantic-bg-widget-hover: var(--primitive-alpha-white-10);
+  --semantic-bg-scrim: var(--primitive-alpha-black-70);
+  --semantic-band-base: var(--primitive-portfolio-navy-900);
+  --semantic-band-sunken: var(--primitive-portfolio-navy-800);
+  --semantic-fg-primary: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-secondary: var(--primitive-alpha-white-70);
+  --semantic-fg-tertiary: var(--primitive-alpha-white-50);
+  --semantic-fg-inverse: var(--primitive-portfolio-navy-900);
+  --semantic-fg-accent: var(--primitive-portfolio-teal-400);
+  --semantic-fg-on-accent: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-link: var(--primitive-portfolio-teal-400);
+  --semantic-fg-link-hover: var(--primitive-portfolio-teal-300);
+  --semantic-border-subtle: var(--primitive-alpha-white-10);
+  --semantic-border-default: var(--primitive-portfolio-navy-700);
+  --semantic-border-strong: var(--primitive-portfolio-navy-500);
+  --semantic-border-focus: var(--primitive-portfolio-teal-400);
+  --semantic-action-primary-bg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-primary-fg: var(--primitive-portfolio-navy-900);
+  --semantic-action-accent-bg: var(--primitive-portfolio-teal-600);
+  --semantic-action-accent-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-secondary-bg: var(--primitive-alpha-white-14);
+  --semantic-action-secondary-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-disabled-bg: var(--primitive-portfolio-navy-800);
+  --semantic-action-disabled-fg: var(--primitive-portfolio-navy-400);
+  --semantic-action-primary-bg-hover: var(--primitive-portfolio-neutral-100);
+  --semantic-action-secondary-bg-hover: var(--primitive-alpha-white-24);
+  --semantic-action-ghost-bg-hover: var(--primitive-alpha-white-6);
+  --semantic-status-info: var(--primitive-portfolio-teal-400);
+}
+
+:root[data-brand="wise"] [data-band="inverse"],
+:root[data-brand="healf"] [data-band="inverse"],
+:root[data-brand="wise"] [data-band="inverse-raised"],
+:root[data-brand="healf"] [data-band="inverse-raised"] {
+  --semantic-bg-canvas: var(--primitive-portfolio-navy-900);
+  --semantic-bg-subtle: var(--primitive-portfolio-navy-800);
+  --semantic-bg-surface: var(--primitive-portfolio-navy-800);
+  --semantic-bg-surface-raised: var(--primitive-portfolio-navy-700);
+  --semantic-bg-overlay: var(--primitive-portfolio-navy-700);
+  --semantic-bg-inverse: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-widget: var(--primitive-alpha-white-6);
+  --semantic-bg-widget-hover: var(--primitive-alpha-white-10);
+  --semantic-bg-scrim: var(--primitive-alpha-black-70);
+  --semantic-band-base: var(--primitive-portfolio-navy-900);
+  --semantic-band-sunken: var(--primitive-portfolio-navy-800);
+  --semantic-fg-primary: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-secondary: var(--primitive-alpha-white-70);
+  --semantic-fg-tertiary: var(--primitive-alpha-white-50);
+  --semantic-fg-inverse: var(--primitive-portfolio-navy-900);
+  --semantic-fg-accent: var(--primitive-portfolio-teal-400);
+  --semantic-fg-on-accent: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-link: var(--primitive-portfolio-teal-400);
+  --semantic-fg-link-hover: var(--primitive-portfolio-teal-300);
+  --semantic-border-subtle: var(--primitive-alpha-white-10);
+  --semantic-border-default: var(--primitive-portfolio-navy-700);
+  --semantic-border-strong: var(--primitive-portfolio-navy-500);
+  --semantic-border-focus: var(--primitive-portfolio-teal-400);
+  --semantic-action-primary-bg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-primary-fg: var(--primitive-portfolio-navy-900);
+  --semantic-action-accent-bg: var(--primitive-portfolio-teal-600);
+  --semantic-action-accent-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-secondary-bg: var(--primitive-alpha-white-14);
+  --semantic-action-secondary-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-disabled-bg: var(--primitive-portfolio-navy-800);
+  --semantic-action-disabled-fg: var(--primitive-portfolio-navy-400);
+  --semantic-action-primary-bg-hover: var(--primitive-portfolio-neutral-100);
+  --semantic-action-secondary-bg-hover: var(--primitive-alpha-white-24);
+  --semantic-action-ghost-bg-hover: var(--primitive-alpha-white-6);
+  --semantic-status-info: var(--primitive-portfolio-teal-400);
+  background: var(--semantic-band-base);
+}
+:root[data-brand="wise"] [data-band="inverse-raised"],
+:root[data-brand="healf"] [data-band="inverse-raised"] { background: var(--semantic-band-sunken); }
+
+@media (prefers-color-scheme: dark) {
+  :root[data-brand="wise"]:not([data-theme="light"]) [data-band="inverse"],
+  :root[data-brand="healf"]:not([data-theme="light"]) [data-band="inverse"],
+  :root[data-brand="wise"]:not([data-theme="light"]) [data-band="inverse-raised"],
+  :root[data-brand="healf"]:not([data-theme="light"]) [data-band="inverse-raised"] {
+    --semantic-bg-canvas: var(--primitive-portfolio-neutral-0);
+    --semantic-bg-subtle: var(--primitive-portfolio-neutral-50);
+    --semantic-bg-surface: var(--primitive-portfolio-neutral-0);
+    --semantic-bg-surface-raised: var(--primitive-portfolio-neutral-50);
+    --semantic-bg-overlay: var(--primitive-portfolio-neutral-0);
+    --semantic-bg-inverse: var(--primitive-portfolio-navy-900);
+    --semantic-bg-widget: var(--primitive-alpha-black-4);
+    --semantic-bg-widget-hover: var(--primitive-alpha-black-15);
+    --semantic-bg-scrim: var(--primitive-alpha-black-40);
+    --semantic-band-base: var(--primitive-portfolio-neutral-0);
+    --semantic-band-sunken: var(--primitive-portfolio-neutral-50);
+    --semantic-fg-primary: var(--primitive-portfolio-navy-900);
+    --semantic-fg-secondary: var(--primitive-portfolio-neutral-500);
+    --semantic-fg-tertiary: var(--primitive-portfolio-neutral-300);
+    --semantic-fg-inverse: var(--primitive-portfolio-neutral-0);
+    --semantic-fg-accent: var(--primitive-portfolio-teal-700);
+    --semantic-fg-on-accent: var(--primitive-portfolio-neutral-0);
+    --semantic-fg-link: var(--primitive-portfolio-teal-700);
+    --semantic-fg-link-hover: var(--primitive-portfolio-teal-800);
+    --semantic-border-subtle: var(--primitive-alpha-black-4);
+    --semantic-border-default: var(--primitive-portfolio-neutral-200);
+    --semantic-border-strong: var(--primitive-portfolio-neutral-400);
+    --semantic-border-focus: var(--primitive-portfolio-teal-600);
+    --semantic-action-primary-bg: var(--primitive-portfolio-navy-900);
+    --semantic-action-primary-fg: var(--primitive-portfolio-neutral-0);
+    --semantic-action-accent-bg: var(--primitive-portfolio-teal-600);
+    --semantic-action-accent-fg: var(--primitive-portfolio-neutral-0);
+    --semantic-action-secondary-bg: var(--primitive-alpha-black-4);
+    --semantic-action-secondary-fg: var(--primitive-portfolio-navy-900);
+    --semantic-action-disabled-bg: var(--primitive-portfolio-neutral-50);
+    --semantic-action-disabled-fg: var(--primitive-portfolio-neutral-400);
+    --semantic-action-primary-bg-hover: var(--primitive-portfolio-navy-700);
+    --semantic-action-secondary-bg-hover: var(--primitive-alpha-black-15);
+    --semantic-action-ghost-bg-hover: var(--primitive-alpha-black-4);
+    --semantic-status-info: var(--primitive-portfolio-teal-700);
+  }
+}
+
+:root[data-brand="wise"][data-theme="dark"] [data-band="inverse"],
+:root[data-brand="healf"][data-theme="dark"] [data-band="inverse"],
+:root[data-brand="wise"][data-theme="dark"] [data-band="inverse-raised"],
+:root[data-brand="healf"][data-theme="dark"] [data-band="inverse-raised"] {
+  --semantic-bg-canvas: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-subtle: var(--primitive-portfolio-neutral-50);
+  --semantic-bg-surface: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-surface-raised: var(--primitive-portfolio-neutral-50);
+  --semantic-bg-overlay: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-inverse: var(--primitive-portfolio-navy-900);
+  --semantic-bg-widget: var(--primitive-alpha-black-4);
+  --semantic-bg-widget-hover: var(--primitive-alpha-black-15);
+  --semantic-bg-scrim: var(--primitive-alpha-black-40);
+  --semantic-band-base: var(--primitive-portfolio-neutral-0);
+  --semantic-band-sunken: var(--primitive-portfolio-neutral-50);
+  --semantic-fg-primary: var(--primitive-portfolio-navy-900);
+  --semantic-fg-secondary: var(--primitive-portfolio-neutral-500);
+  --semantic-fg-tertiary: var(--primitive-portfolio-neutral-300);
+  --semantic-fg-inverse: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-accent: var(--primitive-portfolio-teal-700);
+  --semantic-fg-on-accent: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-link: var(--primitive-portfolio-teal-700);
+  --semantic-fg-link-hover: var(--primitive-portfolio-teal-800);
+  --semantic-border-subtle: var(--primitive-alpha-black-4);
+  --semantic-border-default: var(--primitive-portfolio-neutral-200);
+  --semantic-border-strong: var(--primitive-portfolio-neutral-400);
+  --semantic-border-focus: var(--primitive-portfolio-teal-600);
+  --semantic-action-primary-bg: var(--primitive-portfolio-navy-900);
+  --semantic-action-primary-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-accent-bg: var(--primitive-portfolio-teal-600);
+  --semantic-action-accent-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-secondary-bg: var(--primitive-alpha-black-4);
+  --semantic-action-secondary-fg: var(--primitive-portfolio-navy-900);
+  --semantic-action-disabled-bg: var(--primitive-portfolio-neutral-50);
+  --semantic-action-disabled-fg: var(--primitive-portfolio-neutral-400);
+  --semantic-action-primary-bg-hover: var(--primitive-portfolio-navy-700);
+  --semantic-action-secondary-bg-hover: var(--primitive-alpha-black-15);
+  --semantic-action-ghost-bg-hover: var(--primitive-alpha-black-4);
+  --semantic-status-info: var(--primitive-portfolio-teal-700);
+}
+
+:root[data-brand="wise"] [data-on-media],
+:root[data-brand="healf"] [data-on-media] {
+  --semantic-bg-canvas: var(--primitive-portfolio-navy-900);
+  --semantic-bg-subtle: var(--primitive-portfolio-navy-800);
+  --semantic-bg-surface: var(--primitive-portfolio-navy-800);
+  --semantic-bg-surface-raised: var(--primitive-portfolio-navy-700);
+  --semantic-bg-overlay: var(--primitive-portfolio-navy-700);
+  --semantic-bg-inverse: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-widget: var(--primitive-alpha-white-6);
+  --semantic-bg-widget-hover: var(--primitive-alpha-white-10);
+  --semantic-bg-scrim: var(--primitive-alpha-black-70);
+  --semantic-band-base: var(--primitive-portfolio-navy-900);
+  --semantic-band-sunken: var(--primitive-portfolio-navy-800);
+  --semantic-fg-primary: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-secondary: var(--primitive-alpha-white-70);
+  --semantic-fg-tertiary: var(--primitive-alpha-white-50);
+  --semantic-fg-inverse: var(--primitive-portfolio-navy-900);
+  --semantic-fg-accent: var(--primitive-portfolio-teal-400);
+  --semantic-fg-on-accent: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-link: var(--primitive-portfolio-teal-400);
+  --semantic-fg-link-hover: var(--primitive-portfolio-teal-300);
+  --semantic-border-subtle: var(--primitive-alpha-white-10);
+  --semantic-border-default: var(--primitive-portfolio-navy-700);
+  --semantic-border-strong: var(--primitive-portfolio-navy-500);
+  --semantic-border-focus: var(--primitive-portfolio-teal-400);
+  --semantic-action-primary-bg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-primary-fg: var(--primitive-portfolio-navy-900);
+  --semantic-action-accent-bg: var(--primitive-portfolio-teal-600);
+  --semantic-action-accent-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-secondary-bg: var(--primitive-alpha-white-14);
+  --semantic-action-secondary-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-disabled-bg: var(--primitive-portfolio-navy-800);
+  --semantic-action-disabled-fg: var(--primitive-portfolio-navy-400);
+  --semantic-action-primary-bg-hover: var(--primitive-portfolio-neutral-100);
+  --semantic-action-secondary-bg-hover: var(--primitive-alpha-white-24);
+  --semantic-action-ghost-bg-hover: var(--primitive-alpha-white-6);
+  --semantic-status-info: var(--primitive-portfolio-teal-400);
+}
+
+:root[data-brand="wise"] [data-on-media="light"],
+:root[data-brand="healf"] [data-on-media="light"] {
+  --semantic-bg-canvas: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-subtle: var(--primitive-portfolio-neutral-50);
+  --semantic-bg-surface: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-surface-raised: var(--primitive-portfolio-neutral-50);
+  --semantic-bg-overlay: var(--primitive-portfolio-neutral-0);
+  --semantic-bg-inverse: var(--primitive-portfolio-navy-900);
+  --semantic-bg-widget: var(--primitive-alpha-black-4);
+  --semantic-bg-widget-hover: var(--primitive-alpha-black-15);
+  --semantic-bg-scrim: var(--primitive-alpha-black-40);
+  --semantic-band-base: var(--primitive-portfolio-neutral-0);
+  --semantic-band-sunken: var(--primitive-portfolio-neutral-50);
+  --semantic-fg-primary: var(--primitive-portfolio-navy-900);
+  --semantic-fg-secondary: var(--primitive-portfolio-neutral-500);
+  --semantic-fg-tertiary: var(--primitive-portfolio-neutral-300);
+  --semantic-fg-inverse: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-accent: var(--primitive-portfolio-teal-700);
+  --semantic-fg-on-accent: var(--primitive-portfolio-neutral-0);
+  --semantic-fg-link: var(--primitive-portfolio-teal-700);
+  --semantic-fg-link-hover: var(--primitive-portfolio-teal-800);
+  --semantic-border-subtle: var(--primitive-alpha-black-4);
+  --semantic-border-default: var(--primitive-portfolio-neutral-200);
+  --semantic-border-strong: var(--primitive-portfolio-neutral-400);
+  --semantic-border-focus: var(--primitive-portfolio-teal-600);
+  --semantic-action-primary-bg: var(--primitive-portfolio-navy-900);
+  --semantic-action-primary-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-accent-bg: var(--primitive-portfolio-teal-600);
+  --semantic-action-accent-fg: var(--primitive-portfolio-neutral-0);
+  --semantic-action-secondary-bg: var(--primitive-alpha-black-4);
+  --semantic-action-secondary-fg: var(--primitive-portfolio-navy-900);
+  --semantic-action-disabled-bg: var(--primitive-portfolio-neutral-50);
+  --semantic-action-disabled-fg: var(--primitive-portfolio-neutral-400);
+  --semantic-action-primary-bg-hover: var(--primitive-portfolio-navy-700);
+  --semantic-action-secondary-bg-hover: var(--primitive-alpha-black-15);
+  --semantic-action-ghost-bg-hover: var(--primitive-alpha-black-4);
+  --semantic-status-info: var(--primitive-portfolio-teal-700);
+}
+
 /* Text styles as properties. Component CSS binds to these, never to raw values. */
 :root {
   --type-display-xl-family: 'Hanken Grotesk', Inter, system-ui, sans-serif;

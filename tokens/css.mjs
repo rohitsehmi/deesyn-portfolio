@@ -19,6 +19,8 @@
  * Generated. Do not edit src/styles/tokens.css by hand.
  */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { loadPacks } from './brands.mjs';
+import { BRANDS } from '../src/data/brands.ts';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -138,6 +140,83 @@ lines.push('[data-on-media="light"] {');
 lines.push(asBlock(lightDecls, '  '));
 lines.push('}', '');
 
+// ---- brand packs ----------------------------------------------------------
+// A brand pack EXTENDS this collection rather than replacing it. Every file in
+// tokens/brands/ adds its own primitives and re-points the same semantic names
+// under [data-brand="<name>"], so no component, band or stylesheet changes and
+// the base brand is untouched.
+//
+// It has to re-emit EVERY block above, not just :root, and that is the whole
+// difficulty of theming this system. `inverse` and `data-on-media` do not
+// reference the semantic layer — they RESOLVE the other mode's values into a
+// literal list of declarations. A pack that only overrode :root would flip the
+// page and leave every inverse band and every caption over an image still
+// wearing the base brand's palette, on the two surfaces that are hardest to
+// notice and most embarrassing to ship.
+//
+// Specificity is deliberate rather than incidental. Each brand selector adds
+// one attribute over the rule it must beat: :root[data-brand=x] (0,2,0) over
+// :root (0,1,0), and :root[data-brand=x] [data-band=inverse] (0,3,0) over
+// [data-band=inverse] (0,1,0). Order matters too — light is emitted before
+// dark so a tie inside prefers-color-scheme resolves to dark, the same order
+// the base blocks use.
+//
+// ONLY LIVE BRANDS ARE EMITTED. A pack may declare a brand that src/data/
+// brands.ts does not carry, which is how a palette is kept without a hostname
+// serving it; emitting CSS for one would ship rules nothing can ever match.
+const packs = loadPacks();
+const emitted = [];
+
+for (const { brands, pack } of packs) {
+  const live = brands.filter((b) => BRANDS.includes(b));
+  if (!live.length) continue;
+  emitted.push(...live);
+
+  // One pack, several brands: the values are shared, so the selector lists
+  // them rather than the file being copied per brand.
+  const sel = (suffix = '') => live.map((b) => `:root[data-brand="${b}"]${suffix}`).join(',\n');
+  const descend = (suffix, tail) => live.map((b) => `:root[data-brand="${b}"]${suffix} ${tail}`).join(',\n');
+
+  const pLight = flatten(pack.semantic.light, ['semantic']).map(render).filter(Boolean);
+  const pDark = flatten(pack.semantic.dark, ['semantic']).map(render).filter(Boolean);
+
+  lines.push(`/* ===== brand pack: ${live.join(', ')} ===== extends the base, replaces nothing */`);
+
+  // Its primitives are global. They cost one declaration each and are inert
+  // for every other brand, which is what makes this additive.
+  lines.push(':root {');
+  for (const e of flatten(pack.primitive, ['primitive'])) { const r = render(e); if (r) lines.push(`  ${r[0]}: ${r[1]};`); }
+  lines.push('}', '');
+
+  lines.push(`${sel()} {`, asBlock(pLight, '  '), '}', '');
+  lines.push('@media (prefers-color-scheme: dark) {');
+  lines.push(`${sel(':not([data-theme="light"])').replace(/^/gm, '  ')} {`, asBlock(pDark, '    '), '  }');
+  lines.push('}', '');
+  lines.push(`${sel('[data-theme="dark"]')} {`, asBlock(pDark, '  '), '}', '');
+
+  // Bands. Same shape as the base, one attribute more specific.
+  lines.push(`${descend('', '[data-band="inverse"]')},`);
+  lines.push(`${descend('', '[data-band="inverse-raised"]')} {`);
+  lines.push(asBlock(pDark, '  '));
+  lines.push('  background: var(--semantic-band-base);');
+  lines.push('}');
+  lines.push(`${descend('', '[data-band="inverse-raised"]')} { background: var(--semantic-band-sunken); }`, '');
+  lines.push('@media (prefers-color-scheme: dark) {');
+  lines.push(`${descend(':not([data-theme="light"])', '[data-band="inverse"]').replace(/^/gm, '  ')},`);
+  lines.push(`${descend(':not([data-theme="light"])', '[data-band="inverse-raised"]').replace(/^/gm, '  ')} {`);
+  lines.push(asBlock(pLight, '    '));
+  lines.push('  }');
+  lines.push('}', '');
+  lines.push(`${descend('[data-theme="dark"]', '[data-band="inverse"]')},`);
+  lines.push(`${descend('[data-theme="dark"]', '[data-band="inverse-raised"]')} {`);
+  lines.push(asBlock(pLight, '  '));
+  lines.push('}', '');
+
+  // Over media. Absolute in both tonalities, exactly as the base emits it.
+  lines.push(`${descend('', '[data-on-media]')} {`, asBlock(pDark, '  '), '}', '');
+  lines.push(`${descend('', '[data-on-media="light"]')} {`, asBlock(pLight, '  '), '}', '');
+}
+
 // ---- type styles ----------------------------------------------------------
 // Emitted twice, from the same source, for two different consumers.
 //
@@ -175,6 +254,7 @@ writeFileSync(join(root, 'src', 'styles', 'tokens.css'), lines.join('\n') + '\n'
 
 const count = (o) => flatten(o, []).length;
 console.log('src/styles/tokens.css written');
+if (emitted.length) console.log(`brand packs  : ${emitted.join(', ')}  (extend, do not replace)`);
 console.table({
   primitives: count(t.primitive),
   'semantic (per mode)': count(t.semantic.light),

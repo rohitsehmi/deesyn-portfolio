@@ -126,7 +126,15 @@ export const TOKENS_CSS = 'src/styles/tokens.css';
  * in both the script and the CI workflow — which is the arrangement that let a
  * checksum in CLAUDE.md go stale three times.
  */
-export const GENERATED = [TOKENS_CSS, TOKENS, 'icons/', 'marks/', 'components/', FAVICON_OUT, LAYOUT_EXPORT];
+/**
+ * The Figma-write snippet is generated because it must carry every value it
+ * writes: a plugin sandbox cannot read this repo, so the snippet is a second
+ * copy of the pack by necessity. Generating it is what stops that copy being a
+ * hand-maintained one, which is the failure every other entry here exists for.
+ */
+export const BRAND_SNIPPET = 'tokens/brand-apply.snippet.js';
+
+export const GENERATED = [TOKENS_CSS, TOKENS, 'icons/', 'marks/', 'components/', FAVICON_OUT, LAYOUT_EXPORT, BRAND_SNIPPET];
 
 /* ------------------------------------------------------------------ *
  * CONTENT — the case studies. Shared pool, selected per site.
