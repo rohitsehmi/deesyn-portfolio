@@ -46,6 +46,17 @@ export const LOCKUP_VIEWBOX = '0 0 233 48';
  *
  *   wise   G3HBCm7Dsa6gQ2PKv0Y8g4, node Brand/Logo
  *   healf  oC393wMf4jcRjm8qbkWTeG, node 22:4230, path 4
+ *
+ * BOTH OF THOSE FILE KEYS 404 AS OF 2026-08-19. The Wise and Healf files were
+ * replaced that day — wise is now uFjZtr6cIu6JsR3sLpOsYP and healf is now
+ * F0AUIJ19FASx5sUJUTfzGp — and the keys above are kept rather than swapped
+ * because they are a record of where THIS path data actually came from, which
+ * is not the same claim as where a designer should look today. The geometry
+ * has not been re-verified against the replacements and does not need to be:
+ * it is committed here and the site renders from it, so a re-export is only
+ * required if a lockup is redrawn. Re-exporting from the new files means
+ * re-reading the node ids too, since a structural copy does not preserve them
+ * — healf's old cover node 11:2960 is the Marks page in the current files.
  */
 export const PARTNER_WORDMARKS: Record<'wise' | 'healf', BrandPath> = {
   wise: { d: "M 159.76 8.45 L 168.05 8.45 L 163.87 39.49 L 155.58 39.49 L 159.76 8.45 Z M 149.26 8.45 L 143.67 26.33 L 141.22 8.45 L 135.38 8.45 L 128.01 26.27 L 127.15 8.51 L 119.05 8.51 L 121.87 39.55 L 128.57 39.55 L 136.79 19.88 L 139.68 39.49 L 146.25 39.49 L 157.12 8.45 L 149.26 8.45 Z M 219.08 26.52 L 199.37 26.52 C 199.49 30.55 201.76 33.23 205.2 33.23 C 207.78 33.23 209.81 31.82 211.4 29.08 L 218.1 32.21 C 215.7 36.87 210.91 39.94 204.96 39.94 C 196.85 39.94 191.45 34.25 191.45 25.12 C 191.45 15.09 197.77 8 206.74 8 C 214.6 8 219.51 13.49 219.51 22.12 C 219.51 23.52 219.39 24.99 219.08 26.52 Z M 211.65 20.58 C 211.65 17.01 209.68 14.71 206.61 14.71 C 203.42 14.71 200.72 17.07 200.04 20.58 L 211.65 20.58 Z M 93.07 17.84 L 84.6 28.12 L 99.77 28.12 L 101.49 23.26 L 94.98 23.26 L 98.97 18.48 L 98.97 18.35 L 96.39 13.75 L 108 13.75 L 98.97 39.49 L 105.11 39.49 L 115.98 8.45 L 87.92 8.45 L 93.07 17.84 Z M 181.56 14.71 C 184.51 14.71 187.09 16.37 189.3 19.18 L 190.46 10.43 C 188.38 8.96 185.55 8.06 181.81 8.06 C 174.37 8.06 170.2 12.6 170.2 18.35 C 170.2 22.31 172.35 24.8 175.85 26.33 L 177.51 27.1 C 180.64 28.5 181.5 29.21 181.5 30.67 C 181.5 32.21 180.09 33.17 177.94 33.17 C 174.37 33.17 171.49 31.31 169.34 28.06 L 168.11 37 C 170.57 38.98 173.76 40 177.94 40 C 185 40 189.36 35.78 189.36 29.84 C 189.36 25.82 187.64 23.27 183.34 21.22 L 181.5 20.33 C 178.92 19.18 178.06 18.47 178.06 17.2 C 178.12 15.79 179.29 14.71 181.56 14.71 Z", evenOdd: false },
