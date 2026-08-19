@@ -3,25 +3,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "astro",
-  "_comment_rewrites": [
-    "og:image is ONE build-time URL and the brand is chosen at runtime by a",
-    "script, so the page alone cannot show a crawler the right card — a crawler",
-    "runs no JavaScript. These rewrite /og.png per host, which happens",
-    "server-side and therefore applies to an unfurler exactly as to a browser.",
-    "The tag in the HTML stays /og.png on every host; only what that path",
-    "serves changes.",
-    "",
-    "A rewrite, not a redirect: the URL a client asked for is the URL it keeps,",
-    "and some unfurlers do not follow a redirect for og:image.",
-    "",
-    "Revolut needs no entry — it is the default and og.png IS its card, which",
-    "is also what the apex, www, an unrecognised subdomain and a client with no",
-    "JavaScript all get. Same rule as [data-brand] carrying no attribute.",
-    "",
-    "This is belt and braces while robots.txt disallows everything: the",
-    "compliant unfurlers never fetch the page and so never read the tag. It is",
-    "here so that the day that changes, the cards are already right."
-  ],
   "rewrites": [
     {
       "source": "/og.png",
