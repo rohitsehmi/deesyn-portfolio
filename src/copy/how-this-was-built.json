@@ -110,6 +110,10 @@
       {
         "label": "Gaps.",
         "text": "A missing fact renders on the page as a marker rather than hiding in a comment, so it cannot be quietly forgotten. This reads the built pages and fails if one would ship, which matters most when a new case study is being written and the holes are still being filled."
+      },
+      {
+        "label": "Deploy configuration.",
+        "text": "Vercel reads its own config file before it installs anything and before it builds, so a mistake in that one file fails the deployment without ever producing a build log, and every check above stays green while the site quietly keeps serving the build before it. That is how a comment written into it cost eight deployments and a day, found by asking the live site what it was serving rather than by looking at a badge. This reads it: the keys against the ones Vercel accepts, and any rewrite pointing at a path that also exists as a real file, because the file wins and the rule silently never runs."
       }
     ]
   },

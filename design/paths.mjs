@@ -104,7 +104,15 @@ export const ICON_PATHS = 'src/components/icon-paths.ts';
 
 /** Generated from the mark and the tokens, never drawn. */
 export const FAVICON_OUT = 'public';
-export const OG_IMAGE_OUT = 'public/og.png';
+/**
+ * The social cards, one per brand, as `public/og-<brand>.png`.
+ *
+ * There is deliberately NO bare og.png. vercel.json rewrites /og.png per host,
+ * and Vercel matches the filesystem before rewrites, so a file at that path
+ * would shadow every rule and serve one brand's card to all of them — which it
+ * did, silently, for a day.
+ */
+export const OG_IMAGE_DIR = 'public';
 
 /** `npm run tokens` writes this from TOKENS. Every var(--*) in src/ resolves here. */
 export const TOKENS_CSS = 'src/styles/tokens.css';
@@ -144,3 +152,14 @@ export const ASSETS_DIR = 'src/assets';
  * ------------------------------------------------------------------ */
 
 export const DIST = 'dist';
+
+/**
+ * The deploy contract, and the one file in the deploy path no other check
+ * reads.
+ *
+ * Vercel validates it before install and before build, so a mistake here fails
+ * the deployment without producing a build log — which is how an unknown key
+ * cost eight deploys and eighteen hours of stale production on 2026-08-19 while
+ * CI stayed green. verify-vercel-config.mjs is what now reads it.
+ */
+export const VERCEL_CONFIG = 'vercel.json';

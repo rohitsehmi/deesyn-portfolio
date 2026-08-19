@@ -13,6 +13,10 @@
       "source": "/og.png",
       "has": [{ "type": "host", "value": "^healf\\.deesyn\\.com$" }],
       "destination": "/og-healf.png"
+    },
+    {
+      "source": "/og.png",
+      "destination": "/og-revolut.png"
     }
   ],
   "redirects": [

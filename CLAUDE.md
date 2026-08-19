@@ -29,6 +29,14 @@ npm run chromatic    # visual regression (needs CHROMATIC_PROJECT_TOKEN)
 
 **`npm run verify:all` is the one definition of green, added 2026-08-18**, and `.github/workflows/ci.yml` is now a single step that calls it. Before that the workflow listed each check itself, so the local gate and the CI gate were two hand-maintained lists of the same thing — and they had already diverged: `verify` ran six checks while CI ran those plus the staleness check, a build, the band linter and the gap linter. A clean local run predicted nothing, and the only way to find out was to push and wait. That is precisely the friction `.githooks/pre-commit` argues against in its own comment, sitting one level up from it.
 
+**`vercel.json` sat outside that gate entirely until 2026-08-19, and it cost eight deployments.** `d1cfc70` added a `_comment_rewrites` array to it, in the same prose-beside-data style this repo uses for its own JSON. Vercel's schema is `additionalProperties: false` over 40 named keys, none of them starting with an underscore, so **every deploy from `d1cfc70` to `f3ef37f` failed at config validation** and www.deesyn.com served an eighteen-hour-old build. `$schema` is on the allowed list, which is why the file had validated for weeks and why one more key looked equally harmless.
+
+**Nothing went red, and that is the part worth designing against.** Validation happens before install and before build, so there is no build log carrying the error; CI stayed green on all five commits and `verify:all` stayed green locally, because neither read the file. **The symptom was not a failure but silence** — the site simply kept serving the previous build, which is indistinguishable from nobody having pushed. It was found by asking production what it was serving: `/og-wise.png` 404'd while sitting committed in `public/`.
+
+`design/verify-vercel-config.mjs` is what closed it, and it checks two things rather than one — the second found a live bug the first had been hiding, described under § Social and structured data. **Its allowlist is vendored rather than fetched**, deliberately: a check that needs the network is a check that goes red on a train, and it would put an outage at Vercel between this repo and a green build. Staleness fails safe in the only direction that matters — a key Vercel adds later is refused loudly with the instruction to refresh, while an invented key is caught immediately.
+
+**`vercel.json` is someone else's schema**, and that is the narrower lesson. Explaining a value next to it is right in `tokens.json`, in `usage-rules.json` and in every export under `design/`; it does not carry across the boundary, because JSON has no comments and the reader on the other side is a validator rather than a person.
+
 **`README.md` counts the same checks and cannot compute, so `verify-gates.mjs` checks it too.** The page resolves its number from the gate and cannot go stale; the README is markdown read on GitHub with no build step to substitute into, so it states a number — and it drifted **twice**, saying "Eight checks" while nine ran and still saying eight when eleven ran. Both times a plausible sentence in a file nobody re-reads. The number stays typed and a program checks it, including the bullet count, because a correct total above a short list is the shape the page's own bug took.
 
 **`design/verify-readme.mjs` checks the numbers the README states**, because it cannot compute them: it is markdown read on GitHub with no build step to substitute into. It had drifted **twice** — "Eight checks run on every push" survived Gaps being added, then Provenance and Gates; and it opened by calling the site "two case studies" once three were live. Both read as ordinary sentences, which is why nobody caught them. **It counts the bulleted list as well as the total**, because a right total over a short list is the exact shape of the bug the page itself had.
@@ -177,7 +185,7 @@ Why one project rather than one per brand: a second Vercel project means a secon
 - **`*.vercel.app` is on the allowlist**, and it has to be: without it every preview deployment bounces to production and there is no way to look at a build before promoting it. The cost is that this rule cannot be tested on a preview, which is why the next point matters.
 - **`permanent: false` on purpose.** A 308 is cached by the browser and is very hard to take back if the pattern is wrong; a 307 costs one deploy to fix. It stays temporary until it has been checked against every real host in production, and moving it to permanent is a deliberate second step rather than the default.
 
-**What is still Revolut-only on every host:** `og.png` (see below), the tokens, the icon set, and the Storybook's `Marks/Logo` stories.
+**What is still Revolut-only on every host:** the tokens, the icon set, and the Storybook's `Marks/Logo` stories. The social card was on this list until 2026-08-19 and is now genuinely per host — see § Social and structured data, including the day it spent recorded as fixed while serving one brand's card to all three.
 
 ## Tokens
 
@@ -472,7 +480,7 @@ The one thing it hardcodes is colour, and it resolves it from the token rather t
 
 ## Social and structured data
 
-**Generated, never drawn — same rule as the favicon.** `design/build-og-image.mjs` reads `LOCKUP_PATHS` and the same `band/base` and `fg/primary` the page renders, and emits `public/og.png` at 1200x630. Part of `npm run specs`, and `public/` is in CI's staleness check, so changing the logo and forgetting the card fails the build.
+**Generated, never drawn — same rule as the favicon.** `design/build-og-image.mjs` reads `LOCKUP_PATHS` and the same `band/base` and `fg/primary` the page renders, and emits one `public/og-<brand>.png` per brand at 1200x630. Part of `npm run specs`, and `public/` is in CI's staleness check, so changing the logo and forgetting the card fails the build.
 
 Light only, deliberately: a social card is composited onto whatever surface the reader's client uses and cannot respond to their theme, so it takes the light-mode pair that survives being dropped onto a white message list. PNG rather than SVG because Slack, LinkedIn, iMessage and WhatsApp all refuse SVG for `og:image`.
 
@@ -482,9 +490,17 @@ Light only, deliberately: a social card is composited onto whatever surface the 
 
 **The meta tags are brand-neutral and have to be**, because they are read out of the HTML by a crawler that never runs the script deciding which brand a hostname shows.
 
-**The card is now per brand, fixed 2026-08-18 — at the edge, not in the page.** `og:image` is one build-time URL and the brand is a runtime decision, so no amount of work in `Base.astro` can show a crawler the right card. `build-og-image.mjs` emits one file per brand and **`vercel.json` rewrites `/og.png` per host**, which happens server-side and therefore applies to an unfurler exactly as it does to a browser. The tag in the HTML stays `/og.png` on every host; only what that path serves changes.
+**The card is per brand as of 2026-08-19 — at the edge, not in the page.** `og:image` is one build-time URL and the brand is a runtime decision, so no amount of work in `Base.astro` can show a crawler the right card. `build-og-image.mjs` emits one file per brand and **`vercel.json` rewrites `/og.png` per host**, which happens server-side and therefore applies to an unfurler exactly as it does to a browser. The tag in the HTML stays `/og.png` on every host; only what that path serves changes.
 
-**A rewrite, not a redirect**: the URL a client asked for is the URL it keeps, and some unfurlers will not follow a redirect for `og:image`. **Revolut needs no entry** — it is the default and `og.png` *is* its card, which is also what the apex, www, an unrecognised subdomain and a client with no JavaScript get. Same rule as `[data-brand]` carrying no attribute.
+**A rewrite, not a redirect**: the URL a client asked for is the URL it keeps, and some unfurlers will not follow a redirect for `og:image`.
+
+**This spot said "fixed 2026-08-18" for a day while the feature did nothing at all, because REWRITES ARE MATCHED AFTER THE FILESYSTEM AND REDIRECTS BEFORE IT.** The first version let Revolut keep the bare `og.png` on the reasoning that the default needs no entry, the same rule as `[data-brand]` carrying no attribute. That rule holds in CSS and does not survive the trip to Vercel's router: `public/` is copied byte-for-byte into `dist/`, so a real `dist/og.png` answered every request and not one of the per-host rules ever ran. **Every host served the Revolut card — precisely the state the change was written to end.**
+
+Nothing about it read as broken. The file was right, the rewrite was right, and the ordering that joins them is written down in neither; it also cannot be caught locally, because it is a property of Vercel's router rather than of the build. **Found by asking production what it was serving**: `wise.deesyn.com/og.png` came back sha256-identical to `public/og.png`.
+
+**So there is no bare `og.png` any more.** Every brand gets `og-<brand>.png`, Revolut included, and `/og.png` is a path that exists *only* as a rewrite — three rules, the last carrying no `has`, which is the default. A path no file answers is what makes the rules reachable at all. `design/verify-vercel-config.mjs` now fails the build if a file ever reappears at the source of a rewrite.
+
+**The transferable part is bigger than this file: "the default carries no marker" is a pattern this repo uses well in CSS and it does not transfer to a router.** `[data-brand]` absent means the default because the CSS asks about absence. A missing `og.png` rule meant the default because a *file* was standing in for a rule — and a file is not a rule, it is the thing that outranks one.
 
 **Only the last path differs.** The disc, the script and the `x` are shared; `PARTNER_WORDMARKS` holds the partner logotype in the same `0 0 233 48` viewBox, so a brand card is `LOCKUP_PATHS.slice(0, -1)` plus one entry rather than a second lockup.
 
@@ -692,7 +708,7 @@ A third skill, `impeccable`, was evaluated and rejected: it's the frontmatter of
 
 1. **Copy across both brands.** The last content job, and the only one that changes what a reader thinks. The per-brand override mechanism exists for anything naming a company — write it through the markdown round trip, not a field at a time.
 2. **Every subdomain of `deesyn.com` serves this build.** `*.deesyn.com` is attached to the Vercel project, so `revolut.deesyn.com` is live — and so is any name someone guesses. Decide whether unmatched hosts should redirect to the apex before a company subdomain is shared with anyone.
-3. **`og.png` is the Revolut card on every host.** See § Social and structured data — contained by `robots.txt`, not solved.
+3. ~~**`og.png` is the Revolut card on every host.**~~ **Closed 2026-08-19, and it had been recorded as closed a day early.** The 2026-08-18 rewrite never ran, because Vercel matches the filesystem before rewrites and a real `dist/og.png` shadowed all three rules. This entry was the honest one while the section above it claimed the opposite — worth remembering that the open-items list was right and the prose was wrong.
 4. ~~Two provenance questions on the exploration imagery.~~ **Both closed 2026-08-17, by reading the files rather than by reasoning about them.**
 
    - **The Hotels.com half was a false alarm.** Eight of the eleven `hcom-*` compositions were opened. They are genuine captures of the shipped app, and every number on them is ordinary in-product content — prices, review scores, photo counts, and the app's own marketing copy ("81% booked for your travel dates", "Save 50%"). There are no per-variant test percentages overlaid on any of them. The note claiming otherwise was written from memory and was wrong.

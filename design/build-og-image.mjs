@@ -91,9 +91,23 @@ for (const brand of BRANDS) {
 <g transform="translate(${x} ${y}) scale(${LOCKUP_W / vbW})" fill="${fg}">${paths}</g>
 </svg>
 `;
-  // The default keeps the bare name, so nothing that already points at /og.png
-  // has to change and the rewrite is what varies it.
-  const file = brand === DEFAULT_BRAND ? 'og.png' : `og-${brand}.png`;
+  /*
+    EVERY brand gets a suffixed name, the default included, and shipping no
+    bare og.png is the point rather than a side effect.
+
+    The first version of this let Revolut keep the plain name on the reasoning
+    that the default needs no entry, the same rule as [data-brand] carrying no
+    attribute. That rule holds in CSS and does not survive the trip to Vercel's
+    router: REWRITES ARE MATCHED AFTER THE FILESYSTEM, so a real dist/og.png
+    answered every request and the per-host rewrites never ran. The feature
+    shipped on 2026-08-18 and did nothing until 2026-08-19, and it could not
+    look wrong from here — the file was correct, the rewrite was correct, and
+    the ordering that joins them is written down in neither.
+
+    With no file at /og.png every host resolves through a rule, including the
+    default one. verify-vercel-config.mjs fails the build if this regresses.
+  */
+  const file = `og-${brand}.png`;
   await sharp(Buffer.from(svg), { density: 384 }).resize(W, H).png().toFile(join(pub, file));
   console.log(`${file.padEnd(20)} ${W}x${H}, lockup ${LOCKUP_W}x${LOCKUP_H}, ${fg} on ${bg}`);
 }

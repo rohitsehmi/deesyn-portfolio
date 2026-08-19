@@ -39,7 +39,7 @@ The full script list, including the token pipeline and the Figma export snippets
 
 ## What is checked
 
-Twelve checks run on every push, and the build fails rather than warns. `npm run verify:all` is the one definition of green and the workflow is a single step calling it, so a clean run locally means the same thing as a green build:
+Thirteen checks run on every push, and the build fails rather than warns. `npm run verify:all` is the one definition of green and the workflow is a single step calling it, so a clean run locally means the same thing as a green build:
 
 - **Types.** `tsc` over the `.ts` and `.tsx` sources, because nothing else in the repository reads TypeScript.
 - **Secrets.** Tracked files only, so that the one file legitimately holding a token is not flagged and taught to be ignored.
@@ -53,6 +53,7 @@ Twelve checks run on every push, and the build fails rather than warns. `npm run
 - **Generated files.** Anything derived from source is regenerated and compared, because a stale generated file is invisible in a diff.
 - **Bands.** Adjacency rules, read from the Figma specification rather than transcribed.
 - **Gaps.** A missing fact renders on the page as a visible marker rather than hiding in a comment, and this reads the built pages and fails if one would ship.
+- **Deploy configuration.** `vercel.json` is validated by Vercel before install and before build, so a mistake in it fails the deployment without ever producing a build log, and every check above can stay green while the site quietly serves the previous build. That is not hypothetical: an unrecognised key cost eight deployments and a day of stale production. This reads the file — the top-level keys against the set Vercel accepts, and any rewrite whose source is shadowed by a real file in the build output, because the filesystem is matched before rewrites and a shadowed rule never runs.
 
 Visual regression runs separately on Chromatic, which snapshots all 58 stories in both light and dark.
 
