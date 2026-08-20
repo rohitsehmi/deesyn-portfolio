@@ -54,7 +54,7 @@
 
     "egds-token-tiers-light.png": {
       "kind": "diagram",
-      "note": "Generated flat 2D chart of the three token tiers, wired 2026-08-18. Imitates no product UI. The swatches are illustrative and carry NO hex values — an earlier pass had a legend of hex codes and it was cut precisely because those values were of unverified provenance. Dark counterpart outstanding."
+      "note": "Generated flat 2D chart of the three token tiers, wired 2026-08-18. Imitates no product UI. The swatches are illustrative and carry NO hex values — an earlier pass had a legend of hex codes and it was cut precisely because those values were of unverified provenance. SUPERSEDED 2026-08-19 by src/components/TokenTiers.tsx, which draws the same picture in elements and is therefore right in both themes; the dark counterpart this file needed was never exported and is no longer wanted. Retained rather than deleted because it is the source the component's palette was sampled from, pixel by pixel, and deleting it would leave that measurement with nothing behind it. Rendered on no page."
     },
 
     "hcom-backdrop-light.png": {

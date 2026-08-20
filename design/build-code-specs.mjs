@@ -46,7 +46,15 @@ const CODE_ONLY = [
     track rather than part of a slide, or that the controls do not exist until
     a script says they work. Building it there would document it less.
   */
-  { name: 'Content/Carousel', base: 'Carousel' }
+  { name: 'Content/Carousel', base: 'Carousel' },
+  /*
+    Code only because the contract is a distinction, not a configuration. The
+    component is a diagram, and the whole of it is the rule that its CHROME is
+    tokens and its SUBJECT is data: a picture of another system's palette that
+    repaints with this one has stopped being true. A Figma variant axis has no
+    way to say that, and drawing the diagram in Figma would document it less.
+  */
+  { name: 'Content/Token Tiers', base: 'TokenTiers' }
 ];
 
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

@@ -6,9 +6,11 @@ import { Metrics } from '../../components/Metrics';
 import { Explorations } from '../../components/Explorations';
 import { Hindsight } from '../../components/Hindsight';
 import { Contribution } from '../../components/Contribution';
-import { Media } from '../../components/Media';
-import { getImage } from 'astro:assets';
-import imgTokenTiers from '../../assets/egds-token-tiers-light.png';
+import { TokenTiers } from '../../components/TokenTiers';
+import {
+  BASE_COMPONENT, BRANDS, BRAND_PICKER_LEGEND, BRAND_ROW_LABELS, DEPICTED_ACCENT,
+  SHARED_SEMANTIC, TIERS, TIER_NOTE
+} from '../../data/egds-token-tiers';
 import copy from '../../copy/scaling-a-system.json';
 
 /**
@@ -35,24 +37,25 @@ const F = 'scaling-a-system';
 const { contribution, problem, process, interface: iface, impact, hindsight } = copy;
 
 /*
-  Same pipeline as the other studies: WebP at each width, original pruned.
+  THE FIGURE IS BUILT, NOT EXPORTED, changed 2026-08-19.
 
-  `natural`, never a cropping ratio. This is a diagram, so its title sits along
-  the top and its per-brand labels along the bottom, and those are precisely
-  the pixels `object-fit: cover` removes — see MediaProps.ratio.
+  It shipped first as src/assets/egds-token-tiers-light.png, and the note that
+  used to sit here said the dark counterpart was outstanding rather than
+  declined: the artwork carries the theme in its own fills and sits on a
+  near-white plate, so on a dark page it was a lit panel in the middle of an
+  article. That is the case MediaProps.srcDark exists for, and the second export
+  never landed.
 
-  NO srcDark YET. The artwork carries the theme in its own fills and sits on a
-  near-white plate, so on a dark page it currently reads as a bright panel mid
-  article. That is the case MediaProps.srcDark exists for and the dark export
-  is outstanding, not declined; wire it here the moment it lands.
+  Drawing it in elements retires the question instead of answering it. The
+  chrome resolves from the page's own tokens, so it is right in both themes at
+  every width, it repaints with the brand pack, and there is nothing to
+  download. What the picture DEPICTS stays fixed, in src/data/egds-token-tiers.ts
+  and sampled pixel by pixel from the PNG, because a diagram of another system's
+  palette that repaints with yours has stopped being true.
+
+  The PNG is kept rather than deleted. It is the thing this was measured from,
+  and design/asset-provenance.json still carries its entry and its history.
 */
-const FIGURE_SIZES = '(min-width: 1040px) 1000px, calc(100vw - 40px)';
-const tokenTiers = await getImage({
-  src: imgTokenTiers,
-  format: 'webp',
-  widths: [480, 720, 960, 1280, 1600],
-  sizes: FIGURE_SIZES
-});
 ---
 
 <CaseStudy
@@ -113,12 +116,16 @@ const tokenTiers = await getImage({
     >
       {iface.heading}
     </SectionHeading>
-    <Media
-      src={tokenTiers.src}
-      srcSet={tokenTiers.srcSet.attribute}
-      sizes={FIGURE_SIZES}
+    <TokenTiers
       alt={iface.mediaAlt}
-      ratio="natural"
+      base={BASE_COMPONENT}
+      tiers={TIERS}
+      note={TIER_NOTE}
+      brands={BRANDS}
+      sharedSemantic={SHARED_SEMANTIC}
+      rowLabels={BRAND_ROW_LABELS}
+      pickerLegend={BRAND_PICKER_LEGEND}
+      tint={DEPICTED_ACCENT}
       caption={iface.mediaCaption}
       captionCopyRef={`${F}:interface.mediaCaption`}
     />

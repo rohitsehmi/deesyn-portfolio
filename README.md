@@ -6,7 +6,7 @@ A design portfolio built as a working system, containing case studies written up
 
 The site presents a small number of recent, complex screen flows and answers the same questions about each of them in the same order, because that is the order someone reads them in: the problem, the process including the alternatives that were rejected and why, the interface, the measured impact, and finally hindsight. The last of those is the section most portfolios leave out, and it is the cheapest one to be honest in.
 
-Underneath the case studies there is a design system, comprising 249 tokens exported from Figma, 21 components, and a published contract for every one of them. It answers none of the questions above directly, and no reader asks about tokens or visual regression, so it is deliberately kept out of the way. It exists because it buys consistent, polished visuals cheaply, and because a system that verifies itself is a reasonable thing for a design engineer to be able to show.
+Underneath the case studies there is a design system, comprising 249 tokens exported from Figma, 22 components, and a published contract for every one of them. It answers none of the questions above directly, and no reader asks about tokens or visual regression, so it is deliberately kept out of the way. It exists because it buys consistent, polished visuals cheaply, and because a system that verifies itself is a reasonable thing for a design engineer to be able to show.
 
 **On the branding.** The design foundations here reconstruct a public brand's values from its live CSS, as a study in how a system of that kind is put together. This is independent work, and it was not commissioned by, affiliated with, or endorsed by any company whose name or marks appear in it. Sibling hostnames present the same case studies under different lockups, which demonstrates the multi-brand pipeline described below rather than claiming any engagement.
 
@@ -58,7 +58,7 @@ Sixteen checks run on every push, and the build fails rather than warns. `npm ru
 - **Deploy configuration.** `vercel.json` is validated by Vercel before install and before build, so a mistake in it fails the deployment without ever producing a build log, and every check above can stay green while the site quietly serves the previous build. That is not hypothetical: an unrecognised key cost eight deployments and a day of stale production. This reads the file — the top-level keys against the set Vercel accepts, and any rewrite whose source is shadowed by a real file in the build output, because the filesystem is matched before rewrites and a shadowed rule never runs.
 - **The working record.** `CLAUDE.md` states figures it cannot compute, among them four export checksums, and three of those have sat in it stale while the build printed something else. Each is now read back from the script that prints it rather than recomputed here, so there is no second implementation to drift, and a figure that has moved fails the build instead of sitting there reading as an ordinary sentence.
 
-Visual regression runs separately on Chromatic, which snapshots all 58 stories in both light and dark.
+Visual regression runs separately on Chromatic, which snapshots all 61 stories in both light and dark.
 
 ## Reading further
 

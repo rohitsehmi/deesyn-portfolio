@@ -1,0 +1,759 @@
+{
+  "name": "Content/Token Tiers",
+  "slug": "content-token-tiers",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/TokenTiers.tsx",
+    "styles": "src/components/TokenTiers.css"
+  },
+  "description": "The token architecture of a multi-brand library, as a diagram you can operate:\none base component over three tiers of tokens, three brands underneath, and\nthe bottom tier resolving to whichever brand the reader picks.\n\nBUILT RATHER THAN EXPORTED, which is the whole reason it exists. The picture\nshipped first as a 1.3MB PNG on a near-white plate, and on a dark page that is\na lit panel in the middle of an article — the case `Media`'s `srcDark` exists\nfor, needing a second export that never landed. Drawn in elements, the chrome\ntakes the page's own tokens and the problem does not arise in either theme, at\nany width, with nothing to download.\n\nIT IS INTERACTIVE AND IT SHIPS NO JAVASCRIPT, which is the part worth copying.\nThe picker is three native radios and the resolution is `:has()` — so it works\nwith scripting off, arrow keys move between brands because that is what a\nradio group does, and the page stays a prerendered document with no hydration\nboundary in it. A React island here would have shipped a runtime to re-render\na picture that was already correct in the HTML, and put a running component\ninside every Chromatic snapshot. The rule generalises: reach for state only\nonce the platform has actually run out.\n\nThe other split it keeps is the one from the still version. Everything the\ndiagram is MADE of — plates, rules, type, connectors — is a token reference,\nso the component repaints with the brand pack like everything else on the\nsite. Everything the diagram is ABOUT — six greys, six semantic values, three\nbrand ramps — is data, because a picture of somebody else's palette that\nrepaints with yours has stopped being true. Bands are relative; the thing on\nthe wall is not.",
+  "donts": [
+    "Do not put a depicted colour in the stylesheet. Everything this diagram is made of is a token and everything it is about is data, and the moment another system's yellow lands in the CSS the published contract stops being true.",
+    "Do not theme the swatches. The chrome flips with the page and the subject must not: a ramp that repaints with the reader's brand is no longer a picture of the ramp it claims to show.",
+    "Never render the depicted button as a real button. It is a picture of a control, so an interactive element there is a tab stop that does nothing and an announcement that lies.",
+    "Do not drop the alt. The picture is built from elements, so there is no missing image to notice — an undescribed diagram ships looking finished and nothing reports it.",
+    "Do not make it an island. The picker is native radios and `:has()`, which works with scripting off and keeps a prerendered article free of a hydration boundary; a state hook here ships a runtime to re-render a picture that was already correct in the HTML.",
+    "Never put `role=\"img\"` over the picker. It labels the STACK, which is a picture; a radio inside a region announced as an image is a control assistive technology has been told to ignore."
+  ],
+  "props": {
+    "alt": {
+      "type": "string",
+      "required": true,
+      "note": "The accessible name for the picture, and REQUIRED for the same reason `IconButton` requires `aria-label`. A picture built out of elements has no `alt` to forget, so it can ship with no text alternative at all and look finished — which is worse than a broken image, because nothing reports it. The stack takes `role=\"img\"` and this string, so assistive technology is handed one description of the picture rather than eighty loose fragments of it in reading order."
+    },
+    "base": {
+      "type": "TokenTiersBase",
+      "required": true,
+      "note": "The component every tier below resolves a value for."
+    },
+    "tiers": {
+      "type": "TokenTier[]",
+      "required": true,
+      "note": "Foundation, semantic, feature. Rendered in the order given."
+    },
+    "note": {
+      "type": "string",
+      "required": true,
+      "note": "The line under the stack, stating what the picture argues."
+    },
+    "brands": {
+      "type": "TokenTierBrand[]",
+      "required": true
+    },
+    "sharedSemantic": {
+      "type": "TokenSwatch[]",
+      "required": true,
+      "note": "The semantic row, rendered identically under every brand. One array passed once, not one per brand. The diagram's claim is that these do not vary, and three lists that happen to agree would be that claim maintained by hand."
+    },
+    "rowLabels": {
+      "type": "TokenTiersRowLabels",
+      "required": true
+    },
+    "pickerLegend": {
+      "type": "string",
+      "required": true,
+      "note": "The group name for the brand picker, announced before the three options. Visually hidden. On screen the three columns are self-evidently a set and the caption says what picking one does; announced, a radio with no group label is an answer with no question in front of it."
+    },
+    "defaultBrand": {
+      "type": "string",
+      "required": false,
+      "note": "Which brand is resolved on first paint, by name. None by default. The empty state is the honest one and it is what the static picture showed: the feature tier has nothing in it until a brand puts something there. This exists so a story can snapshot the resolved state, since Chromatic photographs a page rather than clicking through it."
+    },
+    "tint": {
+      "type": "string",
+      "required": false,
+      "note": "The depicted system's accent, used to wash the tinted tier. Passed down as `--tt-tint` and washed by the stylesheet rather than mixed here, because the hue is data and the strength is not: a dark violet washed straight onto a dark band measures 1.04:1 against it and simply disappears. The stylesheet shifts it toward `fg/primary` first, so the hue stays the depicted one and the lightness follows the theme. Omitting it leaves the middle tier an outline rather than turning it grey."
+    },
+    "caption": {
+      "type": "string",
+      "required": false
+    },
+    "captionCopyRef": {
+      "type": "string",
+      "required": false,
+      "note": "`<file>:<path>` into src/copy, making the caption editable in the browser under `npm run dev`. Dev tooling only; inert in a build."
+    }
+  },
+  "tokens": {
+    ".token-tiers": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      }
+    ],
+    ".token-tiers__diagram": [
+      {
+        "property": "--tt-tint-shifted",
+        "var": "--tt-tint",
+        "local": "--tt-tint"
+      },
+      {
+        "property": "--tt-tint-shifted",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "--tt-selected-shifted",
+        "var": "--tt-selected",
+        "local": "--tt-selected"
+      },
+      {
+        "property": "--tt-selected-shifted",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "--tt-selected-edge",
+        "var": "--tt-selected",
+        "local": "--tt-selected"
+      },
+      {
+        "property": "--tt-selected-edge",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".token-tiers__base": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp150",
+        "ref": "primitive.space.sp150"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp1000",
+        "ref": "primitive.space.sp1000"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r12",
+        "ref": "primitive.radius.r12"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".token-tiers__eyebrow": [
+      {
+        "property": "font",
+        "var": "--type-emphasis-4",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-4-tracking",
+        "ref": "typography.emphasis.4"
+      }
+    ],
+    ".token-tiers__base-name": [
+      {
+        "property": "font",
+        "var": "--type-heading-m",
+        "ref": "typography.heading.m"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-m-tracking",
+        "ref": "typography.heading.m"
+      }
+    ],
+    "@media (min-width: 768px) { .token-tiers__base-name }": [
+      {
+        "property": "font",
+        "var": "--type-heading-l",
+        "ref": "typography.heading.l"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-l-tracking",
+        "ref": "typography.heading.l"
+      }
+    ],
+    ".token-tiers__drop": [
+      {
+        "property": "height",
+        "var": "--primitive-space-sp800",
+        "ref": "primitive.space.sp800"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      }
+    ],
+    ".token-tiers__drop::after": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s6",
+        "ref": "primitive.size.s6"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s6",
+        "ref": "primitive.size.s6"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".token-tiers__tier": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r16",
+        "ref": "primitive.radius.r16"
+      }
+    ],
+    "@media (min-width: 768px) { .token-tiers__tier }": [
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp1000",
+        "ref": "primitive.space.sp1000"
+      }
+    ],
+    ".token-tiers__tier[data-weight='tinted']": [
+      {
+        "property": "border",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      }
+    ],
+    ".token-tiers__diagram[data-tinted] .token-tiers__tier[data-weight='tinted']": [
+      {
+        "property": "background",
+        "var": "--tt-tint-shifted",
+        "local": "--tt-tint-shifted"
+      }
+    ],
+    ".token-tiers__tier[data-weight='outline']": [
+      {
+        "property": "border",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      }
+    ],
+    ".token-tiers__tier-label": [
+      {
+        "property": "column-gap",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "row-gap",
+        "var": "--primitive-space-sp100",
+        "ref": "primitive.space.sp100"
+      }
+    ],
+    ".token-tiers__glyph": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s32",
+        "ref": "primitive.size.s32"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s32",
+        "ref": "primitive.size.s32"
+      }
+    ],
+    ".token-tiers__tier-title": [
+      {
+        "property": "font",
+        "var": "--type-emphasis-2",
+        "ref": "typography.emphasis.2"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-2-tracking",
+        "ref": "typography.emphasis.2"
+      }
+    ],
+    ".token-tiers__tier-gloss": [
+      {
+        "property": "font",
+        "var": "--type-body-2",
+        "ref": "typography.body.2"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-2-tracking",
+        "ref": "typography.body.2"
+      }
+    ],
+    ".token-tiers__swatches": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      }
+    ],
+    ".token-tiers__swatches[data-row='mini']": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      }
+    ],
+    ".token-tiers__swatch": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      }
+    ],
+    ".token-tiers__dot": [
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      }
+    ],
+    ".token-tiers__swatch[data-size='tier'] .token-tiers__dot": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s40",
+        "ref": "primitive.size.s40"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s40",
+        "ref": "primitive.size.s40"
+      }
+    ],
+    ".token-tiers__swatch[data-size='mini'] .token-tiers__dot": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s24",
+        "ref": "primitive.size.s24"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s24",
+        "ref": "primitive.size.s24"
+      }
+    ],
+    ".token-tiers__swatch-label": [
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      }
+    ],
+    ".token-tiers__swatch-value": [
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      }
+    ],
+    ".token-tiers__note": [
+      {
+        "property": "margin",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      },
+      {
+        "property": "font",
+        "var": "--type-emphasis-3",
+        "ref": "typography.emphasis.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-3-tracking",
+        "ref": "typography.emphasis.3"
+      }
+    ],
+    "@media (min-width: 768px) { .token-tiers__fan }": [
+      {
+        "property": "height",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      },
+      {
+        "property": "margin",
+        "var": "--primitive-space-sp1000",
+        "ref": "primitive.space.sp1000"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      },
+      {
+        "property": "border-start-start-radius",
+        "var": "--primitive-radius-r8",
+        "ref": "primitive.radius.r8"
+      },
+      {
+        "property": "border-start-end-radius",
+        "var": "--primitive-radius-r8",
+        "ref": "primitive.radius.r8"
+      }
+    ],
+    "@media (min-width: 768px) { .token-tiers__fan::before,\n  .token-tiers__fan::after }": [
+      {
+        "property": "background",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      }
+    ],
+    "@media (min-width: 768px) { .token-tiers__fan::before }": [
+      {
+        "property": "height",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".token-tiers__brands": [
+      {
+        "property": "margin",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      },
+      {
+        "property": "gap",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      }
+    ],
+    "@media (min-width: 768px) { .token-tiers__brands }": [
+      {
+        "property": "margin-block-start",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".token-tiers__brand": [
+      {
+        "property": "--tt-accent-shifted",
+        "var": "--tt-accent",
+        "local": "--tt-accent"
+      },
+      {
+        "property": "--tt-accent-shifted",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "--tt-accent-edge",
+        "var": "--tt-accent",
+        "local": "--tt-accent"
+      },
+      {
+        "property": "--tt-accent-edge",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r16",
+        "ref": "primitive.radius.r16"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    "@media (min-width: 768px) { .token-tiers__brand + .token-tiers__brand::before }": [
+      {
+        "property": "inset-block",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".token-tiers__brand-head": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      }
+    ],
+    ".token-tiers__brand-mark": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s40",
+        "ref": "primitive.size.s40"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s40",
+        "ref": "primitive.size.s40"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r8",
+        "ref": "primitive.radius.r8"
+      }
+    ],
+    ".token-tiers__brand-name": [
+      {
+        "property": "font",
+        "var": "--type-heading-s",
+        "ref": "typography.heading.s"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-heading-s-tracking",
+        "ref": "typography.heading.s"
+      }
+    ],
+    ".token-tiers__brand-row": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "padding-block-start",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "border-block-start",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      }
+    ],
+    ".token-tiers__brand-label": [
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      }
+    ],
+    ".token-tiers__button": [
+      {
+        "property": "min-height",
+        "var": "--primitive-size-button-lg",
+        "ref": "primitive.size.button-lg"
+      },
+      {
+        "property": "padding-inline",
+        "var": "--primitive-space-sp1000",
+        "ref": "primitive.space.sp1000"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "font",
+        "var": "--type-emphasis-1",
+        "ref": "typography.emphasis.1"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-1-tracking",
+        "ref": "typography.emphasis.1"
+      }
+    ],
+    ".token-tiers__caption": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      },
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      }
+    ],
+    ".token-tiers__value-set": [
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".token-tiers__diagram:has(.token-tiers__brand[data-index='0'] .token-tiers__radio:checked)": [
+      {
+        "property": "--tt-selected",
+        "var": "--tt-accent-0",
+        "local": "--tt-accent-0"
+      }
+    ],
+    ".token-tiers__diagram:has(.token-tiers__brand[data-index='1'] .token-tiers__radio:checked)": [
+      {
+        "property": "--tt-selected",
+        "var": "--tt-accent-1",
+        "local": "--tt-accent-1"
+      }
+    ],
+    ".token-tiers__diagram:has(.token-tiers__brand[data-index='2'] .token-tiers__radio:checked)": [
+      {
+        "property": "--tt-selected",
+        "var": "--tt-accent-2",
+        "local": "--tt-accent-2"
+      }
+    ],
+    ".token-tiers__tier[data-resolves]": [
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".token-tiers__diagram:has(.token-tiers__radio:checked) .token-tiers__tier[data-resolves]": [
+      {
+        "property": "background",
+        "var": "--tt-selected-shifted",
+        "local": "--tt-selected-shifted"
+      },
+      {
+        "property": "border-color",
+        "var": "--tt-selected-edge",
+        "local": "--tt-selected-edge"
+      }
+    ],
+    ".token-tiers__diagram:has(.token-tiers__radio:checked) .token-tiers__base": [
+      {
+        "property": "border-color",
+        "var": "--tt-selected-edge",
+        "local": "--tt-selected-edge"
+      }
+    ],
+    ".token-tiers__brand:has(.token-tiers__radio:checked)": [
+      {
+        "property": "background",
+        "var": "--tt-accent-shifted",
+        "local": "--tt-accent-shifted"
+      },
+      {
+        "property": "outline",
+        "var": "--tt-accent-edge",
+        "local": "--tt-accent-edge"
+      }
+    ],
+    ".token-tiers__brand:has(.token-tiers__radio:focus-visible)": [
+      {
+        "property": "outline",
+        "var": "--semantic-border-focus",
+        "ref": "semantic.*.border.focus"
+      }
+    ]
+  }
+}

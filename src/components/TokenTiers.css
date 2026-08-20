@@ -1,0 +1,658 @@
+/*
+  NO COLOUR LITERALS, and that is the line this file is drawn along.
+
+  Everything the diagram is made of lives here and is a token reference, so the
+  picture repaints with the brand pack and reads in both themes. Everything the
+  diagram is ABOUT — six greys, six semantic values, three brand ramps — arrives
+  as an inline style from src/data/egds-token-tiers.ts, because a picture of
+  somebody else's palette that repaints with yours has stopped being true.
+
+  The two tones that are not tokens are `color-mix` against `currentColor`,
+  which is not a colour: it is "whatever this tier's foreground already is, at
+  28%". A hairline on the inverse tier has to be light and the same hairline on
+  a pale tier has to be dark, and there is no token pair for that because the
+  site has no surface that flips inside a band. currentColor is the only thing
+  that answers correctly on all three plates in both themes.
+
+  THE INTERACTION IS ALSO HERE, all of it. Picking a brand is three native
+  radios and `:has()`, so the page ships no JavaScript for a diagram you can
+  operate, it works with scripting off, and there is no hydration boundary in a
+  prerendered article. The rules that do it are gathered at the foot of the
+  file under "resolving a brand" rather than scattered through it, because they
+  are the one part of this stylesheet that is a mechanism rather than a look.
+*/
+
+.token-tiers {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+}
+
+/*
+  The accents, hoisted. Declared here as well as set inline, for two reasons:
+  a value referenced but never declared anywhere fails verify-css.mjs, which is
+  correct of it, and a diagram rendered without the inline styles then falls
+  back to its own foreground rather than to nothing at all.
+*/
+.token-tiers__diagram {
+  --tt-accent-0: currentColor;
+  --tt-accent-1: currentColor;
+  --tt-accent-2: currentColor;
+  --tt-selected: currentColor;
+  --tt-tint: currentColor;
+  /*
+    THE ONE IDEA THAT MAKES DARK MODE WORK, and it took measuring to find.
+
+    A depicted hue is fixed and the band under it is not. Washing the accent
+    straight onto the band works in light — 8% violet on #f7f7f7 is the lavender
+    the source artwork used — and does nothing at all in dark, because a dark
+    violet over a near-black band cannot move luminance: measured, an 18% wash
+    lands at 1.04:1 against the band it sits on. Raising the alpha is the obvious
+    fix and it is the wrong one; the tint has to change DIRECTION, not strength.
+
+    So every derived tone is mixed toward the page's own foreground first. The
+    hue stays the brand's; the lightness follows the theme, because fg/primary
+    already knows which way is up. Light mode mixes toward near-black and gets
+    the source's lavender back; dark mode mixes toward white and gets a plate
+    that reads. One expression, no media query, no re-declared semantic token.
+  */
+  --tt-tint-shifted: color-mix(in srgb, var(--tt-tint) 55%, var(--semantic-fg-primary));
+  --tt-selected-shifted: color-mix(in srgb, var(--tt-selected) 55%, var(--semantic-fg-primary));
+  /*
+    Boundaries are a stronger mix, because they carry a REQUIREMENT rather than a
+    mood. WCAG 1.4.11 wants 3:1 for anything identifying a component's state, and
+    the raw accent cannot meet it: measured against both bands, the brand colours
+    at 45% scored 1.26 to 2.20:1 in five of six brand-by-theme combinations. At
+    50% toward fg/primary the same six run 4.67 to 12.40:1. Same lesson as
+    border/strong in verify-contrast.mjs — do not hand a decorative brand tint a
+    threshold it has no way of meeting.
+  */
+  --tt-selected-edge: color-mix(in srgb, var(--tt-selected) 50%, var(--semantic-fg-primary));
+  display: flex;
+  flex-direction: column;
+}
+
+.token-tiers__stack {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- the base component -------------------------------------------------- */
+
+.token-tiers__base {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--primitive-space-sp150);
+  min-width: 14rem;
+  padding: var(--primitive-space-sp500) var(--primitive-space-sp1000);
+  border: 1px solid var(--semantic-fg-primary);
+  border-radius: var(--primitive-radius-r12);
+  text-align: center;
+  transition: border-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+
+.token-tiers__eyebrow {
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  text-transform: uppercase;
+}
+
+.token-tiers__base-name {
+  font: var(--type-heading-m);
+  letter-spacing: var(--type-heading-m-tracking);
+}
+@media (min-width: 768px) {
+  .token-tiers__base-name {
+    font: var(--type-heading-l);
+    letter-spacing: var(--type-heading-l-tracking);
+  }
+}
+
+/* ---- the connector between one thing and the next ------------------------ */
+
+.token-tiers__step {
+  display: flex;
+  flex-direction: column;
+}
+
+.token-tiers__drop {
+  align-self: center;
+  position: relative;
+  width: 1px;
+  height: var(--primitive-space-sp800);
+  background: var(--semantic-border-strong);
+}
+/* The terminating dot. It sits ON the plate edge, half in and half out, which
+   is what makes the line read as arriving somewhere rather than stopping. */
+.token-tiers__drop::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-end: 0;
+  width: var(--primitive-size-s6);
+  height: var(--primitive-size-s6);
+  transform: translate(-50%, 50%);
+  border-radius: var(--primitive-radius-round);
+  background: var(--semantic-fg-primary);
+}
+
+/* ---- a tier -------------------------------------------------------------- */
+
+.token-tiers__tier {
+  display: grid;
+  align-items: center;
+  gap: var(--primitive-space-sp600);
+  padding: var(--primitive-space-sp600);
+  border-radius: var(--primitive-radius-r16);
+}
+@media (min-width: 768px) {
+  .token-tiers__tier { padding: var(--primitive-space-sp600) var(--primitive-space-sp1000); }
+}
+/*
+  1040, not 768, and the number is measured rather than picked.
+
+  Side by side, the row has to fit the widest gloss and six labels at once: the
+  glyph is 32, the gloss "Raw values, platform agnostic" sets at 191, and
+  "Button Disabled" at 93. That is 239 for the label column and 558 for the
+  swatches, which needs 854 of tier — exactly what the 920 measure leaves after
+  padding, and 120 more than a 800px window has. Below this the tier stacks and
+  the swatches go three across, where there is room to spare.
+*/
+@media (min-width: 1040px) {
+  .token-tiers__tier { grid-template-columns: 15rem 1fr; }
+}
+
+/*
+  Three treatments, and the ladder IS the argument rather than decoration: the
+  fixed tier is solid, the shared tier is a wash, and the tier each brand has to
+  fill in is an empty outline. The source artwork made the same point one level
+  down, drawing only the feature SWATCHES as empty rings.
+
+  Every tier carries a 1px border, including the solid one, in its own fill.
+  Without it the plates differ by two pixels of width and the stack reads as
+  slightly misaligned for a reason nobody can find.
+*/
+/* Fill and foreground come from the data, not from here — see TokenTier.plate.
+   The hairline is currentColor so it resolves against whatever that plate is,
+   and it is what keeps a dark plate legible on a dark band. */
+.token-tiers__tier[data-weight='solid'] {
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+}
+/* border-default, not border-subtle: `tint` is optional, and with none supplied
+   this plate has only its boundary left to read. A 4% hairline is not one. */
+.token-tiers__tier[data-weight='tinted'] { border: 1px solid var(--semantic-border-default); }
+/* Only when a tint was supplied. With none, the plate stays an outline rather
+   than becoming a grey wash — the picture degrades to a ladder it can still
+   read, which is what the Untinted story exists to show. */
+.token-tiers__diagram[data-tinted] .token-tiers__tier[data-weight='tinted'] {
+  background: color-mix(in srgb, var(--tt-tint-shifted) 14%, transparent);
+}
+.token-tiers__tier[data-weight='outline'] { border: 1px solid var(--semantic-border-default); }
+
+.token-tiers__tier-label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--primitive-space-sp500);
+  row-gap: var(--primitive-space-sp100);
+  align-items: center;
+}
+
+.token-tiers__glyph {
+  grid-row: span 2;
+  width: var(--primitive-size-s32);
+  height: var(--primitive-size-s32);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.72;
+}
+
+.token-tiers__tier-title {
+  align-self: end;
+  font: var(--type-emphasis-2);
+  letter-spacing: var(--type-emphasis-2-tracking);
+  text-transform: uppercase;
+}
+
+/*
+  The gloss is the secondary tone, and it cannot be fg/secondary.
+
+  Measured: fg/secondary over the tinted plate is 3.95:1, under AA, because the
+  token is built for 4.87:1 on pure white and the wash takes the background down
+  with it. currentColor at 72% is relative to whatever the tier already resolved
+  to, so it holds on all three plates and in both themes — 6.2:1 on the tinted
+  one, and it is the correct light grey on the inverse one where fg/secondary
+  would have been a dark grey on near-black.
+*/
+.token-tiers__tier-gloss {
+  align-self: start;
+  font: var(--type-body-2);
+  letter-spacing: var(--type-body-2-tracking);
+  color: color-mix(in srgb, currentColor 72%, transparent);
+}
+
+/* ---- swatches ------------------------------------------------------------ */
+
+.token-tiers__swatches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  /* Three across while the tier is stacked, capped rather than stretched: six
+     equal fractions of a full-width plate scatter the dots a third of a metre
+     apart and stop reading as one row. */
+  grid-template-columns: repeat(3, minmax(0, 8rem));
+  justify-content: start;
+  gap: var(--primitive-space-sp500);
+  justify-items: center;
+}
+/*
+  Six EQUAL columns, not six auto ones spread apart.
+
+  Auto columns with space-between fits the labels and puts the dots at uneven
+  centres, because the leftover width is shared between columns of different
+  widths and "Primary Hover" is half again as wide as "Disabled". On a row of
+  swatches that reads as a spacing mistake. Equal columns keep the centres even
+  and cost one thing — "Button Disabled" sets at about 93px in a 93px column —
+  which is what the tighter gap and the nowrap below buy back.
+*/
+@media (min-width: 1040px) {
+  .token-tiers__swatches {
+    grid-template-columns: repeat(6, 1fr);
+    /* No column gap. Each column is 99 and the widest label is 93, so the gap
+       that reads on the page is the one the centred labels leave between them —
+       15px at the tightest pair. A declared gap on top of that is what pushes
+       "Button Disabled" onto two lines. */
+    column-gap: 0;
+  }
+  .token-tiers__swatch[data-size='tier'] .token-tiers__swatch-label { white-space: nowrap; }
+}
+/* The unlabelled rows under a brand. Six across at every width: they are 24px
+   dots, so they fit a phone, and wrapping them to two rows of three would read
+   as two groups of something. */
+.token-tiers__swatches[data-row='mini'] {
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--primitive-space-sp300);
+  justify-items: start;
+}
+
+.token-tiers__swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--primitive-space-sp300);
+  text-align: center;
+}
+
+.token-tiers__dot {
+  display: block;
+  border-radius: var(--primitive-radius-round);
+  border: 1px solid color-mix(in srgb, currentColor 38%, transparent);
+}
+.token-tiers__swatch[data-size='tier'] .token-tiers__dot {
+  width: var(--primitive-size-s40);
+  height: var(--primitive-size-s40);
+}
+.token-tiers__swatch[data-size='mini'] .token-tiers__dot {
+  width: var(--primitive-size-s24);
+  height: var(--primitive-size-s24);
+}
+/* No fill at all, so the ring has to carry the whole shape rather than merely
+   edge one. This is the slot each brand fills in below. */
+.token-tiers__dot[data-empty] {
+  border-color: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+.token-tiers__swatch-label {
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  text-wrap: balance;
+}
+
+/*
+  The printed value. Tabular figures so the column of hexes reads as a set, and
+  72% of currentColor rather than fg/secondary for the same reason the tier gloss
+  is: this sits on the depicted plate, which the page's grey knows nothing about.
+*/
+.token-tiers__swatch-value {
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, currentColor 72%, transparent);
+  white-space: nowrap;
+}
+
+/* ---- the line under the stack, and the bracket out to three columns ------- */
+
+.token-tiers__note {
+  align-self: center;
+  max-width: 62ch;
+  margin: var(--primitive-layout-l40) 0 0;
+  text-align: center;
+  text-wrap: balance;
+  font: var(--type-emphasis-3);
+  letter-spacing: var(--type-emphasis-3-tracking);
+}
+
+/* Hidden below the breakpoint where the columns stack: a bracket over a single
+   column is a line pointing at nothing. */
+.token-tiers__fan { display: none; }
+@media (min-width: 768px) {
+  .token-tiers__fan {
+    display: block;
+    position: relative;
+    height: var(--primitive-layout-l40);
+    /* The ends reach out over the first and last columns rather than stopping at
+       their centres, so the bracket reads as gathering all three. */
+    margin: var(--primitive-space-sp1000) 12% 0;
+    border: 1px solid var(--semantic-border-strong);
+    border-block-end: 0;
+    border-start-start-radius: var(--primitive-radius-r8);
+    border-start-end-radius: var(--primitive-radius-r8);
+  }
+  /* Stem up to the note, and the stub down into the middle column. */
+  .token-tiers__fan::before,
+  .token-tiers__fan::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 50%;
+    width: 1px;
+    background: var(--semantic-border-strong);
+  }
+  .token-tiers__fan::before {
+    inset-block-end: 100%;
+    height: var(--primitive-space-sp600);
+  }
+  .token-tiers__fan::after {
+    inset-block-start: 0;
+    height: 100%;
+  }
+}
+
+/* ---- the three brands ---------------------------------------------------- */
+
+/* A fieldset, reset to nothing. `min-inline-size: 0` because a fieldset carries
+   an implicit min-width of min-content that a grid inside it cannot override,
+   which is what stops the columns from ever getting narrower than their widest
+   label. */
+.token-tiers__picker {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Announced, never seen. The caption says the same thing in prose on screen. */
+.token-tiers__legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.token-tiers__brands {
+  list-style: none;
+  margin: var(--primitive-layout-l40) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--primitive-layout-l40);
+}
+@media (min-width: 768px) {
+  .token-tiers__brands {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-block-start: var(--primitive-space-sp600);
+  }
+}
+
+.token-tiers__brand {
+  --tt-accent: currentColor;
+  /* Same shift as the root's, per column, because a column is tinted by its own
+     brand rather than by whichever one is selected. */
+  --tt-accent-shifted: color-mix(in srgb, var(--tt-accent) 55%, var(--semantic-fg-primary));
+  --tt-accent-edge: color-mix(in srgb, var(--tt-accent) 50%, var(--semantic-fg-primary));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp600);
+  padding: var(--primitive-space-sp500);
+  border-radius: var(--primitive-radius-r16);
+  cursor: pointer;
+  transition:
+    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    outline-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+/*
+  The divider is a pseudo element, not a border, and that is a bug fix rather
+  than a preference. The column carries a border-radius for its selected plate,
+  and a radius curves a border-inline-start into an arc at both ends — three
+  stray hooks down the middle of the diagram that read as a rendering fault. A
+  positioned hairline has no corners to follow.
+*/
+@media (min-width: 768px) {
+  .token-tiers__brand + .token-tiers__brand::before {
+    content: '';
+    position: absolute;
+    inset-block: var(--primitive-space-sp500);
+    inset-inline-start: 0;
+    width: 1px;
+    background: var(--semantic-border-default);
+    transition: opacity var(--semantic-duration-dropdown) var(--semantic-easing-out);
+  }
+}
+/* A chosen column draws its own boundary, so the divider would double it. */
+.token-tiers__brand:has(.token-tiers__radio:checked)::before { opacity: 0; }
+
+/* Focusable, and invisible. Its state is drawn on the column, which is the thing
+   a reader is actually looking at; `pointer-events: none` keeps it out of hit
+   testing so every click lands on the label instead. */
+.token-tiers__radio {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.token-tiers__brand-head {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-space-sp500);
+}
+
+/*
+  A rounded square, not a disc. These are real favicons and all three are drawn
+  as rounded squares with their own coloured plate; masking them into a circle
+  would clip Expedia's arrow, which runs corner to corner. `contain` rather than
+  `cover` for the same reason — a mark is the one thing that must not be cropped.
+*/
+.token-tiers__brand-mark {
+  width: var(--primitive-size-s40);
+  height: var(--primitive-size-s40);
+  border-radius: var(--primitive-radius-r8);
+  object-fit: contain;
+  flex: none;
+}
+
+.token-tiers__brand-name {
+  font: var(--type-heading-s);
+  letter-spacing: var(--type-heading-s-tracking);
+  cursor: pointer;
+}
+/*
+  The label is two words and the target is the whole column, which is the same
+  stretched-pseudo trick a case-study tile uses to make a card click through its
+  title. It has to be the topmost thing in the column, or a swatch swallows the
+  hit and the tap does nothing — the exact fault `.tile__cue` had, where the one
+  element that looked like the button was the only dead spot on the tile.
+*/
+.token-tiers__brand-name::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* One rule per group, not one per line. Two groups, two rules — a hairline
+   under every row is the spec-table tell. */
+.token-tiers__brand-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+  padding-block-start: var(--primitive-space-sp500);
+  border-block-start: 1px solid var(--semantic-border-default);
+}
+
+/*
+  currentColor at 72%, not fg/secondary, and this was a measured failure rather
+  than a preference — the same one the tier gloss already had.
+
+  fg/secondary is built for 4.87:1 on pure white. A selected column washes its
+  own brand over the band underneath, which takes the background down with it,
+  and the label fell to 3.67-3.95:1 depending on which brand was picked. It
+  passed in dark and failed in light, which is exactly the kind of bug that
+  survives being looked at. Relative to the column's own foreground it holds
+  everywhere, selected or not, in both themes.
+*/
+.token-tiers__brand-label {
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  color: color-mix(in srgb, currentColor 72%, transparent);
+}
+
+.token-tiers__button {
+  display: grid;
+  place-items: center;
+  min-height: var(--primitive-size-button-lg);
+  padding-inline: var(--primitive-space-sp1000);
+  border-radius: var(--primitive-radius-round);
+  font: var(--type-emphasis-1);
+  letter-spacing: var(--type-emphasis-1-tracking);
+}
+
+.token-tiers__caption {
+  color: var(--semantic-fg-secondary);
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+}
+
+/* ---- resolving a brand --------------------------------------------------- */
+
+/*
+  THE WHOLE INTERACTION, and it is a stylesheet rather than a component.
+
+  Three native radios supply the state; `:has()` reads it from an ancestor,
+  which is the part that could not be done before and is the reason this is not
+  an island. The feature tier sits ABOVE the picker in the document, so no
+  sibling combinator can reach it — `~` only ever looks forward. `:has()` on the
+  common ancestor looks in both directions, so the thing being selected can
+  change the thing above it that it resolves.
+
+  Every state is rendered and one is shown. The six rows are stacked in a single
+  grid cell, so the tier cannot change height when a brand is picked, and the
+  change is a cross-fade rather than a repaint: the empty ring fills in, which
+  is the moment the diagram exists for.
+*/
+.token-tiers__values { display: grid; }
+
+.token-tiers__value-set {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+/* The default, and the honest one: nothing is chosen, so nothing is resolved. */
+.token-tiers__value-set[data-set='empty'] { opacity: 1; }
+
+/*
+  One rule per brand, because a stylesheet has no loop. RESOLVABLE_BRANDS in
+  TokenTiers.tsx is 3 to match, and the component throws rather than rendering a
+  fourth brand that would be selectable and would resolve nothing — a picture
+  that looks finished and is lying. Adding a brand means adding a block here and
+  raising that constant, in that order.
+*/
+.token-tiers__diagram:has(.token-tiers__brand[data-index='0'] .token-tiers__radio:checked) {
+  --tt-selected: var(--tt-accent-0);
+}
+.token-tiers__diagram:has(.token-tiers__brand[data-index='1'] .token-tiers__radio:checked) {
+  --tt-selected: var(--tt-accent-1);
+}
+.token-tiers__diagram:has(.token-tiers__brand[data-index='2'] .token-tiers__radio:checked) {
+  --tt-selected: var(--tt-accent-2);
+}
+.token-tiers__diagram:has(.token-tiers__brand[data-index='0'] .token-tiers__radio:checked) .token-tiers__value-set[data-set='0'],
+.token-tiers__diagram:has(.token-tiers__brand[data-index='1'] .token-tiers__radio:checked) .token-tiers__value-set[data-set='1'],
+.token-tiers__diagram:has(.token-tiers__brand[data-index='2'] .token-tiers__radio:checked) .token-tiers__value-set[data-set='2'] {
+  opacity: 1;
+}
+.token-tiers__diagram:has(.token-tiers__radio:checked) .token-tiers__value-set[data-set='empty'] {
+  opacity: 0;
+}
+
+/*
+  The plate warms to the brand as well as the swatches, and the base component
+  at the top of the stack takes its border from the same value. That is the
+  claim being demonstrated rather than stated: a brand overrides values, and the
+  override reaches all the way back up to the component.
+*/
+.token-tiers__tier[data-resolves] {
+  transition:
+    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    border-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+.token-tiers__diagram:has(.token-tiers__radio:checked) .token-tiers__tier[data-resolves] {
+  background: color-mix(in srgb, var(--tt-selected-shifted) 14%, transparent);
+  border-color: var(--tt-selected-edge);
+}
+.token-tiers__diagram:has(.token-tiers__radio:checked) .token-tiers__base {
+  border-color: var(--tt-selected-edge);
+}
+
+/*
+  The chosen column, and the one boundary on this diagram that is load-bearing
+  rather than decorative: it is the only thing telling you which radio is on.
+  2px at --tt-selected-edge measures 4.67:1 at worst across three brands and two
+  themes, against 1.26:1 for the brand colour it replaced.
+
+  `outline` rather than a border so nothing moves by a pixel when it is picked,
+  and rather than a shadow, because the site has none and this is a boundary
+  rather than depth.
+*/
+.token-tiers__brand:has(.token-tiers__radio:checked) {
+  background: color-mix(in srgb, var(--tt-accent-shifted) 12%, transparent);
+  outline: 2px solid var(--tt-accent-edge);
+  outline-offset: -2px;
+}
+
+/* Last, so it outranks the selected treatment: a focused column has to show
+   focus whether or not it is also the chosen one. */
+.token-tiers__brand:has(.token-tiers__radio:focus-visible) {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+/*
+  Reduced motion removes the cross-fade and keeps the result. The tier still
+  resolves; it simply arrives rather than dissolving, which is the correct
+  reading of a preference for less movement — not "no feature".
+*/
+@media (prefers-reduced-motion: reduce) {
+  .token-tiers__value-set,
+  .token-tiers__tier[data-resolves],
+  .token-tiers__base,
+  .token-tiers__brand {
+    transition: none;
+  }
+}

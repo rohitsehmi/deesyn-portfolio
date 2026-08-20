@@ -107,6 +107,14 @@
       "Do not bake the backdrop into the slides. Each advance would repaint it and any difference between exports reads as the background twitching. One element behind a transparent track cannot.",
       "Do not use it for one image. A gallery of one is a Media, and the controls would point at nothing.",
       "Do not crop the slides to fill. These are screens with text in them, and cover removes the edges a reader is trying to read."
+    ],
+    "Content/Token Tiers": [
+      "Do not put a depicted colour in the stylesheet. Everything this diagram is made of is a token and everything it is about is data, and the moment another system's yellow lands in the CSS the published contract stops being true.",
+      "Do not theme the swatches. The chrome flips with the page and the subject must not: a ramp that repaints with the reader's brand is no longer a picture of the ramp it claims to show.",
+      "Never render the depicted button as a real button. It is a picture of a control, so an interactive element there is a tab stop that does nothing and an announcement that lies.",
+      "Do not drop the alt. The picture is built from elements, so there is no missing image to notice — an undescribed diagram ships looking finished and nothing reports it.",
+      "Do not make it an island. The picker is native radios and `:has()`, which works with scripting off and keeps a prerendered article free of a hydration boundary; a state hook here ships a runtime to re-render a picture that was already correct in the HTML.",
+      "Never put `role=\"img\"` over the picker. It labels the STACK, which is a picture; a radio inside a region announced as an image is a control assistive technology has been told to ignore."
     ]
   }
 }
