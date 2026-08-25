@@ -54,7 +54,7 @@
       {
         "title": "Letting any team promote a component into the core",
         "why": "Rejected while I was building the contribution model. The generous version lets a team push a component straight into the shared library, which is the fastest way to get contribution and the fastest way to fill a core library with components only one team can maintain. What shipped puts acceptance criteria and RICE ranking in the way, and accepts that most components never make the journey.",
-        "imageAlt": "Placeholder for the three governance tiers, showing a component moving from a team workspace to the shared tier and the promotion bar in front of core"
+        "imageAlt": "Three panels showing a component climbing the governance ladder. In each, two team workspaces sit under a shared tier and a core tier. First the component is at a team with a Test gate, then at the shared tier with a Promote gate, then at core with a Merge gate. Turning on the rejected path strikes out all three gates and draws a dashed route from a team straight to core, round the shared tier rather than through it."
       }
     ]
   },

@@ -1,0 +1,553 @@
+{
+  "name": "Content/Governance Tiers",
+  "slug": "content-governance-tiers",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/GovernanceTiers.tsx",
+    "styles": "src/components/GovernanceTiers.css"
+  },
+  "description": "How a component earned its way into the shared library: three tiers, three\ngates, and the route that was rejected drawn straight through all of them.\n\nIT ILLUSTRATES A REJECTED EXPLORATION, which decides its shape. The reader has\njust been told that letting any team push into core is the fastest way to\nfill a core library with components only one team can maintain. So the figure\nshows the ladder that shipped, and the control removes the gates rather than\ndescribing their absence: the rejected model IS this picture with three things\ntaken out of it, and that is a thing to show rather than a thing to say.\n\nNO COLOUR OF ITS OWN. Unlike the token-tiers figure beside it, this depicts a\nprocess rather than somebody else's palette, so there is nothing here that has\nto stay absolute. Every tone is a token, it repaints with the brand pack, and\nboth themes come out right without a second export or a second set of values.\n\nInteractive with no JavaScript, on the same mechanism: one native checkbox and\n`:has()`. A page that ships no runtime for a diagram can afford to have the\ndiagram do something.",
+  "donts": [
+    "Do not dim the gates to show them removed. Reducing opacity takes the one element whose whole job is to be read under AA; a strike says removed at full contrast.",
+    "Do not use status/danger raw for the rejected route. It measures 2.94:1 on a light band and 5.23:1 on a dark one, so it fails AA in exactly one theme, which is the kind of bug that survives review. Mix it toward fg/primary first.",
+    "Do not give the bypass a label on every panel. Three copies of the same two words is not emphasis, and the control above already names the route.",
+    "Do not add a caption per panel where prose already sits beside the figure. An exploration states its reasoning in full next to this; a caption repeats the argument at a smaller size.",
+    "Never let the toggle be anything but a real checkbox. The space bar, the focus ring and the announced state come free from the browser, and a div with a click handler has none of them."
+  ],
+  "props": {
+    "alt": {
+      "type": "string",
+      "required": true,
+      "note": "The accessible name for the whole figure, and REQUIRED for the same reason `IconButton` requires `aria-label` and `TokenTiers` requires `alt`. A picture built from elements has no missing image for anyone to notice, so an undescribed one ships looking finished and nothing reports it."
+    },
+    "stages": {
+      "type": "GovernanceStage[]",
+      "required": true,
+      "note": "Team, shared, core. Rendered in the order given, left to right."
+    },
+    "tiers": {
+      "type": "GovernanceTiersLabels",
+      "required": true,
+      "note": "The three tier names, drawn on every panel."
+    },
+    "rejected": {
+      "type": "GovernanceTiersRejected",
+      "required": false,
+      "note": "The rejected model, as a control rather than a caption. Optional: without it the figure is the shipped ladder and nothing else, which is the right thing to render anywhere the rejected path is not the subject."
+    },
+    "defaultRejected": {
+      "type": "boolean",
+      "required": false,
+      "note": "Start with the rejected path showing. Off by default, because the shipped ladder is the honest resting state. It exists so a story can snapshot the second state, since Chromatic photographs a page rather than operating one — the same reason `TokenTiers` takes a `defaultBrand`."
+    },
+    "caption": {
+      "type": "string",
+      "required": false
+    },
+    "captionCopyRef": {
+      "type": "string",
+      "required": false,
+      "note": "`<file>:<path>` into src/copy, making the caption editable in the browser under `npm run dev`. Dev tooling only; inert in a build."
+    }
+  },
+  "tokens": {
+    ".governance-tiers": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      }
+    ],
+    ".governance-tiers__figure": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".governance-tiers__toggle-label": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "font",
+        "var": "--type-emphasis-3",
+        "ref": "typography.emphasis.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-3-tracking",
+        "ref": "typography.emphasis.3"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".governance-tiers__toggle-label::before": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s8",
+        "ref": "primitive.size.s8"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s8",
+        "ref": "primitive.size.s8"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".governance-tiers__toggle:checked + .governance-tiers__toggle-label": [
+      {
+        "property": "background",
+        "var": "--semantic-status-danger",
+        "ref": "semantic.*.status.danger"
+      },
+      {
+        "property": "border-color",
+        "var": "--semantic-status-danger",
+        "ref": "semantic.*.status.danger"
+      },
+      {
+        "property": "border-color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".governance-tiers__toggle:checked + .governance-tiers__toggle-label::before": [
+      {
+        "property": "background",
+        "var": "--semantic-status-danger",
+        "ref": "semantic.*.status.danger"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".governance-tiers__toggle:focus-visible + .governance-tiers__toggle-label": [
+      {
+        "property": "outline",
+        "var": "--semantic-border-focus",
+        "ref": "semantic.*.border.focus"
+      }
+    ],
+    ".governance-tiers__stages": [
+      {
+        "property": "gap",
+        "var": "--primitive-layout-l48",
+        "ref": "primitive.layout.l48"
+      }
+    ],
+    "@media (min-width: 760px) { .governance-tiers__stages }": [
+      {
+        "property": "gap",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      }
+    ],
+    ".governance-tiers__stage": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "padding-inline",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      }
+    ],
+    "@media (min-width: 760px) { .governance-tiers__stage + .governance-tiers__stage }": [
+      {
+        "property": "border-inline-start",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      }
+    ],
+    ".governance-tiers__stage-label": [
+      {
+        "property": "font",
+        "var": "--type-emphasis-4",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-4-tracking",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".governance-tiers__tree": [
+      {
+        "property": "--gt-gate-drop",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "padding-inline-end",
+        "var": "--primitive-space-sp800",
+        "ref": "primitive.space.sp800"
+      },
+      {
+        "property": "padding-block-end",
+        "var": "--gt-gate-drop",
+        "local": "--gt-gate-drop"
+      }
+    ],
+    ".governance-tiers__link": [
+      {
+        "property": "height",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      }
+    ],
+    ".governance-tiers__fork": [
+      {
+        "property": "height",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      },
+      {
+        "property": "border-end-start-radius",
+        "var": "--primitive-radius-r8",
+        "ref": "primitive.radius.r8"
+      },
+      {
+        "property": "border-end-end-radius",
+        "var": "--primitive-radius-r8",
+        "ref": "primitive.radius.r8"
+      }
+    ],
+    ".governance-tiers__fork::before": [
+      {
+        "property": "height",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "margin-block-start",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      }
+    ],
+    ".governance-tiers__teams": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".governance-tiers__node": [
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".governance-tiers__node[data-tier='core'],\n.governance-tiers__node[data-tier='shared']": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s64",
+        "ref": "primitive.size.s64"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s64",
+        "ref": "primitive.size.s64"
+      }
+    ],
+    ".governance-tiers__node[data-tier='team']": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s56",
+        "ref": "primitive.size.s56"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s56",
+        "ref": "primitive.size.s56"
+      }
+    ],
+    ".governance-tiers__node[data-state='ahead']": [
+      {
+        "property": "border",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    ".governance-tiers__node[data-state='passed']": [
+      {
+        "property": "background",
+        "var": "--semantic-bg-widget",
+        "ref": "semantic.*.bg.widget"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".governance-tiers__node[data-state='current']": [
+      {
+        "property": "background",
+        "var": "--semantic-bg-inverse",
+        "ref": "semantic.*.bg.inverse"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-inverse",
+        "ref": "semantic.*.fg.inverse"
+      }
+    ],
+    ".governance-tiers__node-label": [
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      }
+    ],
+    ".governance-tiers__gate": [
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp50",
+        "ref": "primitive.space.sp50"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-band-sunken",
+        "ref": "semantic.*.band.sunken"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "font",
+        "var": "--type-emphasis-4",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-4-tracking",
+        "ref": "typography.emphasis.4"
+      }
+    ],
+    ".governance-tiers__figure:has(.governance-tiers__toggle:checked) .governance-tiers__gate": [
+      {
+        "property": "background",
+        "var": "--semantic-band-sunken",
+        "ref": "semantic.*.band.sunken"
+      }
+    ],
+    ".governance-tiers__bypass": [
+      {
+        "property": "inset-block-start",
+        "var": "--primitive-size-s64",
+        "ref": "primitive.size.s64"
+      },
+      {
+        "property": "inset-block-end",
+        "var": "--primitive-size-s56",
+        "ref": "primitive.size.s56"
+      },
+      {
+        "property": "inset-block-end",
+        "var": "--gt-gate-drop",
+        "local": "--gt-gate-drop"
+      },
+      {
+        "property": "width",
+        "var": "--primitive-space-sp800",
+        "ref": "primitive.space.sp800"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-status-danger",
+        "ref": "semantic.*.status.danger"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "border-start-end-radius",
+        "var": "--primitive-radius-r8",
+        "ref": "primitive.radius.r8"
+      },
+      {
+        "property": "border-end-end-radius",
+        "var": "--primitive-radius-r8",
+        "ref": "primitive.radius.r8"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".governance-tiers__caption": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      },
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      }
+    ]
+  }
+}

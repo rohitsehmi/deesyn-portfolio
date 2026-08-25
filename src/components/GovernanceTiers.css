@@ -1,0 +1,306 @@
+/*
+  NO COLOUR LITERALS AND NOTHING ABSOLUTE, which is the difference from
+  TokenTiers.css next door.
+
+  That figure depicts somebody else's palette, so its values are data and have to
+  survive a theme change unmoved. This one depicts a PROCESS — three tiers, three
+  gates, and a route that was rejected — and a process has no colour of its own.
+  So every tone here is a token, the whole picture repaints with the brand pack,
+  and there is nothing in it that can go stale.
+
+  The one recurring expression is `color-mix(<token> n%, var(--semantic-fg-primary))`,
+  and it is the same lesson the token-tiers figure paid for: a saturated hue
+  cannot carry a contrast threshold against two different bands. status/danger
+  measures 2.94:1 on a light sunken band and 5.23:1 on a dark one, so used raw it
+  would fail AA in exactly one theme, which is the kind of bug that survives
+  review because it looks fine on the machine you built it on. Mixed toward the
+  page's own foreground first, the hue stays and the lightness follows the theme.
+*/
+
+.governance-tiers {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+}
+
+.governance-tiers__figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp600);
+}
+
+/* ---- the control --------------------------------------------------------- */
+
+.governance-tiers__control { align-self: start; }
+
+/* Replaced, not hidden. It keeps the space bar, the focus ring and the announced
+   state; `pointer-events: none` keeps it out of hit testing so the label takes
+   every click. */
+.governance-tiers__toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.governance-tiers__toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-space-sp300);
+  padding: var(--primitive-space-sp200) var(--primitive-space-sp500);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-radius-round);
+  font: var(--type-emphasis-3);
+  letter-spacing: var(--type-emphasis-3-tracking);
+  color: var(--semantic-fg-primary);
+  cursor: pointer;
+  transition:
+    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    border-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+/* The dot is the state, and it is not the only signal: the border and the plate
+   move with it, so this does not rely on colour alone. */
+.governance-tiers__toggle-label::before {
+  content: '';
+  width: var(--primitive-size-s8);
+  height: var(--primitive-size-s8);
+  border-radius: var(--primitive-radius-round);
+  border: 1px solid currentColor;
+  transition: background-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+.governance-tiers__toggle:checked + .governance-tiers__toggle-label {
+  background: color-mix(in srgb, var(--semantic-status-danger) 12%, transparent);
+  border-color: color-mix(in srgb, var(--semantic-status-danger) 55%, var(--semantic-fg-primary));
+}
+.governance-tiers__toggle:checked + .governance-tiers__toggle-label::before {
+  background: color-mix(in srgb, var(--semantic-status-danger) 55%, var(--semantic-fg-primary));
+}
+.governance-tiers__toggle:focus-visible + .governance-tiers__toggle-label {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+/* ---- the three panels ---------------------------------------------------- */
+
+.governance-tiers__stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--primitive-layout-l48);
+}
+/*
+  760, and it is measured rather than picked. A panel has to fit two 52px team
+  nodes side by side with a 32px gap and the bypass bracket outside them, which
+  is 200px of tree, plus 24px of inline padding: 224. Three of those with the
+  40px gaps between them needs 752. Below it the panels stack, where each one
+  has the whole measure and nothing is cramped.
+*/
+@media (min-width: 760px) {
+  .governance-tiers__stages {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--primitive-layout-l40);
+  }
+}
+
+.governance-tiers__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--primitive-space-sp600);
+  padding-inline: var(--primitive-space-sp300);
+}
+/* One rule between panels, not a box around each. */
+@media (min-width: 760px) {
+  .governance-tiers__stage + .governance-tiers__stage {
+    border-inline-start: 1px solid var(--semantic-border-default);
+  }
+}
+
+.governance-tiers__stage-label {
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  text-transform: uppercase;
+  color: var(--semantic-fg-primary);
+}
+
+/* ---- the tree ------------------------------------------------------------ */
+
+/*
+  `--gt-gate-drop` is how far the gate badge hangs below its node, and the tree
+  reserves exactly that much at the bottom. Without it the badge on the team
+  node — the one at the bottom of the ladder — is clipped by the figure's own
+  edge, which reads as a rendering fault rather than a badge.
+*/
+.governance-tiers__tree {
+  --gt-gate-drop: var(--primitive-space-sp400);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Room on the trailing edge for the bypass bracket to run outside the tree,
+     which is what makes it visibly go ROUND the shared tier. */
+  padding-inline-end: var(--primitive-space-sp800);
+  padding-block-end: var(--gt-gate-drop);
+}
+
+.governance-tiers__link {
+  width: 1px;
+  height: var(--primitive-space-sp600);
+  background: var(--semantic-border-strong);
+}
+
+/* The split from one shared tier down to two teams. Borders rather than three
+   elements: the left and right edges ARE the two legs. */
+.governance-tiers__fork {
+  width: 60%;
+  height: var(--primitive-space-sp600);
+  border: 1px solid var(--semantic-border-strong);
+  border-block-start: 0;
+  border-end-start-radius: var(--primitive-radius-r8);
+  border-end-end-radius: var(--primitive-radius-r8);
+}
+/* The stem joining the shared node to the top of the fork. */
+.governance-tiers__fork::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: var(--primitive-space-sp400);
+  margin-inline: auto;
+  margin-block-start: calc(var(--primitive-space-sp400) * -1);
+  background: var(--semantic-border-strong);
+}
+
+.governance-tiers__teams {
+  display: flex;
+  gap: var(--primitive-space-sp600);
+}
+
+/* ---- a node -------------------------------------------------------------- */
+
+.governance-tiers__node {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: var(--primitive-radius-round);
+  text-align: center;
+  transition:
+    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+.governance-tiers__node[data-tier='core'],
+.governance-tiers__node[data-tier='shared'] {
+  width: var(--primitive-size-s64);
+  height: var(--primitive-size-s64);
+}
+.governance-tiers__node[data-tier='team'] {
+  width: var(--primitive-size-s56);
+  height: var(--primitive-size-s56);
+}
+
+/*
+  Three states, and they are derived from the stage rather than authored: a tier
+  is where the component is, somewhere it has already been, or somewhere it has
+  not reached. The ladder is the argument, so the states have to be a ladder too.
+*/
+.governance-tiers__node[data-state='ahead'] {
+  border: 1px dashed var(--semantic-border-strong);
+  color: var(--semantic-fg-secondary);
+}
+.governance-tiers__node[data-state='passed'] {
+  background: var(--semantic-bg-widget);
+  border: 1px solid var(--semantic-border-default);
+  color: var(--semantic-fg-primary);
+}
+/* bg/inverse and fg/inverse, so the current tier is the loudest thing on the
+   panel in BOTH themes: near-black on a light page, white on a dark one. */
+.governance-tiers__node[data-state='current'] {
+  background: var(--semantic-bg-inverse);
+  color: var(--semantic-fg-inverse);
+}
+
+.governance-tiers__node-label {
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+}
+
+/* ---- the gate ------------------------------------------------------------ */
+
+/*
+  Accent for the plate and the boundary, fg/primary for the word. The label
+  carries a 4.5:1 requirement and the accent cannot meet it on both bands, so it
+  does not have to: the accent says "something happens here" and the token that
+  is built for reading says what.
+*/
+.governance-tiers__gate {
+  position: absolute;
+  inset-block-start: 62%;
+  inset-inline-start: 58%;
+  padding: var(--primitive-space-sp50) var(--primitive-space-sp300);
+  border: 1px solid color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+  border-radius: var(--primitive-radius-round);
+  background: color-mix(in srgb, var(--semantic-fg-accent) 16%, var(--semantic-band-sunken));
+  color: var(--semantic-fg-primary);
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  white-space: nowrap;
+}
+/*
+  Struck rather than dimmed when the rejected path is showing. Dimming is the
+  obvious way to say "gone" and it takes the text under AA, on the one element
+  whose whole job is to be read; a strike says removed at full contrast.
+*/
+.governance-tiers__figure:has(.governance-tiers__toggle:checked) .governance-tiers__gate {
+  text-decoration: line-through;
+  border-style: dashed;
+  background: var(--semantic-band-sunken);
+}
+
+/* ---- the rejected route -------------------------------------------------- */
+
+/*
+  Drawn OUTSIDE the tree, in the padding the tree reserves for it, so it visibly
+  goes round the shared tier instead of through it. Three dashed borders make the
+  bracket: out from the team, up the trailing edge, and back in at core.
+
+  The ends are pinned to the CENTRES of the two nodes it joins, computed from
+  their own sizes rather than guessed as percentages. A percentage looked right
+  at one panel height and left the bracket ending in mid-air next to the team
+  node, which reads as an unfinished drawing rather than a route.
+*/
+.governance-tiers__bypass {
+  position: absolute;
+  inset-block-start: calc(var(--primitive-size-s64) / 2);
+  inset-block-end: calc(var(--primitive-size-s56) / 2 + var(--gt-gate-drop));
+  inset-inline-end: 0;
+  width: var(--primitive-space-sp800);
+  border: 1px dashed color-mix(in srgb, var(--semantic-status-danger) 55%, var(--semantic-fg-primary));
+  border-inline-start: 0;
+  border-start-end-radius: var(--primitive-radius-r8);
+  border-end-end-radius: var(--primitive-radius-r8);
+  opacity: 0;
+  transition: opacity var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+.governance-tiers__figure:has(.governance-tiers__toggle:checked) .governance-tiers__bypass {
+  opacity: 1;
+}
+
+.governance-tiers__caption {
+  color: var(--semantic-fg-secondary);
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+}
+
+/* The reveal is a state change, not a performance. Reduced motion keeps the
+   result and drops the fade. */
+@media (prefers-reduced-motion: reduce) {
+  .governance-tiers__bypass,
+  .governance-tiers__node,
+  .governance-tiers__toggle-label,
+  .governance-tiers__toggle-label::before {
+    transition: none;
+  }
+}

@@ -54,7 +54,8 @@ const CODE_ONLY = [
     repaints with this one has stopped being true. A Figma variant axis has no
     way to say that, and drawing the diagram in Figma would document it less.
   */
-  { name: 'Content/Token Tiers', base: 'TokenTiers' }
+  { name: 'Content/Token Tiers', base: 'TokenTiers' },
+  { name: 'Content/Governance Tiers', base: 'GovernanceTiers' }
 ];
 
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

@@ -1,6 +1,6 @@
 /**
- * Measures every text pair and every state boundary in the token-tiers diagram,
- * off the rendered page, in both themes and in all four selection states.
+ * Measures every text pair in the diagrams that are DRAWN rather than exported,
+ * off the rendered page, in both themes and in every state they can be put into.
  *
  *   npm run build && npx astro preview --port 4321   # in another shell
  *   node design/measure-diagram-contrast.mjs
@@ -10,10 +10,10 @@
  * design/verify-contrast.mjs measures the SEMANTIC LAYER: it resolves tokens
  * out of tokens.json and each brand pack and asks whether the resulting pairs
  * can be read. It cannot see this diagram, and that is not a gap in it. Almost
- * every colour here is depicted rather than themed — six greys, six semantic
- * values, three brand ramps, all data — and they compose with the band under
- * them at runtime through `color-mix`, so the only place the real pair exists
- * is a browser with a theme applied and a brand selected.
+ * every colour in these figures composes with the band under it at runtime
+ * through `color-mix` — depicted brand ramps in one, a `status/danger` mixed
+ * toward the page's own foreground in the other — so the only place the real
+ * pair exists is a browser with a theme applied and a state selected.
  *
  * Sibling of measure-media-contrast.mjs, for the same reason and with the same
  * limitation: it needs a preview server and a real browser, so it is
@@ -46,9 +46,9 @@
  * backgroundColor scores the wash instead of the wash over the band.
  */
 import { chromium } from 'playwright-core';
-const b = await chromium.launch({ channel: 'chrome' });
+const browser = await chromium.launch({ channel: 'chrome' });
 
-const AUDIT = `(() => {
+const AUDIT = `((sel) => {
   const parse = (s) => {
     if (!s || s === 'transparent') return null;
     const n = s.match(/[\\d.]+/g);
@@ -75,7 +75,7 @@ const AUDIT = `(() => {
     return base;
   };
 
-  const root = document.querySelector('.token-tiers');
+  const root = document.querySelector(sel);
   const out = [];
   for (const el of root.querySelectorAll('*')) {
     const direct = [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
@@ -95,22 +95,75 @@ const AUDIT = `(() => {
     });
   }
   return out;
-})()`;
+})`;
 
-for (const theme of ['light','dark']) {
-  const ctx = await b.newContext({ viewport: { width: 1280, height: 1300 } });
-  const p = await ctx.newPage();
-  await p.goto('http://localhost:4321/work/scaling-a-system/', { waitUntil: 'networkidle' });
-  if (theme === 'dark') { await p.evaluate(() => document.documentElement.setAttribute('data-theme','dark')); await p.waitForTimeout(250); }
-  for (const [i, label] of [[-1,'nothing picked'],[0,'Expedia'],[1,'Hotels.com'],[2,'Vrbo']]) {
-    if (i >= 0) { await p.locator(`.token-tiers__brand[data-index="${i}"] .token-tiers__brand-name`).click(); await p.waitForTimeout(500); }
-    const rows = await p.evaluate(AUDIT);
-    const fails = rows.filter(r => r.ratio < r.need);
-    const min = rows.reduce((m,r) => r.ratio < m.ratio ? r : m);
-    console.log(`${theme.padEnd(5)} / ${label.padEnd(14)}  ${rows.length} text pairs, ${fails.length} below AA` +
-      `  (lowest ${min.ratio}:1 — ${min.what} "${min.text}")`);
-    for (const f of fails) console.log(`        FAIL ${f.ratio}:1 need ${f.need}  ${f.px}px/${f.w}  ${f.what}  "${f.text}"`);
+/**
+ * The figures, and the states each can be put into.
+ *
+ * A state is a function rather than a selector because they are not all the same
+ * kind of thing: one is a radio group where clicking a column resolves a brand,
+ * the other a checkbox that strips the gates out of a ladder. What they share is
+ * that the pair a reader sees does not exist until the click has happened.
+ */
+const FIGURES = [
+  {
+    root: '.token-tiers',
+    states: [
+      ['nothing picked', null],
+      ['Expedia', '.token-tiers__brand[data-index="0"] .token-tiers__brand-name'],
+      ['Hotels.com', '.token-tiers__brand[data-index="1"] .token-tiers__brand-name'],
+      ['Vrbo', '.token-tiers__brand[data-index="2"] .token-tiers__brand-name']
+    ]
+  },
+  {
+    root: '.governance-tiers',
+    states: [
+      ['shipped ladder', null],
+      ['rejected path', '.governance-tiers__toggle-label']
+    ]
+  }
+];
+
+let worst = { ratio: Infinity };
+let failures = 0;
+
+for (const theme of ['light', 'dark']) {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 1200 } });
+  const page = await ctx.newPage();
+  await page.goto('http://localhost:4321/work/scaling-a-system/', { waitUntil: 'networkidle' });
+  if (theme === 'dark') {
+    await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+    await page.waitForTimeout(250);
+  }
+  for (const { root, states } of FIGURES) {
+    for (const [label, click] of states) {
+      if (click) { await page.locator(click).click(); await page.waitForTimeout(500); }
+      /* AUDIT is a source STRING, and page.evaluate ignores its argument list when
+   handed one — the selector has to be baked into the expression instead. */
+      const rows = await page.evaluate(`${AUDIT}(${JSON.stringify(root)})`);
+      const fails = rows.filter((r) => r.ratio < r.need);
+      const min = rows.reduce((m, r) => (r.ratio < m.ratio ? r : m));
+      if (min.ratio < worst.ratio) worst = { ...min, theme, label };
+      failures += fails.length;
+      console.log(`${theme.padEnd(5)} ${root.replace('.', '').padEnd(17)} ${label.padEnd(15)} ` +
+        `${String(rows.length).padStart(3)} text pairs, ${fails.length} below AA` +
+        `  (lowest ${min.ratio}:1 — ${min.what} "${min.text}")`);
+      for (const f of fails) {
+        console.log(`        FAIL ${f.ratio}:1 need ${f.need}  ${f.px}px/${f.w}  ${f.what}  "${f.text}"`);
+      }
+    }
+    // Back to the resting state before the next figure, so one figure's
+    // selection cannot follow the other into its measurement.
+    await page.reload({ waitUntil: 'networkidle' });
+    if (theme === 'dark') {
+      await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+      await page.waitForTimeout(250);
+    }
   }
   await ctx.close();
 }
-await b.close();
+
+console.log(`\n${failures} below AA across both figures, both themes, every state.`);
+console.log(`worst pair ${worst.ratio}:1 — ${worst.what} "${worst.text}" (${worst.theme}, ${worst.label})`);
+await browser.close();
+if (failures) process.exit(1);

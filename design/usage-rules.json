@@ -115,6 +115,13 @@
       "Do not drop the alt. The picture is built from elements, so there is no missing image to notice — an undescribed diagram ships looking finished and nothing reports it.",
       "Do not make it an island. The picker is native radios and `:has()`, which works with scripting off and keeps a prerendered article free of a hydration boundary; a state hook here ships a runtime to re-render a picture that was already correct in the HTML.",
       "Never put `role=\"img\"` over the picker. It labels the STACK, which is a picture; a radio inside a region announced as an image is a control assistive technology has been told to ignore."
+    ],
+    "Content/Governance Tiers": [
+      "Do not dim the gates to show them removed. Reducing opacity takes the one element whose whole job is to be read under AA; a strike says removed at full contrast.",
+      "Do not use status/danger raw for the rejected route. It measures 2.94:1 on a light band and 5.23:1 on a dark one, so it fails AA in exactly one theme, which is the kind of bug that survives review. Mix it toward fg/primary first.",
+      "Do not give the bypass a label on every panel. Three copies of the same two words is not emphasis, and the control above already names the route.",
+      "Do not add a caption per panel where prose already sits beside the figure. An exploration states its reasoning in full next to this; a caption repeats the argument at a smaller size.",
+      "Never let the toggle be anything but a real checkbox. The space bar, the focus ring and the announced state come free from the browser, and a div with a click handler has none of them."
     ]
   }
 }

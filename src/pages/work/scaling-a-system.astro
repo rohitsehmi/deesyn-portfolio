@@ -8,6 +8,9 @@ import { Hindsight } from '../../components/Hindsight';
 import { Contribution } from '../../components/Contribution';
 import { TokenTiers } from '../../components/TokenTiers';
 import {
+  GOVERNANCE_REJECTED, GOVERNANCE_STAGES, GOVERNANCE_TIERS
+} from '../../data/egds-governance-tiers';
+import {
   BASE_COMPONENT, BRANDS, BRAND_PICKER_LEGEND, BRAND_ROW_LABELS, DEPICTED_ACCENT,
   SHARED_SEMANTIC, TIERS, TIER_NOTE
 } from '../../data/egds-token-tiers';
@@ -35,6 +38,20 @@ import copy from '../../copy/scaling-a-system.json';
  */
 const F = 'scaling-a-system';
 const { contribution, problem, process, interface: iface, impact, hindsight } = copy;
+
+/*
+  Which exploration the governance diagram belongs to, resolved from the copy
+  rather than hardcoded to a position. Reordering the list would otherwise drop
+  the diagram back to an "Image needed" placeholder without failing anything,
+  which is the class of bug this file's own history is full of. So it throws.
+*/
+const GOVERNANCE = process.explorations.findIndex((e) => e.title.startsWith('Letting any team'));
+if (GOVERNANCE === -1) {
+  throw new Error(
+    'scaling-a-system: no exploration titled "Letting any team…" for the governance diagram. ' +
+    'If the title changed, update the match here rather than deleting it.'
+  );
+}
 
 /*
   THE FIGURE IS BUILT, NOT EXPORTED, changed 2026-08-19.
@@ -98,11 +115,27 @@ const { contribution, problem, process, interface: iface, impact, hindsight } = 
     <Prose>
       <p data-copy={`${F}:process.explorationsIntro`}>{process.explorationsIntro}</p>
     </Prose>
+    {/*
+      `stack`, not the default grid. Explorations.tsx says why in as many words:
+      a wide comparison is illegible at half measure, and all three artefacts
+      here are wide. The governance diagram is three panels side by side and
+      needs the whole column; the two still outstanding will need it too.
+    */}
     <Explorations
-      items={process.explorations.map((e) => ({
+      layout="stack"
+      items={process.explorations.map((e, i) => ({
         title: e.title,
         why: e.why,
-        image: { alt: e.imageAlt }
+        ...(i === GOVERNANCE
+          ? {
+              diagram: {
+                alt: e.imageAlt,
+                stages: GOVERNANCE_STAGES,
+                tiers: GOVERNANCE_TIERS,
+                rejected: GOVERNANCE_REJECTED
+              }
+            }
+          : { image: { alt: e.imageAlt } })
       }))}
       copyBase={`${F}:process.explorations`}
     />

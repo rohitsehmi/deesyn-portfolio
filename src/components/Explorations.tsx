@@ -1,5 +1,6 @@
 import { Media, type MediaRatio } from './Media';
 import { Carousel, type CarouselProps } from './Carousel';
+import { GovernanceTiers, type GovernanceTiersProps } from './GovernanceTiers';
 import './Explorations.css';
 
 export interface Exploration {
@@ -38,6 +39,17 @@ export interface Exploration {
    * a half-finished edit renders the still rather than nothing.
    */
   carousel?: CarouselProps;
+  /**
+   * A diagram drawn in elements, for an exploration whose artefact is an
+   * argument about structure rather than a screen.
+   *
+   * Plain data for the same reason `carousel` is: JSX written inside an
+   * `.astro` expression is an Astro template object, not a React element, so a
+   * node slot cannot be filled from a page. `image` still wins if both are
+   * supplied, so a half-finished edit renders the placeholder rather than
+   * nothing.
+   */
+  diagram?: GovernanceTiersProps;
 }
 
 export interface ExplorationsProps {
@@ -79,6 +91,10 @@ export function Explorations({ items, copyBase, layout = 'grid' }: ExplorationsP
           ) : item.carousel ? (
             <div className="explorations__media">
               <Carousel {...item.carousel} />
+            </div>
+          ) : item.diagram ? (
+            <div className="explorations__media">
+              <GovernanceTiers {...item.diagram} />
             </div>
           ) : null}
           <div className="explorations__text">
