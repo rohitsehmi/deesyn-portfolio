@@ -55,7 +55,13 @@ for (const doc of docs) {
   /* 1. THE BAND SEQUENCE AND WHAT EACH BAND HOLDS.
         The assignment, not just the roles — see the header. */
   const want = SPEC.page.caseStudy;
-  const got = doc.children.map(c => {
+  // THE NAV IS CHROME, NOT A BAND. It sits above the first band and carries no
+  // band plugin data, so it has to come out before positions are compared —
+  // leave it in and every band reads one place along, which reports eight
+  // failures per document and names the wrong role in every one of them. The
+  // FOOTER is deliberately not filtered: Chrome/Footer at scale=compact IS the
+  // closing base/compact band, and the spec's last entry expects to find it.
+  const got = doc.children.filter(c => !c.name.startsWith('Chrome/Nav')).map(c => {
     const b = c.getPluginData('band');
     return b ? JSON.parse(b) : { instance: c.name };
   });
