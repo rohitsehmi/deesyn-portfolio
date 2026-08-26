@@ -283,18 +283,12 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
       without also writing a `brands.<brand>` block here failed the build on
       `undefined.links` — a TypeError naming neither the brand nor this file.
 
-      It is a fallback rather than a silent blank because only ONE of the three
-      receipts is per-brand at all. Storybook and the repository are shared on
-      purpose, as the note above says. The Figma link is the one that differs,
-      and Ticketmaster and Asos have no file of their own yet, so they get the
-      Revolut one — which is genuinely the file this system is measured from,
-      and is what the default hostname already links to.
-
-      That is a known wart rather than a resting state: a receipt on
-      ticketmaster.deesyn.com whose URL says "Revolut" undercuts the sentence
-      beside it. The fix is a Figma file per brand and a block here, exactly as
-      Wise and Healf have. Recorded in CLAUDE.md § Brands rather than left to be
-      rediscovered.
+      EVERY BRAND HAS ITS OWN BLOCK AGAIN as of 2026-08-26, when Ticketmaster
+      and Asos got their own Figma files, so the fallback currently catches
+      nothing. It stays because it is a guard rather than a feature: the next
+      brand added will not have a file on the day it is added, and a missing
+      receipt should render the shared one rather than fail the build on
+      `undefined.links`.
     */}
     {receiptGroups.map(({ brands, links }) => {
       return (
