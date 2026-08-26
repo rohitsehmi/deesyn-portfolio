@@ -22,7 +22,7 @@
  * build-code-specs.mjs writes a contract for each one. This is data, not a
  * component, and must move neither number.
  */
-export const BRANDS = ['deesyn', 'wise', 'healf', 'ticketmaster', 'asos'] as const;
+export const BRANDS = ['deesyn', 'revolut', 'wise', 'healf', 'ticketmaster', 'asos'] as const;
 
 export type Brand = (typeof BRANDS)[number];
 
@@ -40,6 +40,14 @@ export type Brand = (typeof BRANDS)[number];
  * sent to a named person that says the right thing, and on the open apex it
  * implies an engagement that does not exist. The apex now carries the mark
  * alone and the lockup survives only where it was aimed at somebody.
+ *
+ * REVOLUT WAS DEMOTED TO AN ORDINARY PARTNER, NOT REMOVED, and the first
+ * attempt at this got that wrong and shipped it. Deleting the brand outright
+ * looks like the same change from the apex's point of view and is not: it took
+ * `revolut.deesyn.com` down to a 307, so the one hostname actually addressed to
+ * Revolut lost the lockup that was the entire reason it existed. **Making the
+ * default generic and retiring a partner are two different edits**, and only
+ * the first was ever asked for.
  *
  * So this is the only brand with no partner logotype, and PartnerBrand below
  * is what makes that a checked fact rather than a convention.

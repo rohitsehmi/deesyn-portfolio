@@ -6,6 +6,9 @@
   "_count": "The {count} token is how many tiles THIS brand sees, spelled as a word and substituted in index.astro. Keep the braces and never type a number: each brand is offered a different number of studies, so a typed count is right for one hostname and wrong for the rest. Not hypothetical — the Wise hero read \"Two case studies\" above a three-tile grid until 2026-08-17.",
   "_systems": "The {systems} token is how many of THIS brand's studies argue design systems, spelled as a word and substituted in index.astro. Keep the braces and never type a number. \"the other\" asserts exactly one product-design study and the build refuses any other shape. Not hypothetical: this read \"One on the design system\" on Wise and Healf, which are both offered two of them, until 2026-08-19 — the same bug as _count one discipline across.",
   "brands": {
+    "revolut": {
+      "heroTitle": "{count} case studies, for Revolut."
+    },
     "wise": {
       "heroTitle": "{count} case studies, for Wise."
     },

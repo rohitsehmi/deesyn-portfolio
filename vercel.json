@@ -6,6 +6,11 @@
   "rewrites": [
     {
       "source": "/og.png",
+      "has": [{ "type": "host", "value": "^revolut\\.deesyn\\.com$" }],
+      "destination": "/og-revolut.png"
+    },
+    {
+      "source": "/og.png",
       "has": [{ "type": "host", "value": "^wise\\.deesyn\\.com$" }],
       "destination": "/og-wise.png"
     },
@@ -35,7 +40,7 @@
       "missing": [
         {
           "type": "host",
-          "value": "^(?:(?:www|wise|healf|ticketmaster|asos)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
+          "value": "^(?:(?:www|revolut|wise|healf|ticketmaster|asos)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
         }
       ],
       "destination": "https://www.deesyn.com/$1",

@@ -24,6 +24,7 @@
  * see is one you stop thinking about.
  */
 import { loadPacks, resolvePack } from '../tokens/brands.mjs';
+import { BRANDS, DEFAULT_BRAND } from '../src/data/brands.ts';
 
 /* ---------- colour ------------------------------------------------------- */
 
@@ -117,11 +118,23 @@ const EXEMPT = new Set([
   flattened per brand rather than per file: a brand is what a reader is
   actually looking at, and reporting "portfolio.json passes" would hide which
   hostnames that covers.
+
+  DRIVEN FROM `BRANDS`, NOT FROM THE PACKS, since 2026-08-26 — and the
+  difference is a brand that silently went unmeasured. It used to be the base
+  row plus whatever the packs claimed, which covers every brand only while
+  every brand except the default has a pack. Revolut broke that the day it was
+  demoted from default to partner: it has no pack, because it resolves to the
+  base collection that was measured from it in the first place, so it appeared
+  in neither half and nothing said so. The palette really was covered, by the
+  base row, and that is exactly why it would not have been noticed.
+
+  Asking BRANDS instead means a brand cannot be absent, only unpainted, and an
+  unpainted brand resolves to base and is measured as base under its own name.
+  Same lesson as the receipts grid and the index count: derive the list from
+  what exists, never from what happens to be configured.
 */
-const brands = [
-  ['deesyn (base)', null],
-  ...loadPacks().flatMap(({ brands: bs, pack }) => bs.map((b) => [b, pack]))
-];
+const packFor = (brand) => loadPacks().find((p) => p.brands.includes(brand))?.pack ?? null;
+const brands = BRANDS.map((b) => [b === DEFAULT_BRAND ? `${b} (base)` : b, packFor(b)]);
 
 const failures = [];
 const notes = [];

@@ -7,8 +7,9 @@
 # assets, used verbatim as a study of their system.
 #
 # The apex stopped being part of that on 2026-08-26 -- it carries the Ro mark
-# alone and names no company. This still applies to every hostname, because the
-# icon set is shared and the lockup lives one subdomain away.
+# alone and names no company. Every other hostname still carries the lockup it
+# was addressed to, and the icon set is shared, so this still applies to all of
+# them.
 #
 # robots.txt only asks. The enforcement is the X-Robots-Tag header in
 # vercel.json, which also covers the CV PDF -- a meta tag cannot.
