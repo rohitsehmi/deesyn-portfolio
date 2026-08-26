@@ -1,0 +1,365 @@
+{
+  "name": "Content/Convergence Scenarios",
+  "slug": "content-convergence-scenarios",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/ConvergenceScenarios.tsx",
+    "styles": "src/components/ConvergenceScenarios.css"
+  },
+  "description": "Five ways to converge four design systems, on one scale, with the one the\nleads recommended and the one the business took both marked.\n\nTHE UNLABELLED RUNGS ARE THE POINT, not an omission, and they are why this\ncomponent exists rather than a list. The record names the two ends of the\nrange and says the recommendation was \"one of the middle options\"; it does not\nname the middle three, and inventing them would be fabricating the content of\na real artefact. Drawn as positions on a scale they say exactly what is known,\nand the argument needs no more than that: a spectrum existed, the leads\nrecommended its middle, the business took its far end.\n\nFor the same reason the recommendation is a BRACKET rather than a mark. \"One\nof the middle options\" is vague in the record, and a bracket is that vagueness\ndrawn precisely where a dot would be a claim about which one.\n\nNO CONTROL, WHICH IS THE DELIBERATE DIFFERENCE from the two figures above it\non this page. Those hide a rejected alternative that cannot be drawn at the\nsame time as the shipped one, so a control is what lets a reader see both.\nHere the recommendation and the choice are both on the scale at once and\nnothing is hidden, so a toggle would be a device rather than content — and\nthree of them in one section is a tic a reader starts noticing instead of\nreading.",
+  "donts": [
+    "Do not name the three middle rungs. The record names the two ends of the range and says the recommendation was \"one of the middle options\"; inventing the rest is fabricating the content of a real artefact, which is the hazard the four reconstructions in asset-provenance.json already carry.",
+    "Do not mark the recommendation as a single rung. \"One of the middle options\" is vague in the record, so a bracket says that exactly where a dot would be a claim about which one.",
+    "Do not draw the trade-off as a value per rung. The record gives a direction and not a measurement, and five bars draw numbers nobody has. It is an axis label at each pole.",
+    "Do not give this one a control. Both the recommendation and the choice are on the scale at once, so nothing is hidden and a toggle would be a device; three toggles in one section is a tic a reader notices instead of reading.",
+    "Do not paint a node with a band token. An outlined dot needs a background to hide the rail behind it, and the only honest value for that is whichever band the figure landed on, which is not a token. Fill the dots instead.",
+    "Do not drop the alt. Three of the five rungs carry no text, so a reader who cannot see the scale gets two labels and nothing between them unless the description says the positions are there."
+  ],
+  "props": {
+    "alt": {
+      "type": "string",
+      "required": true,
+      "note": "The accessible name for the whole figure, and REQUIRED for the same reason the other diagrams require one: a picture built from elements has no missing image for anyone to notice, so an undescribed one ships looking finished and nothing reports it. It has to carry what the unlabelled rungs mean. A sighted reader sees three dots between two named ends and reads a spectrum; announced, three rungs with no text are simply absent unless the description says they are there."
+    },
+    "scenarios": {
+      "type": "ConvergenceScenario[]",
+      "required": true,
+      "note": "Least ambitious first, so reading down is reading along the scale."
+    },
+    "trade": {
+      "type": "ConvergenceTrade",
+      "required": true,
+      "note": "The two poles of the trade-off, as axis labels rather than values."
+    },
+    "notes": {
+      "type": "ConvergenceNotes",
+      "required": true,
+      "note": "The two annotations, and the only prose in the picture."
+    },
+    "caption": {
+      "type": "string",
+      "required": false
+    },
+    "captionCopyRef": {
+      "type": "string",
+      "required": false,
+      "note": "`<file>:<path>` into src/copy, making the caption editable in the browser under `npm run dev`. Dev tooling only; inert in a build."
+    }
+  },
+  "tokens": {
+    ".convergence-scenarios": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      }
+    ],
+    ".convergence-scenarios__poles": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "padding-inline",
+        "var": "--cs-count",
+        "local": "--cs-count"
+      },
+      {
+        "property": "padding-block-end",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      }
+    ],
+    ".convergence-scenarios__pole": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      },
+      {
+        "property": "font",
+        "var": "--type-emphasis-4",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-4-tracking",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    ".convergence-scenarios__pole::before,\n.convergence-scenarios__pole::after": [
+      {
+        "property": "border-block",
+        "var": "--primitive-space-sp100",
+        "ref": "primitive.space.sp100"
+      }
+    ],
+    ".convergence-scenarios__pole[data-pole='start']::before": [
+      {
+        "property": "border-inline-end",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      }
+    ],
+    ".convergence-scenarios__pole[data-pole='end']::after": [
+      {
+        "property": "border-inline-start",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      }
+    ],
+    ".convergence-scenarios__note-slot": [
+      {
+        "property": "padding-block-end",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      }
+    ],
+    ".convergence-scenarios__bracket": [
+      {
+        "property": "height",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      }
+    ],
+    ".convergence-scenarios__bracket[data-where]": [
+      {
+        "property": "border-block-start",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "border-block-start",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".convergence-scenarios__bracket[data-where='start']": [
+      {
+        "property": "border-inline-start",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "border-inline-start",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "border-start-start-radius",
+        "var": "--primitive-radius-r4",
+        "ref": "primitive.radius.r4"
+      }
+    ],
+    ".convergence-scenarios__bracket[data-where='end']": [
+      {
+        "property": "border-inline-end",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "border-inline-end",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "border-start-end-radius",
+        "var": "--primitive-radius-r4",
+        "ref": "primitive.radius.r4"
+      }
+    ],
+    ".convergence-scenarios__rail": [
+      {
+        "property": "height",
+        "var": "--primitive-size-s24",
+        "ref": "primitive.size.s24"
+      }
+    ],
+    ".convergence-scenarios__rail::before": [
+      {
+        "property": "background",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      }
+    ],
+    ".convergence-scenarios__node": [
+      {
+        "property": "width",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      }
+    ],
+    ".convergence-scenarios__rung[data-named] .convergence-scenarios__node": [
+      {
+        "property": "width",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".convergence-scenarios__rung[data-chosen] .convergence-scenarios__node": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s16",
+        "ref": "primitive.size.s16"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s16",
+        "ref": "primitive.size.s16"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".convergence-scenarios__body": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      },
+      {
+        "property": "max-width",
+        "var": "--cs-count",
+        "local": "--cs-count"
+      },
+      {
+        "property": "max-width",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "padding-block-start",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      }
+    ],
+    ".convergence-scenarios__label": [
+      {
+        "property": "font",
+        "var": "--type-body-2",
+        "ref": "typography.body.2"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-2-tracking",
+        "ref": "typography.body.2"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".convergence-scenarios__note": [
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp50",
+        "ref": "primitive.space.sp50"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "font",
+        "var": "--type-emphasis-4",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-4-tracking",
+        "ref": "typography.emphasis.4"
+      }
+    ],
+    ".convergence-scenarios__note[data-kind='chosen']": [
+      {
+        "property": "background",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      }
+    ],
+    ".convergence-scenarios__caption": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      },
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      }
+    ]
+  }
+}

@@ -2,6 +2,7 @@ import { Media, type MediaRatio } from './Media';
 import { Carousel, type CarouselProps } from './Carousel';
 import { GovernanceTiers, type GovernanceTiersProps } from './GovernanceTiers';
 import { ComponentModels, type ComponentModelsProps } from './ComponentModels';
+import { ConvergenceScenarios, type ConvergenceScenariosProps } from './ConvergenceScenarios';
 import './Explorations.css';
 
 /**
@@ -16,7 +17,8 @@ import './Explorations.css';
  */
 export type ExplorationDiagram =
   | ({ kind: 'governance' } & GovernanceTiersProps)
-  | ({ kind: 'component-models' } & ComponentModelsProps);
+  | ({ kind: 'component-models' } & ComponentModelsProps)
+  | ({ kind: 'convergence' } & ConvergenceScenariosProps);
 
 export interface Exploration {
   /** What the direction was, in the fewest words that identify it. */
@@ -95,6 +97,10 @@ function Diagram(diagram: ExplorationDiagram) {
   if (diagram.kind === 'component-models') {
     const { kind, ...props } = diagram;
     return <ComponentModels {...props} />;
+  }
+  if (diagram.kind === 'convergence') {
+    const { kind, ...props } = diagram;
+    return <ConvergenceScenarios {...props} />;
   }
   const { kind, ...props } = diagram;
   return <GovernanceTiers {...props} />;

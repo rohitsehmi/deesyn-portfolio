@@ -1,0 +1,293 @@
+/*
+  NO COLOUR LITERALS AND NOTHING ABSOLUTE, the same family as
+  GovernanceTiers.css and ComponentModels.css. This depicts a SCALE, and a scale
+  has no colour of its own, so every tone is a token, the whole picture repaints
+  with the brand pack, and there is nothing in it that can go stale.
+
+  Every wash mixes with `transparent` rather than a band token, for the reason
+  ComponentModels.css sets out at length: mixing against `band-sunken` paints one
+  specific band's fill, and this ships on a `base` band and renders against all
+  four in Storybook.
+*/
+
+.convergence-scenarios {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+}
+
+.convergence-scenarios__figure {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- the poles ----------------------------------------------------------- */
+
+/*
+  The two ends of the trade-off, drawn as axis labels rather than as values on
+  each rung. The record gives a direction and not a measurement, and five bars
+  would draw numbers nobody has.
+
+  The caret is a CSS triangle, not a glyph. A text arrow renders from whatever
+  fallback font has it, at a weight and baseline nothing here controls, and the
+  two ends of an axis have to be exact mirrors of one another.
+*/
+.convergence-scenarios__poles {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--primitive-space-sp500);
+  /* Half a column in from each edge, which is where the outermost nodes are.
+     See --cs-count in ConvergenceScenarios.tsx. */
+  padding-inline: calc(50% / var(--cs-count));
+  padding-block-end: var(--primitive-space-sp500);
+}
+
+.convergence-scenarios__pole {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-space-sp200);
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  text-transform: uppercase;
+  color: var(--semantic-fg-secondary);
+}
+.convergence-scenarios__pole::before,
+.convergence-scenarios__pole::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-block: var(--primitive-space-sp100) solid transparent;
+}
+/* Outward-pointing, so the pair reads as the two ends of one axis rather than as
+   two labels that happen to sit on the same line. */
+.convergence-scenarios__pole[data-pole='start']::before {
+  border-inline-end: var(--primitive-space-sp200) solid currentColor;
+}
+.convergence-scenarios__pole[data-pole='end']::after {
+  border-inline-start: var(--primitive-space-sp200) solid currentColor;
+}
+
+/* ---- the scale ----------------------------------------------------------- */
+
+/*
+  FOUR ROWS, FIVE COLUMNS, AND NOT ONE EXPLICIT GRID POSITION. The list items are
+  `display: contents`, so each rung's four children fall through into the grid
+  and auto-placement fills every row in source order, which is the order the
+  rungs are written in. Explicit placement would mean a component that has to
+  know how many scenarios there are.
+
+  `display: contents` on an `li` normally costs the list semantics. It costs
+  nothing here: the figure carries `role="img"`, so assistive technology never
+  traverses into it and the alt is what gets announced.
+*/
+.convergence-scenarios__scale {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  /*
+    `minmax(0, 1fr)` and not `1fr`, which is the bug this figure shipped first.
+    A bare `1fr` is `minmax(auto, 1fr)`, so a column can never be narrower than
+    its content's min-content size — and the two end captions are `max-content`,
+    so columns one and five inflated, the three between them shrank, and the five
+    nodes stopped being evenly spaced on a scale whose whole job is even spacing.
+    The captions then met in the middle and overprinted each other.
+  */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: auto auto auto auto;
+  align-items: stretch;
+}
+
+.convergence-scenarios__rung { display: contents; }
+
+/* ---- the bracket, and its label ------------------------------------------ */
+
+/*
+  The note slot is rendered on EVERY rung, empty or not. Row one fills in source
+  order, so four missing slots would put the fifth rung's note in column one and
+  the bracket's label would sit over the wrong end of the scale.
+
+  `max-content` lets the label overflow the fifth of the grid it is centred in.
+  The three middle columns are empty either side of it, so there is nothing to
+  collide with.
+*/
+.convergence-scenarios__note-slot {
+  grid-row: 1;
+  align-self: end;
+  justify-self: center;
+  width: max-content;
+  padding-block-end: var(--primitive-space-sp200);
+}
+
+/*
+  The span the recommendation sat somewhere inside, drawn as a bracket over the
+  middle rungs rather than as a mark on one of them. The record says "one of the
+  middle options" and does not say which, so a dot would be a claim and this is
+  not.
+
+  Each end stops at 50% of its own column, which is the node's centre because a
+  node is centred in a cell that stretches. Governance's bypass paid for this
+  once already: a percentage guessed instead of computed left the route ending in
+  mid-air beside the node it was supposed to join.
+*/
+.convergence-scenarios__bracket {
+  grid-row: 2;
+  height: var(--primitive-space-sp400);
+}
+.convergence-scenarios__bracket[data-where] {
+  border-block-start: 1px solid
+    color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+}
+.convergence-scenarios__bracket[data-where='start'] {
+  margin-inline-start: 50%;
+  border-inline-start: 1px solid
+    color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+  border-start-start-radius: var(--primitive-radius-r4);
+}
+.convergence-scenarios__bracket[data-where='end'] {
+  margin-inline-end: 50%;
+  border-inline-end: 1px solid
+    color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+  border-start-end-radius: var(--primitive-radius-r4);
+}
+
+/* ---- the rail ------------------------------------------------------------ */
+
+.convergence-scenarios__rail {
+  grid-row: 3;
+  position: relative;
+  display: grid;
+  place-items: center;
+  justify-self: stretch;
+  height: var(--primitive-size-s24);
+}
+/*
+  The line is the RAIL CELL'S own pseudo element and runs its full width, so it
+  cannot drift from the node it joins however the columns resize. The first and
+  last stop at 50%, which is the node's centre, and that is what keeps the scale
+  from starting and ending in mid-air outside the outermost dots.
+*/
+.convergence-scenarios__rail::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 50%;
+  height: 1px;
+  background: var(--semantic-border-strong);
+}
+.convergence-scenarios__rung:first-child .convergence-scenarios__rail::before {
+  inset-inline-start: 50%;
+}
+.convergence-scenarios__rung:last-child .convergence-scenarios__rail::before {
+  inset-inline-end: 50%;
+}
+
+/*
+  EVERY NODE IS A SOLID FILL AND NONE OF THEM PAINTS THE BAND. An outlined dot
+  needs a background to hide the rail passing behind it, and the only honest
+  value for that is "whatever band this landed on", which is not a token — the
+  same trap ComponentModels.css records, one element smaller. Filled dots need no
+  background at all, so the question never arises.
+
+  Three weights, and they are a ladder rather than decoration: an unnamed rung is
+  a position on the scale, a named one is an end the record describes, and the
+  chosen one is what the business took. Size and fill both move, so no single
+  channel carries the meaning.
+*/
+.convergence-scenarios__node {
+  position: relative;
+  width: var(--primitive-space-sp300);
+  height: var(--primitive-space-sp300);
+  border-radius: var(--primitive-radius-round);
+  background: var(--semantic-border-strong);
+}
+.convergence-scenarios__rung[data-named] .convergence-scenarios__node {
+  width: var(--primitive-space-sp400);
+  height: var(--primitive-space-sp400);
+  background: var(--semantic-fg-primary);
+}
+.convergence-scenarios__rung[data-chosen] .convergence-scenarios__node {
+  width: var(--primitive-size-s16);
+  height: var(--primitive-size-s16);
+  background: color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+}
+
+/* ---- a rung's body ------------------------------------------------------- */
+
+/*
+  Only the two ends carry one, and each is anchored to its own end of the scale
+  so it sits under the node it names. The width cap is what stops the two of them
+  meeting in the middle at a narrow width: 20ch each inside a 350px scale leaves a
+  gap, where an uncapped `max-content` would have them overlap in column three.
+*/
+.convergence-scenarios__body {
+  grid-row: 4;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--primitive-space-sp200);
+  width: max-content;
+  /*
+    Two caps, and the second is the one that matters. 34ch is a comfortable
+    measure for a caption; the other is how far a caption can run before it meets
+    the one coming the other way, which is from its own node to the centre of the
+    scale, less a gutter. A caption starts half a column in and a percentage here
+    resolves against the column, so that distance is (count - 1) x 50%.
+  */
+  max-width: min(34ch, calc((var(--cs-count) - 1) * 50% - var(--primitive-space-sp600)));
+  padding-block-start: var(--primitive-space-sp200);
+}
+/*
+  The two end captions are pulled onto their nodes rather than onto the grid.
+  A percentage margin on a grid item resolves against its own column, so 50% is
+  exactly half a column and lands the caption's inner edge on the node's centre.
+  Left as grid-aligned they start and end at the figure's edges while the nodes
+  they name sit a tenth of the way in, which reads as a drawing error.
+*/
+.convergence-scenarios__rung:first-child .convergence-scenarios__body {
+  margin-inline-start: 50%;
+}
+.convergence-scenarios__rung:last-child .convergence-scenarios__body {
+  justify-self: end;
+  align-items: end;
+  text-align: end;
+  margin-inline-end: 50%;
+}
+.convergence-scenarios__label {
+  font: var(--type-body-2);
+  letter-spacing: var(--type-body-2-tracking);
+  color: var(--semantic-fg-primary);
+}
+
+/*
+  The two annotations. Accent for the plate and the boundary, fg/primary for the
+  word: the label carries a 4.5:1 requirement and the accent cannot meet it on
+  both bands, so it does not have to — the accent says "something is being
+  pointed at" and the token built for reading says what.
+*/
+.convergence-scenarios__note {
+  padding: var(--primitive-space-sp50) var(--primitive-space-sp300);
+  border: 1px solid color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+  border-radius: var(--primitive-radius-round);
+  background: color-mix(in srgb, var(--semantic-fg-accent) 16%, transparent);
+  color: var(--semantic-fg-primary);
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  white-space: nowrap;
+}
+/* The choice is the end of the argument, so it is solid where the recommendation
+   is dashed. Not colour alone: the fill, the boundary and the node all move. */
+.convergence-scenarios__note[data-kind='chosen'] {
+  background: color-mix(in srgb, var(--semantic-fg-accent) 28%, transparent);
+}
+.convergence-scenarios__note[data-kind='recommended'] {
+  border-style: dashed;
+}
+
+.convergence-scenarios__caption {
+  color: var(--semantic-fg-secondary);
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+}

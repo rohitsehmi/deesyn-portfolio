@@ -131,6 +131,14 @@
       "Do not label every mark. Five copies of the same two words read as part of the structure rather than as an annotation on it, and the control above already names what is being changed.",
       "Never let the toggle be anything but a real checkbox. The space bar, the focus ring and the announced state come free from the browser, and a div with a click handler has none of them.",
       "Never put `role=\"img\"` over the control. It labels the two MODELS, which are a picture; a checkbox inside a region announced as an image is a control assistive technology has been told to skip."
+    ],
+    "Content/Convergence Scenarios": [
+      "Do not name the three middle rungs. The record names the two ends of the range and says the recommendation was \"one of the middle options\"; inventing the rest is fabricating the content of a real artefact, which is the hazard the four reconstructions in asset-provenance.json already carry.",
+      "Do not mark the recommendation as a single rung. \"One of the middle options\" is vague in the record, so a bracket says that exactly where a dot would be a claim about which one.",
+      "Do not draw the trade-off as a value per rung. The record gives a direction and not a measurement, and five bars draw numbers nobody has. It is an axis label at each pole.",
+      "Do not give this one a control. Both the recommendation and the choice are on the scale at once, so nothing is hidden and a toggle would be a device; three toggles in one section is a tic a reader notices instead of reading.",
+      "Do not paint a node with a band token. An outlined dot needs a background to hide the rail behind it, and the only honest value for that is whichever band the figure landed on, which is not a token. Fill the dots instead.",
+      "Do not drop the alt. Three of the five rungs carry no text, so a reader who cannot see the scale gets two labels and nothing between them unless the description says the positions are there."
     ]
   }
 }

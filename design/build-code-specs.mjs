@@ -56,7 +56,8 @@ const CODE_ONLY = [
   */
   { name: 'Content/Token Tiers', base: 'TokenTiers' },
   { name: 'Content/Governance Tiers', base: 'GovernanceTiers' },
-  { name: 'Content/Component Models', base: 'ComponentModels' }
+  { name: 'Content/Component Models', base: 'ComponentModels' },
+  { name: 'Content/Convergence Scenarios', base: 'ConvergenceScenarios' }
 ];
 
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

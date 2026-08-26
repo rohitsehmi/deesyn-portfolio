@@ -18,6 +18,9 @@ import {
   COMPONENT_DECISIONS, COMPONENT_MODELS, COMPONENT_MODELS_BASE,
   COMPONENT_MODELS_CHANGE, COMPONENT_MODELS_SUBJECT, DESIGN_LANGUAGES
 } from '../../data/egds-component-models';
+import {
+  CONVERGENCE_NOTES, CONVERGENCE_SCENARIOS, CONVERGENCE_TRADE
+} from '../../data/egds-convergence-scenarios';
 import copy from '../../copy/scaling-a-system.json';
 
 /**
@@ -61,6 +64,7 @@ const explorationAt = (opening: string) => {
 };
 
 const MODELS = explorationAt('Building all four');
+const CONVERGENCE = explorationAt('The middle convergence');
 const GOVERNANCE = explorationAt('Letting any team');
 
 /*
@@ -130,7 +134,7 @@ const GOVERNANCE = explorationAt('Letting any team');
       a wide comparison is illegible at half measure, and all three artefacts
       here are wide. The governance diagram is three panels side by side and the
       component-models one is two structures side by side; both need the whole
-      column, and the one still outstanding will need it too.
+      column, and the convergence scale runs the full measure of the article.
     */}
     <Explorations
       layout="stack"
@@ -148,6 +152,16 @@ const GOVERNANCE = explorationAt('Letting any team');
                 models: COMPONENT_MODELS,
                 base: COMPONENT_MODELS_BASE,
                 change: COMPONENT_MODELS_CHANGE
+              }
+            }
+          : i === CONVERGENCE
+          ? {
+              diagram: {
+                kind: 'convergence' as const,
+                alt: e.imageAlt,
+                scenarios: CONVERGENCE_SCENARIOS,
+                trade: CONVERGENCE_TRADE,
+                notes: CONVERGENCE_NOTES
               }
             }
           : i === GOVERNANCE
