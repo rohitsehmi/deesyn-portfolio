@@ -24,7 +24,7 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 // Brand pack. Static, so it cannot take a runtime path — see LOGO_PATHS in
 // paths.mjs for why converting it early would buy an untested code path.
-import { LOCKUP_PATHS, LOCKUP_VIEWBOX, PARTNER_WORDMARKS } from '../src/components/logo-paths.ts';
+import { LOCKUP_PATHS, LOCKUP_VIEWBOX, MARK_PATHS, MARK_VIEWBOX, PARTNER_WORDMARKS } from '../src/components/logo-paths.ts';
 import { BRANDS, DEFAULT_BRAND } from '../src/data/brands.ts';
 import { TOKENS, FAVICON_OUT } from './paths.mjs';
 import { loadPacks, resolvePack } from '../tokens/brands.mjs';
@@ -75,8 +75,23 @@ const H = 630;
 const LOCKUP_W = 520;
 const [, , vbW, vbH] = LOCKUP_VIEWBOX.split(/\s+/).map(Number);
 const LOCKUP_H = Math.round((LOCKUP_W / vbW) * vbH);
-const x = Math.round((W - LOCKUP_W) / 2);
-const y = Math.round((H - LOCKUP_H) / 2);
+
+/*
+  The default brand's card is the MARK, because that brand has no partner and a
+  lockup with nothing to the right of its `x` reads as a card whose second half
+  failed to load.
+
+  ITS SIZE IS DERIVED RATHER THAN CHOSEN: the square with the same area as the
+  lockup's box, round(sqrt(520 x 107)) = 236. Matching the lockup's HEIGHT
+  instead would have been the obvious rule and is the wrong one — it renders the
+  disc at exactly the size it already is inside a partner lockup, which is
+  correct as a family resemblance and far too small as the only object on a
+  1200x630 field. Matching area is what keeps the five cards feeling like one
+  set when they are seen days apart in different conversations, which is the
+  only way anybody ever sees them.
+*/
+const MARK_W = Math.round(Math.sqrt(LOCKUP_W * LOCKUP_H));
+const [, , markVbW, markVbH] = MARK_VIEWBOX.split(/\s+/).map(Number);
 
 /**
  * One card per brand.
@@ -90,27 +105,42 @@ const y = Math.round((H - LOCKUP_H) / 2);
  * rewrites /og.png per host, which happens server-side and so applies to a
  * crawler exactly as it does to a browser. The tag in the HTML stays one URL.
  *
- * Only the LAST path differs: the disc, the script and the `x` are shared, and
- * PARTNER_WORDMARKS holds the partner logotype in the same 0 0 233 48 viewBox.
- * Revolut is not in that map because its logotype IS the last entry of
- * LOCKUP_PATHS — the default, and what a client with no JavaScript renders.
+ * Only the logotype differs between partner cards: the disc, the script and the
+ * `x` are shared in LOCKUP_PATHS, and PARTNER_WORDMARKS holds each partner's
+ * logotype in the same 0 0 233 48 viewBox.
+ *
+ * The DEFAULT brand is not in that map and takes a different shape rather than a
+ * different path, since 2026-08-26. It has no partner, so its card is the mark
+ * alone — see MARK_W above. Until then the default WAS a partner in all but
+ * name: Revolut held the slot, its logotype was the last entry of LOCKUP_PATHS,
+ * and the card that unfurled from the apex in somebody's messages carried
+ * another company's mark.
  */
-const shared = LOCKUP_PATHS.slice(0, -1);
-const lockupFor = (brand) =>
-  brand === DEFAULT_BRAND ? LOCKUP_PATHS : [...shared, PARTNER_WORDMARKS[brand]];
+const artworkFor = (brand) =>
+  brand === DEFAULT_BRAND
+    ? { paths: MARK_PATHS, vbW: markVbW, vbH: markVbH, w: MARK_W }
+    : { paths: [...LOCKUP_PATHS, PARTNER_WORDMARKS[brand]], vbW, vbH, w: LOCKUP_W };
 
 const pub = join(root, FAVICON_OUT);
 mkdirSync(pub, { recursive: true });
 
 for (const brand of BRANDS) {
   const { fg, bg } = coloursFor(brand);
-  const paths = lockupFor(brand)
+  const art = artworkFor(brand);
+  const paths = art.paths
     .map((p) => `<path d="${p.d}"${p.evenOdd ? ' fill-rule="evenodd" clip-rule="evenodd"' : ''}/>`)
     .join('');
 
+  /* Centred on the artwork's own box, so the two shapes each land in the middle
+     of the card rather than one of them inheriting the other's offsets. */
+  const scale = art.w / art.vbW;
+  const artH = Math.round(scale * art.vbH);
+  const x = Math.round((W - art.w) / 2);
+  const y = Math.round((H - artH) / 2);
+
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
 <rect width="${W}" height="${H}" fill="${bg}"/>
-<g transform="translate(${x} ${y}) scale(${LOCKUP_W / vbW})" fill="${fg}">${paths}</g>
+<g transform="translate(${x} ${y}) scale(${scale})" fill="${fg}">${paths}</g>
 </svg>
 `;
   /*
@@ -131,5 +161,5 @@ for (const brand of BRANDS) {
   */
   const file = `og-${brand}.png`;
   await sharp(Buffer.from(svg), { density: 384 }).resize(W, H).png().toFile(join(pub, file));
-  console.log(`${file.padEnd(20)} ${W}x${H}, lockup ${LOCKUP_W}x${LOCKUP_H}, ${fg} on ${bg}`);
+  console.log(`${file.padEnd(20)} ${W}x${H}, art ${art.w}x${artH}, ${fg} on ${bg}`);
 }

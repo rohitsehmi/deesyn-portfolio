@@ -124,12 +124,21 @@ const structuredData = article
       so anything naming a company would be wrong on every other hostname.
 
       The card image is generated per brand and vercel.json rewrites /og.png
-      per host, and an unfurler STILL gets the Revolut one. og:image must be
+      per host, and an unfurler STILL gets the default one. og:image must be
       absolute per the OpenGraph spec, this builds it from `site`, and one
       prerendered build has one origin — so every host's HTML names
       www.deesyn.com, the crawler asks www, and www's arm is the default. The
       rewrite is correct and nothing reaches it. Verified on all four hosts by
       reading this tag out of production and fetching exactly what it names.
+
+      IT STOPPED BEING A CROSS-BRAND LEAK ON 2026-08-26 without being fixed,
+      which is worth separating from being fixed. The default card was
+      Revolut's lockup, so a link pasted from the Wise hostname unfurled with
+      another company's mark on it. The default card is now the bare Ro disc,
+      so the same broken path now shows a company-neutral mark instead of the
+      wrong company's. Still the wrong card, and no longer an embarrassing one.
+      The real fix is unchanged and is a build per brand, since that is what
+      gives each one its own `site`.
 
       Not fixable here, and not a bodge worth attempting: an absolute URL pins
       the host before any rewrite is consulted. It is contained rather than
@@ -188,8 +197,12 @@ const structuredData = article
       author's own framing and would not be fine for content one client should
       not see. That is what the separate-project split is for, later.
 
-      Anything not matched leaves the attribute unset, which renders Revolut —
-      the correct default for www and for the apex.
+      Anything not matched leaves the attribute unset, which renders the
+      default brand — company-neutral since 2026-08-26, and the correct answer
+      for www, for the apex, for a typo'd subdomain and for a client running no
+      JavaScript at all. The list below is partner brands ONLY and must stay
+      that way: naming the default here would set an attribute for it, and
+      every default arm in base.css keys off that attribute being ABSENT.
 
       The list is written out rather than imported, and it is the one place a
       brand has to be typed a second time: this is an inline blocking script, so

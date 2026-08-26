@@ -4,10 +4,9 @@
     "wise",
     "healf",
     "ticketmaster",
-    "asos",
-    "deesyn"
+    "asos"
   ],
-  "$brandsComment": "deesyn is declared but is NOT in src/data/brands.ts, so nothing emits for it and no hostname serves it. Kept deliberately as a working reference. verify-brands.mjs prints it rather than failing, for the same reason verify.mjs prints deprecated components: an inert thing that stops being visible becomes a surprise later.",
+  "$brandsComment": "`deesyn` WAS DECLARED HERE AND WAS REMOVED ON 2026-08-26, when it stopped being a spare name and became the default brand in src/data/brands.ts. It was kept as an inert working reference on the reasoning that verify-brands.mjs prints an unserved brand rather than failing, the same way verify.mjs prints deprecated components. That reasoning held exactly as long as nothing served the name. The default brand carries NO [data-brand] attribute, so a pack arm for it emits `:root[data-brand='deesyn']`, which can never match — and an inert rule reads as a theme somebody is getting. It was not merely inert either: design/build-og-image.mjs resolves a card's colours by asking which pack claims the brand, so the apex card was painted in the portfolio ramp while the apex site rendered the base one. Two surfaces of one brand disagreeing about its colour, found by reading the build output rather than by any check. Adding a name here now means committing to serve it.",
   "primitive": {
     "portfolio": {
       "teal": {

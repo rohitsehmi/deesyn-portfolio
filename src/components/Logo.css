@@ -7,3 +7,30 @@
    base.css, which every brand-specific element on the site shares. Nothing
    logo-specific is needed: `display: revert` on an SVG child resolves to
    inline, which is what a <path> wants. */
+
+/*
+  THE DEFAULT BRAND RENDERS THE DISC ALONE, and this rule is the whole of how.
+
+  Every host gets the same 233x48 lockup element, because one prerendered build
+  answers all five and a viewBox is an attribute that cannot vary by brand. What
+  varies is the viewport it is shown through: squaring the box, against the
+  `xMinYMid slice` in Logo.tsx, clips it to viewBox x 0..48 — which is exactly
+  where the disc sits, in both the mark and the lockup, at the same coordinates.
+
+  So the mark is not a second asset and not a second element. It is the lockup
+  seen through a narrower window, which is what keeps one copy of the 6.5kB disc
+  in the HTML instead of two.
+
+  Keyed on the ABSENCE of [data-brand] rather than on a brand name, the same as
+  every rule at the foot of base.css: absence IS the default, since the inline
+  script sets the attribute for partner brands only. Naming the default here
+  would give it a rule that never matches, which is the bug the third brand
+  found in that file.
+
+  `width: auto` is load-bearing and not tidying. The element carries a width
+  ATTRIBUTE of height x 233/48, and a presentation attribute loses to any author
+  rule, so this is what releases the box for aspect-ratio to size. Nav and Footer
+  both already say `width: auto` at (0,2,0); this sits at (0,3,0) so it holds
+  wherever the logo is used without them, Storybook included.
+*/
+:root:not([data-brand]) .logo--lockup { width: auto; aspect-ratio: 1; }

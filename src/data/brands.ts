@@ -22,7 +22,7 @@
  * build-code-specs.mjs writes a contract for each one. This is data, not a
  * component, and must move neither number.
  */
-export const BRANDS = ['revolut', 'wise', 'healf', 'ticketmaster', 'asos'] as const;
+export const BRANDS = ['deesyn', 'wise', 'healf', 'ticketmaster', 'asos'] as const;
 
 export type Brand = (typeof BRANDS)[number];
 
@@ -31,8 +31,26 @@ export type Brand = (typeof BRANDS)[number];
  * unrecognised subdomain and a client running no JavaScript all resolve to. It
  * is a default in the strong sense: nothing has to work for it to be chosen,
  * which is why it is the one that must never be brand-gated.
+ *
+ * IT NAMES NO COMPANY, since 2026-08-26, and that is the point of it rather
+ * than a gap waiting to be filled. `revolut` held this slot until then, so the
+ * one hostname anybody reaches by typing the address rendered another
+ * company's logotype in its chrome and their name in its first sentence. An
+ * `x` lockup conventionally reads as a partnership; on a targeted subdomain
+ * sent to a named person that says the right thing, and on the open apex it
+ * implies an engagement that does not exist. The apex now carries the mark
+ * alone and the lockup survives only where it was aimed at somebody.
+ *
+ * So this is the only brand with no partner logotype, and PartnerBrand below
+ * is what makes that a checked fact rather than a convention.
+ *
+ * `deesyn` is ALSO declared by tokens/brands/portfolio.json's ancestor comment
+ * as a palette reference, and it is deliberately not in that pack's `brands`
+ * list: a pack emits `:root[data-brand=x]`, this brand never carries the
+ * attribute, and a rule that can never match is worse than no rule because it
+ * reads as a theme somebody is getting.
  */
-export const DEFAULT_BRAND = 'revolut' as const satisfies Brand;
+export const DEFAULT_BRAND = 'deesyn' as const satisfies Brand;
 
 /**
  * Every brand except the default, which is the set that needs its own partner
@@ -47,5 +65,22 @@ export const DEFAULT_BRAND = 'revolut' as const satisfies Brand;
  * PARTNER_WORDMARKS is keyed by this, so adding a brand above without drawing
  * its logotype is a typecheck failure rather than an undefined path that
  * renders as a lockup with nothing after the `x`.
+ *
+ * It is also what the `x` glyph itself is gated on, since the default brand
+ * stopped having a partner: the glyph belongs to the lockup, not to the mark,
+ * and deriving its `data-brand-only` list from here is what stops a sixth
+ * brand arriving to find the `x` hidden on its own hostname.
  */
 export type PartnerBrand = Exclude<Brand, typeof DEFAULT_BRAND>;
+/**
+ * The same set at runtime, in the order BRANDS declares them.
+ *
+ * It exists because the `x` glyph in the lockup has to be hidden on the one
+ * brand that has nothing to its right, and `data-brand-only` is a string of
+ * whitespace-separated brand names rather than a type. Derived rather than
+ * typed out, for the reason every other count on this site is derived: a list
+ * that has to be edited in step with BRANDS is a list that will not be.
+ */
+export const PARTNER_BRANDS = BRANDS.filter(
+  (b): b is PartnerBrand => b !== DEFAULT_BRAND
+);

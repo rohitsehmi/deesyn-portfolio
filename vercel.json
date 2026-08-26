@@ -26,7 +26,7 @@
     },
     {
       "source": "/og.png",
-      "destination": "/og-revolut.png"
+      "destination": "/og-deesyn.png"
     }
   ],
   "redirects": [
@@ -35,7 +35,7 @@
       "missing": [
         {
           "type": "host",
-          "value": "^(?:(?:www|wise|revolut|healf|ticketmaster|asos)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
+          "value": "^(?:(?:www|wise|healf|ticketmaster|asos)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
         }
       ],
       "destination": "https://www.deesyn.com/$1",

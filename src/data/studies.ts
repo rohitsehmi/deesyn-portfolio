@@ -128,7 +128,7 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
     been a second design-system study sitting under the same tag as the first.
     Every other hostname shows all three.
 
-    Written out rather than expressed as "not revolut". The field says which
+    Written out rather than expressed as "not the default". The field says which
     brands are OFFERED a study, and a brand added later should have to be named
     here deliberately rather than inheriting a study nobody decided to give it —
     which is the same reason `brands` is absent, not exhaustive, when a study

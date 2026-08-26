@@ -1,10 +1,14 @@
 # Unlisted, not private. The URL is meant to be pasted into an application;
 # it is not meant to be crawled.
 #
-# Two things on this site are fine sent directly to Revolut and not fine
-# sitting in a search index: the Ro x Revolut lockup, which conventionally
-# reads as a partnership that does not exist, and Revolut's own icon assets,
-# taken verbatim from assets.revolut.com.
+# What is fine sent directly to a named person and not fine sitting in a search
+# index: the Ro x <company> lockup on each partner hostname, which conventionally
+# reads as a partnership that does not exist, and a third party's own icon
+# assets, used verbatim as a study of their system.
+#
+# The apex stopped being part of that on 2026-08-26 -- it carries the Ro mark
+# alone and names no company. This still applies to every hostname, because the
+# icon set is shared and the lockup lives one subdomain away.
 #
 # robots.txt only asks. The enforcement is the X-Robots-Tag header in
 # vercel.json, which also covers the CV PDF -- a meta tag cannot.

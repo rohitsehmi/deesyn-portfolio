@@ -30,9 +30,19 @@ import { track } from '@vercel/analytics';
  *
  * Read off the same [data-brand] the stylesheet uses rather than re-deriving it
  * from location.hostname, so the analytics can never disagree with what was
- * actually on screen. Absent means Revolut, exactly as it does in CSS.
+ * actually on screen. Absent means the default brand, exactly as it does in CSS.
+ *
+ * THE FALLBACK IS IMPORTED RATHER THAN TYPED, since 2026-08-26. It was the
+ * literal 'revolut', which was correct for as long as that was the default and
+ * became a silent mislabel the moment it was not: every event from the apex
+ * would have gone on reporting a brand the site had stopped being, in the one
+ * place nothing renders and so nothing looks wrong. Importing costs a
+ * const array in the bundle and removes the third hand-maintained copy of a
+ * name the CSS and the inline script already keep.
  */
-const brand = (): string => document.documentElement.dataset.brand ?? 'revolut';
+import { DEFAULT_BRAND } from '../data/brands';
+
+const brand = (): string => document.documentElement.dataset.brand ?? DEFAULT_BRAND;
 
 /**
  * Which artefact someone opened from "The receipts".

@@ -130,7 +130,7 @@ for (const path of underscored) {
  * hidden behind it. d1cfc70 added a rewrite from /og.png to /og-wise.png on the
  * Wise host so each brand unfurls its own social card. public/og.png is copied
  * byte-for-byte into dist/, so the static file matches first and the rewrite
- * never runs — every host serves the Revolut card, and the file looks correct
+ * never runs — every host serves the default card, and the file looks correct
  * while doing nothing at all. Confirmed against production rather than
  * reasoned about: wise.deesyn.com/og.png was sha256-identical to public/og.png.
  *
@@ -191,7 +191,7 @@ for (const rule of config.rewrites ?? []) {
 const ACCEPTED_PINS = {
   '/og.png': [
     'Accepted 2026-08-19. og:image must be absolute and one prerendered build has',
-    'one origin, so every host unfurls the Revolut card. Contained by robots.txt',
+    'one origin, so every host unfurls the default card. Contained by robots.txt',
     'and X-Robots-Tag, which stop a compliant unfurler reading the tag at all.',
     'The fix is the brand-pack split, not middleware.'
   ]

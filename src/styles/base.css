@@ -96,7 +96,7 @@ body {
   Base.astro sets [data-brand] on the root from location.hostname before the
   first paint, so nothing is ever painted for the wrong brand.
 
-  Revolut is the default and carries no attribute, which means www, the apex,
+  `deesyn` is the default and carries no attribute, which means www, the apex,
   any unrecognised subdomain and a client running no JavaScript all get it.
 
   display:none rather than visibility or clipping, deliberately: a hidden
@@ -119,7 +119,7 @@ body {
   own styling. The three receipts on /how-this-was-built are a `ul` that
   `.hb-links` lays out as a grid, three across above 768px; reverted to the UA
   `display: block` they stacked with no grid gap and no columns, and the Wise
-  host rendered them misaligned while the Revolut host was correct. The hero
+  host rendered them misaligned while the default host was correct. The hero
   spans escaped it only because `span` is inline either way, which is exactly
   how a bug like this stays hidden.
 
@@ -150,6 +150,25 @@ body {
   never needs editing because it names the brand it keeps rather than the ones
   it drops.
 
+  THE DEFAULT BRAND IS `deesyn` AND NAMES NO COMPANY, since 2026-08-26. It was
+  `revolut` until then, which meant the one address anybody reaches by typing
+  it carried another company's logotype in the chrome and their name in the
+  first sentence.
+
+  The arm still keeps a named exception rather than hiding everything tagged,
+  and that distinction cost a round trip worth recording: "the default owns no
+  brand-specific version of anything" is FALSE. It owns its own hero line and
+  its own receipts list, both tagged `data-brand-only="deesyn"` like any
+  other brand's, because the hero renders one span per brand and CSS picks. An
+  arm that hid every tagged element would have emptied the `h1` on the default
+  host — a heading with no accessible name at all, which is the exact failure
+  the third brand caused in this file and which is worse than a wrong name.
+
+  What the default genuinely does not own is a LOGOTYPE. That is expressed in
+  Logo.tsx by tagging the `x` and every wordmark with the partner brands, so
+  the default arm drops them and leaves the disc, rather than by weakening the
+  rule here.
+
   ~= rather than =, since 2026-08-17, so the attribute holds a LIST of brands
   rather than exactly one. `[data-brand-only='wise']` is an exact-string match
   and cannot express a thing that belongs to two brands out of three, which is
@@ -160,7 +179,7 @@ body {
   Everything that emitted one value keeps working untouched, which is why this
   was a change to three selectors rather than to every call site.
 */
-:root:not([data-brand]) [data-brand-only]:not([data-brand-only~='revolut']) { display: none; }
+:root:not([data-brand]) [data-brand-only]:not([data-brand-only~='deesyn']) { display: none; }
 [data-brand='wise'] [data-brand-only]:not([data-brand-only~='wise']) { display: none; }
 [data-brand='healf'] [data-brand-only]:not([data-brand-only~='healf']) { display: none; }
 [data-brand='ticketmaster'] [data-brand-only]:not([data-brand-only~='ticketmaster']) { display: none; }

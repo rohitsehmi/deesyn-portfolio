@@ -318,13 +318,18 @@ const covers = new Map(
         reading the raw HTML sees every span, and with no separator between them
         the h1's text content came out fused:
 
-          "Two case studies, for Revolut.Three case studies, for Wise.Three…"
+          "Two case studies, in full.Three case studies, for Wise.Three…"
 
         That matters here more than it would elsewhere. This URL travels one
         way — pasted to a named person — and increasingly that means pasted into
         an agent, which fetches the HTML and never runs the stylesheet. A single
-        space turns one garbled run-on into three complete sentences, each
-        naming the brand it belongs to.
+        space turns one garbled run-on into five complete sentences.
+
+        Note what that means now the default brand names nobody: the raw HTML
+        still carries every partner's line, so an agent reading the apex sees
+        four company names the rendered page does not show. That is the
+        isolation-by-routing limit stated at the top of base.css, and no
+        amount of hiding fixes it — only a build per brand does.
 
         A space, and not the tidier-looking options. `hidden` with a CSS
         un-hide would mean declaring a `display` value on the version that

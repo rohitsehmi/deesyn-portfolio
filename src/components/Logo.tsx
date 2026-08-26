@@ -1,10 +1,27 @@
 import './Logo.css';
-import { MARK_PATHS, LOCKUP_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, PARTNER_WORDMARKS, type BrandPath } from './logo-paths';
+import { MARK_PATHS, LOCKUP_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, PARTNER_WORDMARKS, X_GLYPH, type BrandPath } from './logo-paths';
+import { PARTNER_BRANDS } from '../data/brands';
+
+/*
+  The brands the `x` belongs to, as one whitespace-separated attribute value.
+
+  Derived from BRANDS rather than typed, so a sixth brand cannot arrive to find
+  the glyph hidden on its own hostname — which is the failure the hero copy and
+  the index grid have both already had in their own form.
+*/
+const PARTNER_LIST = PARTNER_BRANDS.join(' ');
 
 export interface LogoProps {
   /**
-   * `wordmark` is the Ro x Revolut lockup, 233x48. `mark` is the disc alone,
-   * 48x48.
+   * `wordmark` is the lockup, 233x48: the disc, an `x`, and whichever partner
+   * logotype the hostname calls for. `mark` is the disc alone, 48x48.
+   *
+   * ON THE DEFAULT BRAND THE TWO RENDER THE SAME THING, which is not a bug and
+   * is why the lockup is still what Nav and Footer ask for. That brand has no
+   * partner, so its `x` and every logotype are gated away and the CSS narrows
+   * the viewport to the disc — see Logo.css. Asking for the lockup keeps one
+   * element in the markup on every host rather than two swapped by CSS, and so
+   * keeps one copy of the 6.5kB disc in the HTML.
    *
    * The names are kept from the Figma component set so the two do not diverge,
    * though `lockup` would now be the more accurate word for the first. Rename
@@ -21,20 +38,20 @@ const SHAPES: Record<'wordmark' | 'mark', { paths: BrandPath[]; viewBox: string;
 };
 
 /**
- * `fill: currentColor` is the equivalent of Revolut's
- * `var(--rui-color-foreground)` — the artwork takes the colour of whatever it
- * sits in, so it goes white on an inverse band with no override. Never
- * recolour it.
+ * `fill: currentColor` — the artwork takes the colour of whatever it sits in,
+ * so it goes white on an inverse band with no override. Never recolour it.
  *
- * The lockup is a statement of what this site is: work made for Revolut, not
- * work by Revolut. It resolves the question the old version raised, which was
- * that presenting Revolut's wordmark alone made their identity read as the
- * site's own.
+ * THE LOCKUP IS NOW A PER-HOSTNAME STATEMENT RATHER THAN THE SITE'S IDENTITY,
+ * settled 2026-08-26. An `x` lockup conventionally reads as a partnership,
+ * which is exactly right on a subdomain sent to a named person and wrong on
+ * the open apex, where it implies an engagement that does not exist. The
+ * standing question was whether to keep it at all; the answer is that it
+ * belongs where it was aimed and nowhere else.
  *
- * One thing to settle before this is published anywhere open: an `x` lockup
- * conventionally reads as a partnership. Sent to Revolut as an application it
- * says exactly the right thing; on a public URL it could imply an engagement
- * that does not exist.
+ * So the default brand renders the disc alone and carries no company's mark in
+ * its chrome, and each partner hostname renders the lockup it was made for.
+ * The question is not closed by removing the lockup, it is closed by scoping
+ * it — one hostname, one reader, one claim.
  */
 /*
   The default accessible name is brand-neutral, and has to be: it is baked into
@@ -53,30 +70,62 @@ export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi' 
     HTML, so which brand a page belongs to cannot be known at build time when
     one build answers on several hostnames.
 
-    Only the last path differs. The first four — disc, script, `x` — are shared,
-    so this costs one 1.4kB path rather than a second lockup.
+    Only the logotype differs. The disc and the script are shared, so this
+    costs one path per brand rather than a second lockup each.
 
     `data-brand-only` is what the stylesheet keys off. With no `data-brand` on
-    the root, the Revolut logotype shows, which is the correct default for
-    www.deesyn.com and for any client that runs no JavaScript at all.
+    the root NOTHING here matches, so no logotype and no `x` render at all,
+    and the disc is left alone — which is the correct default for
+    www.deesyn.com, for the apex, for an unrecognised subdomain and for any
+    client that runs no JavaScript at all. That the fallback is the quietest
+    of the five outcomes rather than a named company's is the whole point of
+    the change; it used to be Revolut's.
   */
   const isLockup = variant === 'wordmark';
   return (
     <svg
-      className="logo"
+      className={isLockup ? 'logo logo--lockup' : 'logo'}
       viewBox={viewBox}
+      /*
+        xMin, and slice rather than the default meet, because the default
+        brand's copy of this element is a 233-wide viewBox shown in a square
+        viewport. `meet` would fit the whole box inside it and render a lockup
+        6.6px tall; `slice` scales to cover and clips from the left edge, which
+        lands exactly on the disc at x 0..48.
+
+        It is a no-op on every partner hostname, where the viewport and the
+        viewBox have the same ratio and there is nothing to clip. Left on
+        unconditionally rather than switched, since an attribute cannot vary by
+        brand in a prerendered build — which is the same constraint that puts
+        the logotypes in CSS.
+      */
+      preserveAspectRatio={isLockup ? 'xMinYMid slice' : 'xMidYMid meet'}
       height={height}
-      width={Math.round(height * ratio)}
+      /*
+        NOT ROUNDED, and that is a consequence of the slice above rather than
+        fussiness. `slice` scales the viewBox to COVER the viewport and clips
+        the overflow, so any disagreement between the two ratios is thrown away
+        rather than letter-boxed. Rounding 32 x 233/48 to 155 made the viewport
+        155/32 against a viewBox of 233/48 and cost 0.33px off the right edge —
+        harmless on Wise, which stops at 219.51 of 233 and has trailing space to
+        lose, and NOT harmless on Ticketmaster, whose wordmark is width-bound
+        and runs to the very edge of the box.
+
+        A tidier attribute is not worth a logo that is quietly a third of a
+        pixel short on one brand. Three decimals puts the residual clip at four
+        ten-thousandths of a pixel.
+      */
+      width={Number((height * ratio).toFixed(3))}
       fill="currentColor"
       role="img"
       aria-label={title}
       focusable="false"
     >
-      {paths.map((p, i) => (
+      {paths.map((p) => (
         <path
           key={p.d.slice(0, 24)}
           d={p.d}
-          {...(isLockup && i === paths.length - 1 ? { 'data-brand-only': 'revolut' } : {})}
+          {...(isLockup && p === X_GLYPH ? { 'data-brand-only': PARTNER_LIST } : {})}
           {...(p.evenOdd ? { fillRule: 'evenodd' as const, clipRule: 'evenodd' as const } : {})}
         />
       ))}

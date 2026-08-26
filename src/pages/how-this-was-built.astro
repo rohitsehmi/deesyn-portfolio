@@ -291,8 +291,10 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
       `undefined.links`.
     */}
     {receiptGroups.map(({ brands, links }) => {
+      /* Column count comes from the list length — see .hb-links in the style
+         block below for why it cannot be a constant. */
       return (
-      <ul class="hb-links" data-brand-only={brands.join(' ')}>
+      <ul class="hb-links" data-brand-only={brands.join(' ')} style={`--hb-cols:${links.items.length}`}>
       {links.items.map((l: any, i: number) => {
         const mark = SERVICE_MARKS[l.mark];
         /* Points at whichever block actually supplied this string, so the
@@ -353,8 +355,33 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
     display: grid;
     gap: var(--primitive-layout-l40);
   }
+  /*
+    THE TRACK COUNT IS EMITTED PER BRAND, NOT FIXED AT THREE.
+
+    The default brand carries two receipts and every partner carries three: the
+    shared Figma file is titled after a company, so the one hostname that names
+    none cannot link to it. A hardcoded repeat of 3 would put the default host's
+    two items in a three-track grid and leave a hole on the right.
+
+    This is the same bug the index grid had when a brand-specific study made the
+    tile count differ per brand, and the same lesson: display:none removes a
+    grid item and it cannot remove a track. Hiding a thing is not the same as
+    not having counted it, so the count has to be emitted rather than inferred
+    from what is left visible.
+
+    The value arrives as an inline custom property on each ul, which is safe
+    here in a way it was not on Parallax — there, an inline
+    --parallax-min-height made the stylesheet's per-breakpoint default
+    unreachable and no media query could win. This one is read in exactly one
+    place, inside the 768px arm, and it shadows no responsive default: below
+    that width the list stacks with no columns rule at all. Props are
+    overrides; the stylesheet still owns everything that varies by breakpoint.
+
+    The fallback of 3 is for a ul that somehow renders without the property, and
+    is the old constant.
+  */
   @media (min-width: 768px) {
-    .hb-links { grid-template-columns: repeat(3, 1fr); }
+    .hb-links { grid-template-columns: repeat(var(--hb-cols, 3), 1fr); }
   }
   /* The link owns the space to its own note, so the grid gap stays one value. */
   .hb-links__item > * + * { margin-block-start: var(--primitive-space-sp300); }

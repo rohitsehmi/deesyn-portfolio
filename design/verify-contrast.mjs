@@ -119,7 +119,7 @@ const EXEMPT = new Set([
   hostnames that covers.
 */
 const brands = [
-  ['revolut (base)', null],
+  ['deesyn (base)', null],
   ...loadPacks().flatMap(({ brands: bs, pack }) => bs.map((b) => [b, pack]))
 ];
 

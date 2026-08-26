@@ -16,21 +16,25 @@ const withBand: Decorator = (Story, ctx) => (
 );
 
 /**
- * One build serves three brands, chosen by hostname. The workshop had no way to
- * show that: `Marks/Logo` rendered the Ro × Revolut lockup only, so the one
- * component whose whole job is to differ per brand was the one you could not
+ * One build serves five brands, chosen by hostname. The workshop had no way to
+ * show that: `Marks/Logo` rendered a single lockup, so the one component whose
+ * whole job is to differ per brand was the one you could not
  * see differ. This makes the multi-brand system a demonstration rather than
  * something the workshop hides.
  *
  * It sets the attribute on the ROOT, not on a wrapper, and that is forced
  * rather than tidy. The default arm in base.css is
- * `:root:not([data-brand]) [data-brand-only]:not([data-brand-only~='revolut'])`,
+ * `:root:not([data-brand]) [data-brand-only]:not([data-brand-only~='deesyn'])`,
  * which keys off the absence of the attribute on the root itself. Put
- * `data-brand="wise"` on a div and that rule still matches — so the Revolut
+ * `data-brand="wise"` on a div and that rule still matches — so the default
  * arm would hide the Wise logotype at the same moment the Wise arm showed it,
  * and the lockup would render with no partner mark at all.
  *
- * Revolut is the default and carries no attribute, exactly as it does live.
+ * `deesyn` is the default and carries no attribute, exactly as it does live.
+ * It is the one option in this toolbar that shows the MARK rather than a
+ * lockup: it has no partner, so its `x` and every logotype are gated away and
+ * Logo.css narrows the viewport to the disc. Picking it is the only way to see
+ * in the workshop what the apex actually renders.
  *
  * SETTING IT ON THE ROOT IS ALSO WHY BRAND PACKS NEEDED NO WORK HERE. Since
  * tokens/brands/ landed, a brand changes the whole palette rather than just the
@@ -49,7 +53,7 @@ const withBrand: Decorator = (Story, ctx) => {
   const brand = ctx.globals.brand;
   React.useEffect(() => {
     const root = document.documentElement;
-    if (brand && brand !== 'revolut') root.dataset.brand = brand;
+    if (brand && brand !== 'deesyn') root.dataset.brand = brand;
     else delete root.dataset.brand;
   }, [brand]);
   return <Story />;
@@ -60,11 +64,11 @@ const preview: Preview = {
   globalTypes: {
     brand: {
       description: 'Hostname brand — swaps the lockup AND the whole palette, with no override',
-      defaultValue: 'revolut',
+      defaultValue: 'deesyn',
       toolbar: {
         title: 'Brand',
         items: [
-          { value: 'revolut', title: 'Ro × Revolut (default)' },
+          { value: 'deesyn', title: 'Ro (default)' },
           { value: 'wise', title: 'Ro × Wise' },
           { value: 'healf', title: 'Ro × Healf' },
           { value: 'ticketmaster', title: 'Ro × Ticketmaster' },
