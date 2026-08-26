@@ -22,7 +22,22 @@
   gap: var(--primitive-space-sp600);
 }
 
-.explorations__media { border-radius: var(--primitive-radius-r20); overflow: hidden; }
+/*
+  The rounded frame belongs to a PICTURE, not to every artefact.
+
+  An image or a carousel is content sitting inside a plate, so the plate rounds
+  its corners and clips whatever overflows them. A diagram drawn in elements has
+  no plate: it is the same tones as the page around it, and clipping it slices
+  anything that reaches the edge. That is not hypothetical — it took the rounded
+  cap off the left end of the governance figure's toggle, which sat flush
+  against this boundary and came out with a flat corner nobody could explain
+  from the pill's own styles.
+*/
+.explorations__media[data-kind='image'],
+.explorations__media[data-kind='carousel'] {
+  border-radius: var(--primitive-radius-r20);
+  overflow: hidden;
+}
 
 .explorations__text {
   display: flex;

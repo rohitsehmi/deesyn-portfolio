@@ -52,7 +52,7 @@
         "ref": "primitive.space.sp600"
       }
     ],
-    ".explorations__media": [
+    ".explorations__media[data-kind='image'],\n.explorations__media[data-kind='carousel']": [
       {
         "property": "border-radius",
         "var": "--primitive-radius-r20",

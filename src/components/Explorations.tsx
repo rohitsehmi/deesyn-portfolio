@@ -85,15 +85,15 @@ export function Explorations({ items, copyBase, layout = 'grid' }: ExplorationsP
       {items.map((item, i) => (
         <li className="explorations__item" key={item.title}>
           {item.image ? (
-            <div className="explorations__media">
+            <div className="explorations__media" data-kind="image">
               <Media {...item.image} ratio={item.image.ratio ?? '4-3'} />
             </div>
           ) : item.carousel ? (
-            <div className="explorations__media">
+            <div className="explorations__media" data-kind="carousel">
               <Carousel {...item.carousel} />
             </div>
           ) : item.diagram ? (
-            <div className="explorations__media">
+            <div className="explorations__media" data-kind="diagram">
               <GovernanceTiers {...item.diagram} />
             </div>
           ) : null}

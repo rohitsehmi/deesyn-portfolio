@@ -38,7 +38,8 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.explorations` | gap | `primitive.layout.l48` |
 | `@media (min-width: 768px) { .explorations }` | gap | `primitive.layout.l64` |
 | `.explorations__item` | gap | `primitive.space.sp600` |
-| `.explorations__media` | border-radius | `primitive.radius.r20` |
+| `.explorations__media[data-kind='image'],
+.explorations__media[data-kind='carousel']` | border-radius | `primitive.radius.r20` |
 | `.explorations__text` | gap | `primitive.space.sp300` |
 | `.explorations__title` | font | `typography.heading.s` |
 | `.explorations__title` | letter-spacing | `typography.heading.s` |
