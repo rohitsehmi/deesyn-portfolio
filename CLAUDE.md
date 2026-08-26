@@ -824,6 +824,18 @@ node design/figma-copy-import.mjs <file.json>         # write it back
 
 **A node with no reference is skipped, never guessed at.** Reading time and the "Next" label are computed or structural; writing them back would bake a derived value into the copy, which is the trap the hero count and the facts block both avoid.
 
+**THE ROUND TRIP WAS RUN END TO END FOR THE FIRST TIME ON 2026-08-26, AND THE TEMPLATES HAD NEVER MATCHED THE REPO.** 136 references, no conflicts, and **32 of them differing** — of which only three were edits. The other 29 were the templates carrying an abbreviated version of the copy, shortened when they were built on 2026-08-18 so the 1440 mock would lay out. `machine-readable-components.json` had not changed since 2026-08-10, so the template was already shorter than the repo on the day it was made: the two sides have never agreed, and this was the first run that could have said so.
+
+**Importing all 32 would have deleted roughly a third of the prose across three studies while `verify:all` stayed green**, because shortened copy is still valid copy. Nothing in the gate reads a Figma file, and nothing measures whether a paragraph got shorter. **The direction of a sync is not something the checks can decide**, which makes it the one question worth asking out loud before running the importer.
+
+**Two findings settled the direction rather than a judgement call**, and both are the kind of thing only a diff surfaces: the template said "more than a hundred brands" where `c8c9644` that morning had deliberately made it "around ninety", and its `scaling-a-system:impact.paras.1` node carried what is `impact.paras.2` in the repo — so the paragraph between them would have been overwritten by the one after it. **A template that is one paragraph short reads as complete**, exactly as a band one place out did.
+
+**The repo won, and all 136 were then written back INTO Figma so the two sides agree**, verified by re-running the export and comparing `design/hash.mjs` per reference against the JSON: 136 compared, 0 differing. The next edit made in a template is a diff of one string rather than thirty-two.
+
+**Two references in the templates were mis-tagged and had never round-tripped.** `making-the-app-testable:process.paras.0` and `.1` do not exist — that section is `openingPara` / `principle` / `closingPara` — so the importer refused both every time, which is the only reason anyone found out. Retagged to the real paths. **The `principle` paragraph is absent from the template altogether**, and is left that way: it is three keys in one node and deliberately read-only in Figma.
+
+**Also noted and not acted on:** `machine-readable-components:impact.metricsSource` has `Source. ` typed onto the front of it in Figma, where `Metrics.tsx` renders that string verbatim with no label of its own, and the other two studies' sources carry no such prefix.
+
 ### Two more the template got wrong, both fixed 2026-08-18
 
 **The next-study tile carries no image, and the placeholder I put there was the bug.** `image` is optional on `CaseStudyTile` and the next-study band passes none, so `{image && …}` renders nothing. An empty 16:9 `Content/Media` at the measure is 517px of near-invisible plate, which read on canvas as a huge unexplained gap between the "Next" label and the discipline tag. The linter now fails a next-study tile that has one.
