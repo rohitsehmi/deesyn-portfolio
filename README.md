@@ -35,7 +35,7 @@ The full script list, including the token pipeline and the Figma export snippets
 
 **Layout is a banding system.** A band declares a tonal role rather than a colour, and the theme resolves it, so an inverse band is the same band in the other theme rather than a separate set of fills. A band owns the foreground of everything inside it, which means a component dropped into one inverts at zero overrides. Adjacency rules are linted off the built HTML.
 
-**One build serves three brands, chosen by hostname.** The site is prerendered and a single deployment answers every `*.deesyn.com` host, so the brand is a runtime fact rather than a build-time one. Everything brand-specific ships in every document and a blocking inline script sets the brand on the root element before the first paint. This is isolation by routing rather than by build, which is appropriate while the brands are different framings of the same work, and is documented as such.
+**One build serves five brands, chosen by hostname.** The site is prerendered and a single deployment answers every `*.deesyn.com` host, so the brand is a runtime fact rather than a build-time one. Everything brand-specific ships in every document and a blocking inline script sets the brand on the root element before the first paint. This is isolation by routing rather than by build, which is appropriate while the brands are different framings of the same work, and is documented as such.
 
 ## What is checked
 

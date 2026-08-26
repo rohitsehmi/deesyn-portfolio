@@ -11,6 +11,12 @@
     },
     "healf": {
       "heroTitle": "{count} case studies, for Healf."
+    },
+    "ticketmaster": {
+      "heroTitle": "{count} case studies, for Ticketmaster."
+    },
+    "asos": {
+      "heroTitle": "{count} case studies, for ASOS."
     }
   }
 }

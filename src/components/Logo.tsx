@@ -80,9 +80,23 @@ export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi' 
           {...(p.evenOdd ? { fillRule: 'evenodd' as const, clipRule: 'evenodd' as const } : {})}
         />
       ))}
+      {/*
+        The fill rule has to be carried here too, and it was not until Asos
+        arrived. Wise and Healf are both non-zero, so the omission was
+        invisible for as long as they were the only partners; Asos is one
+        evenodd path whose counters are cut out of it, and without the rule
+        every a, o and s fills in solid. Same spread as the shared paths
+        above, deliberately — a second way of writing the same thing is how
+        the two diverged in the first place.
+      */}
       {isLockup &&
         Object.entries(PARTNER_WORDMARKS).map(([brand, p]) => (
-          <path key={brand} d={p.d} data-brand-only={brand} />
+          <path
+            key={brand}
+            d={p.d}
+            data-brand-only={brand}
+            {...(p.evenOdd ? { fillRule: 'evenodd' as const, clipRule: 'evenodd' as const } : {})}
+          />
         ))}
     </svg>
   );

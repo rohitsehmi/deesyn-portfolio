@@ -16,6 +16,16 @@
     },
     {
       "source": "/og.png",
+      "has": [{ "type": "host", "value": "^ticketmaster\\.deesyn\\.com$" }],
+      "destination": "/og-ticketmaster.png"
+    },
+    {
+      "source": "/og.png",
+      "has": [{ "type": "host", "value": "^asos\\.deesyn\\.com$" }],
+      "destination": "/og-asos.png"
+    },
+    {
+      "source": "/og.png",
       "destination": "/og-revolut.png"
     }
   ],
@@ -25,7 +35,7 @@
       "missing": [
         {
           "type": "host",
-          "value": "^(?:(?:www|wise|revolut|healf)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
+          "value": "^(?:(?:www|wise|revolut|healf|ticketmaster|asos)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
         }
       ],
       "destination": "https://www.deesyn.com/$1",

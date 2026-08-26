@@ -26,7 +26,7 @@
  *   node design/verify-readme.mjs
  */
 import { readFileSync } from 'node:fs';
-import { tokenCount, componentCount, storyCount, checkCount } from './counts.mjs';
+import { tokenCount, componentCount, storyCount, checkCount, brandCount } from './counts.mjs';
 
 const readme = readFileSync('README.md', 'utf8');
 
@@ -42,6 +42,23 @@ const problems = [];
  * failure: it means the sentence was rewritten and nobody re-checked the figure.
  */
 const CLAIMS = [
+  /*
+    THE BRAND COUNT, added 2026-08-26 with the fourth and fifth brands.
+
+    It was prose nothing looked at, in a file whose numbers have gone stale
+    twice already, and it names the thing most likely to change: this repo has
+    added a brand three times now and every one of them left a count behind
+    somewhere. CLAUDE.md has been checked on the same figure since 2026-08-19,
+    and both read it from design/counts.mjs rather than parsing brands.ts
+    twice — the second consumer of a count is exactly when a second
+    implementation of it appears, which is what counts.mjs exists to prevent.
+  */
+  {
+    what: 'brands',
+    expected: brandCount(),
+    re: /\*\*One build serves (\w+) brands, chosen by hostname\.\*\*/,
+    parse: (m) => WORDS.indexOf(m[1].toLowerCase())
+  },
   {
     what: 'leaf tokens',
     expected: tokenCount(),

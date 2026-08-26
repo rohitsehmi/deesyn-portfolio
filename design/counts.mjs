@@ -64,3 +64,24 @@ export function storyCount() {
 
 /** Checks in the gate. Re-exported so callers need one import, not two. */
 export const checkCount = () => gateChecks().length;
+
+/**
+ * How many brands this build serves.
+ *
+ * Parsed rather than imported because brands.ts is TypeScript and this module
+ * is bundled into the Astro page as well as run under node — the same reason
+ * every read here is CWD-relative.
+ *
+ * It lives here rather than in a check because TWO checks now want it:
+ * verify-claude-md.mjs has asked since 2026-08-19, and verify-readme.mjs since
+ * 2026-08-26, when README.md started stating the number too. This file exists
+ * precisely so the second consumer of a count is not the moment a second
+ * implementation of it appears — which is the mistake it was written to undo,
+ * and which the endsWith matcher in verify-contracts.mjs had already made once.
+ */
+export function brandCount() {
+  const src = readFileSync('src/data/brands.ts', 'utf8');
+  const m = src.match(/export const BRANDS = \[([^\]]*)\]/);
+  if (!m) throw new Error('could not find BRANDS in src/data/brands.ts');
+  return (m[1].match(/'[^']+'/g) ?? []).length;
+}

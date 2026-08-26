@@ -163,3 +163,5 @@ body {
 :root:not([data-brand]) [data-brand-only]:not([data-brand-only~='revolut']) { display: none; }
 [data-brand='wise'] [data-brand-only]:not([data-brand-only~='wise']) { display: none; }
 [data-brand='healf'] [data-brand-only]:not([data-brand-only~='healf']) { display: none; }
+[data-brand='ticketmaster'] [data-brand-only]:not([data-brand-only~='ticketmaster']) { display: none; }
+[data-brand='asos'] [data-brand-only]:not([data-brand-only~='asos']) { display: none; }

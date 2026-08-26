@@ -22,7 +22,7 @@
  * build-code-specs.mjs writes a contract for each one. This is data, not a
  * component, and must move neither number.
  */
-export const BRANDS = ['revolut', 'wise', 'healf'] as const;
+export const BRANDS = ['revolut', 'wise', 'healf', 'ticketmaster', 'asos'] as const;
 
 export type Brand = (typeof BRANDS)[number];
 
@@ -32,4 +32,20 @@ export type Brand = (typeof BRANDS)[number];
  * is a default in the strong sense: nothing has to work for it to be chosen,
  * which is why it is the one that must never be brand-gated.
  */
-export const DEFAULT_BRAND: Brand = 'revolut';
+export const DEFAULT_BRAND = 'revolut' as const satisfies Brand;
+
+/**
+ * Every brand except the default, which is the set that needs its own partner
+ * logotype, its own hero copy and its own row in the CSS.
+ *
+ * `as const satisfies Brand` above rather than `: Brand` is what makes this
+ * resolvable: annotating the constant widens it back to the whole union, so
+ * Exclude<Brand, typeof DEFAULT_BRAND> would come out `never` and every map
+ * keyed by it would accept anything. It is a one-word difference that turns a
+ * type into a check.
+ *
+ * PARTNER_WORDMARKS is keyed by this, so adding a brand above without drawing
+ * its logotype is a typecheck failure rather than an undefined path that
+ * renders as a lockup with nothing after the `x`.
+ */
+export type PartnerBrand = Exclude<Brand, typeof DEFAULT_BRAND>;

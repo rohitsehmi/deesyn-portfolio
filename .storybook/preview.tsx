@@ -66,7 +66,9 @@ const preview: Preview = {
         items: [
           { value: 'revolut', title: 'Ro × Revolut (default)' },
           { value: 'wise', title: 'Ro × Wise' },
-          { value: 'healf', title: 'Ro × Healf' }
+          { value: 'healf', title: 'Ro × Healf' },
+          { value: 'ticketmaster', title: 'Ro × Ticketmaster' },
+          { value: 'asos', title: 'Ro × ASOS' }
         ]
       }
     },

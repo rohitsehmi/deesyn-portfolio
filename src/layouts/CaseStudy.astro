@@ -59,13 +59,28 @@ const nexts = nextStudyByBrand(slug);
   so it renders once with no gate. That is the case on every page today; the
   branch below is what carries a brand-specific study.
 
-  With two brands, a group is either all of them or one of them, so a single
-  data-brand-only value always suffices. A third brand would break that — two
-  brands sharing a next that a third does not is not expressible in one
-  attribute — and the fix then is a value per brand rather than a cleverer
-  selector.
+  Otherwise the brands are GROUPED BY THE STUDY THEY LAND ON, one block each,
+  rather than one block per brand. `data-brand-only` holds a whitespace-
+  separated list and the arms in base.css have matched it with ~= since
+  2026-08-17, so a tile shown to four brands is one element carrying four
+  names.
+
+  That grouping stopped being cosmetic at five brands. Every brand's version
+  ships in the one prerendered document and CSS hides the rest, so a block per
+  brand put four byte-identical case-study tiles — cover, title, summary,
+  discipline — into the HTML of the one page where the default brand's next
+  differs from everyone else's. Hidden to a screen reader, and a stutter to
+  anything reading the markup, which is the reader the hero spans on the index
+  were separated by a space for.
 */
 const sharedNext = new Set(nexts.map((n) => n.study?.slug)).size === 1 ? nexts[0].study : undefined;
+
+/** Brands that land on the same next study, collapsed into one block each. */
+const nextGroups = [...nexts.reduce((acc, { brand, study }) => {
+  if (!study) return acc;
+  acc.set(study.slug, { study, brands: [...(acc.get(study.slug)?.brands ?? []), brand] });
+  return acc;
+}, new Map<string, { study: (typeof nexts)[number]['study']; brands: string[] }>()).values()];
 
 /*
   Rule 1 says no two consecutive bands share a fill, so the footer's role
@@ -201,8 +216,8 @@ const discipline = studies.find((s) => s.slug === slug)?.discipline;
             href={studyPath(sharedNext)}
           />
         ) : (
-          nexts.map(({ brand, study }) => study && (
-            <div data-brand-only={brand}>
+          nextGroups.map(({ brands, study }) => study && (
+            <div data-brand-only={brands.join(' ')}>
               <CaseStudyTile
                 title={study.title}
                 summary={study.summary}

@@ -122,12 +122,19 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
     argument the page makes. Red, where the other two are violet and sage, so
     the three are told apart at a glance on the index.
 
-    Wise and Healf only, from 2026-08-17. The default brand keeps two studies,
-    one per discipline, which is the tighter argument: a third tile there would
-    have been a second design-system study sitting under the same tag as the
-    first. The other two hostnames show all three.
+    Every brand except the default, from 2026-08-17 and extended to Ticketmaster
+    and Asos on 2026-08-26. The default brand keeps two studies, one per
+    discipline, which is the tighter argument: a third tile there would have
+    been a second design-system study sitting under the same tag as the first.
+    Every other hostname shows all three.
+
+    Written out rather than expressed as "not revolut". The field says which
+    brands are OFFERED a study, and a brand added later should have to be named
+    here deliberately rather than inheriting a study nobody decided to give it —
+    which is the same reason `brands` is absent, not exhaustive, when a study
+    belongs to everybody.
   */
-  { slug: 'scaling-a-system', coverSrc: coverScaling, brands: ['wise', 'healf'] }
+  { slug: 'scaling-a-system', coverSrc: coverScaling, brands: ['wise', 'healf', 'ticketmaster', 'asos'] }
 ];
 
 export const studies: Study[] = order.map(({ slug, coverSrc, archived, brands }) => {

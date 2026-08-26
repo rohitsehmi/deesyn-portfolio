@@ -10,7 +10,7 @@ import { hash } from '../../design/hash.mjs';
 import { gateChecks } from '../../design/gate.mjs';
 import { leaves, componentFiles, storyCount } from '../../design/counts.mjs';
 import c from '../copy/how-this-was-built.json';
-import { BRANDS, DEFAULT_BRAND } from '../data/brands';
+import { BRANDS } from '../data/brands';
 
 /**
  * Every number on this page is computed here, at build time, from the files it
@@ -103,6 +103,27 @@ const CONTRACT_ELSEWHERE: Record<string, string> = {
   band: 'design/banding-export.json'
 };
 const SPEC_DOMAINS = ['action', 'content', 'layout', 'chrome', 'brand'];
+
+/*
+  ONE LIST PER DISTINCT SET OF RECEIPTS, not one per brand.
+
+  Every brand's version ships in every document and CSS hides the ones that do
+  not apply, so writing a <ul> per brand would put the same three links in the
+  raw HTML five times over. Only the Figma href actually differs, and only for
+  the two brands that have a file of their own — so grouping collapses that to
+  three lists, and `data-brand-only` holds a whitespace-separated list, which is
+  what the ~= arms in base.css have matched since 2026-08-17.
+
+  Same move, and the same reason, as the hero standfirst on the index: the
+  reader this protects is the one fetching the HTML and never running the
+  stylesheet, and to them a repeated block reads as a stutter rather than as a
+  hidden variant.
+*/
+const receiptGroups = [...BRANDS.reduce((acc, brand) => {
+  const links = (c as any).brands?.[brand]?.links ?? c.links;
+  acc.set(links, [...(acc.get(links) ?? []), brand]);
+  return acc;
+}, new Map<any, string[]>())].map(([links, brands]) => ({ links, brands }));
 const slugFor = (file: string) =>
   file.slice(0, -4).replace(/(?<!^)(?=[A-Z])/g, '-').toLowerCase();
 const hasContract = (file: string) => {
@@ -255,15 +276,38 @@ const facts = c.facts.items.map((f) => ({ term: f.term, detail: fill(f.detail) }
       same work. At that point they need to be per-brand, which is what
       splitting the framework from the brand packs is for.
     */}
-    {BRANDS.map((brand) => {
-      const links = brand === DEFAULT_BRAND ? c.links : (c as any).brands[brand].links;
+    {/*
+      A BRAND WITH NO OVERRIDE FALLS BACK TO THE DEFAULT LIST, added 2026-08-26.
+
+      Before this the lookup was unconditional, so adding a brand to BRANDS
+      without also writing a `brands.<brand>` block here failed the build on
+      `undefined.links` — a TypeError naming neither the brand nor this file.
+
+      It is a fallback rather than a silent blank because only ONE of the three
+      receipts is per-brand at all. Storybook and the repository are shared on
+      purpose, as the note above says. The Figma link is the one that differs,
+      and Ticketmaster and Asos have no file of their own yet, so they get the
+      Revolut one — which is genuinely the file this system is measured from,
+      and is what the default hostname already links to.
+
+      That is a known wart rather than a resting state: a receipt on
+      ticketmaster.deesyn.com whose URL says "Revolut" undercuts the sentence
+      beside it. The fix is a Figma file per brand and a block here, exactly as
+      Wise and Healf have. Recorded in CLAUDE.md § Brands rather than left to be
+      rediscovered.
+    */}
+    {receiptGroups.map(({ brands, links }) => {
       return (
-      <ul class="hb-links" data-brand-only={brand}>
+      <ul class="hb-links" data-brand-only={brands.join(' ')}>
       {links.items.map((l: any, i: number) => {
         const mark = SERVICE_MARKS[l.mark];
-        const copyBase = brand === DEFAULT_BRAND
-          ? `how-this-was-built:links.items.${i}`
-          : `how-this-was-built:brands.${brand}.links.items.${i}`;
+        /* Points at whichever block actually supplied this string, so the
+           browser editor writes back where the value came from rather than
+           minting a `brands.<brand>` key that the fallback above means does
+           not exist. */
+        const copyBase = (c as any).brands?.[brands[0]]?.links
+          ? `how-this-was-built:brands.${brands[0]}.links.items.${i}`
+          : `how-this-was-built:links.items.${i}`;
         return (
           <li class="hb-links__item">
             {/*

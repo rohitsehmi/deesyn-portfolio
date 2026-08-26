@@ -191,6 +191,14 @@ const structuredData = article
       Anything not matched leaves the attribute unset, which renders Revolut —
       the correct default for www and for the apex.
 
+      The list is written out rather than imported, and it is the one place a
+      brand has to be typed a second time: this is an inline blocking script, so
+      it cannot pull in a module without becoming a request that delays the
+      first paint, which is the whole reason it is inline. src/data/brands.ts
+      says so at the top and is where to start reading. An array test rather
+      than a chain of ||, because the chain was already two brands long and each
+      new one made it harder to see whether a name had been missed.
+
       ?brand= overrides the hostname, and exists because a hostname cannot
       select a brand on localhost. Without it the only way to see a brand
       before deploying is to edit a file, which means the version you review is
@@ -208,7 +216,7 @@ const structuredData = article
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
         var q = new URLSearchParams(location.search).get('brand');
         var h = q || location.hostname.split('.')[0];
-        if (h === 'wise' || h === 'healf') document.documentElement.dataset.brand = h;
+        if (['wise', 'healf', 'ticketmaster', 'asos'].indexOf(h) >= 0) document.documentElement.dataset.brand = h;
       } catch (e) {}
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

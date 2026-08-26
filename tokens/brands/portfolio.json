@@ -1,8 +1,10 @@
 {
-  "$comment": "Portfolio palette. ONE pack, several brands, because Wise and Healf were given the same ramps and three byte-identical files is precisely the drift every check in design/ exists to stop. Split it the day they diverge: copy the file and narrow each `brands` list. Values are Rohit's 'Portfolio Build' Figma collections verbatim, teal 10 + navy 10 + neutral 11 = 31 primitives. It EXTENDS the base collection and replaces nothing: the primitives are additive and the semantic layer re-points the same 38 names every component already binds to, so no component, band or stylesheet changes.",
+  "$comment": "Portfolio palette. ONE pack, several brands, because Wise, Healf, Ticketmaster and Asos were given the same ramps and three byte-identical files is precisely the drift every check in design/ exists to stop. Split it the day they diverge: copy the file and narrow each `brands` list. Values are Rohit's 'Portfolio Build' Figma collections verbatim, teal 10 + navy 10 + neutral 11 = 31 primitives. It EXTENDS the base collection and replaces nothing: the primitives are additive and the semantic layer re-points the same 38 names every component already binds to, so no component, band or stylesheet changes.",
   "brands": [
     "wise",
     "healf",
+    "ticketmaster",
+    "asos",
     "deesyn"
   ],
   "$brandsComment": "deesyn is declared but is NOT in src/data/brands.ts, so nothing emits for it and no hostname serves it. Kept deliberately as a working reference. verify-brands.mjs prints it rather than failing, for the same reason verify.mjs prints deprecated components: an inert thing that stops being visible becomes a surprise later.",

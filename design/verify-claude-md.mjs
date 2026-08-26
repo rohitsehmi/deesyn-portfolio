@@ -47,6 +47,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { brandCount } from './counts.mjs';
 
 const doc = readFileSync('CLAUDE.md', 'utf8');
 
@@ -86,13 +87,9 @@ function printed(script, label) {
 
 const printedChecksum = (script) => printed(script, 'checksum');
 
-/** The brands this build serves. Parsed, because brands.ts is TypeScript. */
-function brandCount() {
-  const src = readFileSync('src/data/brands.ts', 'utf8');
-  const m = src.match(/export const BRANDS = \[([^\]]*)\]/);
-  if (!m) throw new Error('could not find BRANDS in src/data/brands.ts');
-  return (m[1].match(/'[^']+'/g) ?? []).length;
-}
+/* Brand count comes from design/counts.mjs, which is where the counting lives.
+   README.md states the same number, so a copy of the parser here would be two
+   implementations of one rule — the exact drift counts.mjs was written to end. */
 
 /**
  * Each claim names what it is, what the repo says, and a pattern that finds the
