@@ -2,6 +2,11 @@
  * Measures every text pair in the diagrams that are DRAWN rather than exported,
  * off the rendered page, in both themes and in every state they can be put into.
  *
+ * Three figures on one page as of 2026-08-26: the token tiers, the governance
+ * ladder, and the two component models. All three are in the same document, so
+ * one run covers them and the reload between figures is what stops one figure's
+ * selection following the next into its measurement.
+ *
  *   npm run build && npx astro preview --port 4321   # in another shell
  *   node design/measure-diagram-contrast.mjs
  *
@@ -87,7 +92,7 @@ const AUDIT = `((sel) => {
     const px = parseFloat(cs.fontSize), w = +cs.fontWeight || 400;
     const large = px >= 24 || (px >= 18.66 && w >= 700);
     out.push({
-      what: (el.className || el.tagName).toString().replace('token-tiers__',''),
+      what: (el.className || el.tagName).toString().replace(/(token-tiers|governance-tiers|component-models)__/,''),
       text: el.textContent.trim().slice(0, 22),
       px: Math.round(px), w, large,
       ratio: +ratio(over(fg, bg), bg).toFixed(2),
@@ -120,6 +125,13 @@ const FIGURES = [
     states: [
       ['shipped ladder', null],
       ['rejected path', '.governance-tiers__toggle-label']
+    ]
+  },
+  {
+    root: '.component-models',
+    states: [
+      ['two structures', null],
+      ['one change', '.component-models__toggle-label']
     ]
   }
 ];
@@ -163,7 +175,7 @@ for (const theme of ['light', 'dark']) {
   await ctx.close();
 }
 
-console.log(`\n${failures} below AA across both figures, both themes, every state.`);
+console.log(`\n${failures} below AA across all three figures, both themes, every state.`);
 console.log(`worst pair ${worst.ratio}:1 — ${worst.what} "${worst.text}" (${worst.theme}, ${worst.label})`);
 await browser.close();
 if (failures) process.exit(1);

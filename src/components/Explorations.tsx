@@ -1,7 +1,22 @@
 import { Media, type MediaRatio } from './Media';
 import { Carousel, type CarouselProps } from './Carousel';
 import { GovernanceTiers, type GovernanceTiersProps } from './GovernanceTiers';
+import { ComponentModels, type ComponentModelsProps } from './ComponentModels';
 import './Explorations.css';
+
+/**
+ * A diagram drawn in elements, tagged by which one it is.
+ *
+ * A DISCRIMINATED UNION RATHER THAN ONE FIELD PER DIAGRAM, and the difference
+ * matters at three. A field each — `governance`, `componentModels` — makes
+ * "exactly one artefact" a convention that nothing enforces, and the render
+ * order below already shows what that costs: `image` wins over `carousel` wins
+ * over `diagram` precisely because two of them can be supplied at once. A union
+ * makes a second diagram unrepresentable rather than merely discouraged.
+ */
+export type ExplorationDiagram =
+  | ({ kind: 'governance' } & GovernanceTiersProps)
+  | ({ kind: 'component-models' } & ComponentModelsProps);
 
 export interface Exploration {
   /** What the direction was, in the fewest words that identify it. */
@@ -49,7 +64,7 @@ export interface Exploration {
    * supplied, so a half-finished edit renders the placeholder rather than
    * nothing.
    */
-  diagram?: GovernanceTiersProps;
+  diagram?: ExplorationDiagram;
 }
 
 export interface ExplorationsProps {
@@ -70,6 +85,19 @@ export interface ExplorationsProps {
    * tooling only; inert in a build.
    */
   copyBase?: string;
+}
+
+/**
+ * Which figure to draw. `kind` is stripped rather than spread through, so a
+ * diagram component never receives a prop it has no opinion about.
+ */
+function Diagram(diagram: ExplorationDiagram) {
+  if (diagram.kind === 'component-models') {
+    const { kind, ...props } = diagram;
+    return <ComponentModels {...props} />;
+  }
+  const { kind, ...props } = diagram;
+  return <GovernanceTiers {...props} />;
 }
 
 /**
@@ -94,7 +122,7 @@ export function Explorations({ items, copyBase, layout = 'grid' }: ExplorationsP
             </div>
           ) : item.diagram ? (
             <div className="explorations__media" data-kind="diagram">
-              <GovernanceTiers {...item.diagram} />
+              <Diagram {...item.diagram} />
             </div>
           ) : null}
           <div className="explorations__text">

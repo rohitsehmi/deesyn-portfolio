@@ -55,7 +55,8 @@ const CODE_ONLY = [
     way to say that, and drawing the diagram in Figma would document it less.
   */
   { name: 'Content/Token Tiers', base: 'TokenTiers' },
-  { name: 'Content/Governance Tiers', base: 'GovernanceTiers' }
+  { name: 'Content/Governance Tiers', base: 'GovernanceTiers' },
+  { name: 'Content/Component Models', base: 'ComponentModels' }
 ];
 
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

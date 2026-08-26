@@ -122,6 +122,15 @@
       "Do not give the bypass a label on every panel. Three copies of the same two words is not emphasis, and the control above already names the route.",
       "Do not add a caption per panel where prose already sits beside the figure. An exploration states its reasoning in full next to this; a caption repeats the argument at a smaller size.",
       "Never let the toggle be anything but a real checkbox. The space bar, the focus ring and the announced state come free from the browser, and a div with a click handler has none of them."
+    ],
+    "Content/Component Models": [
+      "Do not mix a wash with a band token. `color-mix(<token> n%, var(--semantic-band-sunken))` paints one specific band's fill, and this figure ships on a base band and renders against all four in Storybook. Mix with `transparent` so the wash composites over whatever it lands on.",
+      "Do not mark a change to the look. It lands in one place per brand in both models, so marking it shows two structures agreeing and proves nothing. The comparison only works on a decision the shipped model holds once.",
+      "Do not draw the shipped model as all upside. The exploration admits in words that the pivot cost fidelity, so exactly one decision has to move out to the brand chips; a picture without it argues with the paragraph beside it.",
+      "Do not let the marked row change size. It takes a border when marked, so an unmarked row reserves a transparent one; without it every row in the figure shifts a pixel and the diagram reads as twitching.",
+      "Do not label every mark. Five copies of the same two words read as part of the structure rather than as an annotation on it, and the control above already names what is being changed.",
+      "Never let the toggle be anything but a real checkbox. The space bar, the focus ring and the announced state come free from the browser, and a div with a click handler has none of them.",
+      "Never put `role=\"img\"` over the control. It labels the two MODELS, which are a picture; a checkbox inside a region announced as an image is a control assistive technology has been told to skip."
     ]
   }
 }

@@ -1,0 +1,342 @@
+/*
+  NO COLOUR LITERALS AND NOTHING ABSOLUTE, the same family as
+  GovernanceTiers.css next door and the opposite of TokenTiers.css.
+
+  That figure depicts somebody else's palette, so its values are data and have to
+  survive a theme change unmoved. This one depicts a STRUCTURE — where a decision
+  lives, and how many places a change lands in — and a structure has no colour of
+  its own. So every tone here is a token, the whole picture repaints with the
+  brand pack, and there is nothing in it that can go stale.
+
+  EVERY WASH MIXES WITH `transparent`, NEVER WITH A BAND TOKEN, and that is a
+  correction rather than a preference. `color-mix(<token> n%, var(--semantic-band-sunken))`
+  paints an opaque plate of one specific band's fill, which is right only on that
+  band; this figure ships inside the process section, which is a `base` band, and
+  the same component renders in Storybook against all four roles. Mixed with
+  `transparent` the wash composites over whatever it lands on, which is what
+  TokenTiers already does with its tinted plates for the same reason.
+*/
+
+.component-models {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+}
+
+.component-models__figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp600);
+}
+
+/* ---- the control --------------------------------------------------------- */
+
+.component-models__control { align-self: start; }
+
+/* Replaced, not hidden. It keeps the space bar, the focus ring and the announced
+   state; `pointer-events: none` keeps it out of hit testing so the label takes
+   every click. */
+.component-models__toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.component-models__toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-space-sp300);
+  padding: var(--primitive-space-sp200) var(--primitive-space-sp500);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-radius-round);
+  font: var(--type-emphasis-3);
+  letter-spacing: var(--type-emphasis-3-tracking);
+  color: var(--semantic-fg-primary);
+  cursor: pointer;
+  transition:
+    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    border-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+/* The dot is the state, and it is not the only signal: the border and the plate
+   move with it, so this does not rely on colour alone. */
+.component-models__toggle-label::before {
+  content: '';
+  width: var(--primitive-size-s8);
+  height: var(--primitive-size-s8);
+  border-radius: var(--primitive-radius-round);
+  border: 1px solid currentColor;
+  transition: background-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+.component-models__toggle:checked + .component-models__toggle-label {
+  background: color-mix(in srgb, var(--semantic-fg-accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+}
+.component-models__toggle:checked + .component-models__toggle-label::before {
+  background: color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+}
+.component-models__toggle:focus-visible + .component-models__toggle-label {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+/* ---- the two models ------------------------------------------------------ */
+
+.component-models__models {
+  display: grid;
+  gap: var(--primitive-layout-l48);
+}
+/*
+  800, and it is measured in a browser rather than computed on paper.
+
+  The arithmetic said 720: the widest row is "Accessibility" at 81px in body/3
+  plus a 6px mark, a 6px gap and 12px of row padding, so 105, and the block adds
+  16px of its own, so 121 each and 274 for a pair once the composite block's
+  padding is counted. Two of those with the 40px gap needs 588, which the measure
+  supplies at a 720px window.
+
+  IT IS NOT THE ROWS THAT SET THE FLOOR, IT IS THE LONGEST LABEL. "Partner and
+  supply" is set uppercase in emphasis/4, and at 720 it wraps to two lines in
+  both the composite block and its token chip, which takes one cell of a two-by-
+  two grid 14px taller than its neighbours and reads as a rendering fault rather
+  than as a long name. Measured across the range: it wraps at 790 and clears at
+  795, so this sits at 800. That is the same trap the token-tiers figure paid for
+  twice, where a label broken in half read as a seventh slot.
+
+  Below it the models stack, where each has the whole column.
+*/
+@media (min-width: 800px) {
+  .component-models__models {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--primitive-layout-l40);
+    align-items: start;
+  }
+  /* One rule between the two, not a box around each: they are a comparison
+     rather than two separate figures. */
+  .component-models__model + .component-models__model {
+    padding-inline-start: var(--primitive-layout-l40);
+    border-inline-start: 1px solid var(--semantic-border-default);
+  }
+}
+
+.component-models__model {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--primitive-space-sp500);
+}
+
+.component-models__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp100);
+  align-self: stretch;
+}
+
+.component-models__label {
+  margin: 0;
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  text-transform: uppercase;
+  color: var(--semantic-fg-primary);
+}
+
+.component-models__gloss {
+  margin: 0;
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  color: var(--semantic-fg-secondary);
+  text-wrap: balance;
+}
+
+/* ---- a component block --------------------------------------------------- */
+
+/*
+  Outlined rather than filled, and the fill is saved for the token chips. That is
+  the one material distinction the picture makes: a component is a container, so
+  it is drawn as a boundary, and a token is a value, so it is drawn as something
+  with substance in it.
+*/
+.component-models__block {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+  padding: var(--primitive-space-sp400);
+  border: 1px solid var(--semantic-border-strong);
+  border-radius: var(--primitive-radius-r12);
+}
+
+.component-models__block-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--primitive-space-sp300);
+  font: var(--type-emphasis-3);
+  letter-spacing: var(--type-emphasis-3-tracking);
+  color: var(--semantic-fg-primary);
+}
+
+.component-models__block-eyebrow {
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  color: var(--semantic-fg-secondary);
+}
+
+/* Two across at every width. Four in a row is illegible in half a measure, and
+   one per row makes the abandoned column three times the height of the other,
+   which reads as a rendering fault rather than as an argument. */
+.component-models__languages {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--primitive-space-sp300);
+}
+
+.component-models__language {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp200);
+  padding: var(--primitive-space-sp300);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-radius-r8);
+}
+
+.component-models__language-label {
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  text-transform: uppercase;
+  color: var(--semantic-fg-primary);
+}
+
+/* ---- the token chips ----------------------------------------------------- */
+
+.component-models__tokens {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--primitive-space-sp300);
+}
+
+.component-models__token {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp200);
+  padding: var(--primitive-space-sp300);
+  border-radius: var(--primitive-radius-r8);
+  background: var(--semantic-bg-widget);
+}
+/*
+  A CHIP'S ROW TAKES fg/primary, AND IT IS MEASURED RATHER THAN CHOSEN.
+
+  fg/secondary is built for 4.87:1 on pure white; bg/widget is 4% black over the
+  band, which takes the same pair to 4.46:1 against a 4.5 threshold, on four rows
+  at once. It passed at 9.5:1 in dark, where the widget fill is white at 4% and
+  moves the background the other way, so this is the failure shape both other
+  figures on this page have already produced: fine in one theme, under AA in the
+  other, and invisible on the machine it was built on.
+
+  Raising the text rather than dropping the fill, because the fill is the one
+  material distinction the picture makes and losing it would cost the argument to
+  save a stylesheet rule. It also says the right thing: the chip is what a brand
+  supplies, so the chip is the part at full contrast.
+*/
+.component-models__token .component-models__decision {
+  color: var(--semantic-fg-primary);
+}
+
+/*
+  The one line joining the four chips to the component they resolve for. A
+  bracket with four legs was tried and cut: from a two-by-two grid it has to
+  reach round the inner two, which draws a shape the reader has to decode before
+  the diagram says anything.
+
+  THE NEGATIVE MARGINS ARE THE WHOLE ELEMENT. Sat in the model's own 16px gap it
+  is a 20px tick floating in white with a gap at each end, which reads as a stray
+  rule rather than as a connector; pulled out over both gaps it touches the chips
+  above and the block below and becomes a line between two things.
+*/
+.component-models__feed {
+  width: 1px;
+  height: calc(var(--primitive-space-sp600) + var(--primitive-space-sp500) * 2);
+  margin-block: calc(var(--primitive-space-sp500) * -1);
+  background: var(--semantic-border-strong);
+}
+
+/* ---- a decision ---------------------------------------------------------- */
+
+.component-models__decisions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp50);
+}
+
+/*
+  The transparent border is load-bearing. The marked state takes a real one, and
+  without a border reserved here every row in the figure shifts by a pixel the
+  moment the control is used, which reads as the whole diagram twitching.
+*/
+.component-models__decision {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-space-sp200);
+  padding: var(--primitive-space-sp50) var(--primitive-space-sp200);
+  border: 1px solid transparent;
+  border-radius: var(--primitive-radius-r4);
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  color: var(--semantic-fg-secondary);
+  transition:
+    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    border-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+.component-models__decision::before {
+  content: '';
+  flex: none;
+  width: var(--primitive-space-sp200);
+  height: var(--primitive-space-sp200);
+  border-radius: var(--primitive-radius-round);
+  border: 1px solid var(--semantic-border-strong);
+  transition: background-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+
+/*
+  Three signals, not one, and none of them is colour on its own: the dot fills,
+  the boundary appears, and the label steps from fg/secondary to fg/primary. The
+  accent carries the plate and the ring; fg/primary carries the word, because the
+  accent cannot meet 4.5:1 on both bands and the token built for reading can.
+*/
+.component-models__figure:has(.component-models__toggle:checked)
+  .component-models__decision[data-changes] {
+  background: color-mix(in srgb, var(--semantic-fg-accent) 16%, transparent);
+  border-color: color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+  color: var(--semantic-fg-primary);
+}
+.component-models__figure:has(.component-models__toggle:checked)
+  .component-models__decision[data-changes]::before {
+  background: color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+  border-color: color-mix(in srgb, var(--semantic-fg-accent) 55%, var(--semantic-fg-primary));
+}
+
+.component-models__caption {
+  color: var(--semantic-fg-secondary);
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+}
+
+/* The mark is a state change, not a performance. Reduced motion keeps the result
+   and drops the fade. */
+@media (prefers-reduced-motion: reduce) {
+  .component-models__decision,
+  .component-models__decision::before,
+  .component-models__toggle-label,
+  .component-models__toggle-label::before {
+    transition: none;
+  }
+}

@@ -70,15 +70,21 @@ const problems = [];
  * own against a dirty tree it would restage those specs, which is what the
  * pre-commit hook does deliberately anyway.
  */
-function printedChecksum(script) {
-  const out = execFileSync('node', [script], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+const ran = new Map();
+
+function printed(script, label) {
+  if (!ran.has(script)) {
+    ran.set(script, execFileSync('node', [script], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }));
+  }
   /* Leading whitespace allowed: verify-brands.mjs indents its checksum under
      the pack it belongs to, and anchoring hard to column 0 silently found
      nothing rather than failing loudly. */
-  const m = out.match(/^\s*checksum\s*:\s*(\d+)/m);
-  if (!m) throw new Error(`${script} printed no checksum line — has its output changed shape?`);
+  const m = ran.get(script).match(new RegExp(`^\\s*${label}\\s*:\\s*(\\d+)`, 'm'));
+  if (!m) throw new Error(`${script} printed no ${label} line — has its output changed shape?`);
   return Number(m[1]);
 }
+
+const printedChecksum = (script) => printed(script, 'checksum');
 
 /** The brands this build serves. Parsed, because brands.ts is TypeScript. */
 function brandCount() {
@@ -128,6 +134,28 @@ const CLAIMS = [
     what: 'code-only specs checksum',
     expected: () => printedChecksum('design/build-code-specs.mjs'),
     re: /Code-only specs print \*\*`(\d+)`\*\*/,
+    fix: 'node design/build-code-specs.mjs'
+  },
+  /*
+    THE TWO NUMBERS BESIDE THAT CHECKSUM, added 2026-08-26, and they earned
+    their place the same day: the sentence read "across 10 components and 324
+    entries" while the build printed 11 and 457. The checksum in the same
+    sentence was correct, so somebody had carried the one figure a check was
+    looking at and left the two beside it, which is this repo's oldest bug in
+    its smallest form. It is also exactly the shape the README's own bug took —
+    a right total above a short list — and the reason verify-readme.mjs counts
+    the bullets as well as the number.
+  */
+  {
+    what: 'code-only components',
+    expected: () => printed('design/build-code-specs.mjs', 'components'),
+    re: /Code-only specs print \*\*`\d+`\*\* across (\d+) components/,
+    fix: 'node design/build-code-specs.mjs'
+  },
+  {
+    what: 'code-only entries',
+    expected: () => printed('design/build-code-specs.mjs', 'entries'),
+    re: /Code-only specs print \*\*`\d+`\*\* across \d+ components and (\d+) entries/,
     fix: 'node design/build-code-specs.mjs'
   },
   {

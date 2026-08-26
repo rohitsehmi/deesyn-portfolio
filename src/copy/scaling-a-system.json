@@ -44,7 +44,7 @@
       {
         "title": "Building all four design languages into every component",
         "why": "Abandoned partway through. The original plan built each brand's identity into the components themselves, so no brand would need a redesign to adopt the system, and it was why the ambitious scenario looked survivable at all. It proved far more complex than the early assessment suggested, because every component carried four sets of decisions and every later change had to be correct in four places at once. We pivoted to Expedia's UDS component as the base with brand tokens on top, which cost some fidelity and bought a system that could ship.",
-        "imageAlt": "Placeholder for a diagram comparing the four-design-language component structure against the fast-track approach built on a single base component"
+        "imageAlt": "Two component structures side by side. On the left, the plan that was abandoned: one date picker holding four separate blocks, one each for Expedia, Hotels.com, Vrbo and the partner and supply side, and every block carrying the same four decisions, structure, behaviour, accessibility and look. On the right, what shipped: four brand token sets carrying look alone, feeding a single base date picker that holds structure, behaviour and accessibility once. Marking a change to how the component behaves lands on four rows on the left and one on the right."
       },
       {
         "title": "The middle convergence scenario we recommended",
