@@ -123,15 +123,6 @@
       "Do not add a caption per panel where prose already sits beside the figure. An exploration states its reasoning in full next to this; a caption repeats the argument at a smaller size.",
       "Never let the toggle be anything but a real checkbox. The space bar, the focus ring and the announced state come free from the browser, and a div with a click handler has none of them."
     ],
-    "Content/Component Models": [
-      "Do not mix a wash with a band token. `color-mix(<token> n%, var(--semantic-band-sunken))` paints one specific band's fill, and this figure ships on a base band and renders against all four in Storybook. Mix with `transparent` so the wash composites over whatever it lands on.",
-      "Do not mark a change to the look. It lands in one place per brand in both models, so marking it shows two structures agreeing and proves nothing. The comparison only works on a decision the shipped model holds once.",
-      "Do not draw the shipped model as all upside. The exploration admits in words that the pivot cost fidelity, so exactly one decision has to move out to the brand chips; a picture without it argues with the paragraph beside it.",
-      "Do not let the marked row change size. It takes a border when marked, so an unmarked row reserves a transparent one; without it every row in the figure shifts a pixel and the diagram reads as twitching.",
-      "Do not label every mark. Five copies of the same two words read as part of the structure rather than as an annotation on it, and the control above already names what is being changed.",
-      "Never let the toggle be anything but a real checkbox. The space bar, the focus ring and the announced state come free from the browser, and a div with a click handler has none of them.",
-      "Never put `role=\"img\"` over the control. It labels the two MODELS, which are a picture; a checkbox inside a region announced as an image is a control assistive technology has been told to skip."
-    ],
     "Content/Convergence Scenarios": [
       "Do not name the three middle rungs. The record names the two ends of the range and says the recommendation was \"one of the middle options\"; inventing the rest is fabricating the content of a real artefact, which is the hazard the four reconstructions in asset-provenance.json already carry.",
       "Do not mark the recommendation as a single rung. \"One of the middle options\" is vague in the record, so a bracket says that exactly where a dot would be a claim about which one.",
@@ -139,6 +130,14 @@
       "Do not give this one a control. Both the recommendation and the choice are on the scale at once, so nothing is hidden and a toggle would be a device; three toggles in one section is a tic a reader notices instead of reading.",
       "Do not paint a node with a band token. An outlined dot needs a background to hide the rail behind it, and the only honest value for that is whichever band the figure landed on, which is not a token. Fill the dots instead.",
       "Do not drop the alt. Three of the five rungs carry no text, so a reader who cannot see the scale gets two labels and nothing between them unless the description says the positions are there."
+    ],
+    "Content/Design Languages": [
+      "Do not put a depicted value in the stylesheet. These are three other companies' brand colours, read from their foundation files; the moment one lands in CSS the published contract stops being true and the swatch repaints with whichever brand is showing.",
+      "Do not render EGDS token names. A reader outside Expedia learns nothing from an internal namespace, and publishing one out of a private file is the disclosure this study cuts everywhere else. The labels are plain English for the same slot.",
+      "Do not set a type specimen in a substitute face. Reckless XPD, Recoleta and Lardent Pro Slab are licensed and absent here, so an \"Aa\" would show three faces EGDS does not ship — the same rule as a hand-traced logo being a wrong logo. Name the face.",
+      "Do not round the ledger. 84 shared and 10 differing do not sum to the union, because 83 more are declared by one or two brands and inherited by the rest; folding those into either number is the flattering version.",
+      "Do not build the duplicated copies on click. They are rendered in every brand and revealed by CSS, which is what keeps a prerendered article free of a runtime for a picture.",
+      "Never put `role=\"img\"` over the control. It labels the PLATE, which is a picture; a checkbox inside a region announced as an image is a control assistive technology has been told to skip."
     ]
   }
 }

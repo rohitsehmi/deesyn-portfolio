@@ -1,0 +1,502 @@
+{
+  "name": "Content/Design Languages",
+  "slug": "content-design-languages",
+  "domain": "components",
+  "source": {
+    "kind": "code-only",
+    "why": "No Figma set. Its contract depends on required props and CSS state, neither of which a Figma variant can express.",
+    "component": "src/components/DesignLanguages.tsx",
+    "styles": "src/components/DesignLanguages.css"
+  },
+  "description": "What four design languages actually amounted to, measured out of the real\nfoundation files rather than remembered.\n\nIT ILLUSTRATES A REJECTED EXPLORATION, which decides its shape. The reader has\njust been told the original plan built each brand's identity into the\ncomponents themselves, and that it proved far more complex than the early\nassessment suggested. This is why: a brand's identity is a handful of values\nand a typeface, sitting on top of a foundation the brands declare identically,\nso building the identity in meant carrying a copy of the shared part per\nbrand. The control does exactly that and the duplication is the cost.\n\nTHE VALUES ARE SOURCED AND THEREFORE ABSOLUTE. They are Expedia's, Hotels.com's\nand Vrbo's own, read from the live Figma file — so, like the token-tiers figure\nnext door, they must survive a theme change unmoved. Everything the diagram is\nMADE of is a token and everything it is ABOUT is data; a picture of somebody\nelse's palette that repaints with yours has stopped being true.\n\nInteractive with no JavaScript, on the same mechanism as the other three: one\nnative checkbox and `:has()`.",
+  "donts": [
+    "Do not put a depicted value in the stylesheet. These are three other companies' brand colours, read from their foundation files; the moment one lands in CSS the published contract stops being true and the swatch repaints with whichever brand is showing.",
+    "Do not render EGDS token names. A reader outside Expedia learns nothing from an internal namespace, and publishing one out of a private file is the disclosure this study cuts everywhere else. The labels are plain English for the same slot.",
+    "Do not set a type specimen in a substitute face. Reckless XPD, Recoleta and Lardent Pro Slab are licensed and absent here, so an \"Aa\" would show three faces EGDS does not ship — the same rule as a hand-traced logo being a wrong logo. Name the face.",
+    "Do not round the ledger. 84 shared and 10 differing do not sum to the union, because 83 more are declared by one or two brands and inherited by the rest; folding those into either number is the flattering version.",
+    "Do not build the duplicated copies on click. They are rendered in every brand and revealed by CSS, which is what keeps a prerendered article free of a runtime for a picture.",
+    "Never put `role=\"img\"` over the control. It labels the PLATE, which is a picture; a checkbox inside a region announced as an image is a control assistive technology has been told to skip."
+  ],
+  "props": {
+    "alt": {
+      "type": "string",
+      "required": true,
+      "note": "The accessible name for the whole figure, and REQUIRED for the same reason the other diagrams require one: a picture built from elements has no missing image for anyone to notice. It carries the counts, because the argument here is an amount — how much of four design languages turns out to be one design language."
+    },
+    "languages": {
+      "type": "DesignLanguage[]",
+      "required": true,
+      "note": "The brands, left to right."
+    },
+    "shared": {
+      "type": "SharedRamp[]",
+      "required": true,
+      "note": "The ramps every brand declares identically. The mass of the picture."
+    },
+    "ledger": {
+      "type": "DesignLanguagesLedger",
+      "required": true,
+      "note": "Computed in the data file from the variable dumps, never typed."
+    },
+    "labels": {
+      "type": "DesignLanguagesLabels",
+      "required": true
+    },
+    "defaultDuplicated": {
+      "type": "boolean",
+      "required": false,
+      "note": "Start with the shared set duplicated into every brand. Off by default, because what shipped is the honest resting state. It exists so a story can snapshot the second state, since Chromatic photographs a page rather than operating one."
+    },
+    "caption": {
+      "type": "string",
+      "required": false
+    },
+    "captionCopyRef": {
+      "type": "string",
+      "required": false
+    }
+  },
+  "tokens": {
+    ".design-languages": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      }
+    ],
+    ".design-languages__figure": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".design-languages__toggle-label": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "font",
+        "var": "--type-emphasis-3",
+        "ref": "typography.emphasis.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-3-tracking",
+        "ref": "typography.emphasis.3"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".design-languages__toggle-label::before": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s8",
+        "ref": "primitive.size.s8"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s8",
+        "ref": "primitive.size.s8"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-round",
+        "ref": "primitive.radius.round"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".design-languages__toggle:checked + .design-languages__toggle-label": [
+      {
+        "property": "background",
+        "var": "--semantic-status-warning",
+        "ref": "semantic.*.status.warning"
+      },
+      {
+        "property": "border-color",
+        "var": "--semantic-status-warning",
+        "ref": "semantic.*.status.warning"
+      },
+      {
+        "property": "border-color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".design-languages__toggle:checked + .design-languages__toggle-label::before": [
+      {
+        "property": "background",
+        "var": "--semantic-status-warning",
+        "ref": "semantic.*.status.warning"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".design-languages__toggle:focus-visible + .design-languages__toggle-label": [
+      {
+        "property": "outline",
+        "var": "--semantic-border-focus",
+        "ref": "semantic.*.border.focus"
+      }
+    ],
+    ".design-languages__plate": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".design-languages__brands": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      }
+    ],
+    ".design-languages__brand": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-border-default",
+        "ref": "semantic.*.border.default"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r12",
+        "ref": "primitive.radius.r12"
+      }
+    ],
+    ".design-languages__name": [
+      {
+        "property": "font",
+        "var": "--type-emphasis-4",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-4-tracking",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".design-languages__own": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      }
+    ],
+    ".design-languages__own-row": [
+      {
+        "property": "grid-template-columns",
+        "var": "--primitive-size-s20",
+        "ref": "primitive.size.s20"
+      },
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
+      }
+    ],
+    ".design-languages__swatch": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s20",
+        "ref": "primitive.size.s20"
+      },
+      {
+        "property": "height",
+        "var": "--primitive-size-s20",
+        "ref": "primitive.size.s20"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r4",
+        "ref": "primitive.radius.r4"
+      }
+    ],
+    ".design-languages__own-label": [
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    ".design-languages__value": [
+      {
+        "property": "font",
+        "var": "--type-emphasis-4",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-4-tracking",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".design-languages__face": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      },
+      {
+        "property": "font",
+        "var": "--type-emphasis-4",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-emphasis-4-tracking",
+        "ref": "typography.emphasis.4"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".design-languages__own-row[data-kind='note'] .design-languages__face-note": [
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      }
+    ],
+    ".design-languages__ramps": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp200",
+        "ref": "primitive.space.sp200"
+      }
+    ],
+    ".design-languages__ramp": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp100",
+        "ref": "primitive.space.sp100"
+      }
+    ],
+    ".design-languages__ramp-label": [
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".design-languages__ramp-steps": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp50",
+        "ref": "primitive.space.sp50"
+      }
+    ],
+    ".design-languages__step": [
+      {
+        "property": "height",
+        "var": "--primitive-size-s16",
+        "ref": "primitive.size.s16"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r2",
+        "ref": "primitive.radius.r2"
+      }
+    ],
+    ".design-languages__copy": [
+      {
+        "property": "transition",
+        "var": "--semantic-duration-overlay",
+        "ref": "semantic.*.duration.overlay"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
+      }
+    ],
+    ".design-languages__shared": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "padding",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "border-radius",
+        "var": "--primitive-radius-r12",
+        "ref": "primitive.radius.r12"
+      },
+      {
+        "property": "background",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-fg-accent",
+        "ref": "semantic.*.fg.accent"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    "@media (min-width: 760px) { .design-languages__shared .design-languages__ramps }": [
+      {
+        "property": "gap",
+        "var": "--primitive-space-sp400",
+        "ref": "primitive.space.sp400"
+      },
+      {
+        "property": "gap",
+        "var": "--primitive-layout-l40",
+        "ref": "primitive.layout.l40"
+      }
+    ],
+    ".design-languages__shared-label": [
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".design-languages__caption": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-secondary",
+        "ref": "semantic.*.fg.secondary"
+      },
+      {
+        "property": "font",
+        "var": "--type-body-3",
+        "ref": "typography.body.3"
+      },
+      {
+        "property": "letter-spacing",
+        "var": "--type-body-3-tracking",
+        "ref": "typography.body.3"
+      }
+    ]
+  }
+}

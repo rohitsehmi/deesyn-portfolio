@@ -15,9 +15,8 @@ import {
   SHARED_SEMANTIC, TIERS, TIER_NOTE
 } from '../../data/egds-token-tiers';
 import {
-  COMPONENT_DECISIONS, COMPONENT_MODELS, COMPONENT_MODELS_BASE,
-  COMPONENT_MODELS_CHANGE, COMPONENT_MODELS_SUBJECT, DESIGN_LANGUAGES
-} from '../../data/egds-component-models';
+  DESIGN_LANGUAGES, DESIGN_LANGUAGES_LABELS, LEDGER, SHARED_RAMPS
+} from '../../data/egds-design-languages';
 import {
   CONVERGENCE_NOTES, CONVERGENCE_SCENARIOS, CONVERGENCE_TRADE
 } from '../../data/egds-convergence-scenarios';
@@ -144,14 +143,13 @@ const GOVERNANCE = explorationAt('Letting any team');
         ...(i === MODELS
           ? {
               diagram: {
-                kind: 'component-models' as const,
+                kind: 'design-languages' as const,
                 alt: e.imageAlt,
-                subject: COMPONENT_MODELS_SUBJECT,
                 languages: DESIGN_LANGUAGES,
-                decisions: COMPONENT_DECISIONS,
-                models: COMPONENT_MODELS,
-                base: COMPONENT_MODELS_BASE,
-                change: COMPONENT_MODELS_CHANGE
+                shared: SHARED_RAMPS,
+                ledger: LEDGER,
+                labels: DESIGN_LANGUAGES_LABELS,
+                caption: e.imageCaption
               }
             }
           : i === CONVERGENCE

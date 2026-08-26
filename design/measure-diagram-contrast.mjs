@@ -3,7 +3,7 @@
  * off the rendered page, in both themes and in every state they can be put into.
  *
  * Four figures on one page as of 2026-08-26: the token tiers, the governance
- * ladder, the two component models and the convergence scale. All four are in
+ * ladder, the convergence scale and the design languages. All four are in
  * the same document, so one run covers them and the reload between figures is
  * what stops one figure's selection following the next into its measurement.
  *
@@ -51,6 +51,25 @@
  * backgroundColor scores the wash instead of the wash over the band.
  */
 import { chromium } from 'playwright-core';
+import { loadPacks } from '../tokens/brands.mjs';
+
+/*
+  ONE REPRESENTATIVE PER DISTINCT PALETTE, derived rather than listed.
+
+  Every wash in these figures is `color-mix(<semantic token> n%, transparent)`, so
+  the pair a reader sees depends on the brand as well as the theme — and this
+  measurement ran against the default brand alone until 2026-08-26, the day two
+  brands were added. Measuring all of them would be five times the page loads for
+  no new information while they share a pack, so the set is the default plus the
+  first brand of each pack. Split a pack and this grows on its own, which is the
+  point: a list typed here would have gone stale on exactly the day that list of
+  brands did.
+*/
+const brandSet = [
+  { label: 'default', attr: null },
+  ...loadPacks().map((pack) => ({ label: pack.brands[0], attr: pack.brands[0] }))
+];
+
 const browser = await chromium.launch({ channel: 'chrome' });
 
 const AUDIT = `((sel) => {
@@ -92,7 +111,7 @@ const AUDIT = `((sel) => {
     const px = parseFloat(cs.fontSize), w = +cs.fontWeight || 400;
     const large = px >= 24 || (px >= 18.66 && w >= 700);
     out.push({
-      what: (el.className || el.tagName).toString().replace(/(token-tiers|governance-tiers|component-models|convergence-scenarios)__/,''),
+      what: (el.className || el.tagName).toString().replace(/(token-tiers|governance-tiers|convergence-scenarios|design-languages)__/,''),
       text: el.textContent.trim().slice(0, 22),
       px: Math.round(px), w, large,
       ratio: +ratio(over(fg, bg), bg).toFixed(2),
@@ -127,33 +146,43 @@ const FIGURES = [
       ['rejected path', '.governance-tiers__toggle-label']
     ]
   },
-  {
-    root: '.component-models',
-    states: [
-      ['two structures', null],
-      ['one change', '.component-models__toggle-label']
-    ]
-  },
   /* One state, and that is the figure rather than an oversight: the
      recommendation and the choice are both on the scale at once, so there is
      nothing a control could reveal. */
   {
     root: '.convergence-scenarios',
     states: [['the scale', null]]
+  },
+  {
+    root: '.design-languages',
+    states: [
+      ['what shipped', null],
+      ['duplicated', '.design-languages__toggle-label']
+    ]
   }
 ];
 
 let worst = { ratio: Infinity };
 let failures = 0;
 
+/* Both are attributes on the ROOT, which is what the live inline script sets and
+   what `:root[data-brand=x]` keys off — setting either on a wrapper silently
+   measures the default. */
+const dress = async (page, theme, brand) => {
+  await page.evaluate(([t, b]) => {
+    const r = document.documentElement;
+    if (t === 'dark') r.setAttribute('data-theme', 'dark'); else r.removeAttribute('data-theme');
+    if (b) r.setAttribute('data-brand', b); else r.removeAttribute('data-brand');
+  }, [theme, brand]);
+  await page.waitForTimeout(250);
+};
+
+for (const { label: brandLabel, attr: brandAttr } of brandSet)
 for (const theme of ['light', 'dark']) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 1200 } });
   const page = await ctx.newPage();
   await page.goto('http://localhost:4321/work/scaling-a-system/', { waitUntil: 'networkidle' });
-  if (theme === 'dark') {
-    await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
-    await page.waitForTimeout(250);
-  }
+  await dress(page, theme, brandAttr);
   for (const { root, states } of FIGURES) {
     for (const [label, click] of states) {
       if (click) { await page.locator(click).click(); await page.waitForTimeout(500); }
@@ -162,9 +191,9 @@ for (const theme of ['light', 'dark']) {
       const rows = await page.evaluate(`${AUDIT}(${JSON.stringify(root)})`);
       const fails = rows.filter((r) => r.ratio < r.need);
       const min = rows.reduce((m, r) => (r.ratio < m.ratio ? r : m));
-      if (min.ratio < worst.ratio) worst = { ...min, theme, label };
+      if (min.ratio < worst.ratio) worst = { ...min, brand: brandLabel, theme, label };
       failures += fails.length;
-      console.log(`${theme.padEnd(5)} ${root.replace('.', '').padEnd(17)} ${label.padEnd(15)} ` +
+      console.log(`${brandLabel.padEnd(9)} ${theme.padEnd(5)} ${root.replace('.', '').padEnd(21)} ${label.padEnd(15)} ` +
         `${String(rows.length).padStart(3)} text pairs, ${fails.length} below AA` +
         `  (lowest ${min.ratio}:1 — ${min.what} "${min.text}")`);
       for (const f of fails) {
@@ -174,15 +203,12 @@ for (const theme of ['light', 'dark']) {
     // Back to the resting state before the next figure, so one figure's
     // selection cannot follow the other into its measurement.
     await page.reload({ waitUntil: 'networkidle' });
-    if (theme === 'dark') {
-      await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
-      await page.waitForTimeout(250);
-    }
+    await dress(page, theme, brandAttr);
   }
   await ctx.close();
 }
 
-console.log(`\n${failures} below AA across all four figures, both themes, every state.`);
-console.log(`worst pair ${worst.ratio}:1 — ${worst.what} "${worst.text}" (${worst.theme}, ${worst.label})`);
+console.log(`\n${failures} below AA across all four figures, every brand palette, both themes, every state.`);
+console.log(`worst pair ${worst.ratio}:1 — ${worst.what} "${worst.text}" (${worst.brand}, ${worst.theme}, ${worst.label})`);
 await browser.close();
 if (failures) process.exit(1);

@@ -1,8 +1,8 @@
 import { Media, type MediaRatio } from './Media';
 import { Carousel, type CarouselProps } from './Carousel';
 import { GovernanceTiers, type GovernanceTiersProps } from './GovernanceTiers';
-import { ComponentModels, type ComponentModelsProps } from './ComponentModels';
 import { ConvergenceScenarios, type ConvergenceScenariosProps } from './ConvergenceScenarios';
+import { DesignLanguages, type DesignLanguagesProps } from './DesignLanguages';
 import './Explorations.css';
 
 /**
@@ -17,8 +17,8 @@ import './Explorations.css';
  */
 export type ExplorationDiagram =
   | ({ kind: 'governance' } & GovernanceTiersProps)
-  | ({ kind: 'component-models' } & ComponentModelsProps)
-  | ({ kind: 'convergence' } & ConvergenceScenariosProps);
+  | ({ kind: 'convergence' } & ConvergenceScenariosProps)
+  | ({ kind: 'design-languages' } & DesignLanguagesProps);
 
 export interface Exploration {
   /** What the direction was, in the fewest words that identify it. */
@@ -94,13 +94,13 @@ export interface ExplorationsProps {
  * diagram component never receives a prop it has no opinion about.
  */
 function Diagram(diagram: ExplorationDiagram) {
-  if (diagram.kind === 'component-models') {
-    const { kind, ...props } = diagram;
-    return <ComponentModels {...props} />;
-  }
   if (diagram.kind === 'convergence') {
     const { kind, ...props } = diagram;
     return <ConvergenceScenarios {...props} />;
+  }
+  if (diagram.kind === 'design-languages') {
+    const { kind, ...props } = diagram;
+    return <DesignLanguages {...props} />;
   }
   const { kind, ...props } = diagram;
   return <GovernanceTiers {...props} />;

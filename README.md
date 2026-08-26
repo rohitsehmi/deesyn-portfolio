@@ -58,7 +58,7 @@ Sixteen checks run on every push, and the build fails rather than warns. `npm ru
 - **Deploy configuration.** `vercel.json` is validated by Vercel before install and before build, so a mistake in it fails the deployment without ever producing a build log, and every check above can stay green while the site quietly serves the previous build. That is not hypothetical: an unrecognised key cost eight deployments and a day of stale production. This reads the file — the top-level keys against the set Vercel accepts, and any rewrite whose source is shadowed by a real file in the build output, because the filesystem is matched before rewrites and a shadowed rule never runs.
 - **The working record.** `CLAUDE.md` states figures it cannot compute, among them four export checksums, and three of those have sat in it stale while the build printed something else. Each is now read back from the script that prints it rather than recomputed here, so there is no second implementation to drift, and a figure that has moved fails the build instead of sitting there reading as an ordinary sentence.
 
-Visual regression runs separately on Chromatic, which snapshots all 69 stories in both light and dark.
+Visual regression runs separately on Chromatic, which snapshots all 68 stories in both light and dark.
 
 ## Reading further
 

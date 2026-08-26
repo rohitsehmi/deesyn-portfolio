@@ -1,0 +1,325 @@
+/*
+  THE CHROME IS TOKENS, THE SUBJECT IS DATA — the same split TokenTiers.css makes
+  and for the same reason. Plates, rules, type and the control resolve from the
+  page's own semantic layer, so the figure is right in both themes and repaints
+  with the brand pack. The swatches are Expedia's, Hotels.com's and Vrbo's own
+  values, arriving as inline styles from src/data/egds-design-languages.ts,
+  because a picture of somebody else's palette that repaints with yours has
+  stopped being true.
+
+  So there is no colour literal in this file, and the component's published
+  contract can go on saying every value is a token reference.
+
+  Every wash mixes with `transparent` rather than a band token: this ships on a
+  `base` band and renders against all four in Storybook.
+*/
+
+.design-languages {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+}
+
+.design-languages__figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp600);
+}
+
+/* ---- the control --------------------------------------------------------- */
+
+.design-languages__control { align-self: start; }
+
+/* Replaced, not hidden: it keeps the space bar, the focus ring and the announced
+   state. `pointer-events: none` keeps it out of hit testing so the label takes
+   every click. */
+.design-languages__toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.design-languages__toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-space-sp300);
+  padding: var(--primitive-space-sp200) var(--primitive-space-sp500);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-radius-round);
+  font: var(--type-emphasis-3);
+  letter-spacing: var(--type-emphasis-3-tracking);
+  color: var(--semantic-fg-primary);
+  cursor: pointer;
+  transition:
+    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    border-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+/* The dot is the state and not the only signal: the border and the plate move
+   with it, so this does not rely on colour alone. */
+.design-languages__toggle-label::before {
+  content: '';
+  width: var(--primitive-size-s8);
+  height: var(--primitive-size-s8);
+  border-radius: var(--primitive-radius-round);
+  border: 1px solid currentColor;
+  transition: background-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+.design-languages__toggle:checked + .design-languages__toggle-label {
+  background: color-mix(in srgb, var(--semantic-status-warning) 14%, transparent);
+  border-color: color-mix(in srgb, var(--semantic-status-warning) 55%, var(--semantic-fg-primary));
+}
+.design-languages__toggle:checked + .design-languages__toggle-label::before {
+  background: color-mix(in srgb, var(--semantic-status-warning) 55%, var(--semantic-fg-primary));
+}
+.design-languages__toggle:focus-visible + .design-languages__toggle-label {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+/* ---- the three brands ---------------------------------------------------- */
+
+.design-languages__plate {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp600);
+}
+
+.design-languages__brands {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--primitive-space-sp600);
+}
+/*
+  760, measured rather than picked. A column has to hold the widest own-row at
+  once: a 20px swatch, an 8px gap, "Display face" at 74px in body/3, a 12px gap
+  and "Lardent Pro Slab" at 92px, which is 206; the brand plate adds 24px of its
+  own padding, so 230 each, 738 for three with the 20px gaps. Below it the
+  brands stack, where each has the whole measure and the ramps get more room
+  rather than less.
+*/
+@media (min-width: 760px) {
+  .design-languages__brands { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.design-languages__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+  padding: var(--primitive-space-sp400);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--primitive-radius-r12);
+}
+
+.design-languages__name {
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  text-transform: uppercase;
+  color: var(--semantic-fg-primary);
+}
+
+.design-languages__own {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp300);
+}
+
+.design-languages__own-row {
+  display: grid;
+  grid-template-columns: var(--primitive-size-s20) 1fr auto;
+  align-items: center;
+  gap: var(--primitive-space-sp300);
+}
+/*
+  The face row has no swatch, so its label is PLACED in the second column rather
+  than the row being given fewer columns. Dropping to two columns was the first
+  attempt and it broke the row: two children in a two-column grid with the label
+  forced to column two pushes the face onto a line of its own, which is how
+  "Lardent Pro Slab" came out stacked three words deep under its own label.
+*/
+.design-languages__own-row[data-kind='face'] .design-languages__own-label { grid-column: 2; }
+.design-languages__own-row[data-kind='face'] .design-languages__face {
+  grid-column: 3;
+  justify-content: end;
+  text-align: end;
+}
+
+/*
+  A depicted value, so it carries its own boundary rather than a token border:
+  `#FFF9D9` on a white band is invisible without one, and a swatch nobody can see
+  is not a swatch. `currentColor` at 20% takes the ring from the page's own
+  foreground, which keeps it correct in both themes over a fill it knows nothing
+  about.
+*/
+.design-languages__swatch {
+  width: var(--primitive-size-s20);
+  height: var(--primitive-size-s20);
+  border-radius: var(--primitive-radius-r4);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.design-languages__own-label {
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  color: var(--semantic-fg-secondary);
+}
+
+/* The hex is the checkable part of the claim, so it is set in the same
+   tabular-ish weight as a number elsewhere on the site and not dimmed away. */
+.design-languages__value {
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  color: var(--semantic-fg-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.design-languages__face {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--primitive-space-sp200);
+  font: var(--type-emphasis-4);
+  letter-spacing: var(--type-emphasis-4-tracking);
+  color: var(--semantic-fg-primary);
+}
+/*
+  ITS OWN ROW, SPANNING FROM THE LABEL COLUMN — see the note in the component.
+  Inside the face cell it sized that `auto` column to itself and broke the label
+  beside it; here it sizes nothing.
+*/
+.design-languages__own-row[data-kind='note'] .design-languages__face-note {
+  grid-column: 2 / -1;
+  text-align: end;
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  color: var(--semantic-fg-secondary);
+}
+
+/* ---- the shared set, and its copies -------------------------------------- */
+
+.design-languages__ramps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp200);
+}
+
+.design-languages__ramp {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp100);
+}
+
+/*
+  fg/primary, AND THE SAME IN BOTH PLACES, which is measured rather than chosen.
+
+  fg/secondary is built for 4.87:1 on pure white; the shared block washes 8%
+  accent over the band, which takes the same pair to 4.35:1 in light while it
+  passed at 9.58:1 in dark — the third time on this page that a token has been
+  fine in one theme and under AA in the other.
+
+  Raising only the copies inside the block would have fixed the number and broken
+  the figure: the control exists so a reader can compare the block with the
+  columns, and a label that changes colour when it is duplicated is a difference
+  the picture is not trying to draw. So both are fg/primary.
+*/
+.design-languages__ramp-label {
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  color: var(--semantic-fg-primary);
+}
+
+/* One flex row of ten that shrinks rather than wraps: a ramp broken over two
+   lines stops reading as a ramp. */
+.design-languages__ramp-steps {
+  display: flex;
+  gap: var(--primitive-space-sp50);
+}
+
+.design-languages__step {
+  flex: 1 1 0;
+  min-width: 0;
+  height: var(--primitive-size-s16);
+  border-radius: var(--primitive-radius-r2);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 12%, transparent);
+}
+
+/*
+  THE ARGUMENT IS THE DUPLICATION, so the copy is rendered in every brand and
+  revealed rather than built. Three identical stacks appearing at once is the
+  cost of building four design languages into every component, and it is a thing
+  to show rather than a thing to say.
+
+  `grid-template-rows: 0fr -> 1fr` rather than `display: none -> block`, so the
+  reveal has a height to animate and the figure grows instead of jumping.
+*/
+.design-languages__copy {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--semantic-duration-overlay) var(--semantic-easing-out);
+}
+.design-languages__copy > * { overflow: hidden; }
+.design-languages__figure:has(.design-languages__toggle:checked) .design-languages__copy {
+  grid-template-rows: 1fr;
+}
+
+.design-languages__shared {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-sp400);
+  padding: var(--primitive-space-sp500);
+  border-radius: var(--primitive-radius-r12);
+  background: color-mix(in srgb, var(--semantic-fg-accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--semantic-fg-accent) 40%, var(--semantic-fg-primary));
+}
+/* When the set has been duplicated into all three brands there is nothing left
+   for one shared block to be, so it goes. */
+.design-languages__figure:has(.design-languages__toggle:checked) .design-languages__shared {
+  display: none;
+}
+
+/*
+  TWO ACROSS IN THE SHARED BLOCK, and it is about what a swatch is. Four ramps
+  down the full measure makes each of the forty steps 160px wide, at which size a
+  ramp reads as four bar charts rather than as a palette — and it is a different
+  shape from the same ramps inside a brand column, which is precisely the
+  comparison the control asks a reader to make. Two across puts a step at about
+  80px in the block and 22px in a column, which are the same object at two sizes.
+*/
+@media (min-width: 760px) {
+  .design-languages__shared .design-languages__ramps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--primitive-space-sp400) var(--primitive-layout-l40);
+  }
+}
+
+.design-languages__shared-label {
+  margin: 0;
+  max-width: 72ch;
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+  color: var(--semantic-fg-primary);
+}
+
+.design-languages__caption {
+  color: var(--semantic-fg-secondary);
+  font: var(--type-body-3);
+  letter-spacing: var(--type-body-3-tracking);
+}
+
+/* The reveal is a state change, not a performance. */
+@media (prefers-reduced-motion: reduce) {
+  .design-languages__copy,
+  .design-languages__toggle-label,
+  .design-languages__toggle-label::before {
+    transition: none;
+  }
+}
