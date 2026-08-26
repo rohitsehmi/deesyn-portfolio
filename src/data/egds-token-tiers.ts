@@ -14,21 +14,28 @@
  * flips with the theme; media is absolute, because a photograph does not change
  * colour when you turn the lights off. A depicted ramp is media.
  *
- * PROVENANCE. Sampled pixel by pixel from src/assets/egds-token-tiers-light.png,
- * the artwork this component replaces, so the recreation is measured rather than
- * remembered. That file's entry in design/asset-provenance.json is the record of
- * what it is, and one line of it governs everything here:
+ * PROVENANCE — REWRITTEN 2026-08-26, AND THE DIRECTION OF TRAVEL IS THE POINT.
+ * Every value here used to be sampled pixel by pixel from
+ * src/assets/egds-token-tiers-light.png, and the note in this spot said the
+ * swatches were ILLUSTRATIVE and that a printed hex reads as a claim nobody
+ * could check. All of that was the right caution for sampled values.
  *
- *   the swatches are ILLUSTRATIVE and carry NO hex values.
+ * They are not sampled any more. They are read out of the live Figma file
+ * `Foundations`, `ftO20wB1T5EAIOulXsHeDQ`, with `get_variable_defs` against the
+ * three brand instances — see src/data/egds-design-languages.ts, which carries
+ * the node ids and the method and is the figure this one now has to agree with.
+ * So the hexes ARE printed, and a reader can check them.
  *
- * An earlier pass of the artwork printed a legend of hex codes beside them and
- * it was cut, because those numbers were of unverified provenance and a number
- * on a page reads as a claim. Nothing here is rendered as text, and nothing here
- * should be. They are ramps of the right shape, not a published palette.
+ * WHAT THE SOURCE CHANGED, beyond values. The old figure gave each brand its own
+ * primary button and said "only the feature layer resolves per brand". Neither
+ * survives the file: all three brands declare the action ramp identically, and
+ * what differs between them is a block of raw values at the foundation tier. The
+ * tier that sits empty until a brand is picked is therefore the first one now,
+ * not the last, and the three buttons are one colour.
  *
- * The exception, and it is deliberate: the three brand accents and their button
- * fills are recognisably each company's own. That is the point being made —
- * one library, three brands — and it cannot be made in invented colours.
+ * The PNG is kept rather than deleted, and design/asset-provenance.json still
+ * records what it is. It is the thing this was measured from before there was
+ * anything better.
  */
 
 import { EGDS_BRAND_MARKS } from './egds-brand-marks';
@@ -122,6 +129,9 @@ export interface TokenTierBrand {
   button: { bg: string; fg: string };
 }
 
+/** Declared before DEPICTED_ACCENT because that is now an alias of it. */
+const ACTION_TINT = '#1668E3';
+
 /**
  * The accent the depicted system resolves to, used to tint the plates.
  *
@@ -131,7 +141,7 @@ export interface TokenTierBrand {
  * white slab into the middle of the page — which is precisely what the PNG did,
  * and the reason it was rebuilt.
  */
-export const DEPICTED_ACCENT = '#3E13DF';
+export const DEPICTED_ACCENT = ACTION_TINT;
 
 /**
  * The foundation ramp, named once so the tier above can PRINT these values and
@@ -150,23 +160,49 @@ export const DEPICTED_ACCENT = '#3E13DF';
  * that happen to agree — the same reason SHARED_SEMANTIC is passed once instead
  * of copied per brand.
  */
-const FOUNDATION = ['#010A23', '#2E354B', '#646987', '#9296AD', '#CFCFD9', '#FFFFFF'];
-const [INK, , , STEEL, MIST, WHITE] = FOUNDATION;
+const FOUNDATION = ['#0C0E1C', '#31374F', '#676A7D', '#999CA8', '#CACCD2', '#F3F3F5'];
+const [INK, , , STEEL, MIST, PAPER] = FOUNDATION;
+const WHITE = '#FFFFFF';
+
+/**
+ * The action ramp, and the single most consequential thing the real file taught
+ * this diagram.
+ *
+ * All three brands declare it BYTE-IDENTICAL. So the primary action is not a
+ * per-brand value at all, and the earlier version of this figure — which gave
+ * Expedia a blue button, Hotels.com a red one and Vrbo a navy one — was drawing
+ * a difference that is not there. Expedia's real button, sampled from the
+ * Components file, is exactly this ramp's 600 step; there is one Button in the
+ * library with one binding; therefore all three resolve here.
+ */
+const ACTION = { rest: '#1668E3', hover: '#0D4EAF', press: '#0E3672', muted: '#A6C9F7' };
 
 /**
  * Named once. The tier states these and all three brands repeat them unchanged.
  *
- * Four of the six alias the neutral ramp above. Primary and Primary Hover do
- * not, and that is information rather than an omission: an accent is the one
- * thing a neutral ramp cannot supply, which is exactly why the tier below it
- * exists for a brand to override.
+ * Four of the six alias the neutral ramp above; Primary and Primary Hover come
+ * from the action ramp. THAT USED TO BE THE OTHER WAY ROUND and the correction
+ * is the point of this revision: the note here said an accent was the one thing
+ * a neutral ramp cannot supply, "which is exactly why the tier below it exists
+ * for a brand to override". The real file says the action ramp is declared
+ * identically by all three brands, so an accent is not a brand's to supply
+ * either. What a brand supplies is its own block of raw values, which is why the
+ * tier that resolves per brand is now the FIRST one.
  */
 const SEMANTIC: TokenSwatch[] = [
-  { label: 'Primary', hex: '#A99FFB' },
-  { label: 'On Primary', hex: INK },
-  { label: 'Surface', hex: WHITE },
+  { label: 'Primary', hex: ACTION.rest },
+  { label: 'On Primary', hex: WHITE },
+  /*
+    Surface takes the lightest neutral rather than white, and Disabled the next
+    step up from it, because the first pass put white on both On Primary and
+    Surface and #F3F3F5 on Disabled — three near-white circles in a row of six,
+    which is accurate and unreadable. Every value here is still a real step of
+    the shared neutral ramp; the separation comes from picking different ones,
+    not from inventing any.
+  */
+  { label: 'Surface', hex: PAPER },
   { label: 'Border', hex: STEEL },
-  { label: 'Primary Hover', hex: DEPICTED_ACCENT },
+  { label: 'Primary Hover', hex: ACTION.hover },
   { label: 'Disabled', hex: MIST }
 ];
 
@@ -180,24 +216,39 @@ const SEMANTIC: TokenSwatch[] = [
  */
 export const SHARED_SEMANTIC = SEMANTIC;
 
+/**
+ * The six slots a brand actually sets, in the order every brand's block below
+ * fills them.
+ *
+ * Named in plain English rather than with the EGDS token names, which is the
+ * decision already taken for the design-languages figure and holds here for the
+ * same reason: a reader outside Expedia learns nothing from an internal
+ * namespace out of a private file.
+ */
+const BRAND_BLOCK = ['Identity', 'Surface', 'Ink', 'Wash', 'Edge', 'Tint'];
+
 export const TIERS: TokenTier[] = [
   {
     title: 'Foundation tokens',
-    gloss: 'Raw values, platform agnostic',
+    gloss: 'Raw values. Shared ramps, plus a block each brand sets',
     glyph: 'layers',
-    weight: 'solid',
-    plate: { bg: '#0B1739', fg: '#FFFFFF' },
+    weight: 'outline',
+    resolvesPerBrand: true,
     /*
-      Values rather than names, and that IS the tier's point: a foundation token
-      has no meaning attached to it yet, so the only thing there is to say about
-      it is what it is. The two tiers below name their slots instead, which is
-      the difference the ladder is drawing.
+      THE EMPTY TIER MOVED HERE FROM THE BOTTOM, and that is the whole revision.
 
-      SAMPLED, NOT SOURCED — see TokenSwatch.value. These are read off the
-      artwork this component replaced, so they are the right greys for the
-      picture and are not EGDS's published neutrals.
+      It sat on the feature tier, so the picture said a brand differentiates
+      itself at component level. The real foundation files say the opposite: the
+      neutral, action, success and error ramps are declared identically by all
+      three brands, and what differs is a block of raw values — identity,
+      surface, and four more. So the slot a brand fills is a foundation slot, and
+      the tiers below it resolve the same however the picker is set.
+
+      The copy was never wrong about this. It says "a brand differentiates itself
+      by overriding tokens rather than rewriting components", and never says
+      which tier. Only this figure's note did.
     */
-    swatches: FOUNDATION.map((hex) => ({ hex, value: hex }))
+    swatches: BRAND_BLOCK.map((label) => ({ label }))
   },
   {
     title: 'Semantic tokens',
@@ -210,13 +261,28 @@ export const TIERS: TokenTier[] = [
     title: 'Feature tokens',
     gloss: 'Component level',
     glyph: 'overlap',
-    weight: 'outline',
-    resolvesPerBrand: true,
-    // No `hex`, and that is the whole diagram. This tier is the empty one; each
-    // brand below fills the same six slots with its own values.
+    weight: 'solid',
+    /*
+      THE PLATE MOVED WITH THE ARGUMENT. It was on the foundation tier because
+      that was "the bedrock of the picture"; the bedrock is now the row that
+      actually paints the button, sitting directly above the three buttons it
+      paints. The reasoning for it being DEPICTED rather than themed is unchanged
+      and still governs — see TokenTier.plate.
+    */
+    plate: { bg: '#0B1739', fg: '#FFFFFF' },
+    /*
+      Values printed, because this row is the checkable claim: a reader can read
+      #1668E3 here and see it on all three buttons below. The tier above prints
+      none, since a slot with no brand picked has nothing to print.
+    */
     swatches: [
-      'Button BG', 'Button Text', 'Button Border', 'Button Hover', 'Button Press', 'Button Disabled'
-    ].map((label) => ({ label }))
+      { label: 'Button BG', hex: ACTION.rest, value: ACTION.rest },
+      { label: 'Button Text', hex: WHITE, value: WHITE },
+      { label: 'Button Border', hex: ACTION.rest, value: ACTION.rest },
+      { label: 'Button Hover', hex: ACTION.hover, value: ACTION.hover },
+      { label: 'Button Press', hex: ACTION.press, value: ACTION.press },
+      { label: 'Button Disabled', hex: ACTION.muted, value: ACTION.muted }
+    ]
   }
 ];
 
@@ -236,58 +302,41 @@ export const TIERS: TokenTier[] = [
  */
 export const BRANDS: TokenTierBrand[] = [
   /*
-    THE ONLY ROW HERE THAT IS SOURCED RATHER THAN ILLUSTRATIVE, and correcting it
-    is the clearest thing the real file taught this diagram.
+    EVERY VALUE IN THIS LIST IS NOW SOURCED, read out of the live Figma file
+    `Foundations` (`ftO20wB1T5EAIOulXsHeDQ`) on 2026-08-26 — see
+    src/data/egds-design-languages.ts for the node ids and the method.
 
-    It used to render a yellow button, because yellow is the colour everyone
-    thinks of as Expedia's. Yellow is `brand__1` on the brand page — the
-    identity — and EGDS's primary button is `#1668E3`. Those being different is
-    not a detail, it is the entire reason a feature layer exists: a brand's
-    identity colour and the colour its primary action resolves to are two
-    different questions, and a system that conflated them would need a fork
-    rather than a token.
+    Three things were wrong before and all three were sampled off a PNG:
+    the identity colours were 27 to 58 apart in RGB distance from the real ones;
+    the six-value block was a per-brand button ramp; and the buttons were blue,
+    red and navy.
 
-    So the disc above stays yellow and the button below is blue. Four of these
-    six are sampled straight off the real component (rest, hover, active,
-    disabled); Border is derived, since the real Secondary variant draws its
-    edge from the neutral ramp rather than the brand.
+    THE BUTTONS ARE THE SAME BLUE NOW, and that is a correction rather than a
+    simplification. All three brands declare the action ramp identically, there
+    is one Button in the library with one binding, and Expedia's real button is
+    that ramp's 600 step exactly. Three different buttons was a difference the
+    system does not have. What a brand does change is the block above.
   */
   {
     name: 'Expedia',
     mark: EGDS_BRAND_MARKS.Expedia,
-    accent: '#FCBA02',
-    feature: ['#1668E3', '#FFFFFF', '#1359C3', '#124CA4', '#0E3672', '#ABC9F5'],
-    button: { bg: '#1668E3', fg: '#FFFFFF' }
+    accent: '#FDDB32',
+    feature: ['#FDDB32', '#FFF9D9', '#292929', '#EFF3F7', '#C8DFF9', '#7CB6B0'],
+    button: { bg: ACTION.rest, fg: WHITE }
   },
-  /*
-    Two values here are set for LEGIBILITY rather than fidelity, and both were
-    caught by measuring rather than by looking.
-
-    White on this red is 3.83:1 in the disc and 4.07:1 on the button — under AA
-    for text at these sizes, in both themes, because a mid-luminance red is the
-    one hue where white is not the safe choice. The disc takes a near-black
-    letter instead (5.09:1); the button fill steps down 6% to #E22B37, which
-    carries white at 4.54:1 and is still plainly Hotels.com's red.
-
-    Nudging a depicted colour is a real cost and it is only acceptable because
-    this row is illustrative, which the caption says on the page. Do NOT do the
-    same to the Expedia row: those four values are sampled from the real
-    component, and moving one to satisfy a checker would trade the only sourced
-    thing in the picture for a number.
-  */
   {
     name: 'Hotels.com',
     mark: EGDS_BRAND_MARKS['Hotels.com'],
-    accent: '#F6343F',
-    feature: ['#E22B37', '#FFFFFF', '#C2252F', '#A51F28', '#76161D', '#F5B3B7'],
-    button: { bg: '#E22B37', fg: '#FFFFFF' }
+    accent: '#E61E43',
+    feature: ['#E61E43', '#FBECE9', '#311A32', '#F8F3E7', '#EAE3D2', '#81B9BF'],
+    button: { bg: ACTION.rest, fg: WHITE }
   },
   {
     name: 'Vrbo',
     mark: EGDS_BRAND_MARKS.Vrbo,
-    accent: '#054CC0',
-    feature: ['#0043B5', '#FFFFFF', '#003A9C', '#003184', '#00235E', '#A3BBE4'],
-    button: { bg: '#0043B5', fg: '#FFFFFF' }
+    accent: '#006ED6',
+    feature: ['#006ED6', '#EBF5FF', '#23272B', '#F7F7F8', '#AED1F3', '#FF9A65'],
+    button: { bg: ACTION.rest, fg: WHITE }
   }
 ];
 
@@ -296,13 +345,23 @@ export const BRANDS: TokenTierBrand[] = [
  * they are rather than picked by eye.
  *
  * Rendered from `EGDS Components and Theming`, node `12622:11`, and sampled: the
- * primary button runs rest `#1668E3`, hover `#124CA4`, active `#0E3672`,
- * disabled `#ABC9F5`, label white. Expressed as ratios against rest, that ramp
- * is hover x0.73, active x0.52, and disabled 36% of rest over white — which is
- * what every brand row above is built from. Checked by re-deriving EGDS's own
- * ramp from its own rest colour: disabled comes back exact, hover and active
- * within two points. So the STRUCTURE of each row is measured from the real
- * component even where the hue is not.
+ * primary button came off that render as rest `#1668E3`, hover `#124CA4`, active
+ * `#0E3672`, disabled `#ABC9F5`, label white.
+ *
+ * THE RATIOS THAT USED TO BE RECORDED HERE WERE A WILD GOOSE CHASE. This spot
+ * described the ramp as "hover x0.73, active x0.52, disabled 36% over white", as
+ * though the button derived its states arithmetically from its rest colour.
+ * Against the variables it does nothing of the kind: rest and active are the
+ * action ramp's 600 and 800 steps EXACTLY, and hover and disabled are 12 and 5
+ * away from its 700 and 200 — the distance you would expect from reading colours
+ * off a rendered PNG rather than out of the file. There is no ratio. There is a
+ * ramp, and the button uses four of its steps.
+ *
+ * Two things it also settled, both still true. The button is a pill at every
+ * size, which the artwork already had right. And the real set is Primary /
+ * Secondary / Tertiary / Overlay across S, M, L with rest, hover and active — so
+ * "Button Press" above is EGDS's "active"; the label is kept because it is the
+ * one a reader outside Expedia will recognise.
  *
  * Two things it also settled. The button is a pill at every size, which the
  * artwork already had right. And the real set is Primary / Secondary / Tertiary
@@ -311,7 +370,7 @@ export const BRANDS: TokenTierBrand[] = [
  * reader outside Expedia will recognise.
  */
 export const EGDS_PRIMARY_BUTTON = {
-  rest: '#1668E3', hover: '#124CA4', active: '#0E3672', disabled: '#ABC9F5', label: '#FFFFFF'
+  rest: ACTION.rest, hover: ACTION.hover, active: ACTION.press, disabled: ACTION.muted, label: WHITE
 };
 
 /**
@@ -325,7 +384,7 @@ export const EGDS_PRIMARY_BUTTON = {
  */
 export const BRAND_ROW_LABELS = {
   shared: 'Semantic tokens (same)',
-  perBrand: 'Feature tokens (per brand)'
+  perBrand: 'Raw values (per brand)'
 };
 
 /**
@@ -348,4 +407,4 @@ export const BASE_COMPONENT = { eyebrow: 'Base component (EGDS)', name: 'Button'
  * and not a redraw: nothing on this site sets an em dash.
  */
 export const TIER_NOTE =
-  'Foundation and semantic identical. Only the feature layer resolves per brand.';
+  'Semantic and feature resolve the same in all three. What a brand sets is its own block of raw values.';
