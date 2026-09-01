@@ -25,7 +25,7 @@
     "standfirst": "Three platforms had built the same components independently for years, we did not know how far apart they had drifted until we asked a machine to read all three.",
     "paras": [
       "A component was really four separate components, one in the iOS repo, one in Android, one in web, and a Figma library that matched none of them exactly, each with its own props, arrangement rules and accumulated exceptions.",
-      "The fix was to stop treating any implementation as the source. A single spec would define the component, and Figma, all other three platforms and a language model that would build from it, which only works if that spec is structured data rather than guestimated. A person can interpret a paragraph, but machine can not build from one.",
+      "The fix was to stop treating any implementation as the source. A single spec would define the component, and Figma, all three platforms and a language model would build from it, which only works if that spec is structured data rather than guesswork. A person can interpret a paragraph, but a machine cannot build from one.",
       "The scrape across the repos is what made the drift visible. Nobody had read three implementations side by side, because nobody was ever going to, with the answer spread across three repositories, including Figma, and years of separate decisions. A machine could do this, and the plan it returned served as the problem statement and an initial starting point for rebuilding any given component."
     ]
   },
@@ -36,7 +36,7 @@
       "Every component started as a scrape. We read the iOS, Android and web repositories and generated a plan, which lived in GitHub for each component: recommendations, configurations, elements, decisions, open questions, TODOs.",
       "The plan was a proposal rather than an instruction. I rebuilt each component against it, binding variables, attaching slots, correcting naming and specifying accessibility, using code only props and slots, and where the plan was wrong I overruled it and recorded why. Engineering implemented from the finished specification, with Code Connect holding Figma and code one to one.",
       "That loop is the part worth taking forward. The machine did the reading, which no person was going to do across three codebases, and the designer did the deciding, although the decision only counted once it was written somewhere the machine could read back, as a spec.",
-      "The workflow itself went to testing in Q1 2026 with Expedia product designers, and with the engineers and PM's who opted in, the people who would have to live with a specification rather than write one."
+      "The workflow itself went to testing in Q1 2026 with Expedia product designers, and with the engineers and PMs who opted in, the people who would have to live with a specification rather than write one."
     ],
     "explorationsHeading": "What the plan proposed, and what we overruled",
     "explorationsIntro": "These rejected paths are unusually well evidenced, because the alternative was not imagined. A machine proposed it from three real codebases, a person overruled it, and the reason went back into the record.",
@@ -94,7 +94,7 @@
   "hindsight": {
     "paras": [
       "Everything in the section above is take up, meaning page views, forks, insertions and which team inserted what, and take up is what analytics gives you for free. The claim the whole project rested on, that the distance from idea to shipped code gets shorter, is still not measured. Having the dashboards in front of me is what made that obvious.",
-      "This could have been avoidbale. The baseline was measurable from the first scrape, because we knew how long a component took to specify the old way and could have recorded it. Instrumenting at the start costs a day, whereas reconstructing it afterwards."
+      "This could have been avoidable. The baseline was measurable from the first scrape, because we knew how long a component took to specify the old way and could have recorded it. Instrumenting at the start costs a day, whereas reconstructing it afterwards is not possible at all."
     ]
   }
 }
