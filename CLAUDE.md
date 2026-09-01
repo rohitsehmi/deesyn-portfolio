@@ -151,7 +151,7 @@ The design system reconstructs Revolut's public brand values under their name, f
 
 To restore:
 
-1. `git revert <the retirement commit>` — brings back `BRANDS`, the CSS arm, the inline-script name, the `PARTNER_WORDMARKS` row, the hero line, the Figma receipt, the `og.png` rewrite and the allowlist entry, atomically.
+1. `git revert df42feb` — the retirement commit, findable with `git log --grep='Retire Revolut'` if the hash has moved under a rebase. It brings back `BRANDS`, the CSS arm, the inline-script name, the `PARTNER_WORDMARKS` row, the hero line, the Figma receipt, the `og.png` rewrite and the allowlist entry, atomically.
 2. `npm run specs` — **the OG card regenerates itself** and does not need to come out of git at all. It is generated from `BRANDS` rather than drawn, so the card is re-emitted byte-identically the moment the brand is back in the list. Same rule as the favicon.
 3. `npm run verify:all` — green here means the brand and its hostname agree, which is the thing a hand edit gets wrong.
 
