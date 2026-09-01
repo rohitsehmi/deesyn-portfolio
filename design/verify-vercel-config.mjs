@@ -39,6 +39,7 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { DIST, VERCEL_CONFIG } from './paths.mjs';
+import { brandHosts } from './counts.mjs';
 
 /*
   Top-level keys Vercel accepts, from `properties` in the published schema.
@@ -233,6 +234,65 @@ for (const [path, hit] of pinned) {
     `served the page. Make the reference host-relative, or declare the pin in ` +
     `ACCEPTED_PINS here with what contains it`
   );
+}
+
+/* ------------------------------------------------------------------
+ * 4. The hostname allowlist, against the brands that actually exist.
+ *
+ * `missing.host` names every hostname this deployment serves; anything else
+ * 307s to the apex. It is the ONLY thing deciding whether a subdomain is
+ * reachable, and it is hand-maintained — vercel.json is someone else's schema,
+ * so it cannot import src/data/brands.ts the way the TypeScript half does.
+ *
+ * That is the exact shape of every drift this repo has already paid for: two
+ * lists of the same thing kept in step by eye. Here the failure is worse than
+ * cosmetic in both directions. Forget to ADD a host and the new brand's
+ * hostname redirects to the apex, so the lockup written for it is never seen
+ * by the person it was sent to. Forget to REMOVE one and a retired brand's
+ * hostname keeps serving — which is not a stale number in a document, it is a
+ * company that declined the work still being addressed by name at an address
+ * they may already have been given.
+ *
+ * Revolut was retired on 2026-09-01 and this is what keeps it retired.
+ * ------------------------------------------------------------------ */
+
+const hostRule = (config.redirects ?? []).find((r) =>
+  (r.missing ?? []).some((m) => m.type === 'host')
+);
+
+if (!hostRule) {
+  problems.push(
+    'no redirect carries a `missing` host condition, so every *.deesyn.com ' +
+      'name a stranger guesses serves the whole site'
+  );
+} else {
+  const pattern = hostRule.missing.find((m) => m.type === 'host').value;
+  const expected = brandHosts();
+  const re = new RegExp(pattern);
+
+  /* Tested by asking the pattern about each host rather than by parsing it.
+     A regex is not a list, and re-deriving the alternation would be a second
+     implementation of Vercel's matcher — the drift this check exists to stop. */
+  const missing = expected.filter((h) => !re.test(`${h}.deesyn.com`));
+  const retired = ['revolut'].filter(
+    (h) => !expected.includes(h) && re.test(`${h}.deesyn.com`)
+  );
+
+  for (const h of missing) {
+    problems.push(
+      `${h}.deesyn.com is a brand in src/data/brands.ts but does not match the ` +
+        `host allowlist, so it 307s to the apex and its lockup is never seen`
+    );
+  }
+  for (const h of retired) {
+    problems.push(
+      `${h}.deesyn.com still matches the host allowlist but ${h} is not in ` +
+        `src/data/brands.ts — a retired brand's hostname is serving again`
+    );
+  }
+  if (!re.test('deesyn.com')) problems.push('the apex deesyn.com does not match the host allowlist');
+  if (!re.test('preview-x.vercel.app'))
+    problems.push('*.vercel.app does not match, so every preview deployment bounces to production');
 }
 
 /* ---------------------------------------------------------------- */

@@ -79,9 +79,31 @@ export const checkCount = () => gateChecks().length;
  * implementation of it appears — which is the mistake it was written to undo,
  * and which the endsWith matcher in verify-contracts.mjs had already made once.
  */
-export function brandCount() {
+export function brandNames() {
   const src = readFileSync('src/data/brands.ts', 'utf8');
   const m = src.match(/export const BRANDS = \[([^\]]*)\]/);
   if (!m) throw new Error('could not find BRANDS in src/data/brands.ts');
-  return (m[1].match(/'[^']+'/g) ?? []).length;
+  return (m[1].match(/'([^']+)'/g) ?? []).map((q) => q.slice(1, -1));
+}
+
+export function brandCount() {
+  return brandNames().length;
+}
+
+/**
+ * The brand each hostname serves, which is the same list seen from the router.
+ *
+ * The default brand is the apex and carries no subdomain of its own, so the
+ * hosts are `deesyn.com` and `www` plus one subdomain per partner. Derived from
+ * BRANDS for the reason every count here is derived: the copy of this list in
+ * vercel.json is hand-maintained, has no import available to it, and is the
+ * only thing standing between a retired hostname and its coming back.
+ */
+export function brandHosts() {
+  const names = brandNames();
+  const dflt = readFileSync('src/data/brands.ts', 'utf8').match(
+    /export const DEFAULT_BRAND = '([^']+)'/
+  );
+  if (!dflt) throw new Error('could not find DEFAULT_BRAND in src/data/brands.ts');
+  return ['www', ...names.filter((b) => b !== dflt[1])];
 }

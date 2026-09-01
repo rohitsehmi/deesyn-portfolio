@@ -22,7 +22,7 @@
  * build-code-specs.mjs writes a contract for each one. This is data, not a
  * component, and must move neither number.
  */
-export const BRANDS = ['deesyn', 'revolut', 'wise', 'healf', 'ticketmaster', 'asos'] as const;
+export const BRANDS = ['deesyn', 'wise', 'healf', 'ticketmaster', 'asos'] as const;
 
 export type Brand = (typeof BRANDS)[number];
 
@@ -41,13 +41,23 @@ export type Brand = (typeof BRANDS)[number];
  * implies an engagement that does not exist. The apex now carries the mark
  * alone and the lockup survives only where it was aimed at somebody.
  *
- * REVOLUT WAS DEMOTED TO AN ORDINARY PARTNER, NOT REMOVED, and the first
- * attempt at this got that wrong and shipped it. Deleting the brand outright
- * looks like the same change from the apex's point of view and is not: it took
- * `revolut.deesyn.com` down to a 307, so the one hostname actually addressed to
- * Revolut lost the lockup that was the entire reason it existed. **Making the
- * default generic and retiring a partner are two different edits**, and only
- * the first was ever asked for.
+ * REVOLUT WAS DEMOTED TO AN ORDINARY PARTNER ON 2026-08-26 AND RETIRED
+ * OUTRIGHT ON 2026-09-01, and those are two different edits made for two
+ * different reasons. The demotion was about what the apex says to a stranger:
+ * making the default generic is not the same as retiring a partner, and an
+ * earlier attempt conflated them, took `revolut.deesyn.com` down to a 307 as a
+ * side effect, and had to be reverted. The retirement is the deliberate
+ * version of that same removal — Revolut turned the work down, so the one
+ * hostname addressed to them has nobody left to address. The lockup was aimed
+ * at a reader who is no longer going to see it.
+ *
+ * What that does NOT do is unpick the study underneath. The 249 tokens still
+ * reconstruct Revolut's public brand values from their live CSS and the 15
+ * icons are still their assets verbatim, exactly as before; neither is
+ * attributed anywhere a reader sees, and both were already unnamed on the page.
+ * Retiring the hostname stops the site ADDRESSING them. It does not stop the
+ * site being BUILT from a study of them, and that remains a deliberate scope
+ * decision rather than an oversight.
  *
  * So this is the only brand with no partner logotype, and PartnerBrand below
  * is what makes that a checked fact rather than a convention.
