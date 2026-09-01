@@ -95,9 +95,9 @@
   },
   "hindsight": {
     "paras": [
-      "The pivot away from four design languages in every component was correct and came months later than it should have. The early assessment was optimistic in a way that was hard to see from inside, because each component looked achievable alone and the cost only appeared in aggregate. Building the two hardest components all four ways first would have tested the plan instead of starting the work.",
-      "Not taking a baseline is the mistake I would most like back. The savings were real and only ever measured afterwards, so every later pitch for system work argued from a position it could not evidence. Two weeks measuring duplicate effort at the start would have been worth more than any presentation given in the two years after.",
-      "The governance model I built was designed for getting components in and was weak at keeping them alive. Promotion had a clear path while maintenance had to be re-pitched every eight weeks, a competition ongoing work structurally loses. I would design the contribution and maintenance models together next time."
+      "The pivot away from four design languages in every component was correct and came months later than it should have. The early assessment was optimistic in a way that was hard to see from inside, because each component looked achievable alone. Building the two hardest components all four ways first would have tested the plan instead of starting the work.",
+      "Not taking a baseline is the mistake I would most like back. Two weeks measuring duplicate effort at the start would have been worth more than any presentation given in the two years after.",
+      "The governance model that was designed for getting components in, was weak at keeping them alive. Promotion had a clear path while maintenance had to be re-pitched every eight weeks. I would design the contribution and maintenance models together next time."
     ]
   }
 }
