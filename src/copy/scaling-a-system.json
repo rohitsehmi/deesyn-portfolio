@@ -88,9 +88,9 @@
     ],
     "metricsSource": "Programme figures, published by colleagues who worked on it, at heeranmaster.com and madebyjoe.uk. All three measure output and adoption rather than any outcome for a traveller, and no baseline was taken before the merge.",
     "paras": [
-      "Four systems became one, and the date pickers and search fields every brand had been building separately were built once.",
-      "The clearest gain is the hardest to put a number against. Accessibility went from four interpretations to one standard with automated tests behind it, and dark mode became something maintained in the token layer rather than four times over. A brand that had never shipped dark mode got it by adopting the system.",
-      "What none of this shows is what changed for the people booking travel, and that is a real limitation rather than a missing slide. The programme measured its own adoption because that is what it set out to move, and by the time anyone wanted the other number there was no baseline to compare against."
+      "Four systems became one, components for every brand had been building separately were built once.",
+      "Accessibility went from four interpretations to one standard with automated tests behind it, and dark mode became something maintained in the token layer rather than four times over. A brand that had never shipped dark mode got it by adopting the system.",
+      "The programme measured its own adoption because that is what it set out to move."
     ]
   },
   "hindsight": {
