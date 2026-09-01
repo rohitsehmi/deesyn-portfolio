@@ -116,7 +116,9 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
 
     /work/search-experience redirects there in vercel.json rather than 404ing,
     for the same reason unmatched hostnames redirect: the URL has been live and
-    may have been sent to someone.
+    may have been sent to someone. TWO literal sources, one per URL form — this
+    site serves directory-style urls, so a rule matching only the bare path left
+    `/work/search-experience/`, the canonical form, still 404ing.
   */
   /*
     LIVE again 2026-08-17, having been archived on 2026-08-05 for having no
