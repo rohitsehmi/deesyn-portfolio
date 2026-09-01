@@ -122,19 +122,29 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
     argument the page makes. Red, where the other two are violet and sage, so
     the three are told apart at a glance on the index.
 
-    Every brand except the default, from 2026-08-17 and extended to Ticketmaster
-    and Asos on 2026-08-26. The default brand keeps two studies, one per
-    discipline, which is the tighter argument: a third tile there would have
-    been a second design-system study sitting under the same tag as the first.
-    Every other hostname shows all three.
+    EVERY BRAND, since 2026-09-01, which is why there is no `brands` field
+    here at all. It was scoped to the partner hostnames from 2026-08-17 and
+    extended to Ticketmaster and Asos on 2026-08-26, on the argument that the
+    apex read tighter with one study per discipline and that a third tile there
+    would be a second design-system study under the same tag as the first.
+    Rohit overruled that: the apex now shows all three.
 
-    Written out rather than expressed as "not the default". The field says which
-    brands are OFFERED a study, and a brand added later should have to be named
-    here deliberately rather than inheriting a study nobody decided to give it —
-    which is the same reason `brands` is absent, not exhaustive, when a study
-    belongs to everybody.
+    ABSENT rather than listing every brand out, and the distinction is the one
+    the note below already drew. A list says which brands are OFFERED a study,
+    so a brand added later has to be named deliberately instead of inheriting
+    one nobody decided to give it. Absent says the study belongs to everybody,
+    which is a different claim and the true one here — a sixth brand should get
+    this study without anyone remembering to add it.
+
+    Nothing else had to change for it, and that is the mechanism working. The
+    hero count is derived from `studiesFor(brand).length`, so the apex reads
+    "Three case studies" on its own; the index grid has been capped at two
+    columns since 2026-08-17, so the third tile drops underneath rather than
+    needing a per-brand track count; and the next-study band groups brands by
+    the study they land on. The one thing that DID move is the standfirst's
+    `{systems}` token, which now resolves to "Two" on the apex.
   */
-  { slug: 'scaling-a-system', coverSrc: coverScaling, brands: ['wise', 'healf', 'ticketmaster', 'asos'] }
+  { slug: 'scaling-a-system', coverSrc: coverScaling }
 ];
 
 export const studies: Study[] = order.map(({ slug, coverSrc, archived, brands }) => {
