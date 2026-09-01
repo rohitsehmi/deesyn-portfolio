@@ -131,8 +131,23 @@ export function GovernanceTiers({
           `role="img"` over the panels only, never over the control. The control
           is a control; a checkbox inside a region announced as a picture is one
           assistive technology has been told to skip.
+
+          IT SITS ON A WRAPPER RATHER THAN ON THE <ol>, corrected 2026-09-01.
+          On the list itself it overrode the implicit `list` role, which left
+          every <li> without the parent its own role requires — the only two axe
+          violations on the whole site, `listitem` (serious) and
+          `aria-allowed-role`, in both themes. The three sibling diagrams all
+          put it on a wrapping div already; this was the odd one out.
+
+          A plain block wrapper, not `display: contents`: contents can drop an
+          element out of the accessibility tree in some engines, which on the
+          node carrying the role would delete the very thing being fixed. The
+          parent is a flex column, so the wrapper simply becomes the flex item
+          in the list's place — verified inert by pixel-diffing the figure
+          before and after rather than by reasoning about it.
         */}
-        <ol className="governance-tiers__stages" role="img" aria-label={alt}>
+        <div role="img" aria-label={alt}>
+        <ol className="governance-tiers__stages">
           {stages.map((stage) => (
             <li
               className="governance-tiers__stage"
@@ -170,6 +185,7 @@ export function GovernanceTiers({
             </li>
           ))}
         </ol>
+        </div>
       </div>
       {caption && (
         <figcaption className="governance-tiers__caption" data-copy={captionCopyRef}>{caption}</figcaption>

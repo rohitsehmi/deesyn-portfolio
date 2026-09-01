@@ -92,25 +92,32 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
   */
   { slug: 'making-the-app-testable', coverSrc: coverSearch },
   /*
-    Archived 2026-08-06, and then absorbed rather than shelved.
+    DELETED 2026-09-01, and it is the second exception to the never-delete rule
+    after `wise-placeholder`. Archived 2026-08-06 and kept for weeks on the
+    reasoning that its own page held the longer version, including the 2025 App
+    Shell motion work the merged study leaves out.
 
-    It was first swapped out for `contextual-home`, on the grounds that the
-    measured results on rohitsehmi.com/apps belong to the home work and search's
-    own are recorded only directionally. That trade cost the better flow story
-    to get the harder numbers, and it left the replacement with an empty
-    explorations section.
+    What overruled that is that the page was never finished and was PUBLIC:
+    eleven `[NEEDS: …]` markers served at a live URL with canonical, Article
+    JSON-LD and OG tags, several of them critique addressed to Rohit rather than
+    notes about the work. Its copy file was tracked in the public repo every
+    page links to — the rule in CLAUDE.md about working notes staying out of
+    tracked files, broken by a file recording exactly that kind of note.
 
-    Both problems went away when the two were read as one argument: the home and
-    the results page were both rebuilt to make testing possible, and the
-    standing test programme is what ran through them. That study is
-    `making-the-app-testable`, and search's material — the dynamic card
+    The unique material was checked rather than assumed before deleting, and it
+    is ONE paragraph: `interface.paras.1` on the App Shell transitions
+    prototyped in Principle. It is quoted in full in the commit message. This
+    study mentions App Shell nowhere, so moving it in is an open content
+    decision rather than something already done.
+
+    Its material otherwise IS `making-the-app-testable` above — the dynamic card
     framework, the three adaptive layouts, the recap test that lost and was
-    retested — is in it.
+    retested. The cover is shared with it and stays.
 
-    Kept here because its own page still holds the longer version, including the
-    2025 App Shell motion work, which the merged study leaves out. Not deleted.
+    /work/search-experience redirects there in vercel.json rather than 404ing,
+    for the same reason unmatched hostnames redirect: the URL has been live and
+    may have been sent to someone.
   */
-  { slug: 'search-experience', coverSrc: coverSearch, archived: true },
   /*
     LIVE again 2026-08-17, having been archived on 2026-08-05 for having no
     personal role and no reflection. Both are now written: the contribution is

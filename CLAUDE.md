@@ -596,14 +596,19 @@ An earlier version of that matcher tested `slug.endsWith()`, which looked tidy a
 
 ## Case studies
 
-**Three live, one archived.** `src/data/studies.ts` is the one list; the index and the next-study link at the foot of each study both read it, so they cannot disagree about what exists.
+**Three live, none archived.** `src/data/studies.ts` is the one list; the index and the next-study link at the foot of each study both read it, so they cannot disagree about what exists.
 
 | Slug | Discipline | State |
 |---|---|---|
 | `machine-readable-components` | Design systems | **Live.** Expedia's New Component Architecture pod, 2025 into Q1 2026 |
 | `making-the-app-testable` | Product design | **Live.** Hotels.com app home and results page, read as one argument. Carries the only hard metrics in the portfolio |
-| `search-experience` | Product design | **Archived 2026-08-06.** Absorbed into `making-the-app-testable`; its own page keeps the longer version |
 | `scaling-a-system` | Design systems | **Live on every brand since 2026-09-01.** Taken live 2026-08-17 on Wise and Healf, extended to Ticketmaster and Asos on 2026-08-26, and unscoped entirely on 2026-09-01 so the apex shows it too. The EGDS four-system consolidation, 2021 to 2023. Archived on 2026-08-05 for having no personal role and no reflection, revived once both were written. **Has its own cover since 2026-08-17** — red, where the other two are violet and sage |
+
+**`search-experience` WAS DELETED ON 2026-09-01, the second exception to the never-delete rule.** It had been archived since 2026-08-06 and kept on a stated reason: its own page held the longer version, including the 2025 App Shell motion work the merged study leaves out. **What overruled that is that the page was never finished and was PUBLIC** — eleven `[NEEDS: …]` markers at a live URL with canonical, Article JSON-LD and OG tags, several of them critique addressed to Rohit rather than notes about the work, and its copy file tracked in the public repo every page links to. That is the rule at the top of § Repository broken by a file that recorded exactly the kind of note the rule is about. `verify:gaps` never caught it because **it only lints LIVE pages, and an archived one is exactly the page nobody re-reads.**
+
+**The unique material was checked rather than assumed, and it was one paragraph** — `interface.paras.1`, on the App Shell transitions prototyped in Principle. Quoted in full in the commit message. `making-the-app-testable` mentions App Shell nowhere, so moving it in is an open content decision, not something already done. `/work/search-experience` redirects there rather than 404ing, since the URL has been live and may have been sent to someone.
+
+**DELETING IT NEARLY TOOK THE PRODUCT-DESIGN STUDY WITH IT, and the build guard is what stopped that.** The comment block sitting above `search-experience` in `studies.ts` documents `making-the-app-testable`, not the entry beneath it, so slicing from that comment to the entry removed both. Nothing looked wrong; the page simply refused to build, with *"deesyn is offered 0 product-design studies, and the hero standfirst says 'the other', which asserts exactly one"*. **A guard written for a copy bug caught a data deletion**, which is the argument for a build that throws rather than renders a plausible page. Anchor a deletion on the ENTRY, never on the comment above it.
 
 **Nothing is ever deleted from `studies.ts`** — with one exception, taken on 2026-08-17. `wise-placeholder` was deleted, along with its page and both copy entries, precisely because the rule protects a record of real work and there was none in it. It had done its job twice over: it proved the brand field carries a whole entity, and it exposed the hero-count bug below. It is in git history if the scaffolding is ever wanted again. `archived: true` takes a study off the index and out of the next-study rotation; it keeps building and stays reachable at its URL. Which studies make the final cut is a content decision to be made late, and deleting an entry removes the option before then. Reversible by removing one line.
 
@@ -622,6 +627,11 @@ An earlier version of that matcher tested `slug.endsWith()`, which looked tidy a
 | Two blocks that are peers | 64px | `.cs-section` in `CaseStudy.astro` |
 
 It lives on the arrangement rather than as a margin on each component, because a trailing margin on the last block in a section adds space the band has already paid for. Two things it needs that are not obvious: **adjacent margins collapse to the larger**, so the heading's 40px would silently become 64px without an explicit override, and **`.explorations` resets `margin: 0` at equal specificity**, so `.cs-section` is doubled to outrank it — don't "tidy" that away. Every section wrapper must carry `class="cs-section"` or its blocks stack at zero.
+
+**Two accessibility faults were closed on 2026-09-01, taking the site to ZERO axe violations** across 8 pages in both themes, measured rather than claimed.
+
+- **The case-study tile drew TWO focus rings.** `.tile:has(.tile__link:focus-visible)` draws the real indicator around the whole card, which is right — the card is the target and the link's own box is only the title text. But the anchor never overrode the user-agent outline, so a focused tile also drew Chrome's default hugging the two line boxes of the title: an outline inside an outline, tracing a shape that is not the thing being focused. `.tile__link:focus-visible { outline: none }` is safe **only because the `:has()` rule exists** — the indicator is drawn once instead of twice, not deleted. Never write `outline: none` on a focusable element without checking something else gives it a visible focus state.
+- **`GovernanceTiers` put `role="img"` on its `<ol>`**, which overrode the implicit `list` role and left every `<li>` without the parent its own role requires — the only two axe violations on the site, `listitem` (serious) and `aria-allowed-role`, in both themes. The three sibling diagrams already put it on a wrapping `div`; this was the odd one out. **A plain block wrapper, not `display: contents`**, which can drop an element out of the accessibility tree in some engines and would delete the very thing being fixed. The parent is a flex column so the wrapper becomes the flex item in the list's place — **verified inert by pixel-diffing the figure before and after: byte-identical at 920x322.**
 
 ## Generated files stay generated
 

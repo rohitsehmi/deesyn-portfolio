@@ -45,6 +45,11 @@
       ],
       "destination": "https://www.deesyn.com/$1",
       "permanent": false
+    },
+    {
+      "source": "/work/search-experience",
+      "destination": "/work/making-the-app-testable",
+      "permanent": false
     }
   ],
   "headers": [

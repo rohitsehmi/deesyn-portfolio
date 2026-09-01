@@ -89,6 +89,22 @@
   border-radius: var(--primitive-radius-r20);
 }
 
+/*
+  TWO FOCUS RINGS, until 2026-09-01. The rule above draws the real indicator
+  around the whole card, which is right: the card is the target, and the link's
+  own box is only the title text. But the anchor never overrode the user-agent
+  outline, so a focused tile ALSO drew Chrome's default hugging the two line
+  boxes of the title — an outline inside an outline, tracing a shape that is not
+  the thing being focused. It reads as a rendering fault.
+
+  Safe to remove precisely BECAUSE the :has() rule exists: the indicator is not
+  being deleted, it is being drawn once instead of twice. Never write
+  `outline: none` on a focusable element without checking that something else
+  gives it a visible focus state — that is how a keyboard user loses their place
+  entirely, which is a far worse bug than the one being fixed here.
+*/
+.tile__link:focus-visible { outline: none; }
+
 .tile__summary {
   margin: 0;
   max-width: 46ch;

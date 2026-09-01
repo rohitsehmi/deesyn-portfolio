@@ -12,12 +12,6 @@
     "discipline": "Product design",
     "coverAlt": "An abstract still life in sage green and off-white: frosted glass panels showing a search field over a list of results, a detail view, a set of filters and a bar chart, linked by glowing cables."
   },
-  "search-experience": {
-    "title": "Search, rebuilt so it could be tested",
-    "summary": "The Hotels.com app showed search results in a card framework that nothing could be varied inside. Rebuilding it as dynamic cards turned the app's most valuable screen into one the team could learn from.",
-    "discipline": "Product design",
-    "coverAlt": "An abstract still life in sage green and off-white: frosted glass panels showing a search field over a list of results, a detail view, a set of filters and a bar chart, linked by glowing cables."
-  },
   "scaling-a-system": {
     "title": "Four design systems, consolidated into one",
     "summary": "Expedia Group ran four design systems solving the same problems separately. Merging them meant deciding what every brand would share, and what each one was still allowed to keep.",
