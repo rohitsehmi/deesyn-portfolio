@@ -184,3 +184,4 @@ body {
 [data-brand='healf'] [data-brand-only]:not([data-brand-only~='healf']) { display: none; }
 [data-brand='ticketmaster'] [data-brand-only]:not([data-brand-only~='ticketmaster']) { display: none; }
 [data-brand='asos'] [data-brand-only]:not([data-brand-only~='asos']) { display: none; }
+[data-brand='spotify'] [data-brand-only]:not([data-brand-only~='spotify']) { display: none; }

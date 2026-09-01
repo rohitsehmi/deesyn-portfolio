@@ -72,7 +72,8 @@ const preview: Preview = {
           { value: 'wise', title: 'Ro × Wise' },
           { value: 'healf', title: 'Ro × Healf' },
           { value: 'ticketmaster', title: 'Ro × Ticketmaster' },
-          { value: 'asos', title: 'Ro × ASOS' }
+          { value: 'asos', title: 'Ro × ASOS' },
+          { value: 'spotify', title: 'Ro × Spotify' }
         ]
       }
     },

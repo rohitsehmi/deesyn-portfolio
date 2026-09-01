@@ -229,7 +229,7 @@ const structuredData = article
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
         var q = new URLSearchParams(location.search).get('brand');
         var h = q || location.hostname.split('.')[0];
-        if (['wise', 'healf', 'ticketmaster', 'asos'].indexOf(h) >= 0) document.documentElement.dataset.brand = h;
+        if (['wise', 'healf', 'ticketmaster', 'asos', 'spotify'].indexOf(h) >= 0) document.documentElement.dataset.brand = h;
       } catch (e) {}
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

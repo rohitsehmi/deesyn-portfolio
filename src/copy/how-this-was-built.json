@@ -258,6 +258,31 @@
           }
         ]
       }
+    },
+    "spotify": {
+      "links": {
+        "heading": "The receipts",
+        "items": [
+          {
+            "label": "The Figma file",
+            "note": "Tokens, components, banding and motion",
+            "href": "https://www.figma.com/design/5jW5pmAv9ATVJhCaJwLojO/Spotify?node-id=56-4384",
+            "mark": "figma"
+          },
+          {
+            "label": "Storybook, on Chromatic",
+            "note": "Every component, both themes",
+            "href": "https://main--6a70c473fc9430ebb1214df6.chromatic.com",
+            "mark": "storybook"
+          },
+          {
+            "label": "The repository",
+            "note": "The site, the token pipeline and the checks",
+            "href": "https://github.com/rohitsehmi/deesyn-portfolio",
+            "mark": "github"
+          }
+        ]
+      }
     }
   }
 }

@@ -554,7 +554,7 @@
   --semantic-easing-linear: var(--primitive-easing-linear);
 }
 
-/* ===== brand pack: wise, healf, ticketmaster, asos ===== extends the base, replaces nothing */
+/* ===== brand pack: wise, healf, ticketmaster, asos, spotify ===== extends the base, replaces nothing */
 :root {
   --primitive-portfolio-teal-50: #e7f8f5;
   --primitive-portfolio-teal-100: #c2ede7;
@@ -592,7 +592,8 @@
 :root[data-brand="wise"],
 :root[data-brand="healf"],
 :root[data-brand="ticketmaster"],
-:root[data-brand="asos"] {
+:root[data-brand="asos"],
+:root[data-brand="spotify"] {
   --semantic-bg-canvas: var(--primitive-portfolio-neutral-0);
   --semantic-bg-subtle: var(--primitive-portfolio-neutral-50);
   --semantic-bg-surface: var(--primitive-portfolio-neutral-0);
@@ -634,7 +635,8 @@
   :root[data-brand="wise"]:not([data-theme="light"]),
   :root[data-brand="healf"]:not([data-theme="light"]),
   :root[data-brand="ticketmaster"]:not([data-theme="light"]),
-  :root[data-brand="asos"]:not([data-theme="light"]) {
+  :root[data-brand="asos"]:not([data-theme="light"]),
+  :root[data-brand="spotify"]:not([data-theme="light"]) {
     --semantic-bg-canvas: var(--primitive-portfolio-navy-900);
     --semantic-bg-subtle: var(--primitive-portfolio-navy-800);
     --semantic-bg-surface: var(--primitive-portfolio-navy-800);
@@ -676,7 +678,8 @@
 :root[data-brand="wise"][data-theme="dark"],
 :root[data-brand="healf"][data-theme="dark"],
 :root[data-brand="ticketmaster"][data-theme="dark"],
-:root[data-brand="asos"][data-theme="dark"] {
+:root[data-brand="asos"][data-theme="dark"],
+:root[data-brand="spotify"][data-theme="dark"] {
   --semantic-bg-canvas: var(--primitive-portfolio-navy-900);
   --semantic-bg-subtle: var(--primitive-portfolio-navy-800);
   --semantic-bg-surface: var(--primitive-portfolio-navy-800);
@@ -718,10 +721,12 @@
 :root[data-brand="healf"] [data-band="inverse"],
 :root[data-brand="ticketmaster"] [data-band="inverse"],
 :root[data-brand="asos"] [data-band="inverse"],
+:root[data-brand="spotify"] [data-band="inverse"],
 :root[data-brand="wise"] [data-band="inverse-raised"],
 :root[data-brand="healf"] [data-band="inverse-raised"],
 :root[data-brand="ticketmaster"] [data-band="inverse-raised"],
-:root[data-brand="asos"] [data-band="inverse-raised"] {
+:root[data-brand="asos"] [data-band="inverse-raised"],
+:root[data-brand="spotify"] [data-band="inverse-raised"] {
   --semantic-bg-canvas: var(--primitive-portfolio-navy-900);
   --semantic-bg-subtle: var(--primitive-portfolio-navy-800);
   --semantic-bg-surface: var(--primitive-portfolio-navy-800);
@@ -762,17 +767,20 @@
 :root[data-brand="wise"] [data-band="inverse-raised"],
 :root[data-brand="healf"] [data-band="inverse-raised"],
 :root[data-brand="ticketmaster"] [data-band="inverse-raised"],
-:root[data-brand="asos"] [data-band="inverse-raised"] { background: var(--semantic-band-sunken); }
+:root[data-brand="asos"] [data-band="inverse-raised"],
+:root[data-brand="spotify"] [data-band="inverse-raised"] { background: var(--semantic-band-sunken); }
 
 @media (prefers-color-scheme: dark) {
   :root[data-brand="wise"]:not([data-theme="light"]) [data-band="inverse"],
   :root[data-brand="healf"]:not([data-theme="light"]) [data-band="inverse"],
   :root[data-brand="ticketmaster"]:not([data-theme="light"]) [data-band="inverse"],
   :root[data-brand="asos"]:not([data-theme="light"]) [data-band="inverse"],
+  :root[data-brand="spotify"]:not([data-theme="light"]) [data-band="inverse"],
   :root[data-brand="wise"]:not([data-theme="light"]) [data-band="inverse-raised"],
   :root[data-brand="healf"]:not([data-theme="light"]) [data-band="inverse-raised"],
   :root[data-brand="ticketmaster"]:not([data-theme="light"]) [data-band="inverse-raised"],
-  :root[data-brand="asos"]:not([data-theme="light"]) [data-band="inverse-raised"] {
+  :root[data-brand="asos"]:not([data-theme="light"]) [data-band="inverse-raised"],
+  :root[data-brand="spotify"]:not([data-theme="light"]) [data-band="inverse-raised"] {
     --semantic-bg-canvas: var(--primitive-portfolio-neutral-0);
     --semantic-bg-subtle: var(--primitive-portfolio-neutral-50);
     --semantic-bg-surface: var(--primitive-portfolio-neutral-0);
@@ -815,10 +823,12 @@
 :root[data-brand="healf"][data-theme="dark"] [data-band="inverse"],
 :root[data-brand="ticketmaster"][data-theme="dark"] [data-band="inverse"],
 :root[data-brand="asos"][data-theme="dark"] [data-band="inverse"],
+:root[data-brand="spotify"][data-theme="dark"] [data-band="inverse"],
 :root[data-brand="wise"][data-theme="dark"] [data-band="inverse-raised"],
 :root[data-brand="healf"][data-theme="dark"] [data-band="inverse-raised"],
 :root[data-brand="ticketmaster"][data-theme="dark"] [data-band="inverse-raised"],
-:root[data-brand="asos"][data-theme="dark"] [data-band="inverse-raised"] {
+:root[data-brand="asos"][data-theme="dark"] [data-band="inverse-raised"],
+:root[data-brand="spotify"][data-theme="dark"] [data-band="inverse-raised"] {
   --semantic-bg-canvas: var(--primitive-portfolio-neutral-0);
   --semantic-bg-subtle: var(--primitive-portfolio-neutral-50);
   --semantic-bg-surface: var(--primitive-portfolio-neutral-0);
@@ -859,7 +869,8 @@
 :root[data-brand="wise"] [data-on-media],
 :root[data-brand="healf"] [data-on-media],
 :root[data-brand="ticketmaster"] [data-on-media],
-:root[data-brand="asos"] [data-on-media] {
+:root[data-brand="asos"] [data-on-media],
+:root[data-brand="spotify"] [data-on-media] {
   --semantic-bg-canvas: var(--primitive-portfolio-navy-900);
   --semantic-bg-subtle: var(--primitive-portfolio-navy-800);
   --semantic-bg-surface: var(--primitive-portfolio-navy-800);
@@ -900,7 +911,8 @@
 :root[data-brand="wise"] [data-on-media="light"],
 :root[data-brand="healf"] [data-on-media="light"],
 :root[data-brand="ticketmaster"] [data-on-media="light"],
-:root[data-brand="asos"] [data-on-media="light"] {
+:root[data-brand="asos"] [data-on-media="light"],
+:root[data-brand="spotify"] [data-on-media="light"] {
   --semantic-bg-canvas: var(--primitive-portfolio-neutral-0);
   --semantic-bg-subtle: var(--primitive-portfolio-neutral-50);
   --semantic-bg-surface: var(--primitive-portfolio-neutral-0);

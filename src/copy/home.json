@@ -17,6 +17,9 @@
     },
     "asos": {
       "heroTitle": "{count} case studies, for ASOS."
+    },
+    "spotify": {
+      "heroTitle": "{count} case studies, for Spotify."
     }
   }
 }

@@ -26,6 +26,11 @@
     },
     {
       "source": "/og.png",
+      "has": [{ "type": "host", "value": "^spotify\\.deesyn\\.com$" }],
+      "destination": "/og-spotify.png"
+    },
+    {
+      "source": "/og.png",
       "destination": "/og-deesyn.png"
     }
   ],
@@ -35,7 +40,7 @@
       "missing": [
         {
           "type": "host",
-          "value": "^(?:(?:www|wise|healf|ticketmaster|asos)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
+          "value": "^(?:(?:www|wise|healf|ticketmaster|asos|spotify)\\.)?deesyn\\.com$|^.+\\.vercel\\.app$"
         }
       ],
       "destination": "https://www.deesyn.com/$1",
