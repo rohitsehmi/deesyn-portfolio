@@ -39,7 +39,7 @@ The full script list, including the token pipeline and the Figma export snippets
 
 ## What is checked
 
-Sixteen checks run on every push, and the build fails rather than warns. `npm run verify:all` is the one definition of green and the workflow is a single step calling it, so a clean run locally means the same thing as a green build:
+Seventeen checks run on every push, and the build fails rather than warns. `npm run verify:all` is the one definition of green and the workflow is a single step calling it, so a clean run locally means the same thing as a green build:
 
 - **Types.** `tsc` over the `.ts` and `.tsx` sources, because nothing else in the repository reads TypeScript.
 - **Secrets.** Tracked files only, so that the one file legitimately holding a token is not flagged and taught to be ignored.
@@ -47,6 +47,7 @@ Sixteen checks run on every push, and the build fails rather than warns. `npm ru
 - **Brand packs.** Each brand pack extends the base collection instead of replacing it, so every semantic value in one has to be an alias rather than a literal, both modes have to cover the same tokens, and no two packs may claim the same brand. It prints a checksum that the brand's own Figma file reproduces, which is the only thing stopping the file and the repository drifting apart.
 - **Components.** Token integrity, a checksum, and an assertion that no value is a literal.
 - **CSS.** Every custom property reference in `src/` resolves, and every font value binds to the type scale. A mistyped custom property is not a CSS error, it renders as an inherited default and looks deliberate.
+- **Fonts.** Every typeface the token scale names has to actually ship: an `@font-face` behind it, a file on disk behind that, and no third-party host anywhere in the chain. This exists because the previous check asserted that every font value *bound* to the scale and never that the font *arrived*, so a twenty-three style type system rendered in the system default for weeks without anything noticing. Binding is not arriving.
 - **Contrast.** Every foreground and background pair the pages actually use, measured across every brand and both modes, against WCAG AA. Translucent tokens are composited over the band beneath them, because what a 70% white resolves to depends entirely on what it is painted on. Decorative and exempt pairs are measured and printed rather than gated, since a threshold applied to the wrong thing gets fixed by moving a value that was right.
 - **Contracts.** Every component has one, asked per component rather than by comparing two totals, which had previously agreed by arithmetic coincidence.
 - **Provenance.** Every image declares what it is: a real screenshot, a diagram, abstract artwork, or a reconstruction that imitates a real interface. Nothing can check that the answer is honest, so what this enforces is narrower and still worth having: an image cannot ship until somebody has opened it and written down what they saw.

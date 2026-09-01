@@ -341,6 +341,22 @@ The Figma-side export snippet lives in `tokens/figma-export.snippet.js` and retu
 
 **What it does not do is snapshot per brand.** Chromatic renders each story light and dark at the default brand, so a palette regression in Wise or Healf would not fail a build. Adding brand to that matrix triples the snapshot count, so it is an open cost decision rather than an oversight.
 
+## Fonts
+
+**THE SITE LOADED NO WEBFONT AT ALL UNTIL 2026-09-01, and every visitor read the whole type system in `system-ui`.** 23 text styles exported from Figma, `Hanken Grotesk` recorded as a settled decision, `display.s -> m -> l` stepping at breakpoints — and zero `@font-face` rules, zero font files, zero font requests in production. A dead `preconnect` to `fonts.googleapis.com` sat in `Base.astro` pointing at a host nothing ever asked anything of.
+
+**`verify-css.mjs` passed throughout, because it asked whether every font value BINDS to `var(--type-*)` and never whether the font ARRIVES.** That is the same shape as every other failure on record here: the `vercel.json` key that validated for weeks, the `og.png` rewrite that was correct and unreachable, three stale checksums. Each check asked a true question adjacent to the one that mattered.
+
+**It also survived because `document.fonts.check()` LIES** — Chrome returns `true` for any family it cannot disprove, so the obvious console poke says the font is fine when nothing has loaded. **The only honest test is to MEASURE**, rendering a string in the family and again in a nonsense family and comparing widths. Before: `'Hanken Grotesk'`, `Inter` and `'No Such Font XYZ'` all measured **1584.27**, identical, against `system-ui` at 1167.73. After: **Hanken 1212.88, Inter 1296.78, nonsense 1584.27** — three distinct widths, which is the proof.
+
+**`design/build-fonts.mjs` fetches and self-hosts them**, and it is **not** in `npm run specs` — same call as `build-service-marks.mjs`, since it needs the network and these change roughly never. **Self-hosted rather than linked from Google, which is a decision**: a stylesheet link sends every visitor's IP to Google before the first paint, which would put back exactly what cookieless analytics was chosen to avoid and make the no-third-party-requests claim false. Both faces are OFL 1.1 and the licence text ships beside them in `public/fonts/`.
+
+**Variable files, `latin` and `latin-ext` only.** The scale needs Hanken at 400/500 and Inter at 400-800 — seven static faces, or two variable ones. `unicode-range` is carried over verbatim from Google's own CSS, so a typical English page fetches **two files, 81kB**, and never touches latin-ext. Only the display face is preloaded: it is what a reader sees first, and `crossorigin` is required even same-origin or the preload becomes a second fetch rather than a warm cache entry.
+
+**`design/verify-fonts.mjs` is the gate half**, and it is deliberately the STATIC half: every family the scale names must have an `@font-face`, every `@font-face` a file on disk, and no third-party host anywhere. Measuring needs a real browser and a server, which is why that stays out of the gate for the same reason as `measure-media-contrast.mjs`. Proven by breaking it three ways — a family with no face, a face with no file, a src pointing back at gstatic.
+
+**`verify-css.mjs` now blanks `@font-face` blocks before scanning**, because a face declaration is the one place a literal family is correct: the token points at the family, so the family cannot point at the token. **Blanked by construct, never by filename** — a stray literal elsewhere in `fonts.css` still fails, which was verified.
+
 ## Contrast
 
 **`design/verify-contrast.mjs` measures every foreground and background pair the pages actually use, across every brand and both modes, added 2026-08-19.** 136 pairs, all meeting WCAG AA. Everything else in `design/` asks whether a value came from a token; this asks whether the resulting pair can be read, which is a different question and the only one a reader has an opinion about — a palette can be perfectly tokenised, checksummed and literal-free and still put grey on white at 1.65:1, which this repo has already shipped once in `fg/tertiary`.

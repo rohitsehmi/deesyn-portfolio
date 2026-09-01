@@ -88,6 +88,10 @@
         "textAfter": "is not a CSS error, because it renders as an inherited default and looks deliberate, so nothing else would catch it."
       },
       {
+        "label": "Fonts.",
+        "text": "Every typeface the design file names has to actually arrive: a face declaration behind it, a file on disk behind that, and nothing fetched from a third party. This exists because the check above it asked whether every font value was bound to the scale, and never whether the font turned up \u2014 so a twenty-three style type system rendered in whatever the reader's operating system happens to use, for weeks, on a site whose whole argument is that the design file and the code agree. Binding is not arriving."
+      },
+      {
         "label": "Contrast.",
         "text": "Every pairing of text and background the pages actually use, measured for every brand in both themes against the WCAG AA thresholds. See-through colours are composited over whatever sits beneath them first, because a white at seventy per cent is a different colour on every band. Decorative pairs like rules and placeholder outlines are measured and printed rather than failed, since a threshold applied to something it was never meant for gets satisfied by changing a value that was already correct."
       },

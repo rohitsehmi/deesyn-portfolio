@@ -1,4 +1,5 @@
 ---
+import '../styles/fonts.css';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import { ThemeToggle } from '../components/ThemeToggle';
@@ -232,7 +233,34 @@ const structuredData = article
         if (['wise', 'healf', 'ticketmaster', 'asos', 'spotify'].indexOf(h) >= 0) document.documentElement.dataset.brand = h;
       } catch (e) {}
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    {/*
+      Preload the DISPLAY face's latin subset and nothing else.
+
+      This replaced a `preconnect` to fonts.googleapis.com that had sat here
+      pointing at a host nothing ever requested from — the site named two
+      typefaces in 23 text styles and loaded neither, so every visitor read it
+      in system-ui. Fonts are self-hosted now: see design/build-fonts.mjs for
+      why not Google, and design/verify-fonts.mjs for what stops it regressing.
+
+      One file, not four. Hanken Grotesk is the face the hero and every heading
+      resolve to, so it is what a reader sees first and the only one worth
+      spending a preload on. Inter is body copy, arrives just as fast on the
+      same connection, and is discovered from the stylesheet a moment later.
+      The latin-ext subsets are deliberately NOT preloaded: unicode-range means
+      most readers never fetch them at all, and preloading a file the browser
+      then declines to use is a wasted round trip and a console warning.
+
+      crossorigin is REQUIRED even same-origin: fonts are fetched in CORS mode,
+      and a preload without it is a second, separate fetch rather than a
+      warm cache entry — the classic way a preload makes a page slower.
+    */}
+    <link
+      rel="preload"
+      href="/fonts/hanken-grotesk-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body data-route={Astro.routePattern}>
     <a class="skip" href="#main">Skip to content</a>

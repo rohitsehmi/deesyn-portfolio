@@ -124,7 +124,19 @@ for (const [rel, text] of sources) {
   if (SKIP_FILES.includes(rel)) continue;
   checked += 1;
 
-  const lines = text.split('\n');
+  /* AN @font-face BLOCK IS THE ONE PLACE A LITERAL FONT IS CORRECT, added
+     2026-09-01. Everywhere else `font-family: Inter` is the drift this check
+     exists to stop; inside @font-face it is the DECLARATION the tokens later
+     refer to, and there is no var() that could express it — the token points at
+     the family, so the family cannot point at the token.
+
+     Blanked rather than skipped by filename, deliberately. Exempting
+     src/styles/fonts.css wholesale would let any literal hide in it; this
+     exempts the construct, so a stray `font: 16px Inter` OUTSIDE a face block
+     in that same file still fails. Line breaks are preserved so reported line
+     numbers stay true. */
+  const masked = text.replace(/@font-face\s*\{[^}]*\}/g, (m) => m.replace(/[^\n]/g, ' '));
+  const lines = masked.split('\n');
 
   lines.forEach((line, i) => {
     // Comments do not ship. They also legitimately name other people's tokens,
