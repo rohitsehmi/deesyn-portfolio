@@ -90,15 +90,15 @@ export const awards = [
  * that still means something out of context.
  */
 export const cvPdf = {
-  href: '/Rohit-Sehmi-CV-2026.pdf',
-  filename: 'Rohit-Sehmi-CV-2026.pdf',
+  href: '/Ro_CV.pdf',
+  filename: 'Ro_CV.pdf',
   /** Shown beside the button. A download with an unknown size is a small rudeness. */
-  size: '1.2 MB',
+  size: '174 KB',
   /**
    * Shown too, because the one thing a reader cannot tell about a CV file is
    * whether it is the current one. Bump it by hand when the PDF is replaced —
    * a build date would say when the site deployed, which is a different fact
    * and a misleading one.
    */
-  updated: 'August 2026'
+  updated: 'October 2026'
 };

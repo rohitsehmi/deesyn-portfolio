@@ -55,6 +55,11 @@
       "source": "/work/search-experience/",
       "destination": "/work/making-the-app-testable",
       "permanent": false
+    },
+    {
+      "source": "/Rohit-Sehmi-CV-2026.pdf",
+      "destination": "/Ro_CV.pdf",
+      "permanent": false
     }
   ],
   "headers": [
