@@ -89,8 +89,8 @@
             "token": "action/primary-bg",
             "ref": "semantic.*.action.primary-bg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "leading/Vector": {
@@ -98,15 +98,15 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -116,8 +116,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "trailing/Vector": {
@@ -125,8 +125,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -166,8 +166,8 @@
             "token": "action/primary-bg-hover",
             "ref": "semantic.*.action.primary-bg-hover",
             "type": "color",
-            "light": "#272b2f",
-            "dark": "#e2e2e7"
+            "light": "#425878",
+            "dark": "#f0face"
           }
         },
         "leading/Vector": {
@@ -175,15 +175,15 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -193,8 +193,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "trailing/Vector": {
@@ -202,8 +202,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -243,8 +243,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "leading/Vector": {
@@ -252,15 +252,15 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -270,8 +270,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "trailing/Vector": {
@@ -279,8 +279,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -320,8 +320,8 @@
             "token": "action/primary-bg",
             "ref": "semantic.*.action.primary-bg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "leading/Vector": {
@@ -329,15 +329,15 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -347,8 +347,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "trailing/Vector": {
@@ -356,8 +356,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -397,8 +397,8 @@
             "token": "action/primary-bg-hover",
             "ref": "semantic.*.action.primary-bg-hover",
             "type": "color",
-            "light": "#272b2f",
-            "dark": "#e2e2e7"
+            "light": "#425878",
+            "dark": "#f0face"
           }
         },
         "leading/Vector": {
@@ -406,15 +406,15 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -424,8 +424,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "trailing/Vector": {
@@ -433,8 +433,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -474,8 +474,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "leading/Vector": {
@@ -483,15 +483,15 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -501,8 +501,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "trailing/Vector": {
@@ -510,8 +510,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -551,8 +551,8 @@
             "token": "action/primary-bg",
             "ref": "semantic.*.action.primary-bg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "leading/Vector": {
@@ -560,15 +560,15 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -578,8 +578,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "trailing/Vector": {
@@ -587,8 +587,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -628,8 +628,8 @@
             "token": "action/primary-bg-hover",
             "ref": "semantic.*.action.primary-bg-hover",
             "type": "color",
-            "light": "#272b2f",
-            "dark": "#e2e2e7"
+            "light": "#425878",
+            "dark": "#f0face"
           }
         },
         "leading/Vector": {
@@ -637,15 +637,15 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -655,8 +655,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "trailing/Vector": {
@@ -664,8 +664,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -705,8 +705,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "leading/Vector": {
@@ -714,15 +714,15 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -732,8 +732,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "trailing/Vector": {
@@ -741,8 +741,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -791,15 +791,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -809,8 +809,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -818,8 +818,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -868,15 +868,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -886,8 +886,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -895,8 +895,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -936,8 +936,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "leading/Vector": {
@@ -945,15 +945,15 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -963,8 +963,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "trailing/Vector": {
@@ -972,8 +972,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -1022,15 +1022,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1040,8 +1040,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -1049,8 +1049,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1099,15 +1099,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1117,8 +1117,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -1126,8 +1126,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1167,8 +1167,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "leading/Vector": {
@@ -1176,15 +1176,15 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1194,8 +1194,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "trailing/Vector": {
@@ -1203,8 +1203,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -1253,15 +1253,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1271,8 +1271,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -1280,8 +1280,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1330,15 +1330,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1348,8 +1348,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -1357,8 +1357,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1398,8 +1398,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "leading/Vector": {
@@ -1407,15 +1407,15 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1425,8 +1425,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "trailing/Vector": {
@@ -1434,8 +1434,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -1477,15 +1477,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -1495,8 +1495,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -1504,8 +1504,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1554,15 +1554,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -1572,8 +1572,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -1581,8 +1581,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1624,15 +1624,15 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -1642,8 +1642,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "trailing/Vector": {
@@ -1651,8 +1651,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -1694,15 +1694,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1712,8 +1712,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -1721,8 +1721,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1771,15 +1771,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1789,8 +1789,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -1798,8 +1798,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1841,15 +1841,15 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1859,8 +1859,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "trailing/Vector": {
@@ -1868,8 +1868,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -1911,15 +1911,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -1929,8 +1929,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -1938,8 +1938,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1988,15 +1988,15 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -2006,8 +2006,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -2015,8 +2015,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -2058,15 +2058,15 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "label": {
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -2076,8 +2076,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "trailing/Vector": {
@@ -2085,8 +2085,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }

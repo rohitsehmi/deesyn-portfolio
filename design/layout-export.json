@@ -127,7 +127,8 @@
         "0": "heading/l",
         "768": "display/s"
       },
-      "color": "fg/primary"
+      "color": "fg/primary",
+      "lineHeight": "heading/m"
     },
     "sectionHeadingL3": {
       "steps": {

@@ -24,7 +24,7 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 // Brand pack. Static, so it cannot take a runtime path — see LOGO_PATHS in
 // paths.mjs for why converting it early would buy an untested code path.
-import { LOCKUP_PATHS, LOCKUP_VIEWBOX, MARK_PATHS, MARK_VIEWBOX, PARTNER_WORDMARKS } from '../src/components/logo-paths.ts';
+import { LOCKUP_VIEWBOX, MARK_VIEWBOX, PARTNER_WORDMARKS, X_GLYPH, markSvg } from '../src/components/logo-paths.ts';
 import { BRANDS, DEFAULT_BRAND } from '../src/data/brands.ts';
 import { TOKENS, FAVICON_OUT } from './paths.mjs';
 import { loadPacks, resolvePack } from '../tokens/brands.mjs';
@@ -116,20 +116,26 @@ const [, , markVbW, markVbH] = MARK_VIEWBOX.split(/\s+/).map(Number);
  * and the card that unfurled from the apex in somebody's messages carried
  * another company's mark.
  */
-const artworkFor = (brand) =>
+const artworkFor = (brand, fg) =>
   brand === DEFAULT_BRAND
-    ? { paths: MARK_PATHS, vbW: markVbW, vbH: markVbH, w: MARK_W }
-    : { paths: [...LOCKUP_PATHS, PARTNER_WORDMARKS[brand]], vbW, vbH, w: LOCKUP_W };
+    ? { markup: markSvg(fg), vbW: markVbW, vbH: markVbH, w: MARK_W }
+    : {
+        markup:
+          `${markSvg(fg)}` +
+          `<path d="${X_GLYPH.d}" fill="${fg}"/>` +
+          `<path d="${PARTNER_WORDMARKS[brand].d}" fill="${fg}"${PARTNER_WORDMARKS[brand].evenOdd ? ' fill-rule="evenodd"' : ''}/>`,
+        vbW,
+        vbH,
+        w: LOCKUP_W
+      };
 
 const pub = join(root, FAVICON_OUT);
 mkdirSync(pub, { recursive: true });
 
 for (const brand of BRANDS) {
   const { fg, bg } = coloursFor(brand);
-  const art = artworkFor(brand);
-  const paths = art.paths
-    .map((p) => `<path d="${p.d}"${p.evenOdd ? ' fill-rule="evenodd" clip-rule="evenodd"' : ''}/>`)
-    .join('');
+  const art = artworkFor(brand, fg);
+  const paths = art.markup;
 
   /* Centred on the artwork's own box, so the two shapes each land in the middle
      of the card rather than one of them inheriting the other's offsets. */

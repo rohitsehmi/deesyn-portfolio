@@ -7,8 +7,51 @@
 }
 
 .tile__media {
+  position: relative;
   border-radius: var(--primitive-radius-r20);
   overflow: hidden;
+}
+/*
+  The discipline sits on the picture, bottom left. The widget wash is 4%
+  black, which disappears on a photograph, so the chip takes the surface
+  and stays readable in both themes. It does not travel with the image scale.
+*/
+.tile__media > .tile__discipline {
+  position: absolute;
+  z-index: 1;
+  left: var(--primitive-space-sp500);
+  /* Close to the corner, still on the picture. A full radius of inset
+     left a band of image under the chip. */
+  bottom: var(--primitive-space-sp600);
+  width: max-content;
+  max-width: calc(100% - 2 * var(--primitive-space-sp500));
+  margin: 0;
+  pointer-events: none;
+}
+.tile__media > .tile__discipline .tag {
+  background: var(--semantic-bg-surface);
+  color: var(--semantic-fg-primary);
+  /* A white chip on a white screenshot disappears. The edge keeps the shape. */
+  border: 1px solid var(--semantic-border-strong);
+}
+/*
+  The standout chip. Lime is the surface and navy is the type, the same pair
+  as the title bar, so it reads on a photograph in both themes. Top left,
+  clear of the discipline chip at the bottom left.
+*/
+.tile__media > .tile__mark {
+  position: absolute;
+  z-index: 1;
+  top: var(--primitive-space-sp500);
+  left: var(--primitive-space-sp500);
+  width: max-content;
+  max-width: calc(100% - 2 * var(--primitive-space-sp500));
+  margin: 0;
+  pointer-events: none;
+}
+.tile__media > .tile__mark .tag {
+  background: var(--semantic-highlight);
+  color: var(--semantic-fg-on-highlight);
 }
 /* The image lifts, not the tile. No shadow: revolut.com has none. */
 .tile__media .media__frame {
@@ -71,13 +114,29 @@
 
 .tile__title {
   margin: 0;
-  font: var(--type-heading-m);
+  width: fit-content;
+  font-family: var(--type-heading-m-family);
+  font-weight: var(--type-heading-m-weight);
+  font-size: var(--type-heading-m-size);
   letter-spacing: var(--type-heading-m-tracking);
+  line-height: var(--type-heading-m-line);
   color: var(--semantic-fg-primary);
   text-wrap: balance;
+  background-image: linear-gradient(var(--semantic-highlight), var(--semantic-highlight));
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 0 0.42em;
+  transition: background-size var(--semantic-duration-dropdown) var(--semantic-easing-out);
 }
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover .tile__title { background-size: 100% 0.42em; }
+}
+.tile:has(.tile__link:focus-visible) .tile__title { background-size: 100% 0.42em; }
 @media (min-width: 768px) {
-  .tile__title { font: var(--type-heading-l); letter-spacing: var(--type-heading-l-tracking); }
+  .tile__title {
+    font-size: var(--type-heading-l-size);
+    letter-spacing: var(--type-heading-l-tracking);
+  }
 }
 
 /* The whole tile is the click target; the accessible name is the title alone. */
@@ -197,5 +256,14 @@
 .tile[data-variant='card'] .tile__media { border-radius: 0; }
 .tile[data-variant='card'] .tile__media .media__frame { border-radius: 0; }
 .tile[data-variant='card'] .tile__body { padding: var(--primitive-space-sp1000); }
-/* The image no longer lifts: inside a clipped card it just crops. */
-.tile[data-variant='card']:hover .tile__media .media__frame { transform: none; }
+/*
+  The picture drifts inside the card. The card clips it, so the frame scales
+  and the edges stay still. Reduced motion leaves the picture where it is.
+*/
+@media (hover: hover) and (pointer: fine) {
+  .tile[data-variant='card']:hover .tile__media .media__frame { transform: scale(1.045); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tile[data-variant='card']:hover .tile__media .media__frame { transform: none; }
+  .tile__title { transition: none; }
+}

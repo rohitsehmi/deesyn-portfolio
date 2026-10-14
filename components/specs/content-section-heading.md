@@ -48,12 +48,18 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.section-heading` | gap | `primitive.space.sp400` |
 | `.section-heading` | margin-block-end | `primitive.layout.l40` |
 | `.section-heading__title` | color | `semantic.*.fg.primary` |
-| `.section-heading[data-level='2'] .section-heading__title` | font | `typography.heading.l` |
+| `.section-heading[data-level='2'] .section-heading__title` | font-family | `typography.heading.l` |
+| `.section-heading[data-level='2'] .section-heading__title` | font-weight | `typography.heading.l` |
+| `.section-heading[data-level='2'] .section-heading__title` | font-size | `typography.heading.l` |
 | `.section-heading[data-level='2'] .section-heading__title` | letter-spacing | `typography.heading.l` |
+| `.section-heading[data-level='2'] .section-heading__title` | line-height | `typography.heading.m` |
 | `.section-heading[data-level='3'] .section-heading__title` | font | `typography.heading.s` |
 | `.section-heading[data-level='3'] .section-heading__title` | letter-spacing | `typography.heading.s` |
-| `@media (min-width: 768px) { .section-heading[data-level='2'] .section-heading__title }` | font | `typography.display.s` |
+| `@media (min-width: 768px) { .section-heading[data-level='2'] .section-heading__title }` | font-family | `typography.display.s` |
+| `@media (min-width: 768px) { .section-heading[data-level='2'] .section-heading__title }` | font-weight | `typography.display.s` |
+| `@media (min-width: 768px) { .section-heading[data-level='2'] .section-heading__title }` | font-size | `typography.display.s` |
 | `@media (min-width: 768px) { .section-heading[data-level='2'] .section-heading__title }` | letter-spacing | `typography.display.s` |
+| `@media (min-width: 768px) { .section-heading[data-level='2'] .section-heading__title }` | line-height | `typography.heading.m` |
 | `@media (min-width: 768px) { .section-heading[data-level='3'] .section-heading__title }` | font | `typography.heading.m` |
 | `@media (min-width: 768px) { .section-heading[data-level='3'] .section-heading__title }` | letter-spacing | `typography.heading.m` |
 | `.section-heading__standfirst` | font | `typography.body.l` |

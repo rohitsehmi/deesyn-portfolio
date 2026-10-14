@@ -65,12 +65,12 @@ That distinction is the whole lesson. This file previously said "Rotated 2026-08
 
 | Decision | Choice | Note |
 |---|---|---|
-| Typeface (display) | **Hanken Grotesk** | Stand-in for Aeonik Pro, which is licensed (CoType Foundry) and not installed |
-| Typeface (body/UI) | **Inter** | Mirrors Revolut's own Aeonik-marketing / Inter-product split |
-| Brand match | **Near-exact Revolut match** | The risk of reading as derivative was raised and accepted. Settled. |
-| Default brand | **`deesyn`, naming no company** | 2026-08-26. The apex carries the Ro mark alone; the `×` lockup is per partner hostname. The palette and icons stay Revolut-derived and unattributed. |
-| Theming | **Dual light/dark from the start** | Via Figma variable modes |
-| Accent | **Blue** — `#0666eb` light / `#6fa0ff` dark | Matches the *website*. Revolut's app accent `#ea035d` never renders on revolut.com |
+| Typeface (display) | **Manrope** | Wordmark and headings. 2026-10-13, from the Vemtri scheme |
+| Typeface (body/UI) | **DM Sans** | Supporting text and UI |
+| Brand match | **Vemtri scheme on the apex** | Navy `#0F2A56`, lime `#C7FF3D`, soft lime `#E6F7A3`, ground `#F8FDF2`. Partner packs are unchanged |
+| Default brand | **`deesyn`, naming no company** | 2026-08-26. The apex carries the V and the lowercase deesyn word. The `×` lockup is per partner hostname |
+| Theming | **Dual light/dark** | Navy ground in dark, pale ground in light. Lime is a surface and a bar, never small text on the pale ground |
+| Accent | **Acid lime** `#C7FF3D` | Secondary accent soft lime `#E6F7A3` |
 
 ## Source of truth for brand values
 
@@ -297,11 +297,11 @@ Why one project rather than one per brand: a second Vercel project means a secon
 - **`*.vercel.app` is on the allowlist**, and it has to be: without it every preview deployment bounces to production and there is no way to look at a build before promoting it. The cost is that this rule cannot be tested on a preview, which is why the next point matters.
 - **`permanent: false` on purpose.** A 308 is cached by the browser and is very hard to take back if the pattern is wrong; a 307 costs one deploy to fix. It stays temporary until it has been checked against every real host in production, and moving it to permanent is a deliberate second step rather than the default.
 
-**What is still Revolut-derived on every host:** the tokens and the icon set. Both are unnamed on the page and neither is attributed, and leaving them is a deliberate scope decision taken on 2026-08-26 rather than an omission — see § Brands. The **lockup** came off this list the same day and is now per-hostname, with the apex carrying none. The social card came off it on 2026-08-19 — see § Social and structured data, including the day it spent recorded as fixed while serving one brand's card to all three.
+**What is still Revolut-derived on every host:** the icon set. The apex palette moved to the Vemtri scheme on 2026-10-13, and partner packs still override the semantic colours on their own hostnames. The older ramps stay in the token file so status colours resolve. The icons are unnamed on the page and unattributed, a scope decision from 2026-08-26 — see § Brands. The **lockup** came off this list the same day and is now per-hostname, with the apex carrying none. The social card came off it on 2026-08-19 — see § Social and structured data, including the day it spent recorded as fixed while serving one brand's card to all three.
 
 ## Tokens
 
-`tokens/tokens.json` — W3C DTCG format, 249 leaf tokens, exported from Figma and checksum-verified against it (`2836674598`, matched 2026-08-10).
+`tokens/tokens.json` — W3C DTCG format, 285 leaf tokens, checksum-verified against it (`3571194489`, matched 2026-10-13). The apex palette (`deesyn.*`) is the Vemtri scheme, authored in `tokens/figma-export.json`: navy `#0F2A56`, lime `#C7FF3D`, soft lime `#E6F7A3`, ground `#F8FDF2`. Figma does not have those values yet: the Desktop Bridge was not open, so the checksum is the file's own, not a match against a live Figma export.
 
 ```bash
 node tokens/build.mjs     # regenerate from tokens/figma-export.json
@@ -336,7 +336,7 @@ The Figma-side export snippet lives in `tokens/figma-export.snippet.js` and retu
 
 ### The checksum, and why it hashes values rather than paths
 
-**`2791783775` across 107 entries, reproduced from inside Wise and inside Healf on 2026-08-19.** `tokens/verify-brands.mjs` prints it; `tokens/brand-export.snippet.js` reproduces it from the live Figma file. This is the first time Figma and the repo have agreed about a brand's colours by measurement rather than by hand.
+**`3044751275` across 123 entries, printed by `tokens/verify-brands.mjs` on 2026-10-13.** The entries past the 2026-08-19 measurement (`2791783775` across 107, reproduced from inside Wise and inside Healf) are apex tokens the pack does not override: `highlight`, the tints, and the ink-on-signal pair. They resolve to the apex values. The Figma files have not been re-exported, and they still hash the old 107.
 
 **It hashes RESOLVED values, never alias paths**, and that is what makes agreement possible at all. Figma has no notion of this repo's JSON paths, so a checksum over the route to a value could never match across the two sides; one over the value that falls out can, and it checks the thing a reader actually sees. Names are lowercased and space-stripped so `Portfolio/Teal/600` and `portfolio.teal.600` reduce to one key.
 
@@ -587,7 +587,7 @@ That gap was found on 2026-08-19, by Rohit, after a second link was added to the
 
 **`design/component-specs.mjs` holds the component → spec matcher, and `verify-contracts.mjs` imports it rather than keeping its own.** That matcher has been wrong once already — the `endsWith` test where `Button` matched `action-icon-button` — and a second copy of a rule this repo has got wrong before is the drift every other check in `design/` exists to stop. The refactor was proven inert by diffing the check's own output before and after, the same move as `dist-hash.mjs`.
 
-**Four checksums, four sources.** Tokens `2836674598`. Figma components `4147464933`. Brand packs `2791783775`, reproduced from inside Wise and Healf by `tokens/brand-export.snippet.js` (matched 2026-08-19). Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print **`2588670097`** across 13 components and 605 entries, but have no Figma counterpart to match, by definition.
+**Four checksums, four sources.** Tokens `3571194489`. Figma components `4147464933`. Brand packs `3044751275`, printed by `tokens/verify-brands.mjs` (the 2026-08-19 Figma match was `2791783775` across 107, before the apex tints fell through). Banding spec `2143010685`, reproduced from inside Figma by `design/banding-export.snippet.js` (matched 2026-08-05). Code-only specs print **`3638552264`** across 13 components and 631 entries, but have no Figma counterpart to match, by definition.
 
 **That value was recorded here as `2397650938` and was stale, found 2026-08-17** by running `design/build-code-specs.mjs` and comparing. The regenerated specs were byte-identical to the ones committed, so the specs were right and only the number written down was wrong: a component changed at some point, the pre-commit hook regenerated and staged the specs exactly as designed, and nobody carried the new checksum up into this file. **This is the third time a stale checksum has sat in this document**, after `1567749477` and `2975374804`, which is the standing argument for re-reading one from the build rather than trusting the copy here.
 

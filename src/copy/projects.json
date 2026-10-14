@@ -1,0 +1,533 @@
+{
+  "_comment": "The eight older projects. They are not case studies: they do not join src/data/studies.ts, the hero count, or the next-study rotation. The words are rewritten from the pages on rohitsehmi.com and from the CV. Figures are the pictures those pages already showed. A number is only here when that page stated it, and the source line says how thin the record is.",
+  "hotels-apps": {
+    "title": "Hotels.com Apps",
+    "standfirst": "The Hotels.com apps, on iPhone and Android, including a Google Play Editors’ Choice.",
+    "meta": "Product design · iOS and Android · 2016, refreshed 2019",
+    "sections": [
+      {
+        "heading": "The home and the results",
+        "paras": [
+          "The home screen, the results page, and the tests on them are written up as the case study. This page is the rest of the apps."
+        ],
+        "links": [
+          {
+            "before": "The measured work is ",
+            "label": "the case study",
+            "after": ".",
+            "href": "/work/making-the-app-testable"
+          }
+        ]
+      },
+      {
+        "heading": "Past the home screen",
+        "paras": [
+          "Three phones, left to right. The list can use business-trip filters, and a quick book for a hotel you have already stayed in. A sponsored stay sits in that list, in the same kind of card. The middle phone is the trip: who you are travelling with, and a price that has moved. The right phone is the guide to the city: the hotel, the essentials, and getting around."
+        ],
+        "figures": [
+          {
+            "key": "apps-further",
+            "alt": "Three iPhones. A results list with business-trip filters, a trip to Berlin with a price change, and a Berlin guide with tiles for the hotel, essentials, and getting around."
+          }
+        ]
+      },
+      {
+        "heading": "A lighter app",
+        "paras": [
+          "A lighter app, in 2019, was for markets with a slow connection. Fewer calls to the server, and Apple Pay in one tap. The iOS team showed an early build of the path."
+        ],
+        "figures": [
+          {
+            "key": "apps-screens",
+            "alt": "Hotels.com on iPhone, from the red H through a map, a list of stays, a hotel page for the DoubleTree by Hilton London, and Apple Pay.",
+            "caption": "The path: a map of tonight’s hotels, the list, the hotel, then Apple Pay."
+          },
+          {
+            "key": "apps-build",
+            "alt": "An early iOS build of the lighter app. A map of tonight’s hotels, Hotel Café Royal at $628 with Book with Apple Pay, and the Apple Pay sheet asking for a billing address.",
+            "caption": "The early build, with Apple Pay open."
+          }
+        ]
+      },
+      {
+        "heading": "Light and dark",
+        "paras": [
+          "The same map and the same list were drawn for a dark mode, ready for iOS 13 and Android Q. Light first, then dark."
+        ],
+        "figures": [
+          {
+            "key": "apps-map-light",
+            "alt": "A hand holds a phone over grey fabric. The Hotels.com map is light, with price pins, and a card for the DoubleTree by Hilton London Islington at £324.",
+            "caption": "The map."
+          },
+          {
+            "key": "apps-map-dark",
+            "alt": "The same map in the dark theme. The streets are navy, the prices are green, and the hotel card is dark.",
+            "caption": "The same map, in the dark theme."
+          },
+          {
+            "key": "apps-list-light",
+            "alt": "A hand holds a phone. The Hotels.com list is light, with Citadel Apartment Hill House, a red banner for the free app, and the DoubleTree by Hilton.",
+            "caption": "The list."
+          },
+          {
+            "key": "apps-list-dark",
+            "alt": "A hand holds a phone. The results list is dark, with a red banner for the free app, and hotels including Citadel Apartment Hill House and the DoubleTree by Hilton.",
+            "caption": "The same list, in the dark theme."
+          }
+        ]
+      },
+      {
+        "heading": "The store",
+        "paras": [
+          "The store screenshots were tested with Mobile Marketing, and with an outside agency, ASO CO. From April 2017 to April 2018, installs rose by 50%. Ratings sat above the usual mark for the category, and the app was featured on iOS in more than one region."
+        ],
+        "figures": [
+          {
+            "key": "apps-store-1",
+            "alt": "App Store screenshots on red. Secret Prices, a code for the Android app, rewards, larger photos, and a watch notification for Hotel Indigo.",
+            "caption": "Secret Prices, a code for the Android app, rewards, larger photos, and a watch notification."
+          },
+          {
+            "key": "apps-store-2",
+            "alt": "Store artwork for App of the Day, and the Google Play listing with an Editors’ Choice badge.",
+            "caption": "App of the Day, and the Play listing with the Editors’ Choice badge."
+          }
+        ]
+      },
+      {
+        "heading": "Lining the apps up with the website",
+        "paras": [
+          "Two pieces of work sat beside the home screen, and both used KES, also called UHDS. That was Hotels.com’s first design system, and the one the website already used.",
+          "The business wanted one build for every platform, because app releases were slow. The engineers and I disagreed with putting web pages inside the apps. Those pages lost accessibility and sharing, and they loaded onto a blank screen. I proposed a fix after each build. The result stayed unclear, and product went ahead.",
+          "I also chose to line the apps up with KES, so the site and the apps matched. I pitched that to the heads of design, mobile and product. It was approved, and the build had started. Both pieces stopped when the business moved every brand onto one platform. I then joined the Expedia Group Design System team."
+        ]
+      }
+    ]
+  },
+  "rebrand": {
+    "title": "Global Product Rebrand",
+    "standfirst": "The Hotels.com brand, carried through the mobile products.",
+    "meta": "Product design · iOS, Android and web",
+    "sections": [
+      {
+        "heading": "The products did not match",
+        "paras": [
+          "I led the refresh from the product side. The growth was with a newer kind of traveller, and the brand had to hold together on the phone, the site, email, and merchandising. It did not. Each surface had its own version."
+        ],
+        "figures": [
+          {
+            "key": "rebrand-cover",
+            "alt": "The white Hotels.com wordmark and striped H over a pink sunset beach, framed by palm fronds."
+          },
+          {
+            "key": "rebrand-devices",
+            "alt": "An iMac, an iPad, and an iPhone on a desk, all showing the Hotels.com site and app."
+          },
+          {
+            "key": "rebrand-mix-1",
+            "alt": "The site, the app, and a phone browser, side by side. The desktop is a search over Tower Bridge. The app is recent searches. The phone is a Berlin search on uk.hotels.com."
+          },
+          {
+            "key": "rebrand-mix-2",
+            "alt": "Emails and a booking note that do not match. A purple extra-night offer, a gold rewards email, a 48 hour sale, a phone search, and a long booking receipt."
+          },
+          {
+            "key": "rebrand-mix-3",
+            "alt": "A collage of Hotels.com ads and social posts. A YouTube card, banners in more than one language, and the striped H with the wordmark at the right."
+          }
+        ]
+      },
+      {
+        "heading": "The mark and the icon",
+        "paras": [
+          "The logo stayed recognisable. The wordmark and the stacked H had to sit in one system, in the brand type and the brand colours. We started with the app icon, then Rewards, then the other markets.",
+          "The H was cleaned up, and the wordmark moved to sit with the mark, including inside the icon shape."
+        ],
+        "figures": [
+          {
+            "key": "rebrand-icons",
+            "alt": "Explorations of the app icon. The H on a phone home screen, flat versions of the mark, and a solid model of the H."
+          },
+          {
+            "key": "rebrand-icon",
+            "alt": "The Hotels.com H before and after the refresh, including a taller crossbar, and the wordmark set beside the mark and inside the app icon."
+          },
+          {
+            "key": "rebrand-local",
+            "alt": "The H and the wordmark in red, white, and grey, beside Hotels.com Rewards lockups that add Chinese, including silver and gold."
+          }
+        ]
+      },
+      {
+        "heading": "Colour, type, and photography",
+        "paras": [
+          "Colour had to pass WCAG AA. The interface colours stayed, and were adapted, including a dark mode for Android Q and iOS 13. They were checked on the phone and on the desktop.",
+          "Type was the open question: a face of our own, or the system font. The trials ran on iOS, Android, and the web. The sheet sets Hotels Proxima Soft beside the system faces.",
+          "Photography was of destinations, with people in it. Hotel photography was not ours to change.",
+          "The sheets are the palette, a contrast check on a blue button, and an Android type trial. The trial’s own note says to stick with the system font for now, and to try a custom face only from a certain size."
+        ],
+        "figures": [
+          {
+            "key": "rebrand-colour",
+            "alt": "Colour chips grouped as brand, UI, rewards, greyscale, alpha, and social. The brand row starts with the red H."
+          },
+          {
+            "key": "rebrand-accessible",
+            "alt": "A sheet titled UI palette example, naming and accessibility. Red, blue, and green ramps with hex values, a blue button measured at 5.38 to 1, and an HSL colour picker."
+          },
+          {
+            "key": "rebrand-type",
+            "alt": "A type sheet on black. Hotels Proxima Soft beside the system faces for the web, iOS, and Android, with sizes marked from a large title down to captions."
+          },
+          {
+            "key": "rebrand-android",
+            "alt": "Example results of an Android spike. Two phones with rules drawn over the type, a Hungarian recent-search circled, and a conclusion that says stick to the system font for now."
+          },
+          {
+            "key": "rebrand-photo",
+            "alt": "Destination photographs with people in them: pools, cities, and travel, the kind of picture the brand wanted."
+          },
+          {
+            "key": "rebrand-merch",
+            "alt": "Three offer cards. Summer adventures, holiday homes, and on the road escapes."
+          }
+        ]
+      }
+    ]
+  },
+  "mobile-key": {
+    "title": "Mobile Key",
+    "standfirst": "Keyless entry, so the room opens from the phone.",
+    "meta": "Product design · iOS and Android · 2016–17",
+    "sections": [
+      {
+        "heading": "The key in the app",
+        "paras": [
+          "Hotels.com was the first online travel agent to put a room key in the app, once you had a booking. You could check in, check out, and open the door from the phone.",
+          "The locks and the back end were built with ASSA ABLOY and Zaplox, in Sweden."
+        ],
+        "links": [
+          {
+            "before": "The pilot was written up by ",
+            "label": "Phocuswire",
+            "after": ".",
+            "href": "https://www.phocuswire.com/Hotels-com-tests-a-mobile-app-that-generates-a-guest-room-key"
+          }
+        ],
+        "figures": [
+          {
+            "key": "key-cover",
+            "alt": "A hand holds a phone against a black hotel lock. The screen shows a green tick, Room 217, and a blue Got it button."
+          },
+          {
+            "key": "key-flow",
+            "alt": "The mobile key flow on iPhone, from a booking at Hotel Skeppsbron through Bluetooth, room 217, and the check-out states."
+          }
+        ]
+      },
+      {
+        "heading": "The pilot",
+        "paras": [
+          "Both apps launched on a short timetable. We ran a short round of qualitative testing in the lab. The pilot was a few Cabinn hotels in Scandinavia. A larger set of Las Vegas hotels was planned for 2019.",
+          "People heard about it in three places. An email after booking, a note from the hotel closer to the stay, and posters by reception.",
+          "Wearables came off the first version. The next steps were the key on a watch, richer notifications at the right moment, and the new brand on the same flow."
+        ],
+        "figures": [
+          {
+            "key": "key-laptop",
+            "alt": "A laptop on a wooden reception desk. The screen is the Hotels.com mobile key, a purple page with a code."
+          },
+          {
+            "key": "key-poster",
+            "alt": "A hotel reception with a Hotels.com poster: skip the queue, download the app, scan a code, and check in for a mobile key."
+          }
+        ]
+      }
+    ]
+  },
+  "wearables": {
+    "title": "Wearables and Apple TV",
+    "standfirst": "A Hotels.com booking, on a watch and on Apple TV.",
+    "meta": "Product design · watchOS and tvOS · 2015–2018",
+    "sections": [
+      {
+        "heading": "The watch",
+        "paras": [
+          "In 2015, and again in 2018, the watch used notifications for deals and for a stay that was coming up, and a glance for check-in and check-out.",
+          "The first version was a short flow. Your bookings, your reward status, and the top five deals near you.",
+          "Three watches: a sign-in, a stay at Hotel Indigo Berlin with a map, and a list of bookings."
+        ],
+        "figures": [
+          {
+            "key": "watch-trio",
+            "alt": "Three Apple Watches. A red one asks you to sign in. A gold one shows Hotel Indigo Berlin on a map, two days to go. A black one lists Hotel Indigo Berlin and Gorki Apartments."
+          },
+          {
+            "key": "watch",
+            "alt": "Hotels.com on a watch: a sign-in card, empty states in purple, slate and gold, a list of bookings, and a stay at Hotel Indigo Berlin with check-in times."
+          }
+        ]
+      },
+      {
+        "heading": "Apple TV",
+        "paras": [
+          "In 2016 and 2017, Apple TV needed its own layout. It was built to be watched from the sofa, and it used video. The top destinations got parallax images, the layered ones Apple calls LCRs."
+        ],
+        "figures": [
+          {
+            "key": "appletv",
+            "alt": "An Apple TV screen of the Pulitzer Amsterdam at night, five red stars, a play control, and Open on device."
+          }
+        ]
+      }
+    ]
+  },
+  "betfair-games": {
+    "title": "Betfair Games",
+    "standfirst": "The Betfair casino app, one of the mobile products I owned.",
+    "meta": "Mobile visual designer · iOS and Android · 2012–14",
+    "sections": [
+      {
+        "heading": "Casino",
+        "paras": [
+          "Betfair runs the largest online betting exchange, and beside it a sportsbook, a casino, poker, and bingo.",
+          "The lead release was Casino, on iPhone and iPad, in 2013 and 2014. What you saw depended on how you played and what you spent. Logged in, the games and the offers were the ones meant for you.",
+          "I worked under the Head of Design."
+        ],
+        "metrics": {
+          "items": [
+            {
+              "value": "£100k",
+              "label": "What the iOS casino cost to build"
+            },
+            {
+              "value": "£4.5m",
+              "label": "Additional revenue in the launch year"
+            }
+          ],
+          "source": "Stated for the iOS casino in its launch year. The write-up does not name the system the figures came from."
+        },
+        "figures": [
+          {
+            "key": "casino-phones",
+            "alt": "Two iPhones in green cases. One is the Betfair Casino lobby, with New Games and Most Popular. The other is Wild Gambler, with Demo and Play."
+          },
+          {
+            "key": "casino-ipad",
+            "alt": "An iPad showing the Betfair casino lobby, with game tiles across the screen."
+          },
+          {
+            "key": "casino",
+            "alt": "Three iPhones. Two show the Betfair Casino introduction, with Promotions and New Games circled. The third is the lobby, with a balance of £54.32."
+          }
+        ]
+      },
+      {
+        "heading": "Arcade",
+        "paras": [
+          "Arcade followed Casino, still on iOS in 2013 and 2014. The first screens pointed at Join and Log in, and more people used the parts they pointed at. A new product that used to take several months went out in under four weeks, so it could be changed in public. The apps could point at each other, in one brand."
+        ],
+        "figures": [
+          {
+            "key": "arcade",
+            "alt": "Betfair Arcade. A yellow title card, an iPhone pointing at Join now and Log in, and the game lobby."
+          },
+          {
+            "key": "arcade-bonus",
+            "alt": "An iPhone showing a Betfair Arcade promotion, with a £500 bonus."
+          },
+          {
+            "key": "arcade-phones",
+            "alt": "Three iPhones showing Betfair Arcade, the lobby and a game."
+          }
+        ]
+      },
+      {
+        "heading": "Poker",
+        "paras": [
+          "Poker Exchange started on Android in 2012 and 2013, and then came to iOS. The desktop product was old and plain, so the phone was the place to redraw it. It was a side project, with one developer, in the time we had."
+        ],
+        "figures": [
+          {
+            "key": "poker-iphone",
+            "alt": "A black iPhone on a Betfair poker table, at preflop, with the hole cards and the betting buttons."
+          },
+          {
+            "key": "poker-android",
+            "alt": "A white Android phone on the same poker table, at the flop."
+          }
+        ]
+      }
+    ]
+  },
+  "betfair-sportsbook": {
+    "title": "Betfair Sportsbook",
+    "standfirst": "The Betfair sportsbook, from the same set of mobile apps.",
+    "meta": "Visual designer · iOS and mobile web · 2012–13",
+    "sections": [
+      {
+        "heading": "Three months, three surfaces",
+        "paras": [
+          "Sportsbook launched on the desktop site, on mobile web, and on iOS. It was designed and built in three months, and it went out in January 2013.",
+          "The first year beat the forecast, and it added to the wider mobile growth."
+        ],
+        "metrics": {
+          "items": [
+            {
+              "value": "3 months",
+              "label": "How long it took to design and build"
+            },
+            {
+              "value": "4.5",
+              "label": "Rating on the App Store at launch"
+            }
+          ],
+          "source": "Stated for the January 2013 launch. The write-up does not give the number of reviews behind the 4.5."
+        },
+        "figures": [
+          {
+            "key": "sportsbook-ios",
+            "alt": "Betfair Sportsbook on an iPad and an iPhone, football highlights with green odds."
+          },
+          {
+            "key": "sportsbook-web",
+            "alt": "The same sportsbook in a mobile browser on two Android phones, open at betfair.com/sport."
+          },
+          {
+            "key": "sportsbook-3",
+            "alt": "Three iPhones. The left is the exchange, with unmatched and matched bets. The middle and the right are the sportsbook, in-play football, one with blue odds and one with green."
+          }
+        ]
+      }
+    ]
+  },
+  "grabbd": {
+    "title": "Grabbd",
+    "standfirst": "A guide to places, built with a start-up in Dubai.",
+    "meta": "Product design · iOS, Android and desktop · 2015",
+    "sections": [
+      {
+        "heading": "The iOS app",
+        "paras": [
+          "Grabbd was a start-up in Dubai. You found a place, saved it, wrote about it, and shared it.",
+          "The brand and the iOS app came first. I started from rough wires, sat in the research, built prototypes, and finished the screens.",
+          "The mark is a pin, drawn in a few colours. The same place card was tried on a watch."
+        ],
+        "metrics": {
+          "items": [
+            {
+              "value": "63",
+              "label": "Place on the App Store"
+            },
+            {
+              "value": "4.7",
+              "label": "Rating, from about 2,000 reviews"
+            }
+          ],
+          "source": "App Store, as recorded in May 2019."
+        },
+        "figures": [
+          {
+            "key": "grabbd-brand",
+            "alt": "The Grabbd pin on teal, navy, and black bars, and the wordmark in the same colours."
+          },
+          {
+            "key": "grabbd-logos",
+            "alt": "Six Grabbd marks. The pin and the word, in navy, teal, and gold."
+          },
+          {
+            "key": "grabbd-watch",
+            "alt": "A round watch on a wrist. The screen is a Grabbd card for Coya London, Latin American, 88.8 miles away, with the teal pin."
+          },
+          {
+            "key": "grabbd-app",
+            "alt": "Grabbd on iPhone: a teal mark, a list of places, a map, search, a filter for restaurants, and a page for Café Rouge."
+          }
+        ]
+      },
+      {
+        "heading": "Android, and the site",
+        "paras": [
+          "Android followed in the same visual language, using Material, so the product could reach more people.",
+          "I also designed the page that pointed people at the iOS app."
+        ],
+        "figures": [
+          {
+            "key": "grabbd-hand-1",
+            "alt": "A hand holds an Android phone over a wooden table. Grabbd is on Nearby: Hawksmoor Seven Dials, Coya London, Tate Britain, Homeslice, and Hyde Park."
+          },
+          {
+            "key": "grabbd-hand-2",
+            "alt": "An Android phone on a notebook. The Grabbd menu is open, greeting Shammi, with Lists, Activity, Settings, and Sign out."
+          },
+          {
+            "key": "grabbd-phones",
+            "alt": "Two iPhones. One is a list: Café Rouge, Jamie’s Italian, Nobu. The other is Best cafes in London, with photographs of the places."
+          },
+          {
+            "key": "grabbd-site",
+            "alt": "The Grabbd site on a desktop screen, teal, with the app beside four short points: get involved, near you, discover more, stay ahead."
+          }
+        ]
+      }
+    ]
+  },
+  "tv": {
+    "title": "TV",
+    "standfirst": "Viasat Film recommendations, and the television work around them.",
+    "meta": "Visual designer · UPC, Novarising and Viasat · 2007–2012",
+    "sections": [
+      {
+        "heading": "Before Viaplay had an app",
+        "paras": [
+          "Viaplay was the main video service in Scandinavia, and it ran on the web only. These screens came before the apps.",
+          "Viasat Film could show what was on its film channels. The synopsis, and trailers for films out now and films still to come. The apps could point at each other."
+        ],
+        "figures": [
+          {
+            "key": "tv-film",
+            "alt": "Two tablets showing the Viasat Film recommendations screen, with This is the End as the featured title."
+          },
+          {
+            "key": "tv-viaplay",
+            "alt": "Two iPhones running a Viaplay concept. One lists today and tomorrow, with The Hangover III. The other is a Beckham page, with a trailer and a register button."
+          }
+        ]
+      },
+      {
+        "heading": "Viagame",
+        "paras": [
+          "In 2011 and 2012, Viagame was a new business. You downloaded a game, or streamed it, onto a PC. I was the only visual designer, working with the people who owned it."
+        ],
+        "figures": [
+          {
+            "key": "tv-viagame",
+            "alt": "The Viagame store on a desktop screen, with Prototype 2 at 399 kr and a row of games under it."
+          }
+        ]
+      },
+      {
+        "heading": "A television you could do more with",
+        "paras": [
+          "A set of ideas for the years before Sky Q. Watch with friends. A controller you could gesture with. A guide that felt current. A second screen, on the controller or on another device. Links out to Twitter and IMDb.",
+          "One screen is the guide, with what other people are watching. One is a note over the programme. One is the film, with the chat on it."
+        ],
+        "figures": [
+          {
+            "key": "tv-guide",
+            "alt": "A television concept signed in to Sky. The guide lists BBC, ITV, Channel 4, and Sky, and a panel shows what other people are watching."
+          },
+          {
+            "key": "tv-note",
+            "alt": "The same television, with a note over the guide. James Cummins is watching Avatar on Sky Movies HD, and a button says shake to connect."
+          },
+          {
+            "key": "tv-playback",
+            "alt": "Avatar full screen, with a bar that says you are watching with James Cummins, and chat bubbles over the picture. A button says shake to exit."
+          }
+        ]
+      }
+    ]
+  }
+}

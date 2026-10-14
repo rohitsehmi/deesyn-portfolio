@@ -39,14 +39,23 @@
       "note": "`bare` groups by image and spacing, the way revolut.com does. `card` puts it on a surface with a border. Cards are the lazy grouping: the band already separates this section, and with no shadows available in site chrome a card cannot do the one thing cards are for. Kept as an option because the affordance question is real."
     },
     "image": {
-      "type": "{ src?: string; srcSet?: string; sizes?: string; alt: string; ratio?: MediaRatio }",
+      "type": "{ src?: string; srcSet?: string; srcDark?: string; srcSetDark?: string; sizes?: string; alt: string; ratio?: MediaRatio; }",
       "required": false,
-      "note": "Plain data rather than a ReactNode slot: JSX written inside an `.astro` expression produces an Astro template object, not a React element."
+      "note": "Plain data rather than a ReactNode slot: JSX written inside an `.astro` expression produces an Astro template object, not a React element. Dark plate, when the picture itself changes with the theme."
     },
     "copyBase": {
       "type": "string",
       "required": false,
       "note": "`<file>:<path>` into src/copy for this tile's strings; `.title`, `.summary` and `.discipline` are appended. Dev tooling only — inert in a build. The same tile renders on the index and as the next-study link at the foot of the other study, both pointing at one entry in src/copy/studies.json, so editing it in either place changes both."
+    },
+    "mark": {
+      "type": "string",
+      "required": false,
+      "note": "A second chip on the cover, for the homepage studies. The discipline chip stays. Absent on the next-study tile, which has no cover to put it on."
+    },
+    "markCopyRef": {
+      "type": "string",
+      "required": false
     }
   },
   "tokens": {
@@ -72,6 +81,69 @@
         "property": "border-radius",
         "var": "--primitive-radius-r20",
         "ref": "primitive.radius.r20"
+      }
+    ],
+    ".tile__media > .tile__discipline": [
+      {
+        "property": "left",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "bottom",
+        "var": "--primitive-space-sp600",
+        "ref": "primitive.space.sp600"
+      },
+      {
+        "property": "max-width",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      }
+    ],
+    ".tile__media > .tile__discipline .tag": [
+      {
+        "property": "background",
+        "var": "--semantic-bg-surface",
+        "ref": "semantic.*.bg.surface"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "border",
+        "var": "--semantic-border-strong",
+        "ref": "semantic.*.border.strong"
+      }
+    ],
+    ".tile__media > .tile__mark": [
+      {
+        "property": "top",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "left",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      },
+      {
+        "property": "max-width",
+        "var": "--primitive-space-sp500",
+        "ref": "primitive.space.sp500"
+      }
+    ],
+    ".tile__media > .tile__mark .tag": [
+      {
+        "property": "background",
+        "var": "--semantic-highlight",
+        "ref": "semantic.*.highlight"
+      },
+      {
+        "property": "color",
+        "var": "--semantic-fg-on-highlight",
+        "ref": "semantic.*.fg.on-highlight"
       }
     ],
     ".tile__media .media__frame": [
@@ -102,8 +174,18 @@
     ],
     ".tile__title": [
       {
-        "property": "font",
-        "var": "--type-heading-m",
+        "property": "font-family",
+        "var": "--type-heading-m-family",
+        "ref": "typography.heading.m"
+      },
+      {
+        "property": "font-weight",
+        "var": "--type-heading-m-weight",
+        "ref": "typography.heading.m"
+      },
+      {
+        "property": "font-size",
+        "var": "--type-heading-m-size",
         "ref": "typography.heading.m"
       },
       {
@@ -112,15 +194,40 @@
         "ref": "typography.heading.m"
       },
       {
+        "property": "line-height",
+        "var": "--type-heading-m-line",
+        "ref": "typography.heading.m"
+      },
+      {
         "property": "color",
         "var": "--semantic-fg-primary",
         "ref": "semantic.*.fg.primary"
+      },
+      {
+        "property": "background-image",
+        "var": "--semantic-highlight",
+        "ref": "semantic.*.highlight"
+      },
+      {
+        "property": "background-image",
+        "var": "--semantic-highlight",
+        "ref": "semantic.*.highlight"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-duration-dropdown",
+        "ref": "semantic.*.duration.dropdown"
+      },
+      {
+        "property": "transition",
+        "var": "--semantic-easing-out",
+        "ref": "semantic.*.easing.out"
       }
     ],
     "@media (min-width: 768px) { .tile__title }": [
       {
-        "property": "font",
-        "var": "--type-heading-l",
+        "property": "font-size",
+        "var": "--type-heading-l-size",
         "ref": "typography.heading.l"
       },
       {

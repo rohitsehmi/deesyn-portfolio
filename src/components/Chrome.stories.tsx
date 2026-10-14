@@ -3,6 +3,7 @@ import { Nav } from './Nav';
 import { Footer } from './Footer';
 import { Button } from './Button';
 import { Link } from './Link';
+import { heldFooterLinks } from '../data/nav';
 
 const meta = { title: 'Chrome/Nav and Footer' } satisfies Meta;
 export default meta;
@@ -38,10 +39,12 @@ export const FooterCompact: S = { render: () => <Footer scale="compact" /> };
 /**
  * On the page the footer link points at, it offers the work instead of itself.
  *
- * Snapshotted because the two states differ only by a few words, which is
- * exactly the kind of regression that survives a read-through — and it is a
- * self-link that got noticed by eye rather than by any check.
+ * The live footer renders no links. This story passes the held pair so the
+ * swap still has a picture: putting them back is moving an entry into
+ * `footerLinks`, and this is the behaviour that move turns on.
  */
 export const FooterOnItsOwnPage: S = {
-  render: () => <Footer scale="compact" currentPath="/how-this-was-built/" />
+  render: () => (
+    <Footer scale="compact" links={heldFooterLinks} currentPath="/how-this-was-built/" />
+  )
 };

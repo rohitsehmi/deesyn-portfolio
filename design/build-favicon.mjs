@@ -48,18 +48,19 @@ function resolve(node) {
 
 const light = resolve(tokens.semantic.light.fg.primary);
 const dark = resolve(tokens.semantic.dark.fg.primary);
-if (!light || !dark) throw new Error('could not resolve semantic fg/primary from tokens.json');
+if (!light || !dark) throw new Error('could not resolve mark colours from tokens.json');
 
-const paths = MARK_PATHS.map((p) =>
-  `<path d="${p.d}"${p.evenOdd ? ' fill-rule="evenodd" clip-rule="evenodd"' : ''}/>`
-).join('');
+const shapes = MARK_PATHS.map((path) => {
+  const rule = path.evenOdd ? ' fill-rule="evenodd"' : '';
+  return `<path class="ink" d="${path.d}"${rule}/>`;
+}).join('');
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}" role="img" aria-label="Rohit Sehmi">
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}" role="img" aria-label="deesyn">
 <style>
-  path { fill: ${light} }
-  @media (prefers-color-scheme: dark) { path { fill: ${dark} } }
+  .ink { fill: ${light} }
+  @media (prefers-color-scheme: dark) { .ink { fill: ${dark} } }
 </style>
-${paths}
+${shapes}
 </svg>
 `;
 
@@ -68,11 +69,11 @@ mkdirSync(pub, { recursive: true });
 writeFileSync(join(pub, 'favicon.svg'), svg);
 
 // Flat-fill copy for the raster fallbacks; no media query, light fill only.
-const flat = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}"><g fill="${light}">${paths}</g></svg>`;
+const flat = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}"><g fill="${light}">${shapes.replaceAll(' class="ink"', '')}</g></svg>`;
 for (const [name, size] of [['favicon-32.png', 32], ['apple-touch-icon.png', 180]]) {
   await sharp(Buffer.from(flat), { density: 384 }).resize(size, size).png().toFile(join(pub, name));
 }
 
-console.log(`favicon.svg          mark, ${MARK_PATHS.length} paths, ${light} / ${dark}`);
+console.log(`favicon.svg          Ro mark, ${light} / ${dark}`);
 console.log('favicon-32.png       32x32');
 console.log('apple-touch-icon.png 180x180');

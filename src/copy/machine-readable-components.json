@@ -13,7 +13,7 @@
     },
     {
       "term": "The team",
-      "detail": "Three designers and a principal, with Nathan Curtis contracted in for guidance. Engineering implemented from the spec. The prototype kit that later shipped on top of the library was Tyler's, not mine."
+      "detail": "Three designers and a principal, with Nathan Curtis contracted in for guidance. Engineering implemented from the spec. A content designer, Jared, rewrote the guidance with me, and a program manager helped with planning. The prototype kit that later shipped on top of the library was Tyler’s."
     },
     {
       "term": "Duration",
@@ -36,7 +36,9 @@
       "Every component started as a scrape. We read the iOS, Android and web repositories and generated a plan, which lived in GitHub for each component: recommendations, configurations, elements, decisions, open questions, TODOs.",
       "The plan was a proposal rather than an instruction. I rebuilt each component against it, binding variables, attaching slots, correcting naming and specifying accessibility, using code only props and slots, and where the plan was wrong I overruled it and recorded why. Engineering implemented from the finished specification, with Code Connect holding Figma and code one to one.",
       "That loop is the part worth taking forward. The machine did the reading, which no person was going to do across three codebases, and the designer did the deciding, although the decision only counted once it was written somewhere the machine could read back, as a spec.",
-      "The workflow itself went to testing in Q1 2026 with Expedia product designers, and with the engineers and PMs who opted in, the people who would have to live with a specification rather than write one."
+      "The workflow itself went to testing in Q1 2026 with Expedia product designers, and with the engineers and PMs who opted in, the people who would have to live with a specification rather than write one.",
+      "I also worked with engineers on spacing that both sides could share. A layout holds sections, and a section holds blocks, with the gaps coming from tokens. I built the layouts and a Figma playground, tested them with six designers, three from product and three from the design system, made the rules clearer, and tested again before publishing.",
+      "The guidance left Figma for DSRS, so someone without a Figma seat could read it. Jared and I rewrote it in plain language, and the fields, such as when to use and when not to use, stayed consistent so a tool could follow them. The toast page had said that toasts are temporary, non-interruptive messages for information that is not urgent. The rewrite was shorter: use toasts to share quick feedback or simple actions, and keep them off urgent or important alerts. Heeran and I added our styles to the site that rendered those pages."
     ],
     "explorationsHeading": "What the plan proposed, and what we overruled",
     "explorationsIntro": "These rejected paths are unusually well evidenced, because the alternative was not imagined. A machine proposed it from three real codebases, a person overruled it, and the reason went back into the record.",
@@ -80,13 +82,13 @@
         "label": "of all component documentation views are EGDS 2"
       },
       {
-        "value": "9",
-        "label": "product teams building with it, beyond the design system team"
+        "value": "67",
+        "label": "of 117 product teams used the new library"
       }
     ],
-    "metricsSource": "Figma Library Analytics and Google Analytics, Expedia Group Design System. Insertions and forks since the EGDS 2.0 UI kit launched 26 February 2026; documentation views 14 April to 17 July 2026, 1,253 of them EGDS 2. Team count excludes the design system team itself and Figma drafts.",
+    "metricsSource": "Figma Library Analytics and Google Analytics, Expedia Group Design System. Forks since the EGDS 2.0 UI kit launched on 26 February 2026. Documentation views from 14 April to 17 July 2026, including 1,253 for the new library. The 67 are product teams using the library, leaving out the design system team, out of 117.",
     "paras": [
-      "These are adoption figures, and the page should say so rather than let them pass for outcomes, because they measure take up of the library and the prototype kit built on it, not whether the system made anything better. The largest single source of insertions is the design system team itself, which is what five months after a launch looks like. The nine product teams behind it are the number worth reading, and they are post-booking, BEX experience design, the Hotels.com core team, trips, 1DL, loyalty, lodging, B2B and acquisition marketing.",
+      "These are adoption figures, and the page should say so rather than let them pass for outcomes, because they measure take up of the library and the prototype kit built on it, not whether the system made anything better. The largest single source of insertions is the design system team itself, which is what five months after a launch looks like. Beyond that team, 67 of 117 product teams used the library.",
       "One signal is not an adoption count. A UX researcher, rather than a designer, built the loyalty screens herself out of the new components and said it was amazingly easy. Loyalty then appears independently in the insertion data, so the remark and the analytics describe the same thing from two directions. A component library becoming usable by someone who does not build interfaces for a living is the outcome the specification was for, because structured data is something a person and a machine can both build from, and a paragraph serves neither.",
       "Two things were still moving when this data was taken. Coded components were being built against the same specifications, and the prototype kit was to be rebuilt on production code rather than on Figma components. That closes the loop this study opens with, a single specification that a designer, an engineer and a machine can all build from."
     ]

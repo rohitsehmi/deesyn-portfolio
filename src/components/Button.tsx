@@ -26,6 +26,8 @@ const ICON_SIZE = { sm: 16, md: 20, lg: 20 } as const;
  * disabled are `:hover` and `:disabled`, and press is `transform: scale(0.97)`
  * over `duration/press`, which Figma could not represent at all without
  * breaking its layout grid. The contract is the same; the mechanism differs.
+ * Medium and large actions also keep one corner a step tighter than the pill,
+ * and ease it back to round on hover. That lives in CSS for the same reason.
  *
  * Ghost is not a primary action. It exists for nav links and tertiary actions.
  */

@@ -67,8 +67,8 @@
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/links": {
@@ -108,8 +108,8 @@
             "token": "action/primary-bg",
             "ref": "semantic.*.action.primary-bg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/links/Action/Button/leading/Vector": {
@@ -117,15 +117,15 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "inner/links/Action/Button/label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -135,8 +135,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "inner/links/Action/Button/trailing/Vector": {
@@ -144,8 +144,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -173,8 +173,8 @@
             "token": "bg/canvas",
             "ref": "semantic.*.bg.canvas",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#000000"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           },
           "border": {
             "token": "border/subtle",
@@ -197,8 +197,8 @@
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/links": {
@@ -238,8 +238,8 @@
             "token": "action/primary-bg",
             "ref": "semantic.*.action.primary-bg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/links/Action/Button/leading/Vector": {
@@ -247,15 +247,15 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "inner/links/Action/Button/label": {
           "textStyle": {
             "token": "Emphasis/2",
             "ref": "typography.emphasis.2",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "14px",
             "lineHeight": 1.43,
@@ -265,8 +265,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         },
         "inner/links/Action/Button/trailing/Vector": {
@@ -274,8 +274,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -313,8 +313,8 @@
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/menu": {
@@ -342,8 +342,8 @@
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -371,8 +371,8 @@
             "token": "bg/canvas",
             "ref": "semantic.*.bg.canvas",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#000000"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           },
           "border": {
             "token": "border/subtle",
@@ -395,8 +395,8 @@
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/menu": {
@@ -424,8 +424,8 @@
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }

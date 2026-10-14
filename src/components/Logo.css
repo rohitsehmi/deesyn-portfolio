@@ -1,7 +1,27 @@
-/* The artwork is a single fill bound to currentColor, so the band it sits in
-   colours it. There is nothing else to style: the previous rules were for the
-   text stand-in that the real mark has replaced. */
-.logo { display: block; flex: none; color: var(--semantic-fg-primary); }
+/* currentColor, inherited. The transparent bar recolours the lockup for the
+   hero; a colour set here would paint the mark navy on that navy and hide it. */
+.logo-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-space-sp300);
+  color: inherit;
+}
+.logo { display: block; flex: none; color: inherit; }
+.logo-brand__x {
+  display: block;
+  flex: none;
+  width: var(--primitive-size-s12);
+  height: var(--primitive-size-s12);
+  color: inherit;
+}
+.logo-brand__word {
+  font: var(--type-heading-s);
+  letter-spacing: var(--type-heading-s-tracking);
+  /* type-lint-allow: the word aligns to the mark, and the heading line-height would drop it */
+  line-height: 1;
+}
+:root[data-brand] .logo-brand__word,
+:root[data-brand] .logo-brand__x { display: none; }
 
 /* The logotype swap is handled by the global [data-brand-only] rule in
    base.css, which every brand-specific element on the site shares. Nothing

@@ -68,8 +68,8 @@
             "token": "action/primary-bg",
             "ref": "semantic.*.action.primary-bg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "icon/Vector": {
@@ -77,8 +77,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -112,8 +112,8 @@
             "token": "action/primary-bg-hover",
             "ref": "semantic.*.action.primary-bg-hover",
             "type": "color",
-            "light": "#272b2f",
-            "dark": "#e2e2e7"
+            "light": "#425878",
+            "dark": "#f0face"
           }
         },
         "icon/Vector": {
@@ -121,8 +121,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -156,8 +156,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "icon/Vector": {
@@ -165,8 +165,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -200,8 +200,8 @@
             "token": "action/primary-bg",
             "ref": "semantic.*.action.primary-bg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "icon/Vector": {
@@ -209,8 +209,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -244,8 +244,8 @@
             "token": "action/primary-bg-hover",
             "ref": "semantic.*.action.primary-bg-hover",
             "type": "color",
-            "light": "#272b2f",
-            "dark": "#e2e2e7"
+            "light": "#425878",
+            "dark": "#f0face"
           }
         },
         "icon/Vector": {
@@ -253,8 +253,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -288,8 +288,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "icon/Vector": {
@@ -297,8 +297,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -332,8 +332,8 @@
             "token": "action/primary-bg",
             "ref": "semantic.*.action.primary-bg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "icon/Vector": {
@@ -341,8 +341,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -376,8 +376,8 @@
             "token": "action/primary-bg-hover",
             "ref": "semantic.*.action.primary-bg-hover",
             "type": "color",
-            "light": "#272b2f",
-            "dark": "#e2e2e7"
+            "light": "#425878",
+            "dark": "#f0face"
           }
         },
         "icon/Vector": {
@@ -385,8 +385,8 @@
             "token": "action/primary-fg",
             "ref": "semantic.*.action.primary-fg",
             "type": "color",
-            "light": "#ffffff",
-            "dark": "#191c1f"
+            "light": "#f8fdf2",
+            "dark": "#0f2a56"
           }
         }
       }
@@ -420,8 +420,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "icon/Vector": {
@@ -429,8 +429,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -473,8 +473,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -517,8 +517,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -552,8 +552,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "icon/Vector": {
@@ -561,8 +561,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -605,8 +605,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -649,8 +649,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -684,8 +684,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "icon/Vector": {
@@ -693,8 +693,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -737,8 +737,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -781,8 +781,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -816,8 +816,8 @@
             "token": "action/disabled-bg",
             "ref": "semantic.*.action.disabled-bg",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#1f1f1f"
+            "light": "#f0face",
+            "dark": "#30486c"
           }
         },
         "icon/Vector": {
@@ -825,8 +825,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -862,8 +862,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -906,8 +906,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -943,8 +943,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -980,8 +980,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1024,8 +1024,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1061,8 +1061,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }
@@ -1098,8 +1098,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1142,8 +1142,8 @@
             "token": "action/secondary-fg",
             "ref": "semantic.*.action.secondary-fg",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -1179,8 +1179,8 @@
             "token": "action/disabled-fg",
             "ref": "semantic.*.action.disabled-fg",
             "type": "color",
-            "light": "#c9c9cd",
-            "dark": "#ffffff3d"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         }
       }

@@ -60,7 +60,7 @@
             "ref": "semantic.*.bg.surface",
             "type": "color",
             "light": "#ffffff",
-            "dark": "#1c1c1e"
+            "dark": "#30486c"
           },
           "border": {
             "token": "border/subtle",
@@ -109,8 +109,8 @@
             "token": "bg/surface-raised",
             "ref": "semantic.*.bg.surface-raised",
             "type": "color",
-            "light": "#f4f5f6",
-            "dark": "#272b2f"
+            "light": "#ffffff",
+            "dark": "#425878"
           },
           "border": {
             "token": "border/subtle",
@@ -159,8 +159,8 @@
             "token": "bg/subtle",
             "ref": "semantic.*.bg.subtle",
             "type": "color",
-            "light": "#f7f7f7",
-            "dark": "#111111"
+            "light": "#f0face",
+            "dark": "#30486c"
           },
           "border": {
             "token": "border/subtle",
@@ -210,7 +210,7 @@
             "ref": "semantic.*.bg.surface",
             "type": "color",
             "light": "#ffffff",
-            "dark": "#1c1c1e"
+            "dark": "#30486c"
           },
           "border": {
             "token": "border/subtle",

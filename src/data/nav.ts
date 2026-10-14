@@ -56,9 +56,11 @@ export const linksFor = (pathname: string) =>
  * otherwise. A second affordance for an intent already served — a mailto when
  * Contact is in the nav — is a wasted slot, not a convenience.
  *
- * EGDS 2025 is an easter egg, in the same spirit as /how-this-was-built: not
- * announced anywhere, worth finding. It is a FigJam board rather than part of
- * the site, so it opens in a new tab and its accessible name says so.
+ * Nothing is rendered today, as of 2026-10-14. Both links came off together.
+ * Removing the link is the reversible half, the same call as About above:
+ * `/how-this-was-built` still builds and is still reachable, and the FigJam
+ * board is still the same URL. Putting either back is moving its entry from
+ * `heldFooterLinks` into `footerLinks`.
  */
 export interface FooterLink {
   label: string;
@@ -67,7 +69,8 @@ export interface FooterLink {
   external?: boolean;
 }
 
-export const footerLinks: FooterLink[] = [
+/** Off the footer. Kept so either link can be restored without looking the URL up again. */
+export const heldFooterLinks: FooterLink[] = [
   { label: 'How this was built', href: '/how-this-was-built' },
   {
     label: '2025 FigJam Board',
@@ -75,6 +78,8 @@ export const footerLinks: FooterLink[] = [
     external: true
   }
 ];
+
+export const footerLinks: FooterLink[] = [];
 
 /** Appended to an external link's accessible name. Matches /how-this-was-built. */
 export const NEW_TAB = 'opens in a new tab';

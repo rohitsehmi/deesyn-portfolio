@@ -49,7 +49,7 @@
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -59,8 +59,8 @@
             "token": "fg/link",
             "ref": "semantic.*.fg.link",
             "type": "color",
-            "light": "#0666eb",
-            "dark": "#6fa0ff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "trailing/Vector": {
@@ -68,8 +68,8 @@
             "token": "fg/link",
             "ref": "semantic.*.fg.link",
             "type": "color",
-            "light": "#0666eb",
-            "dark": "#6fa0ff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -92,7 +92,7 @@
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -102,8 +102,8 @@
             "token": "fg/link-hover",
             "ref": "semantic.*.fg.link-hover",
             "type": "color",
-            "light": "#1227fd",
-            "dark": "#2bb2ff"
+            "light": "#0f2a56",
+            "dark": "#c7ff3d"
           }
         },
         "trailing/Vector": {
@@ -111,8 +111,8 @@
             "token": "fg/link-hover",
             "ref": "semantic.*.fg.link-hover",
             "type": "color",
-            "light": "#1227fd",
-            "dark": "#2bb2ff"
+            "light": "#0f2a56",
+            "dark": "#c7ff3d"
           }
         }
       }

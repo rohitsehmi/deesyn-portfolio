@@ -9,11 +9,11 @@
     },
     {
       "term": "What I owned",
-      "detail": "The design of both rebuilds, the modular home and the dynamic card framework, across iOS and Android, along with the single brand language holding them together. Within the testing programme, I owned the variants that ran on those two screens."
+      "detail": "The design of both rebuilds, the modular home and the dynamic card framework, across iOS and Android, along with the single brand language holding them together. On the home I designed the cards, the rules for who saw each one, and how they looked on both platforms. Within the testing programme, I owned the variants that ran on those two screens."
     },
     {
       "term": "The team",
-      "detail": "Product, design, engineering and analytics, running a continuous multivariate testing programme"
+      "detail": "Product set each test’s goal. Engineering rebuilt the screens, and analytics ran the tests. Loyalty looked after Secret Prices and Rewards, and research tested prototypes in the lab. I sat with the iOS team in London, and reviewed the Android builds sent from Budapest. I also built an overlay that drew the text styles and the outlines over a live build, so a review could point at the exact difference."
     },
     {
       "term": "When",
@@ -25,13 +25,15 @@
     "standfirst": "A layout that cannot vary cannot be tested, and these were the two screens where testing mattered most.",
     "paras": [
       "Hotels.com sells in 90 points of sale and 41 languages, lists properties in over 200 countries, and takes around 165,000 bookings a day. Every one of those customers met the same two screens, a dated and static home, and a search results page built on a fixed card framework.",
-      "Both were arrangements rather than systems. Nothing on either could respond to who was looking or what they were in the middle of, and because nothing could vary, no question about what a traveller actually needed to see could be answered. The app shipped on judgement and defended it afterwards."
+      "Both were arrangements rather than systems. Nothing on either could respond to who was looking or what they were in the middle of, and because nothing could vary, no question about what a traveller actually needed to see could be answered. The app shipped on judgement and defended it afterwards.",
+      "A booking made again in the app avoided a cost we often paid on the first one, through Google or a comparison site. Hotel chains wanted those same travellers, and they offered member rates. The home barely showed the two reasons to come back: Secret Prices, and Rewards.",
+      "On the old iOS home, 15% of visits reached a hotel page, 12% reached sign in, and 12% reached an upcoming booking. That is the control group from the iOS test, October to November 2016."
     ]
   },
   "process": {
     "heading": "How it was worked out",
     "standfirst": "Rebuild both screens as systems, then run everything through one programme rather than shipping one-off launches.",
-    "openingPara": "The home moved from a fixed layout to a modular and scalable one, with a single brand language holding it together across iOS and Android, and it was the first personalisation work the company had done. Search results moved from static cards to dynamic ones, so that a card could carry different amounts of content in the same slot. Neither was a visual exercise, and both were about making the screen capable of holding a variation.",
+    "openingPara": "The home moved from a fixed layout to a modular and scalable one, with a single brand language holding it together across iOS and Android, and it was the first personalisation work the company had done. Search results moved from static cards to dynamic ones, so that a card could carry different amounts of content in the same slot. Neither was a visual exercise, and both were about making the screen capable of holding a variation. Android went first, in April 2016, with nine personalised cards, on the hope that engagement would lift bookings. iOS followed in October, moving onto the same cards with a narrower aim: hold the booking rate.",
     "principle": {
       "_note": "One paragraph, three editable parts, because the middle is emphasised. Editing is plain text, so a <strong> inside a single string would be stripped the first time anyone touched it.",
       "before": "What ran through them was a standing programme across product, design, engineering and analytics, built to fail fast and iterate. Its operating principle, in the words used at the time: ",
@@ -62,9 +64,9 @@
     "heading": "The two screens",
     "standfirst": "A home whose modules changed with context, and a results card that could hold a different amount of content in the same slot.",
     "mediaAlt": "The Hotels.com home screen in 2014, 2016 and 2019, each shown before and after: a promotional screen of deals and app offers, then one with search and recent searches taking centre stage, then a personalised screen carrying trips, bookings and guidance.",
-    "mediaCaption": "Five years and three homes. The 2014 screen sells at you, the 2016 screen puts search and what you last looked at first, and by 2019 the screen opens on the trip you have already booked. Only the third of those could have been assembled differently for two different travellers.",
+    "mediaCaption": "Five years and three homes. The 2014 screen sells at you. The 2016 screen is the card system, with search and what you last looked at first. By 2019 the same cards open on the trip you have already booked, and a destination guide sits with it.",
     "paras": [
-      "On the home, modules carried recommended destinations, travel guides and trip content, and the mix changed with context rather than staying fixed. What appeared, and in what order, became the variable, where before it had been drawn once and shipped.",
+      "On the home, modules carried recommended destinations, travel guides and trip content, and the mix changed with context rather than staying fixed. What appeared, and in what order, became the variable, where before it had been drawn once and shipped. Each card had a rule. Secret Prices showed on a first visit, until dismissed. Rewards asked people to join or sign in, then showed the nights they had stayed. Recent searches and hotels showed after browsing. Trip cards carried the stay before, during and after. Need a hotel tonight showed to everyone. Search stayed in a bar above the cards, in place of the large form. Trip cards came to iOS later, so the first test could cover the rebuild on its own.",
       "On results, three adaptive layouts were built and tested against each other, each carrying a different balance of price, image and review content in the same slot. That gave us one card in three densities, with the framework underneath deciding which one a given result deserved."
     ],
     "slides": [
@@ -108,33 +110,36 @@
   },
   "impact": {
     "heading": "Impact",
-    "standfirst": "The home's numbers are the hard ones, and the framework underneath both screens is what everything after them was tested inside.",
+    "standfirst": "The home’s booking numbers come from two tests in 2016. The iOS result is the clear one.",
     "metrics": [
       {
+        "value": "+2.5",
+        "label": "extra bookings for every 100, on iOS"
+      },
+      {
+        "value": "+4.0",
+        "label": "extra bookings for every 100 people new to the app, on iOS"
+      },
+      {
         "value": "+85%",
-        "label": "increase in account creation"
+        "label": "more accounts created, on iOS"
       },
       {
-        "value": "+25%",
-        "label": "uplift in engagement rate"
-      },
-      {
-        "value": "+20%",
-        "label": "increase in sign in rates"
-      },
-      {
-        "value": "+5%",
-        "label": "conversion uplift"
+        "value": "$3.6M",
+        "label": "estimated extra gross profit a year, from the iOS result"
       }
     ],
-    "metricsSource": "Hotels.com product analytics, recorded as the result of the contextual home work, on iOS and Android between 2016 and 2019. The search rebuild's own result was reported directionally rather than as figures, as a strong positive led by the US point of sale, with more customers returning within 30 days and more shortlisting.",
+    "metricsSource": "Hotels.com analytics readouts MVT-3480 (Android, 11 April to 12 June 2016, 1.3 million users, 91% confidence) and MVT-4513 (iOS, 3 October to 15 November 2016, 2.1 million users, above 99%). Booking tiles are extra bookings for every 100 on the old home screen. Android’s change for everyone was +0.6 and could be chance: the readout’s range includes no change. People new to the Android app were +1.5, worked out from the published counts. The profit estimate assumes a flat 12% margin. Also counted from the home screen: sign-in visits +25% on Android and +11% on iOS, Rewards visits +33% and +17%, and visits to the sign-up form +191% on Android.",
     "paras": [
-      "+85% on account creation beside +5% on conversion is the finding worth stating, because a contextual screen was far better at starting a relationship than at closing a booking. Sign-ins and engagement moved with account creation and point the same way. A home that knows who you are earns a reason to come back, which is a different job from selling a room today, and that is worth knowing before anyone treats personalisation as a conversion lever."
+      "On iOS the new home did two jobs at once. Bookings rose, by 2.5 for every 100 and by 4.0 among people new to the app, and accounts created rose 85%. Android’s result for everyone could be chance, so the $3.6 million estimate stays with iOS. On Android, visits to the sign-up form rose 191%. The screen was strong at starting a relationship, and on iOS the bookings moved as well.",
+      "On the new iOS home, the share of visits that reached a hotel page moved from 14.7% to 18.9%, and sign in from 12.3% to 15.8%. The share that stopped at search results moved from 36.6% to 34.2%. Android’s search share moved from 55.5% to 57.0%, sign in from 6.4% to 8.0%, and account creation from 0.6% to 1.8%. The two tests counted visits differently, so the change on each platform is what compares.",
+      "The search rebuild’s own result was reported in direction rather than as a figure: a strong positive, led by the US point of sale, with more customers returning within 30 days and more shortlisting."
     ]
   },
   "hindsight": {
     "paras": [
-      "Both screens were rebuilt so they could be tested, and that worked. What the tests then asked was mostly about content and arrangement, which module, which layout and how much detail on a card, rather than whether these were the right models at all. A framework that makes variation cheap also makes it tempting to keep varying inside it, and the harder question, whether the home should have been a feed of modules in the first place, never got a hypothesis of its own."
+      "Both screens were rebuilt so they could be tested, and that worked. What the tests then asked was mostly about content and arrangement, which module, which layout and how much detail on a card, rather than whether these were the right models at all. A framework that makes variation cheap also makes it tempting to keep varying inside it, and the harder question, whether the home should have been a feed of modules in the first place, never got a hypothesis of its own.",
+      "Some of the tracking was missing. The booking results held up. Engagement was hard to compare between the two platforms. Next time I would check the tracking before a test started."
     ]
   }
 }

@@ -45,12 +45,19 @@ const px = (v) => {
   const m = resolved.match(/(-?[\d.]+)px/);
   return m ? parseFloat(m[1]) : null;
 };
-/** `var(--type-display-s)` -> `display/s`, the Figma text-style name. */
-const typeName = (v) => {
+/**
+ * `var(--type-display-s)` -> `display/s`, the Figma text-style name.
+ * A longhand is the same token with the property on the end
+ * (`var(--type-display-s-size)`), which is how a rule keeps one style's
+ * family, weight, size and tracking while setting leading from another.
+ */
+const STYLE_PROP = /-(?:family|weight|size|tracking|line)$/;
+const styleName = (v) => {
   const m = (v || '').match(/var\(--type-([\w-]+)\)/);
   if (!m) return null;
-  const parts = m[1].split('-');
-  // display-s -> display/s ; heading-l -> heading/l ; body-xl -> body/xl
+  const id = m[1].replace(STYLE_PROP, '');
+  const parts = id.split('-');
+  if (parts.length < 2) return null;
   return parts[0] + '/' + parts.slice(1).join('-');
 };
 const chOf = (v) => {
@@ -117,10 +124,74 @@ function steps(css, selector, prop, cast) {
   return Object.keys(found).length ? found : null;
 }
 
+/**
+ * The text style a rule renders, from `font` or from longhands that all name
+ * the same style. Mixed longhands are a refusal: a style name over a rule that
+ * is not that style is the flattering reading this file exists to avoid.
+ */
+function typeFromDecls(decls) {
+  if (!decls) return null;
+  if (decls.font) return styleName(decls.font);
+  const axes = ['font-family', 'font-weight', 'font-size', 'letter-spacing']
+    .map((prop) => (decls[prop] ? styleName(decls[prop]) : null))
+    .filter(Boolean);
+  if (!axes.length || axes.some((name) => name !== axes[0])) return null;
+  return axes[0];
+}
+
+function typeSteps(css, selector) {
+  const found = {};
+  for (const r of regions(css)) {
+    const name = typeFromDecls(declsOf(r.css)[selector]);
+    if (name) found[r.min] = name;
+  }
+  return Object.keys(found).length ? found : null;
+}
+
 const missing = [];
 function need(label, value) {
-  if (value === null || value === undefined) missing.push(label);
+  const hole =
+    value === null ||
+    value === undefined ||
+    (typeof value === 'object' &&
+      Object.values(value).some((v) => v === null || v === undefined));
+  if (hole) missing.push(label);
   return value;
+}
+
+/**
+ * A property that is `var(--local)`, where `--local` is set on the same
+ * selector and is the thing that actually steps. `.measure` does this:
+ * `padding-inline` is declared once and `--measure-inline` changes per
+ * breakpoint. Reading the property alone resolves nothing, because the
+ * variable is not a token.
+ */
+function followedPx(css, selector, prop) {
+  const regs = regions(css);
+  let propValue = null;
+  const found = {};
+  for (const r of regs) {
+    const decls = declsOf(r.css)[selector] || {};
+    const declaredProp = decls[prop] !== undefined;
+    if (declaredProp) propValue = decls[prop];
+    if (propValue == null) continue;
+    let value = propValue;
+    const ref = String(value).match(/^var\((--[\w-]+)\)$/);
+    let declaredLocal = false;
+    if (ref) {
+      let local = null;
+      for (const earlier of regs) {
+        if (earlier.min > r.min) break;
+        const next = declsOf(earlier.css)[selector]?.[ref[1]];
+        if (next !== undefined) local = next;
+      }
+      declaredLocal = decls[ref[1]] !== undefined;
+      if (local) value = local;
+    }
+    if (!declaredProp && !declaredLocal) continue;
+    found[r.min] = px(value);
+  }
+  return Object.keys(found).length ? found : null;
 }
 
 /**
@@ -129,14 +200,27 @@ function need(label, value) {
  * The title colour is declared once in the base region and never re-declared,
  * so it is read there; the font is read across every region because stepping is
  * the whole point. A selector that yields no font at all is a rename, and
- * `need` turns that into a refusal.
+ * `need` turns that into a refusal. Leading is recorded only when it is taken
+ * from a different style than the one the other axes name.
  */
 function typeSpec(css, selector, label, colorSelector = selector) {
-  const font = need(`${label} type`, steps(css, selector, 'font', typeName));
+  const font = need(`${label} type`, typeSteps(css, selector));
   // The size steps per breakpoint; the colour is declared once, and for the
   // section heading that is on the shared rule rather than the level variant.
   const color = need(`${label} colour`, colorName(declsOf(regions(css)[0].css)[colorSelector]?.color));
-  return font ? { steps: font, color } : null;
+  if (!font) return null;
+  const out = { steps: font, color };
+  const leading = {};
+  for (const r of regions(css)) {
+    const value = declsOf(r.css)[selector]?.['line-height'];
+    const name = styleName(value);
+    if (name) leading[r.min] = name;
+  }
+  const values = Object.values(leading);
+  if (values.length && values.some((style, i) => font[Object.keys(leading)[i]] !== style)) {
+    out.lineHeight = values.every((style) => style === values[0]) ? values[0] : leading;
+  }
+  return out;
 }
 
 /**
@@ -150,7 +234,7 @@ function typeSpec(css, selector, label, colorSelector = selector) {
 function el(css, selector, label, opts = {}) {
   const base = declsOf(regions(css)[0].css)[selector] || {};
   const out = {};
-  const font = steps(css, selector, 'font', typeName);
+  const font = steps(css, selector, 'font', styleName);
   if (font) out.type = font;
   const color = colorName(base.color);
   if (color) out.color = color;
@@ -222,7 +306,7 @@ const breakpoints = Object.fromEntries(
 
 /* ---------- the export ---------- */
 const measureMax = need('.measure max-width', px(declsOf(regions(baseCss)[0].css)['.measure']?.['max-width']));
-const measurePad = need('.measure padding-inline', steps(baseCss, '.measure', 'padding-inline', px));
+const measurePad = need('.measure padding-inline', followedPx(baseCss, '.measure', 'padding-inline'));
 
 const spec = {
   $description:

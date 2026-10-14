@@ -114,7 +114,7 @@ function bezier(x1: number, y1: number, x2: number, y2: number) {
 }
 
 /** Reads a custom property off the root, so nothing here is a literal. */
-const cssVar = (name: string) =>
+export const cssVar = (name: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
 /**
@@ -132,7 +132,7 @@ const cssVar = (name: string) =>
  * to it. Every duration token on the site is minified the same way, so anything
  * else that reads one from CSS has to come through here.
  */
-function cssMs(value: string): number {
+export function cssMs(value: string): number {
   const n = parseFloat(value);
   if (!Number.isFinite(n)) return 0;
   if (/ms$/.test(value)) return n;
@@ -140,7 +140,7 @@ function cssMs(value: string): number {
   return n;
 }
 
-function easingFromToken(value: string): (x: number) => number {
+export function easingFromToken(value: string): (x: number) => number {
   const m = value.match(/cubic-bezier\(([^)]+)\)/);
   if (!m) return (x) => x; // `linear`, or anything unparseable
   const n = m[1].split(',').map((v) => Number(v.trim()));

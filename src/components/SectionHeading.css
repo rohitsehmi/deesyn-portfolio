@@ -13,8 +13,11 @@
   color: var(--semantic-fg-primary);
 }
 .section-heading[data-level='2'] .section-heading__title {
-  font: var(--type-heading-l);
+  font-family: var(--type-heading-l-family);
+  font-weight: var(--type-heading-l-weight);
+  font-size: var(--type-heading-l-size);
   letter-spacing: var(--type-heading-l-tracking);
+  line-height: var(--type-heading-m-line);
 }
 .section-heading[data-level='3'] .section-heading__title {
   font: var(--type-heading-s);
@@ -22,8 +25,12 @@
 }
 @media (min-width: 768px) {
   .section-heading[data-level='2'] .section-heading__title {
-    font: var(--type-display-s);
+    font-family: var(--type-display-s-family);
+    font-weight: var(--type-display-s-weight);
+    font-size: var(--type-display-s-size);
     letter-spacing: var(--type-display-s-tracking);
+    /* Same leading as the closing h2. Display's own 1.05 is for a single line. */
+    line-height: var(--type-heading-m-line);
   }
   .section-heading[data-level='3'] .section-heading__title {
     font: var(--type-heading-m);

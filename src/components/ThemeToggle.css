@@ -1,13 +1,29 @@
 /*
   Fixed bottom right. Borrows the icon-button classes so its geometry, hover
   and press cannot drift from the real component.
+
+  The secondary wash is 4% black. This control floats over the lime, the paper
+  and photographs, and that wash disappears on all three. The disc stays navy,
+  with a paper icon and a lime edge: the fill holds on the lime and the paper,
+  and the edge holds on a navy page.
 */
 .theme-toggle {
   position: fixed;
   right: var(--primitive-space-sp600);
   bottom: var(--primitive-space-sp600);
   z-index: var(--z-fab);
-  border: 1px solid var(--semantic-border-subtle);
+}
+.theme-toggle.icon-button[data-variant='secondary'] {
+  /* Navy and paper stay put in both themes. The primary pair flips, and a
+     paper disc on the lime floor is the same colour as the floor. */
+  background: var(--semantic-fg-on-highlight);
+  color: var(--semantic-fg-on-ink);
+  border: 2px solid var(--semantic-highlight);
+}
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle.icon-button[data-variant='secondary']:hover {
+    background: var(--semantic-bg-ink-hover);
+  }
 }
 @media (min-width: 768px) {
   .theme-toggle {

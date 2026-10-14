@@ -2,19 +2,19 @@
   "_comment": "Tile copy for each case study, keyed by slug. Editable in the browser under `npm run dev` — see tools/copy-editor.mjs. One file rather than per-study, because the same tile renders in two places: the index, and the next-study link at the foot of the other study. Edit it in either and both change. src/data/studies.ts keeps the structure — slug, cover image, archived — and reads these strings from here.",
   "machine-readable-components": {
     "title": "A component library a machine could read",
-    "summary": "Expedia Group had three drifting implementations of every component. A machine read all three and proposed a rebuild, and my job was to overrule it where it was wrong and write the decision back in a form it could build from.",
+    "summary": "A machine proposed a rebuild of every component, and I overruled it where it was wrong.",
     "discipline": "Design systems",
     "coverAlt": "An abstract still life in violet and off-white: frosted glass panels showing a component grid, a list, a card and a block of code, wired together by glowing cables into a central lit tile."
   },
   "making-the-app-testable": {
     "title": "The app that could not be tested",
-    "summary": "Hotels.com's two most valuable screens were both fixed layouts, so nothing on them could vary and nothing could be learned from them. Rebuilding both is what made a continuous testing programme possible.",
+    "summary": "Rebuilding both screens made a continuous testing programme possible.",
     "discipline": "Product design",
-    "coverAlt": "An abstract still life in sage green and off-white: frosted glass panels showing a search field over a list of results, a detail view, a set of filters and a bar chart, linked by glowing cables."
+    "coverAlt": "Two phone screens of the same Hotels.com stay. One shows a single photo of the room. The other shows several photos, the price, and a Book now button."
   },
   "scaling-a-system": {
     "title": "Four design systems, consolidated into one",
-    "summary": "Expedia Group ran four design systems solving the same problems separately. Merging them meant deciding what every brand would share, and what each one was still allowed to keep.",
+    "summary": "Merging them meant deciding what every brand would share, and what each one was still allowed to keep.",
     "discipline": "Design systems",
     "coverAlt": "An abstract still life in red and off-white: four frosted glass panels on plinths at the left, each showing a different layout, wired by glowing cables into one lit tile of stacked cubes at the centre, which feeds five labelled cards at the right, each carrying a tick."
   }

@@ -1,0 +1,229 @@
+---
+import Base from '../../layouts/Base.astro';
+import { Band } from '../../components/Band';
+import { Nav } from '../../components/Nav';
+import { Footer } from '../../components/Footer';
+import { SectionHeading } from '../../components/SectionHeading';
+import { Prose } from '../../components/Prose';
+import { Media } from '../../components/Media';
+import { Metrics } from '../../components/Metrics';
+import { CaseStudyTile } from '../../components/CaseStudyTile';
+import { navLinks } from '../../data/nav';
+import { liveStudies, studyPath, studyCopyBase } from '../../data/studies';
+import home from '../../copy/home.json';
+import {
+  projectOrder,
+  projectCopy,
+  projectImages,
+  projectPath,
+  type ProjectSlug
+} from '../../data/projects';
+import { getImage } from 'astro:assets';
+
+export function getStaticPaths() {
+  return projectOrder.map((slug) => ({ params: { slug } }));
+}
+
+const slug = Astro.params.slug as ProjectSlug;
+const project = projectCopy(slug);
+const F = `projects:${slug}`;
+
+const FIGURE_SIZES = '(min-width: 1040px) 1000px, calc(100vw - 40px)';
+
+const rendered = await Promise.all(
+  project.sections.map(async (section) => ({
+    ...section,
+    figures: await Promise.all(
+      (section.figures ?? []).map(async (figure) => {
+        const src = projectImages[figure.key];
+        if (!src) throw new Error(`${slug}: no image for figure "${figure.key}"`);
+        const image = await getImage({
+          src,
+          format: 'webp',
+          widths: [480, 720, 960, 1280, 1600],
+          sizes: FIGURE_SIZES
+        });
+        const caption =
+          'caption' in figure && typeof figure.caption === 'string' ? figure.caption : undefined;
+        return { ...figure, caption, image };
+      })
+    )
+  }))
+);
+
+/*
+  Hero is base. Sections alternate from sunken, so two bands never share a
+  fill. The next band takes the other role from the last section, and the
+  footer takes the other role from that. An empty band is not an option.
+*/
+const lastIsBase = rendered.length % 2 === 0;
+const nextRole = lastIsBase ? 'sunken' : 'base';
+const footerRole = lastIsBase ? 'base' : 'sunken';
+
+const card = home.archive.find((item) => item.slug === slug);
+if (!card) throw new Error(`${slug}: not on the homepage`);
+
+const index = projectOrder.indexOf(slug);
+const nextSlug = index < projectOrder.length - 1 ? projectOrder[index + 1] : undefined;
+const nextCard = nextSlug ? home.archive.find((item) => item.slug === nextSlug) : undefined;
+const nextStudy = nextSlug ? undefined : liveStudies[0];
+if (nextSlug && !nextCard) throw new Error(`${slug}: next project ${nextSlug} is not on the homepage`);
+if (!nextSlug && !nextStudy) throw new Error(`${slug}: no case study to continue into`);
+---
+
+<Base
+  title={`${project.title} · Rohit Sehmi`}
+  description={project.standfirst}
+  pageEnd={footerRole}
+  article={{ section: card.tag }}
+  socialTitle={project.title}
+>
+  <Nav client:load sticky links={navLinks} />
+
+  <main id="main">
+    <Band role="base" scale="feature">
+      <div class="cs-hero">
+        <h1 class="cs-hero__title" data-copy={`${F}:title`}>{project.title}</h1>
+        <div class="cs-hero__lede">
+          <p class="cs-hero__standfirst" data-copy={`${F}:standfirst`}>{project.standfirst}</p>
+          <p class="cs-hero__meta" data-copy={`${F}:meta`}>{project.meta}</p>
+        </div>
+      </div>
+    </Band>
+
+    {rendered.map((section, i) => (
+      <Band role={i % 2 === 0 ? 'sunken' : 'base'} scale="default">
+        <div class="cs-section">
+          <SectionHeading copyRef={`${F}:sections.${i}.heading`}>{section.heading}</SectionHeading>
+          <Prose>
+            {section.paras.map((p, j) => <p data-copy={`${F}:sections.${i}.paras.${j}`}>{p}</p>)}
+            {section.links?.map((link, j) => (
+              <p>
+                {link.before}
+                <a
+                  href={link.href}
+                  data-copy={`${F}:sections.${i}.links.${j}.label`}
+                  {...(link.href.startsWith('http')
+                    ? { target: '_blank', rel: 'noopener noreferrer' }
+                    : {})}
+                >{link.label}</a>{link.after}
+              </p>
+            ))}
+          </Prose>
+          {section.metrics && (
+            <Metrics
+              items={section.metrics.items}
+              source={section.metrics.source}
+              copyBase={`${F}:sections.${i}.metrics.items`}
+              sourceCopyRef={`${F}:sections.${i}.metrics.source`}
+            />
+          )}
+          {section.figures.length > 0 && (
+            <div class="cs-figures">
+              {section.figures.map((figure, n) => (
+                <Media
+                  src={figure.image.src}
+                  srcSet={figure.image.srcSet.attribute}
+                  sizes={FIGURE_SIZES}
+                  alt={figure.alt}
+                  caption={figure.caption}
+                  captionCopyRef={figure.caption ? `${F}:sections.${i}.figures.${n}.caption` : undefined}
+                  ratio="natural"
+                  fit="inset"
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </Band>
+    ))}
+
+    <Band role={nextRole} scale="default">
+      <p class="cs-next__label">Next</p>
+      {nextCard ? (
+        <CaseStudyTile
+          title={nextCard.title}
+          summary={nextCard.summary}
+          discipline={nextCard.tag}
+          href={projectPath(nextCard.slug)}
+        />
+      ) : nextStudy && (
+        <CaseStudyTile
+          title={nextStudy.title}
+          summary={nextStudy.summary}
+          discipline={nextStudy.discipline}
+          copyBase={studyCopyBase(nextStudy)}
+          href={studyPath(nextStudy)}
+        />
+      )}
+    </Band>
+  </main>
+
+  <Band role={footerRole} scale="compact" bleed>
+    <Footer scale="compact" currentPath={Astro.url.pathname} />
+  </Band>
+</Base>
+
+<script>
+  import { tickNumbers } from '../../components/number-ticker';
+  tickNumbers();
+</script>
+
+<style is:global>
+  .cs-hero {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-space-sp800);
+  }
+  .cs-hero__title {
+    margin: 0;
+    max-width: 18ch;
+    font: var(--type-display-s);
+    letter-spacing: var(--type-display-s-tracking);
+    color: var(--semantic-fg-primary);
+    text-wrap: balance;
+  }
+  @media (min-width: 768px) {
+    .cs-hero__title { font: var(--type-display-m); letter-spacing: var(--type-display-m-tracking); }
+  }
+  @media (min-width: 1024px) {
+    .cs-hero__title { font: var(--type-display-l); letter-spacing: var(--type-display-l-tracking); }
+  }
+  .cs-section.cs-section > * + * { margin-block-start: var(--primitive-layout-l64); }
+  /* A run of pictures is one block. The 64px step stays between the prose and the run. */
+  .cs-figures {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-layout-l40);
+  }
+  .cs-figures > * { margin: 0; }
+  .cs-section.cs-section > .section-heading + * { margin-block-start: 0; }
+  .cs-hero__standfirst {
+    margin: 0;
+    max-width: 60ch;
+    font: var(--type-body-l);
+    letter-spacing: var(--type-body-l-tracking);
+    color: var(--semantic-fg-secondary);
+    text-wrap: pretty;
+  }
+  @media (min-width: 768px) {
+    .cs-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
+  }
+  .cs-hero__lede {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-space-sp500);
+  }
+  .cs-hero__meta {
+    margin: 0;
+    font: var(--type-body-2);
+    letter-spacing: var(--type-body-2-tracking);
+    color: var(--semantic-fg-secondary);
+  }
+  .cs-next__label {
+    margin: 0 0 var(--primitive-space-sp600);
+    font: var(--type-emphasis-2);
+    letter-spacing: var(--type-emphasis-2-tracking);
+    color: var(--semantic-fg-secondary);
+  }
+</style>

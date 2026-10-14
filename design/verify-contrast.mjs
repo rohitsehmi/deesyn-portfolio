@@ -85,6 +85,12 @@ const PAIRS = [
   ['fg.on-accent', ['action.accent-bg'], 4.5, 'text on an accent fill'],
   ['border.focus', ['band.base'], 3, 'focus ring (1.4.11)'],
   ['fg.inverse', ['bg.inverse'], 4.5, 'text on the inverse surface'],
+  ['fg.primary', ['tint.lilac'], 4.5, 'title on a lilac card'],
+  ['fg.on-tint', ['tint.lilac'], 4.5, 'summary on a lilac card'],
+  ['fg.primary', ['tint.sage'], 4.5, 'title on a sage card'],
+  ['fg.on-tint', ['tint.sage'], 4.5, 'summary on a sage card'],
+  ['fg.on-highlight', ['bg.highlight'], 4.5, 'close heading on signal'],
+  ['fg.on-ink', ['fg.on-highlight'], 4.5, 'label on the signal button'],
   ['action.disabled-fg', ['action.disabled-bg'], 4.5, 'disabled label (exempt from 1.4.3)'],
   ['border.strong', ['band.base'], 3, 'placeholder outline (decorative)'],
   ['border.default', ['band.base'], 3, 'rules and dividers (decorative)']

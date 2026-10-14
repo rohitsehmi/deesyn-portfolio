@@ -23,7 +23,16 @@ export interface CaseStudyTileProps {
    * Plain data rather than a ReactNode slot: JSX written inside an `.astro`
    * expression produces an Astro template object, not a React element.
    */
-  image?: { src?: string; srcSet?: string; sizes?: string; alt: string; ratio?: MediaRatio };
+  image?: {
+    src?: string;
+    srcSet?: string;
+    /** Dark plate, when the picture itself changes with the theme. */
+    srcDark?: string;
+    srcSetDark?: string;
+    sizes?: string;
+    alt: string;
+    ratio?: MediaRatio;
+  };
   /**
    * `<file>:<path>` into src/copy for this tile's strings; `.title`, `.summary`
    * and `.discipline` are appended. Dev tooling only — inert in a build.
@@ -33,6 +42,12 @@ export interface CaseStudyTileProps {
    * editing it in either place changes both.
    */
   copyBase?: string;
+  /**
+   * A second chip on the cover, for the homepage studies. The discipline chip
+   * stays. Absent on the next-study tile, which has no cover to put it on.
+   */
+  mark?: string;
+  markCopyRef?: string;
 }
 
 /**
@@ -56,29 +71,40 @@ export function CaseStudyTile({
   href,
   variant = 'bare',
   image,
-  copyBase
+  copyBase,
+  mark,
+  markCopyRef
 }: CaseStudyTileProps) {
+  const disciplineTag = (
+    /*
+      A Tag, not styled text. The discipline is metadata about the study —
+      the same kind of thing as a role or a year — which is exactly what Tag
+      is for, and rendering it as accent-coloured text meant the one label on
+      the tile that is not prose was the one thing dressed as prose.
+
+      On a cover it sits in the bottom-right of the picture. The next-study
+      tile has no picture, so the same tag stays in the text.
+    */
+    <p className="tile__discipline">
+      <Tag copyRef={copyBase && `${copyBase}.discipline`}>{discipline}</Tag>
+    </p>
+  );
+
   return (
     <article className="tile" data-variant={variant}>
       {image && (
         <div className="tile__media">
           <Media {...image} alt={image.alt} ratio={image.ratio ?? '16-9'} />
+          {mark && (
+            <p className="tile__mark">
+              <Tag copyRef={markCopyRef}>{mark}</Tag>
+            </p>
+          )}
+          {disciplineTag}
         </div>
       )}
       <div className="tile__body">
-        {/*
-          A Tag, not styled text. The discipline is metadata about the study —
-          the same kind of thing as a role or a year — which is exactly what Tag
-          is for, and rendering it as accent-coloured text meant the one label on
-          the tile that is not prose was the one thing dressed as prose.
-
-          The wrapper stays a block so the tile's flex column keeps its own
-          spacing and the tag hugs its text instead of stretching to the column
-          width. Its class carries no type or colour any more; the Tag owns both.
-        */}
-        <p className="tile__discipline">
-          <Tag copyRef={copyBase && `${copyBase}.discipline`}>{discipline}</Tag>
-        </p>
+        {!image && disciplineTag}
         <h2 className="tile__title">
           <a className="tile__link" href={href} data-copy={copyBase && `${copyBase}.title`}>{title}</a>
         </h2>

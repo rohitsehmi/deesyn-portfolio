@@ -1,5 +1,5 @@
 import './Logo.css';
-import { MARK_PATHS, LOCKUP_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, PARTNER_WORDMARKS, X_GLYPH, type BrandPath } from './logo-paths';
+import { MARK_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, PARTNER_WORDMARKS, X_GLYPH } from './logo-paths';
 import { PARTNER_BRANDS } from '../data/brands';
 
 /*
@@ -32,26 +32,34 @@ export interface LogoProps {
   title?: string;
 }
 
-const SHAPES: Record<'wordmark' | 'mark', { paths: BrandPath[]; viewBox: string; ratio: number }> = {
-  wordmark: { paths: LOCKUP_PATHS, viewBox: LOCKUP_VIEWBOX, ratio: 233 / 48 },
-  mark: { paths: MARK_PATHS, viewBox: MARK_VIEWBOX, ratio: 1 }
+const SHAPES: Record<'wordmark' | 'mark', { viewBox: string; ratio: number }> = {
+  wordmark: { viewBox: LOCKUP_VIEWBOX, ratio: 233 / 48 },
+  mark: { viewBox: MARK_VIEWBOX, ratio: 1 }
 };
+
+function MarkGeometry() {
+  return (
+    <>
+      {MARK_PATHS.map((path) => (
+        <path
+          key={path.d.slice(0, 24)}
+          d={path.d}
+          {...(path.evenOdd ? { fillRule: 'evenodd' as const, clipRule: 'evenodd' as const } : {})}
+        />
+      ))}
+    </>
+  );
+}
 
 /**
  * `fill: currentColor` — the artwork takes the colour of whatever it sits in,
  * so it goes white on an inverse band with no override. Never recolour it.
  *
- * THE LOCKUP IS NOW A PER-HOSTNAME STATEMENT RATHER THAN THE SITE'S IDENTITY,
- * settled 2026-08-26. An `x` lockup conventionally reads as a partnership,
- * which is exactly right on a subdomain sent to a named person and wrong on
- * the open apex, where it implies an engagement that does not exist. The
- * standing question was whether to keep it at all; the answer is that it
- * belongs where it was aimed and nowhere else.
- *
- * So the default brand renders the disc alone and carries no company's mark in
- * its chrome, and each partner hostname renders the lockup it was made for.
- * The question is not closed by removing the lockup, it is closed by scoping
- * it — one hostname, one reader, one claim.
+ * The apex lockup is the Ro mark, the same multiplication sign, and the word
+ * deesyn. The sign is the published glyph, drawn beside the disc rather than
+ * inside the clipped viewport, so the partner logotypes stay out of that window.
+ * A partner hostname hides the sign and the word, and shows its own logotype
+ * in the lockup, which already carries the sign.
  */
 /*
   The default accessible name is brand-neutral, and has to be: it is baked into
@@ -63,7 +71,7 @@ const SHAPES: Record<'wordmark' | 'mark', { paths: BrandPath[]; viewBox: string;
   surfaces where the mark stands alone. "Rohit Sehmi" is true on every host.
 */
 export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi' }: LogoProps) {
-  const { paths, viewBox, ratio } = SHAPES[variant];
+  const { viewBox, ratio } = SHAPES[variant];
   /*
     The lockup ships both logotypes and lets CSS choose, for the same reason
     Media renders both images of a theme pair: the site is prerendered to static
@@ -74,15 +82,13 @@ export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi' 
     costs one path per brand rather than a second lockup each.
 
     `data-brand-only` is what the stylesheet keys off. With no `data-brand` on
-    the root NOTHING here matches, so no logotype and no `x` render at all,
-    and the disc is left alone — which is the correct default for
-    www.deesyn.com, for the apex, for an unrecognised subdomain and for any
-    client that runs no JavaScript at all. That the fallback is the quietest
-    of the five outcomes rather than a named company's is the whole point of
-    the change; it used to be Revolut's.
+    the root no partner logotype matches, and the sign inside this svg stays
+    hidden. The apex draws that same glyph beside the disc, and a partner
+    hostname hides it along with the word.
   */
   const isLockup = variant === 'wordmark';
   return (
+    <span className={isLockup ? 'logo-brand logo-brand--lockup' : 'logo-brand'}>
     <svg
       className={isLockup ? 'logo logo--lockup' : 'logo'}
       viewBox={viewBox}
@@ -121,14 +127,10 @@ export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi' 
       aria-label={title}
       focusable="false"
     >
-      {paths.map((p) => (
-        <path
-          key={p.d.slice(0, 24)}
-          d={p.d}
-          {...(isLockup && p === X_GLYPH ? { 'data-brand-only': PARTNER_LIST } : {})}
-          {...(p.evenOdd ? { fillRule: 'evenodd' as const, clipRule: 'evenodd' as const } : {})}
-        />
-      ))}
+      <MarkGeometry />
+      {isLockup && (
+        <path d={X_GLYPH.d} data-brand-only={PARTNER_LIST} />
+      )}
       {/*
         The fill rule has to be carried here too, and it was not until Asos
         arrived. Wise and Healf are both non-zero, so the omission was
@@ -148,5 +150,18 @@ export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi' 
           />
         ))}
     </svg>
+    {isLockup && (
+      <svg
+        className="logo-brand__x"
+        viewBox="59.5 16.5 13 13"
+        aria-hidden="true"
+        focusable="false"
+        fill="currentColor"
+      >
+        <path d={X_GLYPH.d} />
+      </svg>
+    )}
+    {isLockup && <span className="logo-brand__word" aria-hidden="true">deesyn</span>}
+    </span>
   );
 }

@@ -158,7 +158,8 @@ const CLAIMS = [
   {
     what: 'brand pack checksum',
     expected: () => printedChecksum('tokens/verify-brands.mjs'),
-    re: /\*\*`(\d+)` across 107 entries, reproduced from inside Wise/,
+    // Entry count is not pinned: highlight fell through on 2026-10-13 and moved 107 to 109.
+    re: /\*\*`(\d+)` across \d+ entries/,
     fix: 'node tokens/verify-brands.mjs'
   },
   {

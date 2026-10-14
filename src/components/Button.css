@@ -6,11 +6,12 @@
   cursor: pointer;
   text-decoration: none;
   border-radius: var(--primitive-radius-round);
-  /* Only transform and opacity/colour — never layout properties. */
+  /* Transform, colour, and the corner. Never a property that reflows the label. */
   transition:
     transform var(--semantic-duration-press) var(--semantic-easing-out),
     background-color var(--semantic-duration-press) var(--semantic-easing-out),
-    color var(--semantic-duration-press) var(--semantic-easing-out);
+    color var(--semantic-duration-press) var(--semantic-easing-out),
+    border-radius var(--semantic-duration-press) var(--semantic-easing-out);
 }
 
 /* Sizes — heights and padding straight off the tokens. */
@@ -37,6 +38,33 @@
   .button[data-variant='primary']:hover   { background: var(--semantic-action-primary-bg-hover); }
   .button[data-variant='secondary']:hover { background: var(--semantic-action-secondary-bg-hover); }
   .button[data-variant='ghost']:hover     { background: var(--semantic-action-ghost-bg-hover); }
+}
+
+/*
+  One corner stays a little tighter than the pill. It is the shape you notice
+  before you touch it, and it eases back to a full pill on hover and focus.
+  The other three corners stay round, so it never becomes a cut-corner button.
+
+  Small nav buttons stay full pills. The nav action already has its halo, and
+  a tighter corner on a 32px pill reads as a broken radius.
+*/
+.button:is([data-size='md'], [data-size='lg']):is([data-variant='primary'], [data-variant='secondary']) {
+  border-radius:
+    var(--primitive-radius-round)
+    var(--primitive-radius-round)
+    var(--primitive-radius-round)
+    var(--primitive-radius-r8);
+}
+@media (hover: hover) and (pointer: fine) {
+  .button:is([data-size='md'], [data-size='lg']):is([data-variant='primary'], [data-variant='secondary']):hover {
+    border-radius: var(--primitive-radius-round);
+  }
+}
+.button:is([data-size='md'], [data-size='lg']):is([data-variant='primary'], [data-variant='secondary']):focus-visible {
+  border-radius: var(--primitive-radius-round);
+}
+@media (prefers-reduced-motion: reduce) {
+  .button { transition: none; }
 }
 
 /* Press. This is the part Figma could not hold. */

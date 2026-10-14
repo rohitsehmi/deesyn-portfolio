@@ -46,19 +46,19 @@
           "textStyle": {
             "token": "Body/1",
             "ref": "typography.body.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 400,
-            "fontSize": "16px",
-            "lineHeight": 1.5,
-            "letterSpacing": "-0.01em"
+            "fontSize": "17px",
+            "lineHeight": 1.55,
+            "letterSpacing": "-0.011em"
           },
           "textDecoration": "UNDERLINE",
           "fg": {
             "token": "fg/link",
             "ref": "semantic.*.fg.link",
             "type": "color",
-            "light": "#0666eb",
-            "dark": "#6fa0ff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -81,19 +81,19 @@
           "textStyle": {
             "token": "Body/1",
             "ref": "typography.body.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 400,
-            "fontSize": "16px",
-            "lineHeight": 1.5,
-            "letterSpacing": "-0.01em"
+            "fontSize": "17px",
+            "lineHeight": 1.55,
+            "letterSpacing": "-0.011em"
           },
           "textDecoration": "UNDERLINE",
           "fg": {
             "token": "fg/link-hover",
             "ref": "semantic.*.fg.link-hover",
             "type": "color",
-            "light": "#1227fd",
-            "dark": "#2bb2ff"
+            "light": "#0f2a56",
+            "dark": "#c7ff3d"
           }
         }
       }

@@ -1,6 +1,6 @@
 {
-  "_comment": "Raw compact export from Figma file UnybX8G5sQIEhLLZN2YFl6, page 'Foundations — Revolut'. Source of truth. Regenerate via the figma_execute snippet in build.mjs's header comment, then run `node build.mjs`.",
-  "_exported": "2026-08-10",
+  "_comment": "Token source for the portfolio. The apex palette (deesyn.*) is the Vemtri scheme, authored here on 2026-10-13: navy #0F2A56, acid lime #C7FF3D, soft lime #E6F7A3, ground #F8FDF2. Quieter steps are mixes of those four, not a second hue. The older ramps remain so partner packs and status colours still resolve. Push to Figma when the Desktop Bridge is open; do not re-import the archive file over this.",
+  "_exported": "2026-10-13",
   "_note": "band.base / band.sunken are the page-banding fills. inverse and inverse-raised are these two under an inverted mode, not separate tokens. See docs/banding-system.md. Motion (duration.* / easing.*) added 2026-08-03; easing primitives are CSS strings, expanded to DTCG cubicBezier by build.mjs. Button hover states added 2026-08-03.",
   "P": {
     "brand.accent": "#ea035d",
@@ -22,6 +22,24 @@
     "neutral.50": "#f4f5f6",
     "neutral.20": "#f7f7f7",
     "neutral.white": "#ffffff",
+    "deesyn.ink": "#0f2a56",
+    "deesyn.ink-soft": "#30486c",
+    "deesyn.ink-hover": "#425878",
+    "deesyn.paper": "#f8fdf2",
+    "deesyn.paper-deep": "#f0face",
+    "deesyn.white": "#ffffff",
+    "deesyn.graphite": "#536783",
+    "deesyn.mist": "#c5cfd0",
+    "deesyn.line": "#c5cfd0",
+    "deesyn.signal": "#c7ff3d",
+    "deesyn.sage": "#e6f7a3",
+    "deesyn.sage-deep": "#375951",
+    "deesyn.lilac": "#ffffff",
+    "deesyn.lilac-deep": "#344c6f",
+    "deesyn.coral": "#fbe1dc",
+    "deesyn.coral-deep": "#b42a22",
+    "deesyn.sky": "#dde8f8",
+    "deesyn.sky-deep": "#1d4fb8",
     "accent.blue": "#6fa0ff",
     "accent.cold-blue": "#0a84ff",
     "accent.light-blue": "#2bb2ff",
@@ -129,28 +147,28 @@
   },
   "S": {
     "bg.canvas": [
-      "neutral.white",
-      "neutral.black"
+      "deesyn.paper",
+      "deesyn.ink"
     ],
     "bg.subtle": [
-      "neutral.20",
-      "neutral.900"
+      "deesyn.paper-deep",
+      "deesyn.ink-soft"
     ],
     "bg.surface": [
-      "neutral.white",
-      "neutral.800"
+      "deesyn.white",
+      "deesyn.ink-soft"
     ],
     "bg.surface-raised": [
-      "neutral.50",
-      "neutral.700"
+      "deesyn.white",
+      "deesyn.ink-hover"
     ],
     "bg.overlay": [
-      "neutral.white",
-      "neutral.600"
+      "deesyn.white",
+      "deesyn.ink-soft"
     ],
     "bg.inverse": [
-      "neutral.850",
-      "neutral.white"
+      "deesyn.ink",
+      "deesyn.paper"
     ],
     "bg.widget": [
       "alpha.black-4",
@@ -165,88 +183,88 @@
       "alpha.black-70"
     ],
     "band.base": [
-      "neutral.white",
-      "neutral.black"
+      "deesyn.paper",
+      "deesyn.ink"
     ],
     "band.sunken": [
-      "neutral.20",
-      "neutral.750"
+      "deesyn.paper-deep",
+      "deesyn.ink-soft"
     ],
     "fg.primary": [
-      "neutral.850",
-      "neutral.white"
+      "deesyn.ink",
+      "deesyn.paper"
     ],
     "fg.secondary": [
-      "neutral.500",
-      "alpha.white-70"
+      "deesyn.graphite",
+      "deesyn.mist"
     ],
     "fg.tertiary": [
-      "neutral.200",
+      "deesyn.line",
       "alpha.white-50"
     ],
     "fg.inverse": [
-      "neutral.white",
-      "neutral.850"
+      "deesyn.paper",
+      "deesyn.ink"
     ],
     "fg.accent": [
-      "brand.action-blue",
-      "accent.blue"
+      "deesyn.ink",
+      "deesyn.paper"
     ],
     "fg.on-accent": [
-      "neutral.white",
-      "neutral.white"
+      "deesyn.paper",
+      "deesyn.ink"
     ],
     "fg.link": [
-      "brand.action-blue",
-      "accent.blue"
+      "deesyn.ink",
+      "deesyn.paper"
     ],
     "border.subtle": [
       "alpha.black-4",
       "alpha.white-10"
     ],
     "border.default": [
-      "neutral.100",
+      "deesyn.line",
       "alpha.white-14"
     ],
     "border.strong": [
-      "neutral.200",
+      "deesyn.graphite",
       "alpha.white-24"
     ],
     "border.focus": [
-      "brand.action-blue",
-      "accent.blue"
+      "deesyn.ink",
+      "deesyn.signal"
     ],
     "action.primary-bg": [
-      "neutral.850",
-      "neutral.white"
+      "deesyn.ink",
+      "deesyn.paper"
     ],
     "action.primary-fg": [
-      "neutral.white",
-      "neutral.850"
+      "deesyn.paper",
+      "deesyn.ink"
     ],
     "action.accent-bg": [
-      "brand.action-blue",
-      "brand.action-blue"
+      "deesyn.ink",
+      "deesyn.paper"
     ],
     "action.accent-fg": [
-      "neutral.white",
-      "neutral.white"
+      "deesyn.paper",
+      "deesyn.ink"
     ],
     "action.secondary-bg": [
       "alpha.black-4",
       "alpha.white-14"
     ],
     "action.secondary-fg": [
-      "neutral.850",
-      "neutral.white"
+      "deesyn.ink",
+      "deesyn.paper"
     ],
     "action.disabled-bg": [
-      "neutral.50",
-      "neutral.750"
+      "deesyn.paper-deep",
+      "deesyn.ink-soft"
     ],
     "action.disabled-fg": [
-      "neutral.200",
-      "alpha.white-24"
+      "deesyn.graphite",
+      "deesyn.mist"
     ],
     "status.success": [
       "status.success",
@@ -261,8 +279,40 @@
       "status.danger"
     ],
     "status.info": [
-      "brand.action-blue",
-      "accent.blue"
+      "deesyn.sky-deep",
+      "deesyn.sky"
+    ],
+    "highlight": [
+      "deesyn.signal",
+      "deesyn.signal"
+    ],
+    "bg.highlight": [
+      "deesyn.signal",
+      "deesyn.signal"
+    ],
+    "fg.on-highlight": [
+      "deesyn.ink",
+      "deesyn.ink"
+    ],
+    "fg.on-ink": [
+      "deesyn.paper",
+      "deesyn.paper"
+    ],
+    "bg.ink-hover": [
+      "deesyn.ink-hover",
+      "deesyn.ink-hover"
+    ],
+    "fg.on-tint": [
+      "deesyn.graphite",
+      "deesyn.paper"
+    ],
+    "tint.lilac": [
+      "deesyn.lilac",
+      "deesyn.lilac-deep"
+    ],
+    "tint.sage": [
+      "deesyn.sage",
+      "deesyn.sage-deep"
     ],
     "duration.instant": [
       "duration.d100",
@@ -305,8 +355,8 @@
       "easing.linear"
     ],
     "action.primary-bg-hover": [
-      "neutral.700",
-      "neutral.100"
+      "deesyn.ink-hover",
+      "deesyn.paper-deep"
     ],
     "action.secondary-bg-hover": [
       "alpha.black-15",
@@ -317,171 +367,185 @@
       "alpha.white-6"
     ],
     "fg.link-hover": [
-      "brand.blue-deep",
-      "accent.light-blue"
+      "deesyn.ink",
+      "deesyn.signal"
     ]
   },
   "T": {
     "display.xl": [
-      "Hanken Grotesk",
-      500,
+      "Manrope",
+      700,
       88,
       1,
-      -0.0236
+      -0.045
     ],
     "display.l": [
-      "Hanken Grotesk",
-      500,
+      "Manrope",
+      700,
       64,
       1,
-      -0.0156
+      -0.045
     ],
     "display.m": [
-      "Hanken Grotesk",
-      500,
+      "Manrope",
+      700,
       52,
       1,
-      -0.0115
+      -0.045
     ],
     "display.s": [
-      "Hanken Grotesk",
-      500,
+      "Manrope",
+      700,
       40,
       1.05,
-      -0.011
+      -0.045
     ],
     "heading.l": [
-      "Hanken Grotesk",
-      500,
+      "Manrope",
+      700,
       32,
       1.12,
-      -0.01
+      -0.04
     ],
     "heading.m": [
-      "Hanken Grotesk",
-      500,
+      "Manrope",
+      700,
       24,
-      1.3,
-      -0.01
+      1.25,
+      -0.035
     ],
     "heading.s": [
-      "Hanken Grotesk",
-      500,
+      "Manrope",
+      700,
       20,
       1.3,
-      -0.01
+      -0.03
     ],
     "lead.l": [
-      "Hanken Grotesk",
+      "DM Sans",
       400,
       18,
       1.5,
       0
     ],
     "lead.m": [
-      "Hanken Grotesk",
+      "DM Sans",
       500,
       16,
       1.5,
       0
     ],
     "body.xl": [
-      "Inter",
+      "DM Sans",
       400,
       20,
       1.5,
       0
     ],
     "body.l": [
-      "Inter",
+      "DM Sans",
       400,
       18,
       1.55,
       0
     ],
     "body.1": [
-      "Inter",
+      "DM Sans",
       400,
-      16,
-      1.5,
-      -0.01
+      17,
+      1.55,
+      -0.011
     ],
     "body.2": [
-      "Inter",
+      "DM Sans",
       400,
       14,
       1.43,
       -0.005
     ],
     "body.3": [
-      "Inter",
+      "DM Sans",
       400,
       12,
       1.5,
       0.015
     ],
     "emphasis.1": [
-      "Inter",
+      "DM Sans",
       600,
       16,
       1.5,
       0
     ],
     "emphasis.2": [
-      "Inter",
+      "DM Sans",
       600,
       14,
       1.43,
       0
     ],
     "emphasis.3": [
-      "Inter",
+      "DM Sans",
       600,
       12,
       1.5,
       0.01
     ],
     "emphasis.4": [
-      "Inter",
+      "DM Sans",
       700,
       11,
       1.27,
       0.015
     ],
     "ui.heading-1": [
-      "Inter",
-      800,
+      "Manrope",
+      700,
       22,
       1.36,
       0
     ],
     "ui.heading-2": [
-      "Inter",
-      800,
+      "Manrope",
+      700,
       20,
       1.3,
       0
     ],
     "ui.heading-3": [
-      "Inter",
-      800,
+      "Manrope",
+      700,
       18,
       1.33,
       0
     ],
     "ui.subheader": [
-      "Inter",
+      "Manrope",
       700,
       16,
       1.38,
       0
     ],
     "ui.body": [
-      "Inter",
+      "DM Sans",
       500,
       15,
       1.33,
       0
+    ],
+    "accent.italic": [
+      "Manrope",
+      700,
+      64,
+      1,
+      -0.03
+    ],
+    "label.mono": [
+      "DM Sans",
+      500,
+      12,
+      1.35,
+      0.08
     ]
   },
   "E": {

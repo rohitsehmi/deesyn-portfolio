@@ -70,14 +70,29 @@
     ],
     ".section-heading[data-level='2'] .section-heading__title": [
       {
-        "property": "font",
-        "var": "--type-heading-l",
+        "property": "font-family",
+        "var": "--type-heading-l-family",
+        "ref": "typography.heading.l"
+      },
+      {
+        "property": "font-weight",
+        "var": "--type-heading-l-weight",
+        "ref": "typography.heading.l"
+      },
+      {
+        "property": "font-size",
+        "var": "--type-heading-l-size",
         "ref": "typography.heading.l"
       },
       {
         "property": "letter-spacing",
         "var": "--type-heading-l-tracking",
         "ref": "typography.heading.l"
+      },
+      {
+        "property": "line-height",
+        "var": "--type-heading-m-line",
+        "ref": "typography.heading.m"
       }
     ],
     ".section-heading[data-level='3'] .section-heading__title": [
@@ -94,14 +109,29 @@
     ],
     "@media (min-width: 768px) { .section-heading[data-level='2'] .section-heading__title }": [
       {
-        "property": "font",
-        "var": "--type-display-s",
+        "property": "font-family",
+        "var": "--type-display-s-family",
+        "ref": "typography.display.s"
+      },
+      {
+        "property": "font-weight",
+        "var": "--type-display-s-weight",
+        "ref": "typography.display.s"
+      },
+      {
+        "property": "font-size",
+        "var": "--type-display-s-size",
         "ref": "typography.display.s"
       },
       {
         "property": "letter-spacing",
         "var": "--type-display-s-tracking",
         "ref": "typography.display.s"
+      },
+      {
+        "property": "line-height",
+        "var": "--type-heading-m-line",
+        "ref": "typography.heading.m"
       }
     ],
     "@media (min-width: 768px) { .section-heading[data-level='3'] .section-heading__title }": [

@@ -227,7 +227,15 @@ for (const { brands, pack } of packs) {
 //
 // The classes stay for markup that takes a whole style as-is.
 const typeStyles = flatten(t.typography, []);
-const family = (f) => (f === 'Inter' ? 'Inter, system-ui, sans-serif' : `'${f}', Inter, system-ui, sans-serif`);
+const STACK = {
+  Manrope: "'Manrope', system-ui, sans-serif",
+  'DM Sans': "'DM Sans', system-ui, sans-serif",
+  'Hanken Grotesk': "'Hanken Grotesk', system-ui, sans-serif",
+  Fraunces: "'Fraunces', Georgia, serif",
+  'JetBrains Mono': "'JetBrains Mono', ui-monospace, monospace",
+  Inter: 'Inter, system-ui, sans-serif'
+};
+const family = (f) => STACK[f] ?? `'${f}', system-ui, sans-serif`;
 
 lines.push('/* Text styles as properties. Component CSS binds to these, never to raw values. */');
 lines.push(':root {');

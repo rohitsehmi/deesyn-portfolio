@@ -70,15 +70,15 @@
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/bottom/brand/© 2026 Rohit Sehmi": {
           "textStyle": {
             "token": "Body/3",
             "ref": "typography.body.3",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 400,
             "fontSize": "12px",
             "lineHeight": 1.5,
@@ -88,8 +88,8 @@
             "token": "fg/secondary",
             "ref": "semantic.*.fg.secondary",
             "type": "color",
-            "light": "#717173",
-            "dark": "#ffffffb2"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "inner/bottom/links": {
@@ -112,7 +112,7 @@
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -122,8 +122,8 @@
             "token": "fg/link",
             "ref": "semantic.*.fg.link",
             "type": "color",
-            "light": "#0666eb",
-            "dark": "#6fa0ff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/bottom/links/Action/Arrow Link/trailing/Vector": {
@@ -131,8 +131,8 @@
             "token": "fg/link",
             "ref": "semantic.*.fg.link",
             "type": "color",
-            "light": "#0666eb",
-            "dark": "#6fa0ff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }
@@ -178,15 +178,15 @@
             "token": "fg/primary",
             "ref": "semantic.*.fg.primary",
             "type": "color",
-            "light": "#191c1f",
-            "dark": "#ffffff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/top/brand/© 2026 Rohit Sehmi": {
           "textStyle": {
             "token": "Body/3",
             "ref": "typography.body.3",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 400,
             "fontSize": "12px",
             "lineHeight": 1.5,
@@ -196,8 +196,8 @@
             "token": "fg/secondary",
             "ref": "semantic.*.fg.secondary",
             "type": "color",
-            "light": "#717173",
-            "dark": "#ffffffb2"
+            "light": "#536783",
+            "dark": "#c5cfd0"
           }
         },
         "inner/rule": {
@@ -237,7 +237,7 @@
           "textStyle": {
             "token": "Emphasis/1",
             "ref": "typography.emphasis.1",
-            "fontFamily": "Inter",
+            "fontFamily": "DM Sans",
             "fontWeight": 600,
             "fontSize": "16px",
             "lineHeight": 1.5,
@@ -247,8 +247,8 @@
             "token": "fg/link",
             "ref": "semantic.*.fg.link",
             "type": "color",
-            "light": "#0666eb",
-            "dark": "#6fa0ff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         },
         "inner/bottom/links/Action/Arrow Link/trailing/Vector": {
@@ -256,8 +256,8 @@
             "token": "fg/link",
             "ref": "semantic.*.fg.link",
             "type": "color",
-            "light": "#0666eb",
-            "dark": "#6fa0ff"
+            "light": "#0f2a56",
+            "dark": "#f8fdf2"
           }
         }
       }

@@ -37,7 +37,6 @@
     "",
     "note: what a person saw when they opened it. Required, and 'ok' is not a note."
   ],
-
   "assets": {
     "cover-machine-readable-components.png": {
       "kind": "illustration",
@@ -51,12 +50,10 @@
       "kind": "illustration",
       "note": "Index cover in sage, generated. Still referenced by the archived search-experience study."
     },
-
     "egds-token-tiers-light.png": {
       "kind": "diagram",
       "note": "Generated flat 2D chart of the three token tiers, wired 2026-08-18. Imitates no product UI. The swatches are illustrative and carry NO hex values — an earlier pass had a legend of hex codes and it was cut precisely because those values were of unverified provenance. SUPERSEDED 2026-08-19 by src/components/TokenTiers.tsx, which draws the same picture in elements and is therefore right in both themes; the dark counterpart this file needed was never exported and is no longer wanted. Retained rather than deleted because it is the source the component's palette was sampled from, pixel by pixel, and deleting it would leave that measurement with nothing behind it. Rendered on no page."
     },
-
     "hcom-backdrop-light.png": {
       "kind": "illustration",
       "note": "The carousel's backdrop plate, exported from the Figma `Backdrop` group alone. A mesh gradient, deliberately a sibling of the track rather than part of any slide so it cannot twitch between advances."
@@ -65,7 +62,6 @@
       "kind": "illustration",
       "note": "Dark counterpart of the backdrop plate. Same box at 920x690, x=180, verified in both modes."
     },
-
     "hcom-exploration-gallery-light.png": {
       "kind": "capture",
       "note": "Genuine capture of the shipped Hotels.com app on the Figma `Screens` group, composited on transparency. Opened and read 2026-08-17: every figure on it is ordinary in-product content."
@@ -90,7 +86,6 @@
       "kind": "capture",
       "note": "Dark-theme pair of the above, same provenance."
     },
-
     "hcom-home-01-search-card-light.png": {
       "kind": "capture",
       "note": "Genuine capture of the shipped Hotels.com app home screen. Opened and read 2026-08-17: prices, review scores and the app's own marketing copy only, no overlaid test figures."
@@ -103,7 +98,6 @@
       "kind": "capture",
       "note": "Genuine capture of the shipped Hotels.com app home screen. Opened and read 2026-08-17."
     },
-
     "hcom-results-01-compact-list-light.png": {
       "kind": "capture",
       "note": "Genuine capture of the shipped Hotels.com app results page. Opened and read 2026-08-17."
@@ -124,12 +118,318 @@
       "kind": "capture",
       "note": "Capture of the shipped Hotels.com app results page. Part of the same export batch as the compositions read on 2026-08-17; this particular frame was not among the eight opened individually."
     },
-
+    "work-hotels-apps.webp": {
+      "kind": "capture",
+      "note": "Cover from rohitsehmi.com/apps, opened 2026-10-13. A photograph of hands holding a phone on the Hotels.com splash, the red H on white, night street behind."
+    },
+    "work-rebrand.png": {
+      "kind": "capture",
+      "note": "Cover from rohitsehmi.com/rebrand, opened 2026-10-13. The white Hotels.com lockup placed over a photograph of a pink sunset beach. Not a screenshot of software."
+    },
+    "work-mobile-key.png": {
+      "kind": "capture",
+      "note": "Cover from rohitsehmi.com/mobilekey, opened 2026-10-13. A photograph of a phone held to a hotel lock, screen showing a green tick and Room 217."
+    },
+    "work-wearables.jpg": {
+      "kind": "capture",
+      "note": "Cover from rohitsehmi.com/wearablesandappletv, opened 2026-10-13. A round watch showing the Hotels.com upcoming-booking card for Buddha-Bar Hotel."
+    },
+    "work-betfair-games.jpg": {
+      "kind": "capture",
+      "note": "Cover from rohitsehmi.com/betfairgames, opened 2026-10-13. A rendered white phone showing the Betfair Casino lobby. The handset is a render; the screen is the product."
+    },
+    "work-betfair-sportsbook.jpg": {
+      "kind": "capture",
+      "note": "Cover from rohitsehmi.com/betfairsportsbook, opened 2026-10-13. A rendered black phone showing the Betfair football coupon, with a composite of players beside it."
+    },
+    "mark-grabbd.png": {
+      "kind": "illustration",
+      "note": "The header mark on grabbd.gouthaman.dev, opened 2026-10-13. A coral pin and the word grabbd, #FF4739 on transparent, cropped to the painted pixels. It is a logo, not a product screenshot."
+    },
+    "mark-betfair.png": {
+      "kind": "illustration",
+      "note": "The published Betfair wordmark, Wikimedia File:Betfair_logo.png, opened 2026-10-13. Black on transparent, cropped to the painted pixels (143 by 20). Used as a mask so it takes the page ink. It is a logo, not a product screenshot."
+    },
+    "work-grabbd.png": {
+      "kind": "capture",
+      "note": "Cover from rohitsehmi.com/grabbd, opened 2026-10-13. A rendered Android phone on blue, home screen showing the Grabbd icon. The app itself is not open."
+    },
+    "work-tv.jpg": {
+      "kind": "capture",
+      "note": "Cover from rohitsehmi.com/tv1, opened 2026-10-13. Two tablets showing the Viasat Film recommendations screen, This is the End featured."
+    },
+    "project-apps-modules.jpg": {
+      "kind": "capture",
+      "note": "Board from rohitsehmi.com/apps (modules.png), opened 2026-10-14. Hotels.com home modules: greetings, a Berlin guide, recent searches, bookings, rewards tiers, and a mobile key for room 522. A flat export of the interface, not a photograph."
+    },
+    "project-apps-screens.png": {
+      "kind": "capture",
+      "note": "Board from rohitsehmi.com/apps (screens.png), opened 2026-10-14. iPhone frames from the red H through a map, a list, the DoubleTree by Hilton London page, and Apple Pay. Prices and hotel names are in the capture."
+    },
+    "project-rebrand-icon.png": {
+      "kind": "capture",
+      "note": "Board from rohitsehmi.com/rebrand (appicon2.png), opened 2026-10-14. The Hotels.com H labelled before and after, and the wordmark beside the mark and inside the app icon. A design sheet, not a screenshot of the running app."
+    },
+    "project-rebrand-type.png": {
+      "kind": "capture",
+      "note": "Type sheet from rohitsehmi.com/rebrand (01_TYPE.png), opened 2026-10-14. Hotels Proxima Soft beside system faces for the web, iOS, and Android, sizes marked. Depicts type, not a product screen."
+    },
+    "project-key-flow.png": {
+      "kind": "capture",
+      "note": "Flow board from rohitsehmi.com/mobilekey (keyless_flow.png), opened 2026-10-14. The mobile key on iPhone, Hotel Skeppsbron, Bluetooth, room 217, and the check-out states."
+    },
+    "project-key-phone.jpg": {
+      "kind": "capture",
+      "note": "Photograph from rohitsehmi.com/mobilekey (keyless1.png), opened 2026-10-14. A reception desk and the Hotels.com poster for mobile check-in. The person's face is covered by a sign."
+    },
+    "project-watch.png": {
+      "kind": "capture",
+      "note": "Watch screens from rohitsehmi.com/wearablesandappletv (watch2.png), opened 2026-10-14. Hotels.com cards: sign in, empty bookings, a list of stays, and Hotel Indigo Berlin with check-in times."
+    },
+    "project-appletv.jpg": {
+      "kind": "capture",
+      "note": "Apple TV frame from rohitsehmi.com/wearablesandappletv (301_Explore_HotelsFS.png), opened 2026-10-14. The Pulitzer Amsterdam at night, five stars, a play control, and Open on device."
+    },
+    "project-casino.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairgames (betfaircasino_iPhonex3_STC.jpg), opened 2026-10-14. Three rendered iPhones. The screens are Betfair Casino: an introduction circling Promotions and New Games, and the lobby with a £54.32 balance."
+    },
+    "project-arcade.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairgames (Betfair_Arcade_Mobile_screens.jpg), opened 2026-10-14. Betfair Arcade title card, an onboarding phone pointing at Join now and Log in, and the game lobby. The centre handset is a render; the right frame is the screen alone."
+    },
+    "project-sportsbook-1.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairsportsbook, opened 2026-10-14. Betfair Sportsbook on a rendered iPad and iPhone, football highlights with green odds."
+    },
+    "project-sportsbook-2.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairsportsbook, opened 2026-10-14. The sportsbook in a mobile browser on two rendered Android phones, open at betfair.com/sport."
+    },
+    "project-grabbd-concepts.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/grabbd (concepts.png), opened 2026-10-14. Grabbd on iPhone: the teal mark, lists, a map, search, a restaurant filter, and a Café Rouge page. One frame is a home screen with the icon."
+    },
+    "project-grabbd-landing.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/grabbd (landing.jpg), opened 2026-10-14. A rendered iMac showing the 2015 Grabbd site: the app beside get involved, near you, discover more, and stay ahead."
+    },
+    "project-tv-22.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/tv1 (22.jpg), opened 2026-10-14. Two rendered iPhones running a Viaplay concept: a today/tomorrow list with The Hangover III, and a Beckham page with a trailer."
+    },
+    "project-tv-11.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/tv1 (11.jpg), opened 2026-10-14. A rendered desktop showing the Viagame store, Prototype 2 at 399 kr, and a row of games."
+    },
+    "project-apps-home.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps, opened 2026-10-14. Two iPhones on black. One greets Rohit over a Berlin guide and a stay at Gorki Apartments. The other is a rewards stamp card."
+    },
+    "project-apps-2014.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps, opened 2026-10-14. Labelled 2014. An Android phone on a destination search, and an iPhone offering a hotel right now."
+    },
+    "project-apps-2016.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps, opened 2026-10-14. Labelled 2016. Android and iPhone both on recent searches, London and Budapest, with a Need a hotel tonight card."
+    },
+    "project-apps-2019.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps, opened 2026-10-14. Labelled 2019. Android and iPhone both say Hi Rohit, with a Berlin guide and a stay at Gorki Apartments."
+    },
+    "project-apps-further.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (further.png), opened 2026-10-14. Three iPhones: a filtered results list, a trip to Berlin with a price change, and a Berlin guide."
+    },
+    "project-apps-search-legacy.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps, opened 2026-10-14. Labelled pre-2018 / legacy. London results, 3322 properties, prices beside the photographs."
+    },
+    "project-apps-search-parity.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps, opened 2026-10-14. Labelled 2018 / parity. The London list with filter chips, and the photograph on the right of each card."
+    },
+    "project-apps-search-mweb.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps, opened 2026-10-14. Labelled 2018 / mWeb aligned. The photograph moves to the left of the card and the price sits on the right."
+    },
+    "project-apps-search-imagery.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps, opened 2026-10-14. Labelled 2018 / full width imagery. The hotel photograph runs the full width of the card."
+    },
+    "project-apps-search-2019.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps, opened 2026-10-14. Labelled 2019 / visioning. A London photograph, 81% booked for your travel dates, and 7,886 properties."
+    },
+    "project-apps-layout.jpg": {
+      "kind": "diagram",
+      "note": "From rohitsehmi.com/apps (layout.png), opened 2026-10-14. A grey board titled iOS Search Adaptive Layout Examples. Wireframe boxes for iPhone and iPad, with green blocks for space that opens up. Not a screenshot of the running app."
+    },
+    "project-apps-cards.jpg": {
+      "kind": "diagram",
+      "note": "From rohitsehmi.com/apps (layout2.png), opened 2026-10-14. The Mandrake Hotel card drawn twice, once as the screen and once with the image, details, extras, and price tinted. A layout diagram, not a capture of the live app."
+    },
+    "project-apps-map-light.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (map_light.jpg), opened 2026-10-14. A hand holds a phone. The Hotels.com map is light, with price pins and a card for the DoubleTree by Hilton London Islington."
+    },
+    "project-apps-map-dark.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (map_dark.jpg), opened 2026-10-14. The same map photograph in the dark theme. Navy streets, green prices, a dark hotel card."
+    },
+    "project-apps-list-light.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (list_light.jpg), opened 2026-10-14. A hand holds a phone. The list is light, with Citadel Apartment Hill House and a red banner for the free app."
+    },
+    "project-apps-list-dark.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (list_dark.jpg), opened 2026-10-14. A hand holds a phone. The results list is dark, with a red banner for the free app."
+    },
+    "project-apps-build.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (build.png), opened 2026-10-14. An early iOS build: a map of tonight’s hotels, Hotel Café Royal with Book with Apple Pay, and the Apple Pay sheet."
+    },
+    "project-apps-store-1.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (example_shots.png), opened 2026-10-14. App Store screenshots on red: Secret Prices, an Android code, rewards, larger photos, and a watch notification."
+    },
+    "project-apps-store-2.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (example_shots2.png), opened 2026-10-14. A second board of store screenshots, phones and tablets, in the red and purple frames."
+    },
+    "project-apps-gallery.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (pdp_hero.png), opened 2026-10-14. The Android gallery test for Shangri La At The Shard. A control, a three-picture variant, and crops marked 21:9 and 1:1."
+    },
+    "project-apps-recap.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (search_recap.png), opened 2026-10-14. The iOS search recap test. A control, a check-in variant, and a variant that also shows the check-in time."
+    },
+    "project-apps-signin.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/apps (welcome.png), opened 2026-10-14. The sign-in test. A rewards card, a variant that leads with sign in, and a third with a New York photograph."
+    },
+    "project-rebrand-devices.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (refresh.jpg), opened 2026-10-14. An iMac, an iPad, and an iPhone on a desk, showing the Hotels.com site and app."
+    },
+    "project-rebrand-mix-1.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (inconsistent3.png), opened 2026-10-14. The desktop site over Tower Bridge, the app on recent searches, and a phone browser on a Berlin search."
+    },
+    "project-rebrand-mix-2.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (inconsistent2.png), opened 2026-10-14. Emails that do not match: an extra-night offer, a gold rewards note, a 48 hour sale, a phone search, and a booking receipt."
+    },
+    "project-rebrand-mix-3.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (image-asset.png), opened 2026-10-14. A collage of ads and social posts, a YouTube card, banners in more than one language, and the striped H."
+    },
+    "project-rebrand-icons.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (appicon.png), opened 2026-10-14. App-icon explorations: the H on a phone home screen, flat marks, and a solid model of the H. A design sheet."
+    },
+    "project-rebrand-local.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (localised.png), opened 2026-10-14. The H and wordmark in red, white, and grey, beside Rewards lockups that add Chinese, including silver and gold."
+    },
+    "project-rebrand-colour.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (02_COLOURS_REDUCTION.png), opened 2026-10-14. Colour chips grouped as brand, UI, rewards, greyscale, alpha, and social. The brand row starts with the red H."
+    },
+    "project-rebrand-accessible.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (_ACCESSIBLE.png), opened 2026-10-14. A palette sheet titled naming and accessibility, with hex values, a blue button at 5.38:1, and an HSL picker."
+    },
+    "project-rebrand-android.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (android_spike.png), opened 2026-10-14. Two Android phones with rules over the type, a circled Hungarian search, and a note that says stick to the system font for now."
+    },
+    "project-rebrand-photo.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (00_PHOTOGRAPHY.png), opened 2026-10-14. A board of destination photographs with people in them. Not a screenshot of the product."
+    },
+    "project-rebrand-merch.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/rebrand (merch.png), opened 2026-10-14. Three offer cards: summer adventures, holiday homes, and on the road escapes."
+    },
+    "project-key-laptop.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/mobilekey (keyless2.png), opened 2026-10-14. A laptop on a wooden reception desk. The screen is the Hotels.com mobile key, a purple page."
+    },
+    "project-watch-trio.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/wearablesandappletv (watch.jpg), opened 2026-10-14. Three Apple Watches: a sign-in, Hotel Indigo Berlin on a map, and a list of two stays."
+    },
+    "project-casino-phones.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairgames (22.jpg), opened 2026-10-14. Two iPhones in green cases. The Betfair Casino lobby, and Wild Gambler with Demo and Play."
+    },
+    "project-casino-ipad.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairgames (33.jpg), opened 2026-10-14. An iPad showing the Betfair casino lobby."
+    },
+    "project-arcade-bonus.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairgames (44.jpg), opened 2026-10-14. An iPhone showing a Betfair Arcade promotion with a £500 bonus."
+    },
+    "project-arcade-phones.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairgames (55.jpg), opened 2026-10-14. Three iPhones showing Betfair Arcade."
+    },
+    "project-poker-iphone.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairgames (02.jpg), opened 2026-10-14. A black iPhone on a Betfair poker table at preflop."
+    },
+    "project-poker-android.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairgames (22-1.jpg), opened 2026-10-14. A white Android phone on the same poker table, at the flop."
+    },
+    "project-sportsbook-3.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/betfairsportsbook, opened 2026-10-14. Three iPhones. The left is the exchange, with unmatched and matched bets. The other two are in-play football."
+    },
+    "project-grabbd-hand-1.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/grabbd, opened 2026-10-14. A hand holds an Android phone. Grabbd Nearby lists Hawksmoor Seven Dials, Coya London, Tate Britain, Homeslice, and Hyde Park."
+    },
+    "project-grabbd-hand-2.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/grabbd, opened 2026-10-14. An Android phone on a notebook. The Grabbd menu greets Shammi, with Lists, Activity, Settings, and Sign out."
+    },
+    "project-grabbd-brand.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/grabbd (Artboard.png), opened 2026-10-14. The Grabbd pin on teal, navy, and black, and the wordmark in the same colours. A brand board, not a screenshot."
+    },
+    "project-grabbd-logos.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/grabbd (02_Logos.png), opened 2026-10-14. Six marks. The pin and the word, in navy, teal, and gold."
+    },
+    "project-grabbd-watch.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/grabbd, opened 2026-10-14. A round watch on a wrist showing a Grabbd card for Coya London, 88.8 miles away."
+    },
+    "project-grabbd-phones.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/grabbd (02.png), opened 2026-10-14. Two iPhones. A list including Café Rouge and Jamie’s Italian, and a Best cafes in London page."
+    },
+    "project-tv-guide.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/tv1 (01.jpg), opened 2026-10-14. A television concept signed in to Sky. The guide lists the channels, and a panel shows what other people are watching."
+    },
+    "project-tv-note.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/tv1 (02.jpg), opened 2026-10-14. The same television, with a note that someone is watching Avatar on Sky Movies HD, and a shake-to-connect button."
+    },
+    "project-tv-playback.jpg": {
+      "kind": "capture",
+      "note": "From rohitsehmi.com/tv1 (03.jpg), opened 2026-10-14. Avatar full screen, with a bar naming who you are watching with, and chat bubbles over the picture."
+    },
     "hero-parallax.png": {
       "kind": "illustration",
-      "note": "Homepage hero. Abstract still life in cream, off-white and deep blue, generated. Stand-in imagery. Depicts no interface; its contrast against overlaid type is measured separately by design/measure-media-contrast.mjs."
+      "note": "Generated still life in cream, off-white and deep blue: a disc, an Aa tile, ruled lines. It was the homepage hero until 2026-10-13 and depicted no work, so the page no longer uses it. Storybook's Parallax story still imports it."
     },
-
     "nca-dialog-platforms.png": {
       "kind": "reconstruction",
       "note": "Rebuilds Figma's desktop chrome closely enough to read as a capture, and inserts a 'Decisions' tab that Figma does not have. The decision record it depicts was a real artefact kept outside Figma, so the panel illustrates something real. Cost raised and ACCEPTED by Rohit 2026-08-17 — settled, do not re-open."

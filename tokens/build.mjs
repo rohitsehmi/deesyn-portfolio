@@ -56,7 +56,7 @@ function typeOf(key) {
 
 const out = {
   $description:
-    'Revolut-matched design tokens for the case-study portfolio. Values verified against revolut.com live CSS, not eyedropped. See docs/revolut-design-foundations.md.',
+    'Deesyn portfolio tokens. The deesyn.* palette is the apex brand. Older ramps remain for partner packs and status colours.',
   primitive: {},
   semantic: { light: {}, dark: {} },
   typography: {},

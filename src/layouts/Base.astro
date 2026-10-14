@@ -242,10 +242,10 @@ const structuredData = article
       in system-ui. Fonts are self-hosted now: see design/build-fonts.mjs for
       why not Google, and design/verify-fonts.mjs for what stops it regressing.
 
-      One file, not four. Hanken Grotesk is the face the hero and every heading
+      One file, not four. Manrope is the face the hero and every heading
       resolve to, so it is what a reader sees first and the only one worth
-      spending a preload on. Inter is body copy, arrives just as fast on the
-      same connection, and is discovered from the stylesheet a moment later.
+      spending a preload on. DM Sans is the body and UI face, discovered from
+      the stylesheet.
       The latin-ext subsets are deliberately NOT preloaded: unicode-range means
       most readers never fetch them at all, and preloading a file the browser
       then declines to use is a wasted round trip and a console warning.
@@ -256,7 +256,7 @@ const structuredData = article
     */}
     <link
       rel="preload"
-      href="/fonts/hanken-grotesk-latin.woff2"
+      href="/fonts/manrope-latin.woff2"
       as="font"
       type="font/woff2"
       crossorigin

@@ -4,54 +4,68 @@ import { Nav } from '../components/Nav';
 import { Band } from '../components/Band';
 import { Footer } from '../components/Footer';
 import { CaseStudyTile } from '../components/CaseStudyTile';
-import { Parallax } from '../components/Parallax';
+import { Button } from '../components/Button';
+import { Tag } from '../components/Tag';
+import { Icon } from '../components/Icon';
 import { liveStudies, studiesFor, studyPath, studyCopyBase } from '../data/studies';
 import { BRANDS, DEFAULT_BRAND } from '../data/brands';
 import { linksFor } from '../data/nav';
 import copy from '../copy/home.json';
+import { CLIENT_MARKS } from '../components/client-marks';
+import betfairMark from '../assets/mark-betfair.png';
+import grabbdMark from '../assets/mark-grabbd.png';
+import contact from '../copy/contact.json';
 import { getImage } from 'astro:assets';
-import heroSource from '../assets/hero-parallax.png';
+import workHotels from '../assets/work-hotels-apps.webp';
+import workRebrand from '../assets/work-rebrand.png';
+import workMobileKey from '../assets/work-mobile-key.png';
+import workWearables from '../assets/work-wearables.jpg';
+import workBetfairGames from '../assets/work-betfair-games.jpg';
+import workBetfairSportsbook from '../assets/work-betfair-sportsbook.jpg';
+import workGrabbd from '../assets/work-grabbd.png';
+import workTv from '../assets/work-tv.jpg';
 
 const links = linksFor(Astro.url.pathname);
 
 /*
-  Rohit's own image, generated to reader rather than licensed or borrowed: an
-  abstract composition standing for design systems and product design together,
-  which is what the two case studies are. The Aa tile, the ruled card and the
-  repeated forms are the design-system half; nothing in it depicts a real
-  product, which is what keeps it clear of the "fake screenshot" failure mode.
-  It replaces a Revolut marketing asset that was only ever scaffolding to build
-  the parallax against.
+  The eight covers from rohitsehmi.com, in the order that site shows them.
+  They are the work. The generated still life was standing in for this grid.
+  Each one links to the page it already has there. None of these is a written
+  study on this site, so they do not enter the {count} the hero speaks.
 
-  The hero is the LCP element, so it is the one image on the site whose weight
-  is worth this. It lives in src/assets/, not public/, which is the whole point:
-  public/ is copied byte for byte, src/assets/ goes through the build. Astro
-  emits WebP at each width and hashes the filenames, so they cache immutably.
-  1.5MB of source PNG becomes 38kB at the largest width actually served.
-
-  The list runs past the source's own width on purpose. Astro will not upscale,
-  so it silently drops the widths above it — keeping them means a larger image
-  starts using them the day it is dropped in, rather than the list quietly
-  capping a better source at this one's dimensions.
-
-  Do not pass heroSource.width/height into the markup. That reference is what
-  pulls the unoptimised original into dist/; without it Astro prunes it, and
-  the image layer is absolutely positioned so intrinsic size reserves nothing.
+  Do not pass the source width or height into the markup. That reference pulls
+  the original into dist/.
 */
-const hero = await getImage({
-  src: heroSource,
-  format: 'webp',
-  widths: [640, 960, 1280, 1600, 1920, 2560],
-  sizes: '100vw'
-});
+const ARCHIVE_SRC = {
+  'hotels-apps': workHotels,
+  rebrand: workRebrand,
+  'mobile-key': workMobileKey,
+  wearables: workWearables,
+  'betfair-games': workBetfairGames,
+  'betfair-sportsbook': workBetfairSportsbook,
+  grabbd: workGrabbd,
+  tv: workTv
+} as const;
+const ARCHIVE_SIZES = '(min-width: 1024px) 440px, (min-width: 768px) 46vw, calc(100vw - 40px)';
+const archiveImages = new Map(
+  await Promise.all(
+    copy.archive.map(async (item) => {
+      const src = ARCHIVE_SRC[item.slug as keyof typeof ARCHIVE_SRC];
+      if (!src) throw new Error(`index: no cover imported for archive slug "${item.slug}"`);
+      const image = await getImage({
+        src,
+        format: 'webp',
+        widths: [480, 720, 960, 1280, 1600],
+        sizes: ARCHIVE_SIZES
+      });
+      return [item.slug, image] as const;
+    })
+  )
+);
 
 /*
-  Tile covers, through the same pipeline. Narrower than the hero because they
-  are: the measure caps at 1000 and they sit two-up above 768, so the largest
-  one ever renders at is about 480 CSS pixels, 960 on a 2x display.
-
-  `sizes` has to describe that or the browser picks from the srcSet against a
-  100vw assumption and downloads the widest candidate for a half-width slot.
+  Tile covers, through the same pipeline. Every study card is the same width,
+  about 480 inside the measure, so they share one sizes value.
 */
 /*
   How many tiles each brand actually sees, which only the hero sentence needs.
@@ -90,11 +104,19 @@ const heroTitleFor = (brand: (typeof BRANDS)[number]) => {
     than substituting nothing and shipping whichever count was typed.
   */
   if (!raw.includes('{count}')) {
-    throw new Error(
-      `index: the ${brand} hero title must carry the {count} token rather than a ` +
-      `typed number, because each brand is offered a different number of studies. ` +
-      `Edit it in src/copy/home.json.`
-    );
+    /*
+      The default title names the practice and does not count. A title that
+      counts without the token is the old bug: a typed number, right for one
+      hostname and wrong for the rest. Partner titles still carry {count}.
+    */
+    if (/\d/.test(raw) || /\b(?:one|two|three|four|five|six|seven|eight|nine)\b/i.test(raw)) {
+      throw new Error(
+        `index: the ${brand} hero title counts without the {count} token. ` +
+        `Each brand is offered a different number of studies, so a typed number ` +
+        `is right for one hostname and wrong for the rest. Edit it in src/copy/home.json.`
+      );
+    }
+    return raw;
   }
 
   const n = counts[brand];
@@ -123,90 +145,65 @@ const heroTitleFor = (brand: (typeof BRANDS)[number]) => {
 };
 
 /*
-  The standfirst counts too, and it was counting the same way the title used to.
-
-  "One on the design system, the other on product design." was written for the
-  default brand, which is offered exactly one study per discipline. Wise and
-  Healf are offered `scaling-a-system` as well, which is a second design-system
-  study, so both hostnames read "One on the design system" above two of them.
-  Nothing rendered as broken; the sentence was simply false — the same shape,
-  and the same cause, as the "Two case studies" bug directly above.
-
-  So the number is derived here rather than typed, and the guards below refuse
-  the sentence shapes it cannot express instead of substituting something
-  plausible.
-
-  NAMING THE TWO DISCIPLINES IN CODE is the one uncomfortable part, because the
-  values themselves live in src/copy/studies.json and this is therefore a second
-  place that has to agree with a first. It is safe only because the guard makes
-  a disagreement loud: rename a discipline there and `systems + product` stops
-  equalling the total, which fails the build naming both files. That is the same
-  arrangement verify-readme.mjs uses, where a pattern that stops matching is
-  itself treated as the failure.
+  One word of the headline carries the lime bar. Same face as the rest of the title.
+  The word lives in the copy so a partner title can mark its own name
+  ("Wise") without the template guessing which token is the accent.
 */
-const SYSTEMS = 'Design systems';
-const PRODUCT = 'Product design';
+const heroAccentFor = (brand: (typeof BRANDS)[number]) =>
+  brand === DEFAULT_BRAND
+    ? copy.heroAccent
+    : ((copy.brands as Record<string, { heroAccent?: string }>)[brand].heroAccent ?? '');
 
-const splitFor = (brand: (typeof BRANDS)[number]) => {
-  const seen = studiesFor(brand);
-  return {
-    total: seen.length,
-    systems: seen.filter((s) => s.discipline === SYSTEMS).length,
-    product: seen.filter((s) => s.discipline === PRODUCT).length
-  };
+const titleParts = (sentence: string, accent: string) => {
+  if (!accent) return [{ text: sentence, mark: false }];
+  const at = sentence.indexOf(accent);
+  if (at < 0) return [{ text: sentence, mark: false }];
+  /* Keep the following period on the italic word, so a screen reader does not
+     pause between the word and the stop. */
+  let end = at + accent.length;
+  while (end < sentence.length && '.,'.includes(sentence[end])) end += 1;
+  return [
+    { text: sentence.slice(0, at), mark: false },
+    { text: sentence.slice(at, end), mark: true },
+    { text: sentence.slice(end), mark: false }
+  ].filter((part) => part.text.length > 0);
 };
 
-const heroStandfirstFor = (brand: (typeof BRANDS)[number]) => {
+const heroSecondary = copy.heroSecondary;
+
+/*
+  Three rooms, one per study. Sage is the product card. Sky and coral are the
+  two systems cards, both pale, so the row is tinted without becoming a chart.
+  The older projects stay on the white surface.
+*/
+const TINT: Record<string, 'sky' | 'sage' | 'coral'> = {
+  'machine-readable-components': 'sky',
+  'making-the-app-testable': 'sage',
+  'scaling-a-system': 'coral'
+};
+
+/*
+  The standfirst says how the page is arranged. It does not count.
+
+  It used to: "{systems} case studies on design systems, and {product} on
+  product design." That described the three case studies and said nothing
+  about the earlier projects on the same page, so "one on product design"
+  stopped being true of the work the moment those eight cards were here.
+
+  A typed number is still refused. "Two" and "one" are plausible and invisible
+  in a diff, which is how "One on the design system" shipped on Wise and Healf
+  above two design-system studies. The partner titles still carry {count}.
+*/
+const heroStandfirstFor = () => {
   const raw: string = copy.heroStandfirst;
-
-  /* Same refusal as the title: a typed number is a plausible sentence and is
-     invisible in a diff, so it cannot be allowed to ship silently. */
-  if (!raw.includes('{systems}')) {
+  if (/\d/.test(raw) || /\b(?:one|two|three|four|five|six|seven|eight|nine)\b/i.test(raw)) {
     throw new Error(
-      `index: the hero standfirst must carry the {systems} token rather than a ` +
-      `typed number, because each brand is offered a different mix of studies. ` +
-      `Edit it in src/copy/home.json.`
+      `index: the hero standfirst counts with a typed number. ` +
+      `That sentence went stale once and described the case studies while the ` +
+      `earlier projects sat under them. Edit it in src/copy/home.json.`
     );
   }
-
-  const { total, systems, product } = splitFor(brand);
-
-  /* A discipline the sentence does not mention, or one of these constants gone
-     stale against studies.json. Either way the sentence no longer describes the
-     list, and guessing which half is wrong is not this file's job. */
-  if (systems + product !== total) {
-    throw new Error(
-      `index: ${brand} is offered ${total} studies but only ${systems + product} of ` +
-      `them are "${SYSTEMS}" or "${PRODUCT}", so the standfirst does not describe ` +
-      `the list. Either a discipline was renamed in src/copy/studies.json — update ` +
-      `SYSTEMS/PRODUCT here to match — or a third discipline now exists and the ` +
-      `sentence in src/copy/home.json needs rewriting to name it.`
-    );
-  }
-
-  /* "the other" is singular and asserts exactly one product-design study. Two
-     would render "Two on the design system, the other on product design" above
-     three tiles, which is this bug again one discipline across. Fails with the
-     instruction rather than carrying a pluralisation engine for a case that does
-     not exist — the same call as the singular guard on the title. */
-  if (product !== 1) {
-    throw new Error(
-      `index: ${brand} is offered ${product} product-design studies, and the hero ` +
-      `standfirst says "the other", which asserts exactly one. Rewrite that string ` +
-      `in src/copy/home.json so it counts both disciplines.`
-    );
-  }
-
-  if (systems < 1) {
-    throw new Error(
-      `index: ${brand} is offered no design-system studies, and the hero standfirst ` +
-      `names one. Rewrite that string in src/copy/home.json.`
-    );
-  }
-
-  const word = NUMBER_WORDS[systems] ?? String(systems);
-  const cased = raw.startsWith('{systems}') ? word.charAt(0).toUpperCase() + word.slice(1) : word;
-  return raw.replace('{systems}', cased);
+  return raw;
 };
 
 /*
@@ -221,7 +218,7 @@ const heroStandfirstFor = (brand: (typeof BRANDS)[number]) => {
   a stutter to exactly that reader.
 */
 const standfirstsByBrand = BRANDS.reduce((acc, brand) => {
-  const sentence = heroStandfirstFor(brand);
+  const sentence = heroStandfirstFor();
   acc.set(sentence, [...(acc.get(sentence) ?? []), brand]);
   return acc;
 }, new Map<string, string[]>());
@@ -229,146 +226,138 @@ const standfirstsByBrand = BRANDS.reduce((acc, brand) => {
 const COVER_SIZES = '(min-width: 1024px) 480px, (min-width: 768px) 45vw, calc(100vw - 40px)';
 const covers = new Map(
   await Promise.all(
-    liveStudies.filter((s) => s.cover).map(async (s) => [
-      s.slug,
-      await getImage({ src: s.cover!.src, format: 'webp', widths: [480, 720, 960, 1280], sizes: COVER_SIZES })
-    ] as const)
+    liveStudies.filter((s) => s.cover).map(async (s) => {
+      const sizes = COVER_SIZES;
+      const light = await getImage({
+        src: s.cover!.src,
+        format: 'webp',
+        widths: [480, 720, 960, 1280, 1600],
+        sizes
+      });
+      const dark = s.cover!.srcDark
+        ? await getImage({
+            src: s.cover!.srcDark,
+            format: 'webp',
+            widths: [480, 720, 960, 1280, 1600],
+            sizes
+          })
+        : undefined;
+      return [
+        s.slug,
+        {
+          src: light.src,
+          srcSet: light.srcSet.attribute,
+          srcDark: dark?.src,
+          srcSetDark: dark?.srcSet.attribute,
+          ratio: s.cover!.ratio,
+          sizes
+        }
+      ] as const;
+    })
   )
 );
 ---
-<Base title="Rohit Sehmi · Product Design" pageEnd="sunken">
+<Base title="Rohit Sehmi · Product and design systems" pageEnd="sunken">
   {/*
-    Sits over the hero rather than in a band of its own. `overBand` gives it the
-    hero's foreground while it is transparent, because it is outside the band
-    stack and would otherwise render dark text on a dark image. It drops back to
-    the page's own foreground the moment it takes bg/canvas.
+    Transparent over the inverse hero, then the page canvas once it scrolls.
+    The bar is outside the band, so the homepage stylesheet paints its top
+    state to match that hero. onMedia would not flip with the theme.
   */}
-  <Nav client:load sticky onMedia="light" links={links} />
+  <Nav client:load sticky links={links} />
 
   <main id="main">
     {/*
-      The hero is content-led and does not count toward the band alternation,
-      per the hero note in the banding spec. It carries data-on-media rather
-      than a band role: bands are relative and flip with the theme, and a
-      photograph does not.
-
-      tone="light" because this image is pale, which turns off the scrim. The
-      alternative was measured and rejected: white text over it needs the full
-      70% black scrim to clear AA — 60% fails the standfirst at 3.93:1 — and at
-      70% the image reads as a grey wash with none of the quality it was chosen
-      for. Dark text on the same image, unscrimmed, is 9.48:1.
-
-      Re-measure with `node design/measure-media-contrast.mjs` if the image
-      changes. Without a scrim the contrast comes from the composition, so it is
-      a property of this file rather than of the component.
-
-      objectPosition is left, and on a phone that is the whole ballgame: cover
-      crops this 1.87:1 image to about a third of its width at 390px. Centred,
-      that third is the busy middle and 31% of glyph pixels fail. Every
-      alternative was measured against this image and lost — 20% center leaves
-      0.1% failing with the blue arc running straight through "product work",
-      and the white-scrim variants that pass do so by washing the picture out.
-      Left is nearly empty wall on a phone, which is the honest cost: this is a
-      1.87:1 composition with its subject on the right, and no portrait crop of
-      it can show the subject and carry the type at the same time. Fixing that
-      properly means a second, taller crop of the image, not a different value
-      here.
+      One screen. The headline owns it, the companies sit on its floor.
+      Inverse, then the work returns to base, which is the legal step out.
     */}
-    <Parallax
-      src={hero.src}
-      srcSet={hero.srcSet.attribute}
-      sizes="100vw"
-      tone="light"
-      objectPosition="left center"
-      alt="An abstract still life in cream, off-white and deep blue: a large disc behind a frosted glass panel, a tile lettered Aa, a card of ruled placeholder lines, a sphere and a ribbed panel, arranged on pale steps with a thin blue line curving through them."
-      priority
-      client:visible
-      range="exit"
-      drift="140px"
-    >
+    <Band role="inverse" scale="compact">
+      <canvas class="home-field" aria-hidden="true"></canvas>
+      <div class="home-stage">
+      <div class="home-hero">
+        <h1 class="home-hero__title">
+          {BRANDS.map((brand, i) => (
+            <>
+              {i > 0 && ' '}
+              <span data-brand-only={brand}>
+                {titleParts(heroTitleFor(brand), heroAccentFor(brand)).map((part) =>
+                  part.mark
+                    ? <em class="home-hero__accent">{part.text}</em>
+                    : <span>{part.text}</span>
+                )}
+              </span>
+            </>
+          ))}
+        </h1>
+        <p class="home-hero__standfirst">
+          {[...standfirstsByBrand].map(([sentence, brands], i) => (
+            <>
+              {i > 0 && ' '}
+              <span data-brand-only={brands.join(' ')} data-copy="home:heroStandfirst">{sentence}</span>
+            </>
+          ))}
+        </p>
+        <div class="home-hero__actions">
+          <Button href="#work" variant="secondary" size="lg" data-copy="home:heroSecondary">{heroSecondary}</Button>
+        </div>
+      </div>
+
       {/*
-        One h1 with one span per brand, not one h1 per brand. Every version
-        ships because the build is prerendered and one deployment answers every
-        hostname; the hidden ones are display:none, so they leave the
-        accessibility tree entirely and the page still has exactly one heading
-        with one name. See base.css for how [data-brand] chooses.
-
-        Driven off BRANDS rather than written out, because the hardcoded version
-        silently dropped a brand: the copy for a third one was added and the
-        markup was not, so that hostname rendered an empty h1 — a heading with
-        no name at all, which is worse than the wrong name.
-
-        NOT browser-editable, and deliberately so — same rule as the facts block
-        on how-this-was-built. What renders here has had its {count} substituted,
-        so blurring an edit would write "Two case studies" back into the JSON,
-        bake today's number into the copy and stop the page recomputing it. That
-        is the bug this markup was just fixed for, and a data-copy attribute
-        would hand it straight back.
-
-        Edit it through the markdown round trip instead — `npm run copy:export`
-        works on the JSON, so the token survives. Keep the braces.
+        Employers, plus Vrbo and Grabbd, which the work itself names.
+        The partner hostnames are not in this list. The second list is the
+        loop, hidden from the accessibility tree. Reduced motion drops it.
       */}
-      {/*
-        The spans are joined by a space, and it is not cosmetic.
+      <div class="clients" data-clients>
+        <div class="clients__viewport">
+          <div class="clients__track">
+            {[false, true].map((clone) => (
+              <ul class="clients__list" aria-hidden={clone ? 'true' : undefined} inert={clone ? true : undefined}>
+                {copy.clients.map((item) => {
+                  const mark = CLIENT_MARKS[item.mark as keyof typeof CLIENT_MARKS];
+                  const word = !mark && item.mark !== 'betfair' && item.mark !== 'grabbd';
+                  return (
+                    <li>
+                      <span class="clients__item">
+                        {mark && (
+                          <svg
+                            class="clients__svg"
+                            viewBox={mark.viewBox}
+                            aria-hidden="true"
+                            data-mark={item.mark}
+                            set:html={mark.body}
+                          />
+                        )}
+                        {item.mark === 'betfair' && (
+                          <span
+                            class="clients__betfair"
+                            data-mark="betfair"
+                            aria-hidden="true"
+                            style={`--betfair: url('${betfairMark.src}')`}
+                          />
+                        )}
+                        {item.mark === 'grabbd' && (
+                          <img
+                            class="clients__grabbd"
+                            data-mark="grabbd"
+                            src={grabbdMark.src}
+                            width={grabbdMark.width}
+                            height={grabbdMark.height}
+                            alt=""
+                          />
+                        )}
+                        <span class:list={['clients__name', { 'clients__name--shown': word }]}>{item.name}</span>
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            ))}
+          </div>
+        </div>
+      </div>
+      </div>
+    </Band>
 
-        One prerendered build serves three brands, so all three headlines ship
-        and CSS hides the two that do not apply. A screen reader is unaffected —
-        `display: none` removes those nodes from the accessibility tree, which
-        is the whole reason the rules hide rather than clip. But anything
-        reading the raw HTML sees every span, and with no separator between them
-        the h1's text content came out fused:
-
-          "Two case studies, in full.Three case studies, for Wise.Three…"
-
-        That matters here more than it would elsewhere. This URL travels one
-        way — pasted to a named person — and increasingly that means pasted into
-        an agent, which fetches the HTML and never runs the stylesheet. A single
-        space turns one garbled run-on into five complete sentences.
-
-        Note what that means now the default brand names nobody: the raw HTML
-        still carries every partner's line, so an agent reading the apex sees
-        four company names the rendered page does not show. That is the
-        isolation-by-routing limit stated at the top of base.css, and no
-        amount of hiding fixes it — only a build per brand does.
-
-        A space, and not the tidier-looking options. `hidden` with a CSS
-        un-hide would mean declaring a `display` value on the version that
-        shows, which is the exact shape of the `display: revert` bug that
-        shipped misaligned receipts on the Wise host. `aria-hidden` cannot work
-        at all: the HTML is static and cannot know which brand will render it.
-      */}
-      <h1 class="home-hero__title">
-        {BRANDS.map((brand, i) => (
-          <>
-            {i > 0 && ' '}
-            <span data-brand-only={brand}>{heroTitleFor(brand)}</span>
-          </>
-        ))}
-      </h1>
-      {/*
-        NOT browser-editable either, and for the reason the title is not: what
-        renders has had its {systems} token substituted, so blurring an edit
-        would write "Two on the design system" back into the JSON and stop the
-        page recomputing it — handing back the exact bug this markup fixes. Edit
-        it through `npm run copy:export`, which works on the JSON. Keep the
-        braces.
-
-        Spans joined by a space, same as the title above: every version ships and
-        CSS hides the ones that do not apply, so anything reading the raw HTML
-        sees them all and needs a separator to read them as sentences.
-      */}
-      <p class="home-hero__standfirst">
-        {[...standfirstsByBrand].map(([sentence, brands], i) => (
-          <>
-            {i > 0 && ' '}
-            <span data-brand-only={brands.join(' ')}>{sentence}</span>
-          </>
-        ))}
-      </p>
-    </Parallax>
-
-    {/* base, because the hero above resolves dark. */}
-    <Band role="base" scale="default">
+    <Band role="base" scale="compact">
       {/*
         No count on the list, deliberately, and this is where one used to be.
 
@@ -381,7 +370,7 @@ const covers = new Map(
         guarding it. Nothing here needs to know how many tiles this brand sees,
         so nothing can get that number wrong.
       */}
-      <ul class="work">
+      <ul class="work" id="work">
         {/*
           Every live study across every brand, with the brand-specific ones
           marked so CSS can drop them. It has to be this way round: one build
@@ -391,9 +380,12 @@ const covers = new Map(
           data-brand-only sits on the <li> rather than on the tile, so the grid
           item goes with it. Hiding the tile alone would leave an empty cell,
           which on a two-column grid is not a smaller list — it is a hole.
+
+          These three sit above the older projects. They are the longer reads,
+          and the most recent work for now.
         */}
         {liveStudies.map((s) => (
-          <li data-brand-only={s.brands?.join(' ')}>
+          <li data-brand-only={s.brands?.join(' ')} data-tint={TINT[s.slug]}>
             <CaseStudyTile
               title={s.title}
               summary={s.summary}
@@ -401,18 +393,69 @@ const covers = new Map(
               href={studyPath(s)}
               variant="card"
               copyBase={studyCopyBase(s)}
+              mark={copy.studyBadge}
+              markCopyRef="home:studyBadge"
               image={{
                 src: covers.get(s.slug)?.src,
-                srcSet: covers.get(s.slug)?.srcSet.attribute,
-                sizes: COVER_SIZES,
-                alt: s.cover?.alt ?? `Cover image for ${s.title}`
+                srcSet: covers.get(s.slug)?.srcSet,
+                srcDark: covers.get(s.slug)?.srcDark,
+                srcSetDark: covers.get(s.slug)?.srcSetDark,
+                sizes: covers.get(s.slug)?.sizes,
+                alt: s.cover?.alt ?? `Cover image for ${s.title}`,
+                ratio: '4-3'
               }}
             />
           </li>
         ))}
       </ul>
+      <ul class="archive">
+          {copy.archive.map((item, i) => {
+            const image = archiveImages.get(item.slug)!;
+            return (
+              <li data-archive={item.slug}>
+                <article class="archive__card">
+                  <span class="archive__media">
+                    <img
+                      src={image.src}
+                      srcset={image.srcSet.attribute}
+                      sizes={ARCHIVE_SIZES}
+                      alt={item.alt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span class="archive__tag">
+                      <Tag copyRef={`home:archive.${i}.tag`}>{item.tag}</Tag>
+                    </span>
+                  </span>
+                  <span class="archive__body">
+                    <span class="archive__title">
+                      <a class="archive__link" href={item.href} data-copy={`home:archive.${i}.title`}>{item.title}</a>
+                    </span>
+                    <span class="archive__summary" data-copy={`home:archive.${i}.summary`}>{item.summary}</span>
+                    <span class="archive__cue icon-button" data-variant="secondary" data-size="lg" aria-hidden="true">
+                      <Icon name="arrow-thin-right" size={24} />
+                    </span>
+                  </span>
+                </article>
+              </li>
+            );
+          })}
+        </ul>
     </Band>
   </main>
+
+  {/*
+    A surface, not a band. Highlight is a colour, and a band would swap the
+    foreground to the other theme, which puts paper type on yellow at 1.17:1.
+    It sits between base and sunken. The bands the linter reads are inverse,
+    then base, then sunken. Inverse has to return to base, and it does.
+  */}
+  <section class="home-close">
+    <div class="measure home-close__inner">
+      <h2 data-copy="contact:standfirst">{contact.standfirst}</h2>
+      <Button href="/contact" size="lg" data-copy="contact:title">{contact.title}</Button>
+    </div>
+  </section>
 
   {/* sunken: the work band above is base. */}
   <Band role="sunken" scale="compact" bleed>
@@ -420,68 +463,570 @@ const covers = new Map(
   </Band>
 </Base>
 
+<script>
+  import { bootHomeMotion } from '../components/home-motion';
+  import { bootHeroField } from '../components/home-field';
+
+  bootHomeMotion();
+  bootHeroField();
+</script>
+
 <style is:global>
-  /* Type steps between styles on the scale. No clamps, no raw sizes. */
+  /*
+    The hero is one blend, from the field colour down into the signal.
+    It is mixed in oklch so the middle stays blue, then green, and never
+    a grey shelf. The shift is slow behind the type and solid signal
+    under the marks. The band is pulled up under the fixed bar;
+    padding-top puts the type back below it. The extra top padding
+    mirrors Band.css compact scale.
+  */
+  main > .band[data-band='inverse'] {
+    position: relative;
+    margin-top: calc(var(--primitive-size-nav) * -1);
+    padding-top: calc(var(--primitive-size-nav) * 2 + var(--primitive-layout-l40));
+    background: linear-gradient(
+      to bottom in oklch,
+      var(--semantic-band-base) 0%,
+      color-mix(in oklch, var(--semantic-band-base) 96%, var(--semantic-highlight)) 26%,
+      color-mix(in oklch, var(--semantic-band-base) 88%, var(--semantic-highlight)) 42%,
+      color-mix(in oklch, var(--semantic-band-base) 68%, var(--semantic-highlight)) 54%,
+      color-mix(in oklch, var(--semantic-band-base) 42%, var(--semantic-highlight)) 64%,
+      color-mix(in oklch, var(--semantic-band-base) 16%, var(--semantic-highlight)) 74%,
+      var(--semantic-highlight) 84%,
+      var(--semantic-highlight) 100%
+    );
+  }
+  @media (min-width: 768px) {
+    main > .band[data-band='inverse'] {
+      padding-top: calc(var(--primitive-size-nav) * 2 + var(--primitive-layout-l64));
+    }
+  }
+  @media (min-width: 1024px) {
+    main > .band[data-band='inverse'] {
+      padding-top: calc(var(--primitive-size-nav) * 2 + var(--primitive-layout-l80));
+    }
+  }
+
+  /*
+    Specks in the field, behind the type. The mask keeps them out of the
+    bar and out of the pool the companies sit on. The colour is the band's
+    own foreground, so the field flips with the theme.
+  */
+  .home-field {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    color: var(--semantic-fg-primary);
+    --field-cool: var(--primitive-deesyn-sky);
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--primitive-size-nav) * 2),
+      black calc(var(--primitive-size-nav) * 2 + var(--primitive-layout-l64)),
+      black 46%,
+      transparent 66%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--primitive-size-nav) * 2),
+      black calc(var(--primitive-size-nav) * 2 + var(--primitive-layout-l64)),
+      black 46%,
+      transparent 66%
+    );
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-field { display: none; }
+  }
+  .home-stage { position: relative; z-index: 1; }
+
+  /*
+    Transparent bar on the hero. The band owns the foreground of what is
+    inside it, and the bar is not inside it, so these few assignments follow
+    the same flip: paper on the navy hero, ink on the paper hero.
+    Scrolled state does not match, and the bar returns to the page canvas.
+  */
+  /*
+    The bar opens at twice its height, and the lockup with it, so the mark
+    reads before the headline does. CV and Contact stay on the small size.
+    Scrolling leaves data-state top, and both settle back to the compact bar.
+  */
+  .nav[data-state='top'] { height: calc(var(--primitive-size-nav) * 2); }
+  .nav[data-state='top'] .nav__logo .logo { height: var(--primitive-size-s64); }
+  .nav[data-state='top'] .logo-brand { gap: var(--primitive-space-sp500); }
+  .nav[data-state='top'] .logo-brand__x {
+    width: var(--primitive-size-s24);
+    height: var(--primitive-size-s24);
+  }
+  .nav[data-state='top'] .logo-brand__word {
+    font-family: var(--type-display-s-family);
+    font-weight: var(--type-display-s-weight);
+    font-size: var(--type-display-s-size);
+    letter-spacing: var(--type-display-s-tracking);
+    /* type-lint-allow: the word aligns to the mark, and the display line-height would drop it */
+    line-height: 1;
+  }
+  .nav[data-state='top'] .nav__logo,
+  .nav[data-state='top'] .nav__links .button[data-variant='ghost'],
+  .nav[data-state='top'] .nav__menu .icon-button {
+    color: var(--semantic-fg-on-ink);
+  }
+  .nav[data-state='top'] .nav__cta .button {
+    background: var(--semantic-fg-on-ink);
+    color: var(--semantic-fg-primary);
+  }
+  /* The bar is clear over navy. Ink would vanish; the arc takes the lime. */
+  .nav[data-state='top'] .nav__cta { --nav-cta-arc: var(--semantic-highlight); }
+  @media (hover: hover) and (pointer: fine) {
+    .nav[data-state='top'] .nav__links .button[data-variant='ghost']:hover,
+    .nav[data-state='top'] .nav__menu .icon-button:hover {
+      background: color-mix(in srgb, var(--semantic-fg-on-ink) 14%, transparent);
+    }
+    .nav[data-state='top'] .nav__cta .button:hover {
+      background: var(--semantic-bg-highlight);
+      color: var(--semantic-fg-on-highlight);
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .nav[data-state='top'] .nav__logo,
+    :root:not([data-theme='light']) .nav[data-state='top'] .nav__links .button[data-variant='ghost'],
+    :root:not([data-theme='light']) .nav[data-state='top'] .nav__menu .icon-button {
+      color: var(--semantic-fg-on-highlight);
+    }
+    :root:not([data-theme='light']) .nav[data-state='top'] .nav__cta .button {
+      background: var(--semantic-fg-on-highlight);
+      color: var(--semantic-fg-on-ink);
+    }
+    :root:not([data-theme='light']) .nav[data-state='top'] .nav__links .button[data-variant='ghost']:hover,
+    :root:not([data-theme='light']) .nav[data-state='top'] .nav__menu .icon-button:hover {
+      background: color-mix(in srgb, var(--semantic-fg-on-highlight) 10%, transparent);
+    }
+  }
+  :root[data-theme='dark'] .nav[data-state='top'] .nav__logo,
+  :root[data-theme='dark'] .nav[data-state='top'] .nav__links .button[data-variant='ghost'],
+  :root[data-theme='dark'] .nav[data-state='top'] .nav__menu .icon-button {
+    color: var(--semantic-fg-on-highlight);
+  }
+  :root[data-theme='dark'] .nav[data-state='top'] .nav__cta .button {
+    background: var(--semantic-fg-on-highlight);
+    color: var(--semantic-fg-on-ink);
+  }
+  :root[data-theme='dark'] .nav[data-state='top'] .nav__links .button[data-variant='ghost']:hover,
+  :root[data-theme='dark'] .nav[data-state='top'] .nav__menu .icon-button:hover {
+    background: color-mix(in srgb, var(--semantic-fg-on-highlight) 10%, transparent);
+  }
+
+  .home-stage {
+    min-height: calc(100dvh - var(--primitive-size-nav) - (var(--primitive-layout-l40) * 2));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--primitive-layout-l64);
+  }
+  @media (min-width: 768px) {
+    .home-stage {
+      min-height: calc(100dvh - var(--primitive-size-nav) - (var(--primitive-layout-l64) * 2));
+    }
+  }
+  @media (min-width: 1024px) {
+    .home-stage {
+      min-height: calc(100dvh - var(--primitive-size-nav) - (var(--primitive-layout-l80) * 2));
+    }
+  }
+
+  /* Steps up the scale. No clamps. */
   .home-hero__title {
-    margin: 0 0 var(--primitive-space-sp600);
-    max-width: 16ch;
+    /* The accent bar is painted in padding under the last word, and that
+       padding hangs out of the line box. This gap keeps it off the standfirst. */
+    margin: 0 0 var(--primitive-layout-l48);
+    max-width: 14ch;
     font: var(--type-display-s);
     letter-spacing: var(--type-display-s-tracking);
     color: var(--semantic-fg-primary);
     text-wrap: balance;
   }
   @media (min-width: 768px) {
-    .home-hero__title { font: var(--type-display-m); letter-spacing: var(--type-display-m-tracking); }
+    .home-hero__title {
+      max-width: 16ch;
+      font: var(--type-display-m);
+      letter-spacing: var(--type-display-m-tracking);
+    }
   }
   @media (min-width: 1024px) {
-    .home-hero__title { font: var(--type-display-l); letter-spacing: var(--type-display-l-tracking); }
+    .home-hero__title {
+      max-width: 16ch;
+      font: var(--type-display-xl);
+      letter-spacing: var(--type-display-xl-tracking);
+    }
   }
 
   /*
-    32ch, not the usual 52ch, and fg/primary rather than fg/secondary. Both are
-    forced by the unscrimmed hero and both were measured, glyph by glyph:
-
-    - fg/secondary is #717173 in this tonality, a grey built for 4.87:1 on pure
-      white. The image's wall is not pure white, so it fails AA on 100% of its
-      glyph pixels at every width tested. There is no width that rescues it.
-    - At 52ch the line runs off the plain wall into the frosted square and the
-      navy behind it: 12.4% of glyph pixels fail even at fg/primary. 40ch still
-      fails 4.5%. 32ch is the first clean width, at 8.92:1.
-
-    Hierarchy comes from size here instead of colour, which is the trade a
-    scrimless hero makes.
+    The bar sits under the word, in the padding. It used to start at 86% and
+    run through the bottoms of the letters. Those letters are paper, and
+    paper on this pale bar is about 1:1. The marker is not text, so it can
+    stay pale once it is clear of the glyphs.
   */
+  .home-hero__accent {
+    font-family: var(--type-accent-italic-family);
+    font-weight: var(--type-accent-italic-weight);
+    font-style: normal;
+    letter-spacing: var(--type-accent-italic-tracking);
+    padding-bottom: 0.2em;
+    background-image: linear-gradient(
+      118deg,
+      color-mix(in srgb, var(--primitive-deesyn-sage) 78%, var(--semantic-fg-on-ink)),
+      color-mix(in srgb, var(--semantic-highlight) 34%, var(--semantic-fg-on-ink))
+    );
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    /* Full bar until the motion script wipes it. Missing JS keeps the bar. */
+    --accent-wipe: 100%;
+    background-size: var(--accent-wipe) 0.1em;
+  }
+  /* Secondary is the band's own. The old 32ch cap was for type on the photograph. */
   .home-hero__standfirst {
     margin: 0;
-    max-width: 32ch;
+    max-width: 36ch;
     font: var(--type-body-l);
     letter-spacing: var(--type-body-l-tracking);
-    color: var(--semantic-fg-primary);
+    color: var(--semantic-fg-secondary);
     text-wrap: pretty;
   }
   @media (min-width: 768px) {
     .home-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
   }
 
+  /* Lime is a surface. Navy on it clears the pale ground; paper on it does not. */
+  .home-hero__actions .button[data-variant='secondary'] {
+    background: var(--semantic-bg-highlight);
+    color: var(--semantic-fg-on-highlight);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .home-hero__actions .button[data-variant='secondary']:hover {
+      background: color-mix(in srgb, var(--semantic-bg-highlight) 82%, var(--semantic-fg-on-highlight));
+    }
+  }
+
+  .home-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--primitive-space-sp400);
+    margin-top: var(--primitive-space-sp800);
+  }
+
+  .archive {
+    list-style: none;
+    margin: var(--primitive-layout-l128) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--primitive-layout-l48) var(--primitive-space-sp600);
+    scroll-margin-top: calc(var(--primitive-size-nav) + var(--primitive-space-sp600));
+  }
+  /* Eight covers, one shape. Two columns, so a row never ends on a single hole. */
+  @media (min-width: 768px) {
+    .archive { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .archive__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    height: 100%;
+    color: var(--semantic-fg-primary);
+    background: var(--semantic-bg-surface);
+    border-radius: var(--primitive-radius-r32);
+    overflow: hidden;
+    transition: transform var(--semantic-duration-press) var(--semantic-easing-out);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .archive__link {
+    color: inherit;
+    text-decoration: none;
+    touch-action: manipulation;
+  }
+  .archive__link::after { content: ''; position: absolute; inset: 0; }
+  .archive__card:has(.archive__link:focus-visible) {
+    outline: 2px solid var(--semantic-border-focus);
+    outline-offset: 4px;
+    border-radius: var(--primitive-radius-r32);
+  }
+  .archive__link:focus-visible { outline: none; }
+  .archive__card:has(.archive__link:active) { transform: scale(0.985); }
+  .archive__media {
+    position: relative;
+    overflow: hidden;
+    flex: none;
+    border-radius: var(--primitive-radius-r32);
+    background: var(--semantic-bg-subtle);
+  }
   /*
-    Two columns at most, whatever the count, so a third tile drops underneath
-    the first two rather than squeezing the row to thirds.
+    The tag sits on the picture, bottom left, the same place as a case study.
+    The widget wash disappears on a photograph, so the chip takes the surface.
+    The bottom inset matches the case-study chips: close to the corner,
+    still on the picture.
+  */
+  .archive__tag {
+    position: absolute;
+    z-index: 1;
+    left: var(--primitive-space-sp500);
+    bottom: var(--primitive-space-sp600);
+    max-width: calc(100% - 2 * var(--primitive-space-sp500));
+    pointer-events: none;
+  }
+  .archive__tag .tag {
+    background: var(--semantic-bg-surface);
+    color: var(--semantic-fg-primary);
+    border: 1px solid var(--semantic-border-strong);
+  }
+  .archive__media img {
+    --pan-x: 0px;
+    --pan-y: 0px;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transform: translate3d(var(--pan-x), var(--pan-y), 0);
+    transition: transform var(--semantic-duration-dropdown) var(--semantic-easing-out);
+  }
+  /* The scale makes room for the pointer shift. Both live on one transform so they do not fight. */
+  @media (hover: hover) and (pointer: fine) {
+    .archive__card:hover .archive__media img {
+      transform: translate3d(var(--pan-x), var(--pan-y), 0) scale(1.06);
+    }
+  }
+  .archive__title {
+    width: fit-content;
+    font-family: var(--type-heading-m-family);
+    font-weight: var(--type-heading-m-weight);
+    font-size: var(--type-heading-m-size);
+    letter-spacing: var(--type-heading-m-tracking);
+    line-height: var(--type-heading-m-line);
+    text-wrap: balance;
+    background-image: linear-gradient(var(--semantic-highlight), var(--semantic-highlight));
+    background-repeat: no-repeat;
+    background-position: 0 92%;
+    background-size: 0 0.42em;
+    transition: background-size var(--semantic-duration-dropdown) var(--semantic-easing-out);
+  }
+  @media (min-width: 768px) {
+    .archive__title {
+      font-size: var(--type-heading-l-size);
+      letter-spacing: var(--type-heading-l-tracking);
+    }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .archive__card:hover .archive__title { background-size: 100% 0.42em; }
+  }
+  .archive__card:has(.archive__link:focus-visible) .archive__title { background-size: 100% 0.42em; }
+  .archive__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--primitive-space-sp200);
+    padding: var(--primitive-space-sp1000);
+  }
+  .archive__summary {
+    margin: 0;
+    max-width: 36ch;
+    font: var(--type-body-l);
+    letter-spacing: var(--type-body-l-tracking);
+    color: var(--semantic-fg-secondary);
+    text-wrap: pretty;
+  }
+  /*
+    The same circled arrow as a case-study tile. A span, not a button: the title
+    is already the link, and a button here would be a second control for the
+    same destination. The circle never receives the pointer. The card does.
 
-    This replaced a set of rules that picked the column count from how many
-    tiles the brand could see, which is why `data-count` and a `data-count-<brand>`
-    per brand used to be emitted here. Three across was tried and read as
-    cramped: a case-study tile carries a cover, a title and a summary, and at a
-    third of the measure the summary breaks to five or six lines while the cover
-    loses the detail that makes it worth showing.
+    Space above the circle belongs on the flex gap, not as padding on the cue.
+    The cue is the icon-button, and padding on that fixed-height box shifts the
+    glyph down inside the circle.
+  */
+  .archive__cue {
+    align-self: flex-end;
+    margin-top: auto;
+    pointer-events: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .archive__card:hover .archive__cue[data-variant='secondary'] {
+      background: var(--semantic-action-secondary-bg-hover);
+    }
+  }
+  .archive__card:has(.archive__link:active) .archive__cue { transform: scale(0.97); }
 
-    Capping at two also deletes a whole class of bug rather than fixing another
-    instance of it. The count rules had to be written once per brand and guarded
-    with :root:not(...) so that two counts could not match at once, because
-    `display: none` removes a grid item but cannot remove a track, so a tile
-    hidden from one brand still left a column behind on that brand's hostname.
-    None of that reasoning is needed once the track count stops depending on how
-    many things a brand sees. A ragged last row is the correct trade: it is what
-    a list of three looks like, and it costs nothing to read.
+  /*
+    A loop, not an interaction. The duration scale tops out at 800ms, which
+    would blur the marks, so the period stays a literal. The clone makes the
+    -50% land on an identical list. The start inset keeps the first mark out
+    of the edge fade, and the trailing space is the gap minus that inset, so
+    the seam equals the gap between marks.
+  */
+  /*
+    The wash is the band behind this row. The marks take the signal
+    colour so they stay readable on the lime at the foot.
+  */
+  .home-stage .clients {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-top: 0;
+    color: var(--semantic-fg-on-highlight);
+  }
+  .home-stage .clients__item,
+  .home-stage .clients__svg {
+    color: var(--semantic-fg-on-highlight);
+  }
+  /*
+    The row runs full-bleed, and the fade starts at the measure, not at the
+    screen. --measure-inline is the page padding, and past the max width the
+    centred column adds the same gutter the type uses. Outside that the marks
+    are gone, so the margin matches the rest of the page.
+  */
+  .clients__viewport {
+    --clients-gutter: max(
+      var(--measure-inline),
+      calc((100% - var(--primitive-size-max-width)) / 2 + var(--measure-inline))
+    );
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    overflow: hidden;
+    mask-image: linear-gradient(
+      90deg,
+      transparent var(--clients-gutter),
+      black calc(var(--clients-gutter) + var(--primitive-layout-l48)),
+      black calc(100% - var(--clients-gutter) - var(--primitive-layout-l48)),
+      transparent calc(100% - var(--clients-gutter))
+    );
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent var(--clients-gutter),
+      black calc(var(--clients-gutter) + var(--primitive-layout-l48)),
+      black calc(100% - var(--clients-gutter) - var(--primitive-layout-l48)),
+      transparent calc(100% - var(--clients-gutter))
+    );
+  }
+  .clients__track {
+    display: flex;
+    width: max-content;
+  }
+  .clients__list {
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-layout-l64);
+    margin: 0;
+    /* Start inset keeps the first mark out of the edge fade. The trailing
+       space is the gap minus that inset, so the seam between the two lists
+       equals the gap between marks. */
+    padding: 0 calc(var(--primitive-layout-l64) - var(--primitive-layout-l48)) 0 var(--primitive-layout-l48);
+    list-style: none;
+  }
+  .clients__item {
+    display: flex;
+    align-items: center;
+    flex: none;
+    color: var(--semantic-fg-primary);
+  }
+  /*
+    Heights are optical. A thin wide word is taller than a short heavy one,
+    so they carry the same weight. Expedia Group is stacked: the symbol is
+    about three quarters of the mark and the word sits under it. 56px puts
+    that symbol a step above the wordmarks and leaves the word readable.
+  */
+  .clients__svg {
+    display: block;
+    height: 24px;
+    width: auto;
+    color: var(--semantic-fg-primary);
+  }
+  .clients__svg[data-mark='expedia-group'] { height: 56px; }
+  .clients__svg[data-mark='vrbo'] { height: 28px; }
+  .clients__svg[data-mark='viaplay'] { height: 26px; }
+  .clients__svg[data-mark='sky'] { height: 22px; }
+  .clients__svg[data-mark='ziggo-group'] { height: 30px; }
+  .clients__svg[data-mark='turner'] { height: 36px; }
+  .clients__betfair {
+    display: block;
+    height: 22px;
+    width: auto;
+    aspect-ratio: 143 / 20;
+    background: currentColor;
+    mask: var(--betfair) center / contain no-repeat;
+    -webkit-mask: var(--betfair) center / contain no-repeat;
+  }
+  .clients__grabbd {
+    display: block;
+    height: 34px;
+    width: auto;
+  }
+  .clients__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .clients__name--shown {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    font: var(--type-heading-s);
+    letter-spacing: var(--type-heading-s-tracking);
+    white-space: nowrap;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .clients__track {
+      animation: clients-roll 48s var(--semantic-easing-linear) infinite;
+    }
+  }
+  .clients__viewport:hover .clients__track,
+  .clients__viewport:focus-within .clients__track {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .clients__viewport {
+      overflow-x: auto;
+      mask-image: none;
+      -webkit-mask-image: none;
+    }
+    .clients__list + .clients__list { display: none; }
+  }
+  @keyframes clients-roll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /*
+    Arrivals are GSAP, in home-motion.ts. They are not set here, because a
+    fill of "both" would hide the type before the script runs.
+  */
+  @media (prefers-reduced-motion: reduce) {
+    .archive__card,
+    .archive__media img,
+    .archive__title,
+    .archive__cue,
+    .work .tile__media img { transition: none; }
+    .archive__card:has(.archive__link:active) { transform: none; }
+    .archive__card:has(.archive__link:active) .archive__cue { transform: none; }
+    .archive__card:hover .archive__media img,
+    .work .tile:hover .tile__media img { transform: none; }
+  }
+  html.lenis { scroll-behavior: auto; }
+
+  /*
+    Three reading cards, the same shape. Two columns, so the third drops
+    under the first pair rather than squeezing the summary to a third of the measure.
   */
   .work {
     list-style: none;
@@ -489,12 +1034,166 @@ const covers = new Map(
     padding: 0;
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--primitive-layout-l64);
+    gap: var(--primitive-layout-l48);
+    scroll-margin-top: calc(var(--primitive-size-nav) + var(--primitive-space-sp600));
   }
   @media (min-width: 768px) {
-    .work {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--primitive-layout-l48);
+    .work { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .work .tile[data-variant='card'] { border-radius: var(--primitive-radius-r32); }
+  /*
+    The cover is its own rounded picture, the same r32 as the project images
+    below. The card variant otherwise zeroes the frame so the photo bleeds,
+    which leaves the bottom of the picture square.
+  */
+  .work .tile[data-variant='card'] .tile__media,
+  .work .tile[data-variant='card'] .tile__media .media__frame {
+    border-radius: var(--primitive-radius-r32);
+  }
+  /*
+    Same picture motion as the archive covers: a small drift toward the pointer,
+    then a slight scale. The card clips it. The frame itself stays still, or the
+    two scales stack.
+  */
+  .work .tile__media img {
+    --pan-x: 0px;
+    --pan-y: 0px;
+    transform: translate3d(var(--pan-x), var(--pan-y), 0);
+    transition: transform var(--semantic-duration-dropdown) var(--semantic-easing-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .work .tile:hover .tile__media .media__frame,
+    .work .tile[data-variant='card']:hover .tile__media .media__frame { transform: none; }
+    .work .tile:hover .tile__media img {
+      transform: translate3d(var(--pan-x), var(--pan-y), 0) scale(1.06);
+    }
+  }
+  .work > li[data-tint='sky'] .tile[data-variant='card'] {
+    background: var(--primitive-deesyn-sky);
+    border-color: transparent;
+  }
+  .work > li[data-tint='sage'] .tile[data-variant='card'] {
+    background: var(--semantic-tint-sage);
+    border-color: transparent;
+  }
+  .work > li[data-tint='coral'] .tile[data-variant='card'] {
+    background: var(--primitive-deesyn-coral);
+    border-color: transparent;
+  }
+  /*
+    The pale rooms are a light-mode idea. In the dark theme they settle into
+    the navy, with just enough of the same colour left to tell them apart.
+    Sage already flips through its own token.
+  */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .work > li[data-tint='sky'] .tile[data-variant='card'] {
+      background: color-mix(in srgb, var(--primitive-deesyn-sky) 22%, var(--primitive-deesyn-ink));
+    }
+    :root:not([data-theme='light']) .work > li[data-tint='coral'] .tile[data-variant='card'] {
+      background: color-mix(in srgb, var(--primitive-deesyn-coral) 22%, var(--primitive-deesyn-ink));
+    }
+  }
+  :root[data-theme='dark'] .work > li[data-tint='sky'] .tile[data-variant='card'] {
+    background: color-mix(in srgb, var(--primitive-deesyn-sky) 22%, var(--primitive-deesyn-ink));
+  }
+  :root[data-theme='dark'] .work > li[data-tint='coral'] .tile[data-variant='card'] {
+    background: color-mix(in srgb, var(--primitive-deesyn-coral) 22%, var(--primitive-deesyn-ink));
+  }
+  .work > li[data-tint] .tile__summary { color: var(--semantic-fg-on-tint); }
+
+  /*
+    A cool field, not a lime slab. The ground is paper. A sky mist opens
+    the top corner and the signal pools softly toward the button. Navy
+    type stays on that light ground in both themes.
+  */
+  .home-close {
+    background:
+      radial-gradient(
+        78% 160% at 108% 140%,
+        color-mix(in srgb, var(--semantic-highlight) 55%, var(--semantic-fg-on-ink)) 0%,
+        transparent 70%
+      ),
+      radial-gradient(
+        90% 140% at -12% -30%,
+        var(--primitive-deesyn-sky) 0%,
+        transparent 62%
+      ),
+      radial-gradient(
+        46% 80% at 58% 110%,
+        color-mix(in srgb, var(--primitive-deesyn-sage) 50%, transparent),
+        transparent 68%
+      ),
+      var(--semantic-fg-on-ink);
+    color: var(--semantic-fg-on-highlight);
+    padding-block: var(--primitive-layout-l80);
+  }
+  @media (min-width: 1024px) {
+    .home-close { padding-block: var(--primitive-layout-l128); }
+  }
+  /* Light sunken is already a pale ground, so a wash there melts into the close. Dark navy takes a soft trace, not a stripe. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .band[data-band='sunken'] {
+      background:
+        radial-gradient(
+          90% 80% at 50% -20%,
+          color-mix(in srgb, var(--semantic-highlight) 10%, transparent),
+          transparent 72%
+        ),
+        var(--semantic-band-sunken);
+    }
+  }
+  :root[data-theme='dark'] .band[data-band='sunken'] {
+    background:
+      radial-gradient(
+        90% 80% at 50% -20%,
+        color-mix(in srgb, var(--semantic-highlight) 10%, transparent),
+        transparent 72%
+      ),
+      var(--semantic-band-sunken);
+  }
+  .home-close__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-space-sp800);
+  }
+  .home-close h2 {
+    margin: 0;
+    max-width: 22ch;
+    font-family: var(--type-heading-l-family);
+    font-weight: var(--type-heading-l-weight);
+    font-size: var(--type-heading-l-size);
+    letter-spacing: var(--type-heading-l-tracking);
+    line-height: var(--type-heading-m-line);
+    color: var(--semantic-fg-on-highlight);
+    text-wrap: balance;
+  }
+  /*
+    The signal field does not flip. A theme-following primary button turns
+    paper-on-yellow in dark mode, which is 1.17:1 and disappears. Ink fill and
+    paper label stay put in both themes.
+  */
+  .home-close .button[data-variant='primary'] {
+    background: var(--semantic-fg-on-highlight);
+    color: var(--semantic-fg-on-ink);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .home-close .button[data-variant='primary']:hover {
+      background: var(--semantic-bg-ink-hover);
+    }
+  }
+  @media (min-width: 1024px) {
+    .home-close h2 {
+      font-family: var(--type-display-s-family);
+      font-weight: var(--type-display-s-weight);
+      font-size: var(--type-display-s-size);
+      letter-spacing: var(--type-display-s-tracking);
+      /*
+        Display leading is 1.05, for a single line. This sentence wraps, so it
+        keeps the heading line the other h2s use.
+      */
+      line-height: var(--type-heading-m-line);
     }
   }
 </style>

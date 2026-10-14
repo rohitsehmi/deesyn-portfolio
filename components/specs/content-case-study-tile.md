@@ -26,16 +26,19 @@ Implementation: `src/components/CaseStudyTile.tsx` and `src/components/CaseStudy
 | `discipline` | `string` | **yes** |
 | `href` | `string` | **yes** |
 | `variant` | `'bare' | 'card'` | no |
-| `image` | `{ src?: string; srcSet?: string; sizes?: string; alt: string; ratio?: MediaRatio }` | no |
+| `image` | `{ src?: string; srcSet?: string; srcDark?: string; srcSetDark?: string; sizes?: string; alt: string; ratio?: MediaRatio; }` | no |
 | `copyBase` | `string` | no |
+| `mark` | `string` | no |
+| `markCopyRef` | `string` | no |
 
 ### Property notes
 
 - `summary` One line that says what the problem was. It has to earn the click.
 - `discipline` The discipline this study argues for. Two studies, two disciplines.
 - `variant` `bare` groups by image and spacing, the way revolut.com does. `card` puts it on a surface with a border. Cards are the lazy grouping: the band already separates this section, and with no shadows available in site chrome a card cannot do the one thing cards are for. Kept as an option because the affordance question is real.
-- `image` Plain data rather than a ReactNode slot: JSX written inside an `.astro` expression produces an Astro template object, not a React element.
+- `image` Plain data rather than a ReactNode slot: JSX written inside an `.astro` expression produces an Astro template object, not a React element. Dark plate, when the picture itself changes with the theme.
 - `copyBase` `<file>:<path>` into src/copy for this tile's strings; `.title`, `.summary` and `.discipline` are appended. Dev tooling only — inert in a build. The same tile renders on the index and as the next-study link at the foot of the other study, both pointing at one entry in src/copy/studies.json, so editing it in either place changes both.
+- `mark` A second chip on the cover, for the homepage studies. The discipline chip stays. Absent on the next-study tile, which has no cover to put it on.
 
 ## Don't
 
@@ -53,14 +56,32 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.tile` | transition | `semantic.*.duration.press` |
 | `.tile` | transition | `semantic.*.easing.out` |
 | `.tile__media` | border-radius | `primitive.radius.r20` |
+| `.tile__media > .tile__discipline` | left | `primitive.space.sp500` |
+| `.tile__media > .tile__discipline` | bottom | `primitive.space.sp600` |
+| `.tile__media > .tile__discipline` | max-width | `primitive.space.sp500` |
+| `.tile__media > .tile__discipline .tag` | background | `semantic.*.bg.surface` |
+| `.tile__media > .tile__discipline .tag` | color | `semantic.*.fg.primary` |
+| `.tile__media > .tile__discipline .tag` | border | `semantic.*.border.strong` |
+| `.tile__media > .tile__mark` | top | `primitive.space.sp500` |
+| `.tile__media > .tile__mark` | left | `primitive.space.sp500` |
+| `.tile__media > .tile__mark` | max-width | `primitive.space.sp500` |
+| `.tile__media > .tile__mark .tag` | background | `semantic.*.highlight` |
+| `.tile__media > .tile__mark .tag` | color | `semantic.*.fg.on-highlight` |
 | `.tile__media .media__frame` | transition | `semantic.*.duration.dropdown` |
 | `.tile__media .media__frame` | transition | `semantic.*.easing.out` |
 | `.tile__body` | gap | `primitive.space.sp200` |
 | `.tile__discipline` | margin | `primitive.space.sp200` |
-| `.tile__title` | font | `typography.heading.m` |
+| `.tile__title` | font-family | `typography.heading.m` |
+| `.tile__title` | font-weight | `typography.heading.m` |
+| `.tile__title` | font-size | `typography.heading.m` |
 | `.tile__title` | letter-spacing | `typography.heading.m` |
+| `.tile__title` | line-height | `typography.heading.m` |
 | `.tile__title` | color | `semantic.*.fg.primary` |
-| `@media (min-width: 768px) { .tile__title }` | font | `typography.heading.l` |
+| `.tile__title` | background-image | `semantic.*.highlight` |
+| `.tile__title` | background-image | `semantic.*.highlight` |
+| `.tile__title` | transition | `semantic.*.duration.dropdown` |
+| `.tile__title` | transition | `semantic.*.easing.out` |
+| `@media (min-width: 768px) { .tile__title }` | font-size | `typography.heading.l` |
 | `@media (min-width: 768px) { .tile__title }` | letter-spacing | `typography.heading.l` |
 | `.tile:has(.tile__link:focus-visible)` | outline | `semantic.*.border.focus` |
 | `.tile:has(.tile__link:focus-visible)` | border-radius | `primitive.radius.r20` |

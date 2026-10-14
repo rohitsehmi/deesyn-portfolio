@@ -97,23 +97,25 @@ export function Footer({
             order relative to each other while the group still sits above the
             mark.
           */}
-          <div className="footer__links">
-            {resolved.map((l) => (
-              <ArrowLink
-                key={l.href}
-                href={l.href}
-                {...(l.external
-                  ? {
-                      target: '_blank',
-                      rel: 'noopener noreferrer',
-                      'aria-label': `${l.label}, ${NEW_TAB}`
-                    }
-                  : {})}
-              >
-                {l.label}
-              </ArrowLink>
-            ))}
-          </div>
+          {resolved.length > 0 && (
+            <div className="footer__links">
+              {resolved.map((l) => (
+                <ArrowLink
+                  key={l.href}
+                  href={l.href}
+                  {...(l.external
+                    ? {
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        'aria-label': `${l.label}, ${NEW_TAB}`
+                      }
+                    : {})}
+                >
+                  {l.label}
+                </ArrowLink>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </footer>

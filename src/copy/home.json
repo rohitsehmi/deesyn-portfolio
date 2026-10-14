@@ -1,25 +1,113 @@
 {
-  "_comment": "Editable copy for the home page. Rendered with data-copy attributes so it can be edited in the browser under `npm run dev` — see tools/copy-editor.mjs. The exceptions are heroTitle and heroStandfirst, which render with their tokens substituted and so are deliberately NOT browser-editable: see _count and _systems below, and edit them through `npm run copy:export` instead. Case study titles and summaries are not here: they live in src/data/studies.ts, which is already one readable file and is shared with the next-study rotation.",
-  "heroTitle": "{count} case studies, in full.",
-  "heroStandfirst": "{systems} on the design system, the other on product design.",
+  "_comment": "Editable copy for the home page. Rendered with data-copy attributes so it can be edited in the browser under `npm run dev` — see tools/copy-editor.mjs. The exception is heroTitle, which renders with its {count} token substituted on the partner hostnames and so is deliberately NOT browser-editable: see _count below, and edit it through `npm run copy:export` instead. Case study titles and summaries are not here: they live in src/data/studies.ts, which is already one readable file and is shared with the next-study rotation.",
+  "heroTitle": "Product and design systems.",
+  "heroAccent": "systems",
+  "heroSecondary": "See the work",
+  "studyBadge": "Case study",
+  "heroStandfirst": "The case studies are the longer reads. The earlier projects follow.",
   "_brands": "Per-brand overrides. Rendered alongside the default and chosen at runtime by [data-brand]; see base.css. Only strings that name a company belong here, which since 2026-08-26 means ALL of them: the default brand deliberately names none. Its line has to work for a stranger who reached the apex with no covering message, so it says what the site is rather than who it is for. \"In full\" is the argument the whole project rests on, that a study which skips the explorations, the testing and the numbers is a gallery entry rather than a case study.",
-  "_count": "The {count} token is how many tiles THIS brand sees, spelled as a word and substituted in index.astro. Keep the braces and never type a number: each brand is offered a different number of studies, so a typed count is right for one hostname and wrong for the rest. Not hypothetical — the Wise hero read \"Two case studies\" above a three-tile grid until 2026-08-17.",
-  "_systems": "The {systems} token is how many of THIS brand's studies argue design systems, spelled as a word and substituted in index.astro. Keep the braces and never type a number. \"the other\" asserts exactly one product-design study and the build refuses any other shape. Not hypothetical: this read \"One on the design system\" on Wise and Healf, which are both offered two of them, until 2026-08-19 — the same bug as _count one discipline across.",
+  "_count": "The {count} token is how many tiles THIS brand sees, spelled as a word and substituted in index.astro. Partner titles still carry it. The default title does not: it names the practice, and a number there would be a typed count again. A digit or a number-word in a title with no token still fails the build. Not hypothetical — the Wise hero read \"Two case studies\" above a three-tile grid until 2026-08-17.",
+  "_systems": "The standfirst stopped counting on 2026-10-14. \"{systems} case studies on design systems, and {product} on product design\" described the three case studies and ignored the earlier projects on the same page, so \"one on product design\" was no longer true of the work. It now says how the page is arranged. Do not type a number back into it: a typed \"two\" or \"one\" is how the old sentence went stale, and index.astro still refuses one.",
   "brands": {
     "wise": {
-      "heroTitle": "{count} case studies, for Wise."
+      "heroTitle": "{count} case studies, for Wise.",
+      "heroAccent": "Wise"
     },
     "healf": {
-      "heroTitle": "{count} case studies, for Healf."
+      "heroTitle": "{count} case studies, for Healf.",
+      "heroAccent": "Healf"
     },
     "ticketmaster": {
-      "heroTitle": "{count} case studies, for Ticketmaster."
+      "heroTitle": "{count} case studies, for Ticketmaster.",
+      "heroAccent": "Ticketmaster"
     },
     "asos": {
-      "heroTitle": "{count} case studies, for ASOS."
+      "heroTitle": "{count} case studies, for ASOS.",
+      "heroAccent": "ASOS"
     },
     "spotify": {
-      "heroTitle": "{count} case studies, for Spotify."
+      "heroTitle": "{count} case studies, for Spotify.",
+      "heroAccent": "Spotify"
     }
-  }
+  },
+  "_clients": "The homepage company row. Employers from the CV, plus Vrbo because scaling-a-system names it as one of the four systems, and Grabbd because that project has its own page here. Viaplay is the name on the TV work that the CV lists as Viasat. MTG is the parent Rohit named for that role. Ziggo Group is the name he gave for Chellomedia. Sky and Turner are marks he asked for; they are not lines on the CV. Partner hostnames are not in this row. Grabbd is the header mark from grabbd.gouthaman.dev, a PNG, so it stays a picture rather than a path.",
+  "clients": [
+    { "name": "Expedia Group", "mark": "expedia-group" },
+    { "name": "Expedia", "mark": "expedia" },
+    { "name": "Hotels.com", "mark": "hotels" },
+    { "name": "Vrbo", "mark": "vrbo" },
+    { "name": "Betfair", "mark": "betfair" },
+    { "name": "Viaplay", "mark": "viaplay" },
+    { "name": "MTG", "mark": "mtg" },
+    { "name": "Sky", "mark": "sky" },
+    { "name": "Ziggo Group", "mark": "ziggo-group" },
+    { "name": "Turner", "mark": "turner" },
+    { "name": "Grabbd", "mark": "grabbd" }
+  ],
+  "archive": [
+    {
+      "slug": "hotels-apps",
+      "title": "Hotels.com Apps",
+      "tag": "Product design",
+      "summary": "The Hotels.com apps, including a Google Play Editors’ Choice.",
+      "href": "/work/hotels-apps",
+      "alt": "Hands holding a phone that shows a red Hotels.com H, against a night street and a one-way sign."
+    },
+    {
+      "slug": "rebrand",
+      "title": "Global Product Rebrand",
+      "tag": "Brand",
+      "summary": "The Hotels.com brand, carried through the mobile products.",
+      "href": "/work/rebrand",
+      "alt": "The white Hotels.com wordmark and striped H over a pink sunset beach, framed by palm fronds."
+    },
+    {
+      "slug": "mobile-key",
+      "title": "Mobile Key",
+      "tag": "Product design",
+      "summary": "Keyless entry, so the room opens from the phone.",
+      "href": "/work/mobile-key",
+      "alt": "A hand holds a phone against a black hotel lock. The screen shows a green tick, Room 217, and a blue Got it button."
+    },
+    {
+      "slug": "wearables",
+      "title": "Wearables and Apple TV",
+      "tag": "Product design",
+      "summary": "A Hotels.com booking, on a watch and on Apple TV.",
+      "href": "/work/wearables",
+      "alt": "A round watch shows an upcoming booking for Buddha-Bar Hotel on Monday 30th June, with the Hotels.com H."
+    },
+    {
+      "slug": "betfair-games",
+      "title": "Betfair Games",
+      "tag": "Product design",
+      "summary": "The Betfair casino app, one of the mobile products I owned.",
+      "href": "/work/betfair-games",
+      "alt": "A white phone showing the Betfair Casino lobby, with game tiles including Iron Man 3 and Pink Panther."
+    },
+    {
+      "slug": "betfair-sportsbook",
+      "title": "Betfair Sportsbook",
+      "tag": "Product design",
+      "summary": "The Betfair sportsbook, from the same set of mobile apps.",
+      "href": "/work/betfair-sportsbook",
+      "alt": "A black phone showing the Betfair football coupon with green odds, beside a composite of players in red."
+    },
+    {
+      "slug": "grabbd",
+      "title": "Grabbd",
+      "tag": "Product design",
+      "summary": "A home screen for Grabbd.",
+      "href": "/work/grabbd",
+      "alt": "A black Android phone on a blue ground, home screen open on the Grabbd icon."
+    },
+    {
+      "slug": "tv",
+      "title": "TV",
+      "tag": "Product design",
+      "summary": "Viasat Film recommendations, from my years at MTG.",
+      "href": "/work/tv",
+      "alt": "Two tablets showing the Viasat Film recommendations screen, with This is the End as the featured title."
+    }
+  ]
 }

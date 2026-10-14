@@ -2,9 +2,11 @@
   height: var(--primitive-size-nav);
   display: flex;
   align-items: center;
-  transition:
-    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
-    border-color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+  /*
+    Leaving the top is the long settle. Coming back is the short one: the
+    destination state's transition is the one that runs, so `top` is snappy
+    and `scrolled` keeps the drawer curve.
+  */
   border-bottom: 1px solid transparent;
 }
 
@@ -23,10 +25,20 @@
 /* Holds the height the fixed header gives up. */
 .nav__spacer { height: var(--primitive-size-nav); }
 
-.nav[data-state='top'] { background: transparent; }
+.nav[data-state='top'] {
+  background: transparent;
+  transition:
+    background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    border-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    height var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
 .nav[data-state='scrolled'] {
   background: var(--semantic-bg-canvas);
   border-bottom-color: var(--semantic-border-subtle);
+  transition:
+    background-color var(--semantic-duration-counter) var(--semantic-easing-drawer),
+    border-color var(--semantic-duration-counter) var(--semantic-easing-drawer),
+    height var(--semantic-duration-counter) var(--semantic-easing-drawer);
 }
 
 /* Layout only. Width and gutters come from `.measure`, which is what keeps the
@@ -39,8 +51,30 @@
 /* The lockup's letterforms occupy y 7..39 of its 48px artwork, so at a given
    box height they render at two thirds of it. 32 puts them at 21px, which is
    where the wordmark alone used to sit at height 22. */
-.nav__logo { display: inline-flex; color: var(--semantic-fg-primary); margin-right: auto; }
+.nav__logo { display: inline-flex; color: var(--semantic-fg-primary); margin-right: auto; text-decoration: none; }
 .nav__logo .logo { height: var(--primitive-size-s32); width: auto; }
+.nav[data-state='top'] .nav__logo .logo,
+.nav[data-state='top'] .nav__logo .logo-brand,
+.nav[data-state='top'] .nav__logo .logo-brand__x,
+.nav[data-state='top'] .nav__logo .logo-brand__word {
+  transition:
+    height var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    width var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    gap var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    font-size var(--semantic-duration-dropdown) var(--semantic-easing-out),
+    letter-spacing var(--semantic-duration-dropdown) var(--semantic-easing-out);
+}
+.nav[data-state='scrolled'] .nav__logo .logo,
+.nav[data-state='scrolled'] .nav__logo .logo-brand,
+.nav[data-state='scrolled'] .nav__logo .logo-brand__x,
+.nav[data-state='scrolled'] .nav__logo .logo-brand__word {
+  transition:
+    height var(--semantic-duration-counter) var(--semantic-easing-drawer),
+    width var(--semantic-duration-counter) var(--semantic-easing-drawer),
+    gap var(--semantic-duration-counter) var(--semantic-easing-drawer),
+    font-size var(--semantic-duration-counter) var(--semantic-easing-drawer),
+    letter-spacing var(--semantic-duration-counter) var(--semantic-easing-drawer);
+}
 .nav__logo:focus-visible { outline: 2px solid var(--semantic-border-focus); outline-offset: 4px; border-radius: 4px; }
 .nav__links { display: none; gap: var(--primitive-space-sp200); }
 .nav__actions { display: none; }
@@ -54,22 +88,26 @@
 
 .nav__link, .nav__cta { display: inline-flex; }
 
-/* ---- the CTA's glow --------------------------------------------------------
+/* ---- the CTA's ring --------------------------------------------------------
 
-  A rotating conic ring behind the one primary action, on hover and focus only.
+  An arc that sweeps once around the one primary action, on hover and focus.
 
   Hover-only is the whole design, not a compromise. The motion spec opens with
   "frequency decides before taste does", and its gate rates a fixed nav — on
-  every page of every visit — at 100+/day, which resolves to `none`. A ring
-  looping there sits beside whatever someone is trying to read for as long as
+  every page of every visit — at 100+/day, which resolves to `none`. An arc
+  turning there sits beside whatever someone is trying to read for as long as
   they read it. Hovering Contact is the other end of that table: it happens
   once, if at all, at the moment someone decides to get in touch. `rare` earns
   `delight`.
 
-  Two departures from the version this came from, both from the same rule set.
-  It is a ring rather than a bloom, because there is no box-shadow in site
-  chrome — depth is banding and luminance. And it runs on the site's own accent
-  rather than a rainbow, because a rainbow is someone else's brand.
+  It is a stroke, not a bloom. There is no box-shadow in site chrome, and a
+  blurred disc reads as a glow. The mask keeps the conic gradient to the
+  padding, so what you see is a line with a gap between it and the pill.
+
+  The arc is one solid colour with a hard stop. Fading it toward transparent
+  runs the colour through black, and the tail goes grey. The colour itself
+  follows the bar: ink on the paper bar, lime when the bar is transparent over
+  the navy hero. The page sets that with --nav-cta-arc.
 
   One rule it genuinely bends: "animate transform and opacity only". This
   interpolates an angle that drives a background, so it repaints rather than
@@ -82,41 +120,95 @@
   inherits: false;
 }
 
-.nav__cta { position: relative; border-radius: var(--primitive-radius-round); isolation: isolate; }
+.nav__cta {
+  position: relative;
+  border-radius: var(--primitive-radius-round);
+  isolation: isolate;
+  --nav-cta-arc: var(--semantic-fg-primary);
+}
 
 .nav__cta::before {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: calc((var(--primitive-space-sp100) + var(--primitive-size-s2)) * -1);
   z-index: -1;
   border-radius: inherit;
+  padding: var(--primitive-size-s2);
   background: conic-gradient(
     from var(--nav-cta-angle),
-    transparent 0deg,
-    var(--semantic-action-accent-bg) 60deg,
-    var(--semantic-fg-link) 120deg,
-    transparent 200deg
+    var(--nav-cta-arc) 0deg,
+    var(--nav-cta-arc) 140deg,
+    transparent 140deg
   );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
   opacity: 0;
-  transition: opacity var(--semantic-duration-press) var(--semantic-easing-out);
+  /*
+    The angle waits out the fade before it snaps home, so the arc does not
+    rewind while it is still visible. The sweep itself is only declared on
+    hover, where it should run.
+  */
+  transition:
+    opacity var(--semantic-duration-press) var(--semantic-easing-out),
+    --nav-cta-angle 0s linear var(--semantic-duration-press);
 }
 
-@keyframes nav-cta-spin { to { --nav-cta-angle: 360deg; } }
-
 /*
+  One sweep, not a loop. A 3s linear lap crawled next to hovers that finish
+  in 160ms, and a ring that keeps turning reads as a spinner. Ease-out on
+  the counter duration starts at the same pace as the other buttons and
+  settles. 360deg lands on the same arc it left, so the end is invisible.
+
   :focus-within, not just :hover — a keyboard user gets the same affordance.
   The motion rule against animating keyboard-initiated actions is about the
   action itself; this is the target advertising that it is focused, and it is
   the same treatment the pointer gets.
 */
 @media (hover: hover) and (pointer: fine) {
-  .nav__cta:hover::before { opacity: 1; animation: nav-cta-spin 3s linear infinite; }
+  .nav__cta:hover::before {
+    opacity: 1;
+    --nav-cta-angle: 360deg;
+    transition:
+      opacity var(--semantic-duration-press) var(--semantic-easing-out),
+      --nav-cta-angle var(--semantic-duration-counter) var(--semantic-easing-out);
+  }
 }
-.nav__cta:focus-within::before { opacity: 1; animation: nav-cta-spin 3s linear infinite; }
+.nav__cta:focus-within::before {
+  opacity: 1;
+  --nav-cta-angle: 360deg;
+  transition:
+    opacity var(--semantic-duration-press) var(--semantic-easing-out),
+    --nav-cta-angle var(--semantic-duration-counter) var(--semantic-easing-out);
+}
 
-/* Keep the opacity, drop the movement. */
+/* Keep the arc, drop the sweep. The bar still changes colour; it does not grow or shrink. */
 @media (prefers-reduced-motion: reduce) {
-  .nav__cta::before { animation: none !important; }
+  .nav__cta::before,
+  .nav__cta:hover::before,
+  .nav__cta:focus-within::before {
+    transition: opacity var(--semantic-duration-press) var(--semantic-easing-out);
+  }
+  .nav,
+  .nav[data-state='top'],
+  .nav[data-state='scrolled'] { transition-property: background-color, border-color; }
+  .nav__logo .logo,
+  .nav__logo .logo-brand,
+  .nav__logo .logo-brand__x,
+  .nav__logo .logo-brand__word,
+  .nav[data-state='top'] .nav__logo .logo,
+  .nav[data-state='top'] .nav__logo .logo-brand,
+  .nav[data-state='top'] .nav__logo .logo-brand__x,
+  .nav[data-state='top'] .nav__logo .logo-brand__word,
+  .nav[data-state='scrolled'] .nav__logo .logo,
+  .nav[data-state='scrolled'] .nav__logo .logo-brand,
+  .nav[data-state='scrolled'] .nav__logo .logo-brand__x,
+  .nav[data-state='scrolled'] .nav__logo .logo-brand__word { transition: none; }
 }
 
 /* ---------------------------------------------------------------------------

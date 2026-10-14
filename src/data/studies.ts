@@ -18,7 +18,8 @@
 import copy from '../copy/studies.json';
 import { BRANDS, DEFAULT_BRAND, type Brand } from './brands';
 import coverMachineReadable from '../assets/cover-machine-readable-components.png';
-import coverSearch from '../assets/cover-search-experience.png';
+import coverApp from '../assets/hcom-exploration-gallery-light.png';
+import coverAppDark from '../assets/hcom-exploration-gallery-dark.png';
 import coverScaling from '../assets/cover-scaling-a-system.png';
 
 export interface Study {
@@ -26,11 +27,12 @@ export interface Study {
   title: string;
   summary: string;
   /**
-   * Index tile cover. Abstract by intent — it sets a tone and distinguishes one
-   * study from the other at a glance. It is not evidence and must never be
-   * mistaken for a screenshot of the work.
+   * Index tile cover. A capture of the work when one exists, including the
+   * dark plate when the picture itself changes with the theme. A composed
+   * picture only where there is no photograph, and that one must not be read
+   * as a screenshot.
    */
-  cover?: { src: ImageMetadata; alt: string };
+  cover?: { src: ImageMetadata; srcDark?: ImageMetadata; alt: string; ratio?: '16-9' | '4-3' };
   /**
    * The discipline this study argues for. Two studies arguing one discipline
    * means one of them is doing no work, which is visible on the index because
@@ -74,23 +76,22 @@ export interface Study {
 type StudySlug = Exclude<keyof typeof copy, '_comment'>;
 
 /** Structure only. Everything a reader sees comes from src/copy/studies.json. */
-const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; brands?: Brand[] }[] = [
+const order: {
+  slug: StudySlug;
+  coverSrc?: ImageMetadata;
+  coverDark?: ImageMetadata;
+  coverRatio?: '16-9' | '4-3';
+  archived?: boolean;
+  brands?: Brand[];
+}[] = [
   { slug: 'machine-readable-components', coverSrc: coverMachineReadable },
   /*
-    Shares cover-search-experience.png with the archived study of that name, and
-    that is now correct rather than borrowed. The comment here used to call it
-    off-subject on the grounds that it depicts search, which was the study this
-    one replaced. That stopped being true the moment the two were read as one
-    argument: search's material IS this study, so a picture of a results list,
-    a detail view, filters and a bar chart is exactly its subject.
-
-    Both entries carry the same alt text, which is right and not duplication to
-    tidy away: alt describes the image, and it is one image.
-
-    Still a placeholder in the sense that every cover here is, and a cover of
-    its own would be better. It is no longer wrong.
+    The cover is the shipped Hotels.com comparison this study argues from:
+    one photo against a gallery, on the picture's own 4:3 so the type is not
+    cropped. Light and dark are a pair because the plate is part of the
+    artwork. The sage still life that stood here depicted no screen.
   */
-  { slug: 'making-the-app-testable', coverSrc: coverSearch },
+  { slug: 'making-the-app-testable', coverSrc: coverApp, coverDark: coverAppDark, coverRatio: '4-3' },
   /*
     DELETED 2026-09-01, and it is the second exception to the never-delete rule
     after `wise-placeholder`. Archived 2026-08-06 and kept for weeks on the
@@ -112,7 +113,8 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
 
     Its material otherwise IS `making-the-app-testable` above — the dynamic card
     framework, the three adaptive layouts, the recap test that lost and was
-    retested. The cover is shared with it and stays.
+    retested. The shared still-life cover came off that study on 2026-10-13;
+    the tile now uses the real screens.
 
     /work/search-experience redirects there in vercel.json rather than 404ing,
     for the same reason unmatched hostnames redirect: the URL has been live and
@@ -128,8 +130,8 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
 
     Cover added 2026-08-17, and it is this study's own rather than borrowed:
     four panels feeding one lit tile feeding four labelled cards, which is the
-    argument the page makes. Red, where the other two are violet and sage, so
-    the three are told apart at a glance on the index.
+    argument the page makes. There is no photograph of this work, so the
+    composed picture stays. It must not be read as a screenshot.
 
     EVERY BRAND, since 2026-09-01, which is why there is no `brands` field
     here at all. It was scoped to the partner hostnames from 2026-08-17 and
@@ -150,20 +152,23 @@ const order: { slug: StudySlug; coverSrc?: ImageMetadata; archived?: boolean; br
     "Three case studies" on its own; the index grid has been capped at two
     columns since 2026-08-17, so the third tile drops underneath rather than
     needing a per-brand track count; and the next-study band groups brands by
-    the study they land on. The one thing that DID move is the standfirst's
-    `{systems}` token, which now resolves to "Two" on the apex.
+    the study they land on. The standfirst's `{systems}` token moved to "Two"
+    on the apex. That sentence was replaced on 2026-10-14: it counted the case
+    studies and ignored the earlier projects on the same page.
   */
   { slug: 'scaling-a-system', coverSrc: coverScaling }
 ];
 
-export const studies: Study[] = order.map(({ slug, coverSrc, archived, brands }) => {
+export const studies: Study[] = order.map(({ slug, coverSrc, coverDark, coverRatio, archived, brands }) => {
   const c = copy[slug];
   return {
     slug,
     title: c.title,
     summary: c.summary,
     discipline: c.discipline,
-    ...(coverSrc ? { cover: { src: coverSrc, alt: c.coverAlt } } : {}),
+    ...(coverSrc
+      ? { cover: { src: coverSrc, ...(coverDark ? { srcDark: coverDark } : {}), alt: c.coverAlt, ...(coverRatio ? { ratio: coverRatio } : {}) } }
+      : {}),
     ...(archived ? { archived } : {}),
     ...(brands ? { brands } : {})
   };
