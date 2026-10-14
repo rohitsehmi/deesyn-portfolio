@@ -1,7 +1,7 @@
 {
   "_comment": "All the copy for /work/making-the-app-testable, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. Keys are stable — renaming one orphans the string on the page. The study draws on three initiatives kept separate elsewhere (A Contextual Home, Search Experience, Small Enhancements) because they are one argument: two structural rebuilds that made testing possible, and the programme that ran through them.",
   "title": "The app that could not be tested",
-  "standfirst": "Hotels.com's two most valuable screens were both fixed layouts, so nothing on them could vary and nothing could be learned from them. Rebuilding both as systems is what turned the app into something the team could run a continuous testing programme through.",
+  "standfirst": "The home and the results page were both fixed layouts, so nothing on them could vary and nothing could be learned from them. Rebuilding both as systems let the team run a continuous testing programme.",
   "contribution": [
     {
       "term": "Role",
@@ -22,9 +22,9 @@
   ],
   "problem": {
     "heading": "The problem",
-    "standfirst": "A layout that cannot vary cannot be tested, and these were the two screens where testing mattered most.",
+    "standfirst": "Around 165,000 bookings a day, in 90 points of sale, and every one of them started on those two screens.",
     "paras": [
-      "Hotels.com sells in 90 points of sale and 41 languages, lists properties in over 200 countries, and takes around 165,000 bookings a day. Every one of those customers met the same two screens, a dated and static home, and a search results page built on a fixed card framework.",
+      "Hotels.com sells in 41 languages and lists properties in over 200 countries. The two screens were a dated, static home, and a search results page on a fixed card.",
       "Both were arrangements rather than systems. Nothing on either could respond to who was looking or what they were in the middle of, and because nothing could vary, no question about what a traveller actually needed to see could be answered. The app shipped on judgement and defended it afterwards.",
       "A booking made again in the app avoided a cost we often paid on the first one, through Google or a comparison site. Hotel chains wanted those same travellers, and they offered member rates. The home barely showed the two reasons to come back: Secret Prices, and Rewards.",
       "On the old iOS home, 15% of visits reached a hotel page, 12% reached sign in, and 12% reached an upcoming booking. That is the control group from the iOS test, October to November 2016."
@@ -32,30 +32,30 @@
   },
   "process": {
     "heading": "How it was worked out",
-    "standfirst": "Rebuild both screens as systems, then run everything through one programme rather than shipping one-off launches.",
-    "openingPara": "The home moved from a fixed layout to a modular and scalable one, with a single brand language holding it together across iOS and Android, and it was the first personalisation work the company had done. Search results moved from static cards to dynamic ones, so that a card could carry different amounts of content in the same slot. Neither was a visual exercise, and both were about making the screen capable of holding a variation. Android went first, in April 2016, with nine personalised cards, on the hope that engagement would lift bookings. iOS followed in October, moving onto the same cards with a narrower aim: hold the booking rate.",
+    "standfirst": "One programme for both screens, instead of a separate launch for each idea.",
+    "openingPara": "The home moved from a fixed layout to a modular and scalable one, with a single brand language holding it together across iOS and Android, and it was the first personalisation work the company had done. Search results moved from static cards to dynamic ones, so that a card could carry different amounts of content in the same slot. Android went first, in April 2016, with nine personalised cards, on the hope that engagement would lift bookings. iOS followed in October, moving onto the same cards with a narrower aim: hold the booking rate.",
     "principle": {
       "_note": "One paragraph, three editable parts, because the middle is emphasised. Editing is plain text, so a <strong> inside a single string would be stripped the first time anyone touched it.",
       "before": "What ran through them was a standing programme across product, design, engineering and analytics, built to fail fast and iterate. Its operating principle, in the words used at the time: ",
       "quote": "create a hypothesis to give us an opportunity to learn, not to predict.",
-      "after": " That distinction is what makes a losing test useful rather than embarrassing, and it is why the one below was kept rather than quietly dropped."
+      "after": " A losing test can still teach something, which is why the one below stayed in."
     },
     "closingPara": "The 2019 refresh pushed the same idea further: a global rebrand with parity across platforms, machine learning behind modules like recommended destinations and travel guides, and a shift towards content before, during and after a trip rather than only at the point of booking.",
     "explorationsHeading": "Three tests, and what each one settled",
     "explorations": [
       {
         "title": "A richer image gallery, on Android",
-        "why": "Won. One test, with a single fixed photograph as the control and one variant showing three. Conversion moved, gallery interaction moved by a great deal more, and the gap between those two is the part worth keeping, because it says travellers had wanted the photographs all along and the old arrangement had been rationing them to one. It also sent better-qualified shoppers through to the booking form rather than simply more of them.",
+        "why": "Won. One test, with a single fixed photograph as the control and one variant showing three. Conversion moved, and gallery interaction moved by a great deal more. Travellers had wanted the photographs, and the old arrangement had been showing them one. It also sent better-qualified shoppers through to the booking form, not simply more of them.",
         "imageAlt": "One test on the Hotels.com property page. The control, on the left, shows a single fixed photograph badged one of 87. Variant 1, on the right, shows a three-image gallery strip badged 87, which lifts the price, rating and Book Now button up into the first screenful."
       },
       {
         "title": "A search recap carrying check-in details, on iOS",
-        "why": "Lost, and then lost harder. The first variant added check-in and check-out, and the second added the times as well and did worse on every measure. That shape is the finding, because the problem was never which detail we picked, it was summarising back to travellers something they had told us thirty seconds earlier.",
+        "why": "Lost, and then lost harder. The first variant added check-in and check-out, and the second added the times as well and did worse on every measure. The problem was summarising back to travellers something they had told us thirty seconds earlier.",
         "imageAlt": "The iOS search recap test: a control, and two variants adding check-in and check-out details above the lowest-priced room, with conversion, engagement, attention and confidence figures beneath each."
       },
       {
         "title": "A sign-in module in the results stream",
-        "why": "Unresolved. It was recorded as still running and never produced a verdict. It is here because a test without an answer is part of the record, and the alternative is a write-up in which every hypothesis conveniently resolved.",
+        "why": "Unresolved. It was still running when it was written down, and it never produced a verdict. A test without an answer stays in the record.",
         "imageAlt": "The sign-in module test: a control home, a variant placing a sign-in prompt above the rewards module, and a second variant that also swaps in a carousel hero image. Every measure still running."
       }
     ]
@@ -84,7 +84,7 @@
       }
     ],
     "resultsLabel": "The results page, before, tested and after",
-    "resultsCaption": "The layout that existed, the three built to be tested against each other, and where results went next. The middle three are the comparison: same chrome, same filters, same three properties, and the only variable is how much space a result is worth — three fit on screen in the text-led layout, one and a half in the full-bleed one.",
+    "resultsCaption": "The layout that existed, the three built to be tested against each other, and where results went next. The middle three are the comparison: same chrome, same filters, same three properties, and the only variable is how much space a result is worth. Three fit on screen in the text-led layout, and one and a half in the full-bleed one.",
     "resultsSlides": [
       {
         "label": "Before: one fixed row, with a rating out of five and no filters above the list.",
@@ -131,7 +131,7 @@
     ],
     "metricsSource": "Hotels.com analytics readouts MVT-3480 (Android, 11 April to 12 June 2016, 1.3 million users, 91% confidence) and MVT-4513 (iOS, 3 October to 15 November 2016, 2.1 million users, above 99%). Booking tiles are extra bookings for every 100 on the old home screen. Android’s change for everyone was +0.6 and could be chance: the readout’s range includes no change. People new to the Android app were +1.5, worked out from the published counts. The profit estimate assumes a flat 12% margin. Also counted from the home screen: sign-in visits +25% on Android and +11% on iOS, Rewards visits +33% and +17%, and visits to the sign-up form +191% on Android.",
     "paras": [
-      "On iOS the new home did two jobs at once. Bookings rose, by 2.5 for every 100 and by 4.0 among people new to the app, and accounts created rose 85%. Android’s result for everyone could be chance, so the $3.6 million estimate stays with iOS. On Android, visits to the sign-up form rose 191%. The screen was strong at starting a relationship, and on iOS the bookings moved as well.",
+      "On iOS, bookings rose by 2.5 for every 100, and by 4.0 among people new to the app. Accounts created rose 85%. Android’s result for everyone could be chance, so the $3.6 million estimate stays with iOS. On Android, visits to the sign-up form rose 191%.",
       "On the new iOS home, the share of visits that reached a hotel page moved from 14.7% to 18.9%, and sign in from 12.3% to 15.8%. The share that stopped at search results moved from 36.6% to 34.2%. Android’s search share moved from 55.5% to 57.0%, sign in from 6.4% to 8.0%, and account creation from 0.6% to 1.8%. The two tests counted visits differently, so the change on each platform is what compares.",
       "The search rebuild’s own result was reported in direction rather than as a figure: a strong positive, led by the US point of sale, with more customers returning within 30 days and more shortlisting."
     ]

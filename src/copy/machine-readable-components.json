@@ -1,7 +1,7 @@
 {
   "_comment": "All the copy for /work/machine-readable-components, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. Keys are stable — renaming one orphans the string on the page. The argument is the loop that actually ran: a machine proposed each component from three codebases, a person overruled it with reasons, and the decision was written back in a form the machine could build from.",
   "title": "A component library a machine could read",
-  "standfirst": "Expedia Group's components had drifted across iOS, Android and web. We rebuilt them against a single written specification, the one source that designers, engineers and language models could all build from, instead of each interpreting a different one.",
+  "standfirst": "Expedia Group’s components had drifted across iOS, Android and web. We rebuilt them against a single written specification, the one source that designers, engineers and language models could all build from, instead of each interpreting a different one.",
   "contribution": [
     {
       "term": "Role",
@@ -9,7 +9,7 @@
     },
     {
       "term": "What I owned",
-      "detail": "Components end to end, which meant reading the generated plan, rebuilding in Figma from the ground up, and delivering the specification that engineering built from. I also created the pod's designer onboarding as it grew."
+      "detail": "Components end to end, which meant reading the generated plan, rebuilding in Figma from the ground up, and delivering the specification that engineering built from. I also created the pod’s designer onboarding as it grew."
     },
     {
       "term": "The team",
@@ -26,7 +26,7 @@
     "paras": [
       "A component was really four separate components, one in the iOS repo, one in Android, one in web, and a Figma library that matched none of them exactly, each with its own props, arrangement rules and accumulated exceptions.",
       "The fix was to stop treating any implementation as the source. A single spec would define the component, and Figma, all three platforms and a language model would build from it, which only works if that spec is structured data rather than guesswork. A person can interpret a paragraph, but a machine cannot build from one.",
-      "The scrape across the repos is what made the drift visible. Nobody had read three implementations side by side, because nobody was ever going to, with the answer spread across three repositories, including Figma, and years of separate decisions. A machine could do this, and the plan it returned served as the problem statement and an initial starting point for rebuilding any given component."
+      "The scrape across the repos is what made the drift visible. Nobody had read three implementations side by side, because nobody was ever going to, with the answer spread across three repositories, including Figma, and years of separate decisions. A machine could do this, and the plan it returned was the problem statement, and a starting point for rebuilding any given component."
     ]
   },
   "process": {
@@ -35,13 +35,13 @@
     "paras": [
       "Every component started as a scrape. We read the iOS, Android and web repositories and generated a plan, which lived in GitHub for each component: recommendations, configurations, elements, decisions, open questions, TODOs.",
       "The plan was a proposal rather than an instruction. I rebuilt each component against it, binding variables, attaching slots, correcting naming and specifying accessibility, using code only props and slots, and where the plan was wrong I overruled it and recorded why. Engineering implemented from the finished specification, with Code Connect holding Figma and code one to one.",
-      "That loop is the part worth taking forward. The machine did the reading, which no person was going to do across three codebases, and the designer did the deciding, although the decision only counted once it was written somewhere the machine could read back, as a spec.",
+      "The machine did the reading, which no person was going to do across three codebases, and the designer did the deciding. The decision only counted once it was written somewhere the machine could read back, as a spec.",
       "The workflow itself went to testing in Q1 2026 with Expedia product designers, and with the engineers and PMs who opted in, the people who would have to live with a specification rather than write one.",
       "I also worked with engineers on spacing that both sides could share. A layout holds sections, and a section holds blocks, with the gaps coming from tokens. I built the layouts and a Figma playground, tested them with six designers, three from product and three from the design system, made the rules clearer, and tested again before publishing.",
       "The guidance left Figma for DSRS, so someone without a Figma seat could read it. Jared and I rewrote it in plain language, and the fields, such as when to use and when not to use, stayed consistent so a tool could follow them. The toast page had said that toasts are temporary, non-interruptive messages for information that is not urgent. The rewrite was shorter: use toasts to share quick feedback or simple actions, and keep them off urgent or important alerts. Heeran and I added our styles to the site that rendered those pages."
     ],
     "explorationsHeading": "What the plan proposed, and what we overruled",
-    "explorationsIntro": "These rejected paths are unusually well evidenced, because the alternative was not imagined. A machine proposed it from three real codebases, a person overruled it, and the reason went back into the record.",
+    "explorationsIntro": "The alternative was not imagined. A machine proposed it from three real codebases, a person overruled it, and the reason went back into the record.",
     "explorations": [
       {
         "title": "A vertical offset property, because React already had one",
@@ -55,7 +55,7 @@
       },
       {
         "title": "A maximum height, so message content crops after two lines",
-        "why": "Left open, then rejected. It is worth showing because it did not resolve on the first pass, since a two line cap is right most of the time, which is exactly what makes it tempting to enforce. The examples beside it are the argument, and the distinction is that guidance can be broken when the content needs it, whereas a constraint cannot.",
+        "why": "Left open, then rejected. It did not resolve on the first pass. A two-line cap is right most of the time, which is what makes it tempting to enforce. The examples beside it are the argument. Guidance can be broken when the content needs it. A constraint cannot.",
         "imageAlt": "A Figma component page for Toast showing the proposed two-line maximum beside three-line and long-content examples, with the decision recorded as left open and then rejected."
       }
     ]
@@ -66,7 +66,7 @@
     "mediaAlt": "The EGDS Dialog component set showing Web, iOS and Android variants of the same component",
     "mediaCaption": "Platform is a variant axis on a single component. The iOS variant uses native alert conventions, a centred heading and a text action above a hairline, rather than inheriting the web treatment.",
     "paras": [
-      "Dialog shows the shape. Platform is a variant axis on one component set rather than three separate components, and its actions are a nested set covering one to three actions, two emphases and two arrangements. The differences between platforms stop being three teams' opinions and become a property of one thing."
+      "Dialog shows the shape. Platform is a variant axis on one component set, with its own actions nested inside: one to three actions, two emphases and two arrangements. What had been three teams’ opinions is a property of that one component."
     ]
   },
   "impact": {
@@ -88,9 +88,9 @@
     ],
     "metricsSource": "Figma Library Analytics and Google Analytics, Expedia Group Design System. Forks since the EGDS 2.0 UI kit launched on 26 February 2026. Documentation views from 14 April to 17 July 2026, including 1,253 for the new library. The 67 are product teams using the library, leaving out the design system team, out of 117.",
     "paras": [
-      "These are adoption figures, and the page should say so rather than let them pass for outcomes, because they measure take up of the library and the prototype kit built on it, not whether the system made anything better. The largest single source of insertions is the design system team itself, which is what five months after a launch looks like. Beyond that team, 67 of 117 product teams used the library.",
-      "One signal is not an adoption count. A UX researcher, rather than a designer, built the loyalty screens herself out of the new components and said it was amazingly easy. Loyalty then appears independently in the insertion data, so the remark and the analytics describe the same thing from two directions. A component library becoming usable by someone who does not build interfaces for a living is the outcome the specification was for, because structured data is something a person and a machine can both build from, and a paragraph serves neither.",
-      "Two things were still moving when this data was taken. Coded components were being built against the same specifications, and the prototype kit was to be rebuilt on production code rather than on Figma components. That closes the loop this study opens with, a single specification that a designer, an engineer and a machine can all build from."
+      "These figures count take-up: the library, and the prototype kit built on it. They do not say whether the system made anything better. The largest single source of insertions is the design system team itself, which is what five months after a launch looks like.",
+      "A UX researcher built the loyalty screens herself out of the new components, and said it was amazingly easy. She is not a designer on the system. Loyalty then shows up on its own in the insertion data, so the remark and the numbers describe the same thing.",
+      "Two things were still moving when this data was taken. Coded components were being built against the same specifications, and the prototype kit was to be rebuilt on production code, where it had been on Figma components."
     ]
   },
   "hindsight": {

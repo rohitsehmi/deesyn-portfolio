@@ -4,10 +4,10 @@
   "heroAccent": "systems",
   "heroSecondary": "See the work",
   "studyBadge": "Case study",
-  "heroStandfirst": "The case studies are the longer reads. The earlier projects follow.",
+  "heroStandfirst": "I specialise in product design, component libraries, and multi-brand token systems.",
   "_brands": "Per-brand overrides. Rendered alongside the default and chosen at runtime by [data-brand]; see base.css. Only strings that name a company belong here, which since 2026-08-26 means ALL of them: the default brand deliberately names none. Its line has to work for a stranger who reached the apex with no covering message, so it says what the site is rather than who it is for. \"In full\" is the argument the whole project rests on, that a study which skips the explorations, the testing and the numbers is a gallery entry rather than a case study.",
   "_count": "The {count} token is how many tiles THIS brand sees, spelled as a word and substituted in index.astro. Partner titles still carry it. The default title does not: it names the practice, and a number there would be a typed count again. A digit or a number-word in a title with no token still fails the build. Not hypothetical — the Wise hero read \"Two case studies\" above a three-tile grid until 2026-08-17.",
-  "_systems": "The standfirst stopped counting on 2026-10-14. \"{systems} case studies on design systems, and {product} on product design\" described the three case studies and ignored the earlier projects on the same page, so \"one on product design\" was no longer true of the work. It now says how the page is arranged. Do not type a number back into it: a typed \"two\" or \"one\" is how the old sentence went stale, and index.astro still refuses one.",
+  "_systems": "The standfirst stopped counting on 2026-10-14. \"{systems} case studies on design systems, and {product} on product design\" described the three case studies and ignored the earlier projects on the same page, so \"one on product design\" was no longer true of the work. It is now the CV's own introduction: product design, component libraries, and multi-brand token systems. Do not type a number back into it: a typed \"two\" or \"one\" is how the old sentence went stale, and index.astro still refuses one.",
   "brands": {
     "wise": {
       "heroTitle": "{count} case studies, for Wise.",

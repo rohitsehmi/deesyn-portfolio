@@ -8,13 +8,13 @@
   },
   "making-the-app-testable": {
     "title": "The app that could not be tested",
-    "summary": "Rebuilding both screens made a continuous testing programme possible.",
+    "summary": "On iOS, 2.5 extra bookings for every 100, and an estimated $3.6 million a year.",
     "discipline": "Product design",
     "coverAlt": "Two phone screens of the same Hotels.com stay. One shows a single photo of the room. The other shows several photos, the price, and a Book now button."
   },
   "scaling-a-system": {
-    "title": "Four design systems, consolidated into one",
-    "summary": "Merging them meant deciding what every brand would share, and what each one was still allowed to keep.",
+    "title": "One design system for 100+ brands",
+    "summary": "Each brand kept its look through tokens, and the components were built once.",
     "discipline": "Design systems",
     "coverAlt": "An abstract still life in red and off-white: four frosted glass panels on plinths at the left, each showing a different layout, wired by glowing cables into one lit tile of stacked cubes at the centre, which feeds five labelled cards at the right, each carrying a tick."
   }

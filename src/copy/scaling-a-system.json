@@ -1,7 +1,7 @@
 {
-  "_comment": "Copy for /work/scaling-a-system, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. PROVENANCE, which matters more here than on the other studies: the programme-level facts come from two colleagues' published accounts of the same work, heeranmaster.com/home/scaling-a-system and madebyjoe.uk/work/egds, and nothing has been invented or rounded up. Rohit's own contribution is taken from his CV in src/data/cv.ts, which is his own claim about his own work, rather than inferred from either colleague's page: the token synchronisation pipelines, the cross-platform layout foundations, the theme-based component frameworks and the governance and contribution models are all his bullets. Tooling, the typeahead component and the workshops are deliberately absent, being the parts of Joe's account that were his own work rather than the programme's. Keep that separation if you edit this.",
-  "title": "Four design systems, consolidated into one",
-  "standfirst": "Expedia Group ran four design systems solving the same problems separately. Merging them meant choosing what every brand would share, and what each was still allowed to keep.",
+  "_comment": "Copy for /work/scaling-a-system, in reading order. Editable in the browser under `npm run dev`, or in bulk via `npm run copy:export`. PROVENANCE, which matters more here than on the other studies: the programme-level facts come from two colleagues' published accounts of the same work, heeranmaster.com/home/scaling-a-system and madebyjoe.uk/work/egds, and nothing has been invented or rounded up. Rohit's own contribution is taken from his CV in src/data/cv.ts, which is his own claim about his own work, rather than inferred from either colleague's page: the token synchronisation pipelines, the cross-platform layout foundations, the theme-based component frameworks and the governance and contribution models are all his bullets. The brand count on this page is the programme figure, 100+ brands, which he confirmed; the CV still says around 90. Tooling, the typeahead component and the workshops are deliberately absent, being the parts of Joe's account that were his own work rather than the programme's. Keep that separation if you edit this.",
+  "title": "One design system for 100+ brands",
+  "standfirst": "100+ brands take their look from one design system. It replaced the separate systems at Expedia, Hotels.com, Vrbo and on the partner side.",
   "contribution": [
     {
       "term": "Role",
@@ -9,7 +9,7 @@
     },
     {
       "term": "What I owned",
-      "detail": "Cross-platform layout foundations, token synchronisation pipelines across the platform repositories, theme-based component frameworks serving around ninety brands, and maintaining the governance and contribution models"
+      "detail": "Cross-platform layout foundations, token synchronisation pipelines across the platform repositories, theme-based component frameworks serving 100+ brands, and maintaining the governance and contribution models"
     },
     {
       "term": "What the team owned",
@@ -26,7 +26,7 @@
     "paras": [
       "Expedia Group ran four separate design systems, one each for Expedia, Hotels.com, Vrbo and the partner and supply side. Each had its own date picker, its own search field and its own interpretation of what accessible meant, and each team was solving those problems from the beginning while the others did the same.",
       "The reorganisation gave the reason the company acted, which was duplication and cost, but that is not the reason the work was hard. The difficulty was that all four answers were defensible. A date picker built for Vrbo was not a worse one, it was built for a brand renting whole homes by the week rather than rooms by the night, and treating that difference as waste would have produced a component that suited nobody.",
-      "The question was never how to pick a winner, but how to make one library carry the differences that mattered while refusing the ones that were only accidents."
+      "One library had to carry the differences that mattered, and refuse the ones that were only accidents."
     ]
   },
   "process": {
@@ -34,7 +34,7 @@
     "standfirst": "Five ways to converge, a recommendation the business overruled, and a rebuild abandoned halfway.",
     "paras": [
       "The design system leads worked up five convergence scenarios, from keeping the four systems independent on shared foundational tokens through to a single enterprise system with the organisation re-platformed onto it. We recommended one of the middle options and the business chose the most ambitious, which set the constraint everything afterwards was solving for: replatforming an organisation on a schedule that assumed a rebuild nobody had proved was possible.",
-      "The mechanism that made it survivable was a three-tier token architecture. Foundation tokens hold the raw values, semantic tokens carry meaning rather than appearance, and feature tokens sit at component level. A brand differentiates itself by overriding tokens rather than rewriting components, which let one library render as around ninety brands without a fork for any of them.",
+      "The mechanism that made it survivable was a three-tier token architecture. Foundation tokens hold the raw values, semantic tokens carry meaning rather than appearance, and feature tokens sit at component level. A brand differentiates itself by overriding tokens rather than rewriting components, which let one library render as 100+ brands without a fork for any of them.",
       "My own work sat underneath that. I ran the pipelines keeping token values in step across the platform repositories, because the architecture is only worth having if Figma, iOS, Android and web agree on the current values, and four repositories drifting apart would have reproduced the original problem one layer down. I defined the layout foundations too, the spacing and structural standards that had to mean the same thing everywhere.",
       "Bringing a component onto the platform was called graduating it, and the bar was high: WCAG 2.2 with automated tests, theming through feature tokens, parity across Figma, iOS, Android and web, dark mode, localisation, and scaling to 320px. Fifty-five cleared it."
     ],
@@ -43,13 +43,13 @@
     "explorations": [
       {
         "title": "Building all four design languages into every component",
-        "why": "Abandoned partway through. The original plan built each brand's identity into the components themselves, so no brand would need a redesign to adopt the system, and it was why the ambitious scenario looked survivable at all. It proved far more complex than the early assessment suggested, because every component carried four sets of decisions and every later change had to be correct in four places at once. We pivoted to Expedia's UDS component as the base with brand tokens on top, which cost some fidelity and bought a system that could ship.",
+        "why": "Abandoned partway through. The original plan built each brand’s identity into the components themselves, so no brand would need a redesign to adopt the system, and it was why the ambitious scenario looked survivable at all. It proved far more complex than the early assessment suggested, because every component carried four sets of decisions and every later change had to be correct in four places at once. We pivoted to Expedia’s UDS component as the base with brand tokens on top, which cost some fidelity and bought a system that could ship.",
         "imageAlt": "Three columns, one each for Expedia, Hotels.com and Vrbo, showing the few values a brand declares on its own: an identity colour, a pale surface it sits on, and a display typeface. Under them one shared block holds four ten-step ramps, neutral, action, success and error, which all three declare with identical values. Eighty-four values are shared and ten differ. Turning on the duplication copies that shared block into all three columns, so the same four ramps appear three times over.",
         "imageCaption": "Read from the EGDS foundation files rather than sampled. Ten values differ across the three brands; the type scale, radius, spacing and sizing are identical in all of them."
       },
       {
         "title": "The middle convergence scenario we recommended",
-        "why": "Rejected by the business rather than by us, and worth recording because the trade-off it offered is the one the programme had to make anyway. It kept the four systems independent on a shared token foundation, slower to show a single library and far cheaper to reverse. Full re-platforming made the abandonment above a mid-flight correction rather than something we could walk away from.",
+        "why": "The business rejected it. We had not. The trade-off it offered is the one the programme had to make anyway. It kept the four systems independent on a shared token foundation, slower to show a single library and far cheaper to reverse. Full re-platforming made the abandonment above a mid-flight correction rather than something we could walk away from.",
         "imageAlt": "A scale of five convergence scenarios, least ambitious at the top, running from cheapest to reverse down to hardest to walk away from. The top rung is four systems independent on shared foundational tokens and the bottom rung is one enterprise system with the organisation re-platformed onto it, marked as the one the business chose. The three rungs between them are drawn as positions on the scale and are not named, because the record does not name them, and a bracket beside them reads that the leads recommended one of these."
       },
       {
@@ -62,16 +62,16 @@
   "interface": {
     "heading": "What shipped",
     "standfirst": "One component library, themed per brand through tokens, with a governance model deciding what could join it.",
-    "mediaAlt": "A diagram of the three token tiers. A base Button component feeds a foundation row of six empty outlines labelled Identity, Surface, Ink, Wash, Edge and Tint, then a semantic row naming six shared values — Primary, On Primary, Surface, Border, Primary Hover and Disabled — then a dark feature row printing the six values the button resolves to, beginning #1668E3. Below, a note reads that semantic and feature resolve the same in all three and that what a brand sets is its own block of raw values, above three columns for Expedia, Hotels.com and Vrbo: each shows the same six semantic swatches, its own six raw values, and a primary button that is the same blue in all three. Choosing a brand fills the empty foundation row with that brand's values.",
+    "mediaAlt": "A diagram of the three token tiers. A base Button component feeds a foundation row of six empty outlines labelled Identity, Surface, Ink, Wash, Edge and Tint, then a semantic row naming six shared values (Primary, On Primary, Surface, Border, Primary Hover and Disabled), then a dark feature row printing the six values the button resolves to, beginning #1668E3. Below, a note reads that semantic and feature resolve the same in all three and that what a brand sets is its own block of raw values, above three columns for Expedia, Hotels.com and Vrbo: each shows the same six semantic swatches, its own six raw values, and a primary button that is the same blue in all three. Choosing a brand fills the empty foundation row with that brand’s values.",
     "mediaCaption": "Pick a brand: it sets its own raw values and the component is untouched, which is why the button is the same blue in all three. Values read from the EGDS foundation files.",
     "paras": [
       "Governance was three tiers and mattered as much as the components. A team could build on EGDS foundations in its own workspace at the team tier. Teams working on similar problems promoted components to a shared tier and developed them together. Only components meeting the acceptance criteria and surviving RICE ranking reached core and took on full system maintenance.",
-      "Few components ever completed that journey, which sounds like a failure and was the most useful thing the model did. A component sitting at the shared tier with three teams attached was a visible signal that three teams were solving the same problem, which is what four separate systems could never produce."
+      "Few components ever finished that climb. A component at the shared tier, with three teams on it, showed three teams solving the same problem. Four separate systems never showed that."
     ]
   },
   "impact": {
     "heading": "Impact",
-    "standfirst": "Adoption held across the organisation, and the honest limit is that adoption is what was measured.",
+    "standfirst": "These figures count how widely the system was taken up.",
     "metrics": [
       {
         "value": "55",
@@ -88,7 +88,7 @@
     ],
     "metricsSource": "Programme figures, published by colleagues who worked on it, at heeranmaster.com and madebyjoe.uk. All three measure output and adoption rather than any outcome for a traveller, and no baseline was taken before the merge.",
     "paras": [
-      "Four systems became one, and the components every brand had been building separately were built once.",
+      "The components were built once. Each brand took its look from the shared tokens.",
       "Accessibility went from four interpretations to one standard with automated tests behind it, and dark mode became something maintained in the token layer rather than four times over. A brand that had never shipped dark mode got it by adopting the system.",
       "The programme measured its own adoption because that is what it set out to move."
     ]
