@@ -179,8 +179,8 @@ export function Carousel({ slides, label, sizes, backdrop, autoplayMs = 0, capti
             <li key={slide.alt}>
               {/*
                 The button is the target and the mark inside it is the dot. 24px
-                square is the WCAG 2.5.8 minimum, and the visible mark stays
-                small so it still reads as an indicator rather than a button.
+                square is the WCAG 2.5.8 minimum. The current one widens into a
+                pill, and the fill is how long this screen has been showing.
               */}
               <button
                 type="button"
@@ -189,7 +189,9 @@ export function Carousel({ slides, label, sizes, backdrop, autoplayMs = 0, capti
                 aria-label={`Screen ${i + 1} of ${count}`}
                 aria-current={i === 0 ? 'true' : undefined}
               >
-                <span className="carousel__dot-mark" />
+                <span className="carousel__dot-mark">
+                  <span className="carousel__dot-fill" />
+                </span>
               </button>
             </li>
           ))}

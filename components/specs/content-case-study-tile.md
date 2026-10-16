@@ -30,6 +30,7 @@ Implementation: `src/components/CaseStudyTile.tsx` and `src/components/CaseStudy
 | `copyBase` | `string` | no |
 | `mark` | `string` | no |
 | `markCopyRef` | `string` | no |
+| `cue` | `boolean` | no |
 
 ### Property notes
 
@@ -39,6 +40,7 @@ Implementation: `src/components/CaseStudyTile.tsx` and `src/components/CaseStudy
 - `image` Plain data rather than a ReactNode slot: JSX written inside an `.astro` expression produces an Astro template object, not a React element. Dark plate, when the picture itself changes with the theme.
 - `copyBase` `<file>:<path>` into src/copy for this tile's strings; `.title`, `.summary` and `.discipline` are appended. Dev tooling only — inert in a build. The same tile renders on the index and as the next-study link at the foot of the other study, both pointing at one entry in src/copy/studies.json, so editing it in either place changes both.
 - `mark` A second chip on the cover, for the homepage studies. The discipline chip stays. Absent on the next-study tile, which has no cover to put it on.
+- `cue` The circled arrow at the foot of the tile. The homepage sends the same signal with a pointer disc instead, so it can leave this off.
 
 ## Don't
 

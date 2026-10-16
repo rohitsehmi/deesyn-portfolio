@@ -48,6 +48,11 @@ export interface CaseStudyTileProps {
    */
   mark?: string;
   markCopyRef?: string;
+  /**
+   * The circled arrow at the foot of the tile. The homepage sends the same
+   * signal with a pointer disc instead, so it can leave this off.
+   */
+  cue?: boolean;
 }
 
 /**
@@ -73,7 +78,8 @@ export function CaseStudyTile({
   image,
   copyBase,
   mark,
-  markCopyRef
+  markCopyRef,
+  cue = true
 }: CaseStudyTileProps) {
   const disciplineTag = (
     /*
@@ -117,11 +123,13 @@ export function CaseStudyTile({
           do. It borrows the icon-button classes so the visual cannot drift from
           the real component, and is hidden from assistive tech.
         */}
-        <div className="tile__cue-slot">
-          <span className="tile__cue icon-button" data-variant="secondary" data-size="lg" aria-hidden="true">
-            <Icon name="arrow-thin-right" size={24} />
-          </span>
-        </div>
+        {cue && (
+          <div className="tile__cue-slot">
+            <span className="tile__cue icon-button" data-variant="secondary" data-size="lg" aria-hidden="true">
+              <Icon name="arrow-thin-right" size={24} />
+            </span>
+          </div>
+        )}
       </div>
     </article>
   );

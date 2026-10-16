@@ -56,6 +56,7 @@ function initOne(root: HTMLElement) {
 
   const reduced = window.matchMedia(REDUCED);
   const autoplayMs = Number(root.dataset.autoplayMs ?? 0);
+  if (autoplayMs > 0) root.style.setProperty('--carousel-dwell', `${autoplayMs}ms`);
 
   /*
     A clone of the first slide, appended so the gallery can loop forwards
@@ -80,7 +81,6 @@ function initOne(root: HTMLElement) {
   track.appendChild(clone);
 
   let index = 0;
-  let timer: number | undefined;
   /* Once true, autoplay never restarts for the life of the page. */
   let surrendered = false;
   let visible = false;
@@ -142,20 +142,40 @@ function initOne(root: HTMLElement) {
       else d.removeAttribute('aria-current');
     });
     if (label && labels[index]) label.textContent = labels[index];
+    arm();
   };
 
-  const stop = () => {
-    if (timer !== undefined) { window.clearInterval(timer); timer = undefined; }
+  /* The pill's fill is the clock. It runs for the dwell and the screen
+     changes when the fill finishes, so the two cannot drift apart. Pausing
+     holds the fill. Giving up clears it and leaves a solid pill. */
+  const playing = () => !surrendered && autoplayMs > 0 && !reduced.matches && visible && !root.dataset.paused;
+  const arm = () => {
+    const current = dots[index];
+    for (const dot of dots) {
+      if (dot !== current) delete dot.dataset.playing;
+    }
+    if (!current || !playing()) {
+      if (current) delete current.dataset.playing;
+      return;
+    }
+    if (current.dataset.playing) return;
+    delete current.dataset.playing;
+    void current.offsetWidth;
+    current.dataset.playing = 'true';
   };
 
-  const start = () => {
-    stop();
-    if (surrendered || !autoplayMs || reduced.matches || !visible) return;
-    timer = window.setInterval(advance, autoplayMs);
+  const pause = () => { root.dataset.paused = 'true'; };
+  const resume = () => {
+    delete root.dataset.paused;
+    arm();
   };
 
   /** Deliberate input. Hand the carousel over and do not take it back. */
-  const surrender = () => { surrendered = true; stop(); };
+  const surrender = () => {
+    surrendered = true;
+    delete root.dataset.paused;
+    for (const dot of dots) delete dot.dataset.playing;
+  };
 
   /* Read the index back off the scroll position rather than trusting the last
      value written. A swipe moves the track without going through go(), and the
@@ -188,6 +208,17 @@ function initOne(root: HTMLElement) {
   next?.addEventListener('click', () => { surrender(); advance(); });
   dots.forEach((d, i) => d.addEventListener('click', () => { surrender(); go(i); }));
 
+  root.addEventListener('animationend', (event) => {
+    if (!(event instanceof AnimationEvent)) return;
+    const target = event.target;
+    if (!(target instanceof Element) || !target.classList.contains('carousel__dot-fill')) return;
+    if (event.animationName !== 'carousel-dot-fill') return;
+    const dot = target.closest<HTMLElement>('[data-carousel-dot]');
+    if (!dot || dot !== dots[index] || dot.dataset.playing !== 'true') return;
+    if (!playing()) return;
+    advance();
+  });
+
   /* A swipe or a keyboard scroll is input too, even though it never reaches a
      button. pointerdown rather than a scroll listener, because autoplay's own
      movement fires scroll and would otherwise switch itself off. */
@@ -211,22 +242,22 @@ function initOne(root: HTMLElement) {
     Focus is different. It means someone is working through this with a keyboard
     or a screen reader, and moving the content under them is the failure.
   */
-  root.addEventListener('focusin', stop);
+  root.addEventListener('focusin', pause);
   root.addEventListener('focusout', (e) => {
     if (root.contains(e.relatedTarget as Node)) return;
-    start();
+    resume();
   });
 
   new IntersectionObserver(
     (entries) => {
       for (const e of entries) { visible = e.isIntersecting; }
-      if (visible) start(); else stop();
+      if (visible) resume(); else pause();
     },
     { threshold: 0.4 }
   ).observe(root);
 
   /* Someone can turn reduced motion on while the page is open. */
-  reduced.addEventListener('change', () => { if (reduced.matches) stop(); else start(); });
+  reduced.addEventListener('change', () => { if (reduced.matches) pause(); else resume(); });
 
   root.dataset.enhanced = 'true';
   paint();

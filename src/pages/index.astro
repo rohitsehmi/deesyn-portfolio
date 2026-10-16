@@ -266,6 +266,12 @@ const covers = new Map(
   */}
   <Nav client:load sticky links={links} />
 
+  <div class="pointer-arrow" data-pointer-arrow aria-hidden="true">
+    <span class="pointer-arrow__disc">
+      <Icon name="arrow-thin-right" size={24} />
+    </span>
+  </div>
+
   <main id="main">
     {/*
       One screen. The headline owns it, the companies sit on its floor.
@@ -356,6 +362,7 @@ const covers = new Map(
         </div>
       </div>
       </div>
+      <div class="home-ground-fade" aria-hidden="true"></div>
     </Band>
 
     <Band role="base" scale="compact">
@@ -396,6 +403,7 @@ const covers = new Map(
               copyBase={studyCopyBase(s)}
               mark={copy.studyBadge}
               markCopyRef="home:studyBadge"
+              cue={false}
               image={{
                 src: covers.get(s.slug)?.src,
                 srcSet: covers.get(s.slug)?.srcSet,
@@ -433,9 +441,6 @@ const covers = new Map(
                       <a class="archive__link" href={item.href} data-copy={`home:archive.${i}.title`}>{item.title}</a>
                     </span>
                     <span class="archive__summary" data-copy={`home:archive.${i}.summary`}>{item.summary}</span>
-                    <span class="archive__cue icon-button" data-variant="secondary" data-size="lg" aria-hidden="true">
-                      <Icon name="arrow-thin-right" size={24} />
-                    </span>
                   </span>
                 </article>
               </li>
@@ -507,7 +512,6 @@ const covers = new Map(
       padding-top: calc(var(--primitive-size-nav) * 2 + var(--primitive-layout-l80));
     }
   }
-
   /*
     Specks in the field, behind the type. The mask keeps them out of the
     bar and out of the pool the companies sit on. The colour is the band's
@@ -543,6 +547,85 @@ const covers = new Map(
     .home-field { display: none; }
   }
   .home-stage { position: relative; z-index: 1; }
+  /*
+    The lime floor eases into the next band as that band arrives. The height
+    follows the scroll, so a short move only softens the join. The ramp starts
+    on the ground colour at no alpha: the keyword transparent is black, and a
+    fade from black muddies the lime. Most of the ramp stays clear, so the
+    marks keep the floor and only the edge settles.
+  */
+  .home-ground-fade {
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--ground-fade) * 1vh);
+    pointer-events: none;
+    --ground-fade: 0;
+    --ground-fade-color: var(--semantic-bg-inverse);
+    background: linear-gradient(
+      to bottom,
+      rgb(from var(--ground-fade-color) r g b / 0) 0%,
+      rgb(from var(--ground-fade-color) r g b / 0.04) 38%,
+      rgb(from var(--ground-fade-color) r g b / 0.16) 62%,
+      rgb(from var(--ground-fade-color) r g b / 0.46) 80%,
+      rgb(from var(--ground-fade-color) r g b / 0.82) 92%,
+      var(--ground-fade-color) 100%
+    );
+  }
+  /*
+    The work was sitting on the yellow paper, and a whole screen of it read
+    as a wash. This ground is a little navy in white, so it stays in the
+    palette and the lime is the only warm note. The bar and the fade use
+    the same ground, or the join turns yellow again. The footer is the
+    navy itself, with the light type, so the page ends where the hero began.
+  */
+  :root {
+    --home-ground: color-mix(in srgb, var(--primitive-deesyn-ink) 7%, var(--primitive-deesyn-white));
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme='dark']) main > .band[data-band='base'] {
+      background: var(--home-ground);
+    }
+    :root:not([data-theme='dark']) .nav[data-state='scrolled'] {
+      background: var(--home-ground);
+    }
+    :root:not([data-theme='dark']) main ~ .band[data-band='sunken'] {
+      background: var(--primitive-deesyn-ink);
+      color: var(--primitive-deesyn-paper);
+      --semantic-fg-secondary: var(--primitive-deesyn-mist);
+    }
+    :root:not([data-theme='dark']) {
+      background: var(--primitive-deesyn-ink);
+    }
+    :root:not([data-theme='dark']) body {
+      background: var(--home-ground);
+    }
+    :root:not([data-theme='dark']) .home-ground-fade {
+      --ground-fade-color: var(--home-ground);
+    }
+  }
+  :root[data-theme='light'] main > .band[data-band='base'] {
+    background: var(--home-ground);
+  }
+  :root[data-theme='light'] .nav[data-state='scrolled'] {
+    background: var(--home-ground);
+  }
+  :root[data-theme='light'] main ~ .band[data-band='sunken'] {
+    background: var(--primitive-deesyn-ink);
+    color: var(--primitive-deesyn-paper);
+    --semantic-fg-secondary: var(--primitive-deesyn-mist);
+  }
+  :root[data-theme='light'] {
+    background: var(--primitive-deesyn-ink);
+  }
+  :root[data-theme='light'] body {
+    background: var(--home-ground);
+  }
+  :root[data-theme='light'] .home-ground-fade {
+    --ground-fade-color: var(--home-ground);
+  }
 
   /*
     Transparent bar on the hero. The band owns the foreground of what is
@@ -555,6 +638,12 @@ const covers = new Map(
     reads before the headline does. CV and Contact stay on the small size.
     Scrolling leaves data-state top, and both settle back to the compact bar.
   */
+  /*
+    The scrolled bar is the same ground as the page under it. The 1px rule
+    that arrives with that state is the only thing left to see, so it reads
+    as a line appearing on scroll.
+  */
+  :root .nav[data-state='scrolled'] { border-bottom-color: transparent; }
   .nav[data-state='top'] { height: calc(var(--primitive-size-nav) * 2); }
   .nav[data-state='top'] .nav__logo .logo { height: var(--primitive-size-s64); }
   .nav[data-state='top'] .logo-brand { gap: var(--primitive-space-sp500); }
@@ -578,6 +667,59 @@ const covers = new Map(
   .nav[data-state='top'] .nav__cta .button {
     background: var(--semantic-fg-on-ink);
     color: var(--semantic-fg-primary);
+  }
+  /*
+    The ink has to move with the fill. A snap to paper while the bar is still
+    paper hides the wordmark, and it only comes back once the fill has gone.
+    Hover keeps the short press duration; this longer one is the state change.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    .nav[data-state='top'] .nav__logo {
+      transition: color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+    }
+    .nav[data-state='scrolled'] .nav__logo {
+      transition: color var(--semantic-duration-counter) var(--semantic-easing-drawer);
+    }
+    .nav[data-state='top'] .nav__menu .icon-button {
+      transition:
+        transform var(--semantic-duration-press) var(--semantic-easing-out),
+        background-color var(--semantic-duration-press) var(--semantic-easing-out),
+        color var(--semantic-duration-dropdown) var(--semantic-easing-out);
+    }
+    .nav[data-state='scrolled'] .nav__menu .icon-button {
+      transition:
+        transform var(--semantic-duration-press) var(--semantic-easing-out),
+        background-color var(--semantic-duration-press) var(--semantic-easing-out),
+        color var(--semantic-duration-counter) var(--semantic-easing-drawer);
+    }
+    .nav[data-state='top'] .nav__links .button[data-variant='ghost'],
+    .nav[data-state='top'] .nav__cta .button {
+      transition:
+        transform var(--semantic-duration-press) var(--semantic-easing-out),
+        background-color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+        color var(--semantic-duration-dropdown) var(--semantic-easing-out),
+        border-radius var(--semantic-duration-press) var(--semantic-easing-out);
+    }
+    .nav[data-state='scrolled'] .nav__links .button[data-variant='ghost'],
+    .nav[data-state='scrolled'] .nav__cta .button {
+      transition:
+        transform var(--semantic-duration-press) var(--semantic-easing-out),
+        background-color var(--semantic-duration-counter) var(--semantic-easing-drawer),
+        color var(--semantic-duration-counter) var(--semantic-easing-drawer),
+        border-radius var(--semantic-duration-press) var(--semantic-easing-out);
+    }
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .nav[data-state='top'] .nav__links .button[data-variant='ghost']:hover,
+    .nav[data-state='top'] .nav__cta .button:hover,
+    .nav[data-state='scrolled'] .nav__links .button[data-variant='ghost']:hover,
+    .nav[data-state='scrolled'] .nav__cta .button:hover {
+      transition:
+        transform var(--semantic-duration-press) var(--semantic-easing-out),
+        background-color var(--semantic-duration-press) var(--semantic-easing-out),
+        color var(--semantic-duration-press) var(--semantic-easing-out),
+        border-radius var(--semantic-duration-press) var(--semantic-easing-out);
+    }
   }
   /* The bar is clear over navy. Ink would vanish; the arc takes the lime. */
   .nav[data-state='top'] .nav__cta { --nav-cta-arc: var(--semantic-highlight); }
@@ -841,26 +983,6 @@ const covers = new Map(
     color: var(--semantic-fg-secondary);
     text-wrap: pretty;
   }
-  /*
-    The same circled arrow as a case-study tile. A span, not a button: the title
-    is already the link, and a button here would be a second control for the
-    same destination. The circle never receives the pointer. The card does.
-
-    Space above the circle belongs on the flex gap, not as padding on the cue.
-    The cue is the icon-button, and padding on that fixed-height box shifts the
-    glyph down inside the circle.
-  */
-  .archive__cue {
-    align-self: flex-end;
-    margin-top: auto;
-    pointer-events: none;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .archive__card:hover .archive__cue[data-variant='secondary'] {
-      background: var(--semantic-action-secondary-bg-hover);
-    }
-  }
-  .archive__card:has(.archive__link:active) .archive__cue { transform: scale(0.97); }
 
   /*
     A loop, not an interaction. The duration scale tops out at 800ms, which
@@ -1016,14 +1138,59 @@ const covers = new Map(
     .archive__card,
     .archive__media img,
     .archive__title,
-    .archive__cue,
     .work .tile__media img { transition: none; }
     .archive__card:has(.archive__link:active) { transform: none; }
-    .archive__card:has(.archive__link:active) .archive__cue { transform: none; }
     .archive__card:hover .archive__media img,
     .work .tile:hover .tile__media img { transform: none; }
+    .pointer-arrow { display: none; }
   }
   html.lenis { scroll-behavior: auto; }
+
+  /*
+    The arrow that used to sit in the card now follows the pointer. It points
+    right: these cards stay on this site, and a diagonal arrow means a new
+    window. It only exists over a homepage card, and it never takes the click.
+    Under the nav, so a card sliding beneath the bar does not paint the disc
+    across the wordmark.
+  */
+  .pointer-arrow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 90;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    transform: translate3d(-100px, -100px, 0);
+  }
+  .pointer-arrow__disc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--primitive-size-button-lg);
+    height: var(--primitive-size-button-lg);
+    margin: calc(var(--primitive-size-button-lg) / -2);
+    border-radius: var(--primitive-radius-round);
+    background: var(--semantic-highlight);
+    color: var(--semantic-fg-on-highlight);
+    opacity: 0;
+    transform: scale(0);
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .pointer-arrow__disc {
+      transition:
+        transform var(--semantic-duration-tooltip) var(--semantic-easing-out),
+        opacity var(--semantic-duration-tooltip) var(--semantic-easing-out);
+    }
+    .pointer-arrow[data-on] .pointer-arrow__disc {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .work .tile,
+    .work .tile .tile__link,
+    .archive__card,
+    .archive__card .archive__link { cursor: none; }
+  }
 
   /*
     Three reading cards, the same shape. Two columns, so the third drops
@@ -1061,6 +1228,66 @@ const covers = new Map(
     --pan-y: 0px;
     transform: translate3d(var(--pan-x), var(--pan-y), 0);
     transition: transform var(--semantic-duration-dropdown) var(--semantic-easing-out);
+  }
+  /*
+    A cover that has a dark twin wipes that twin across on hover. The frame
+    stays the size it is. At rest the theme rules still choose the picture.
+    The crop that opens on the way in is in home-motion.ts, because the
+    smooth scroll does not move a CSS view() timeline.
+  */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    :root .work .tile .media__frame img[data-theme-img] {
+      position: absolute;
+      inset: 0;
+      display: block;
+      height: 100%;
+    }
+    :root .work .tile .media__frame { position: relative; }
+    :root .work .tile .media__frame img[data-theme-img='dark'] {
+      z-index: 1;
+      clip-path: inset(0 0 0 100%);
+      transition: clip-path var(--semantic-duration-overlay) var(--semantic-easing-out);
+    }
+    :root .work .tile:hover .media__frame img[data-theme-img='dark'],
+    :root .work .tile:focus-within .media__frame img[data-theme-img='dark'] {
+      clip-path: inset(0);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) .work .tile .media__frame img[data-theme-img='dark'] {
+        z-index: 0;
+        clip-path: none;
+      }
+      :root:not([data-theme='light']) .work .tile .media__frame img[data-theme-img='light'] {
+        z-index: 1;
+        clip-path: inset(0 0 0 100%);
+        transition: clip-path var(--semantic-duration-overlay) var(--semantic-easing-out);
+      }
+      :root:not([data-theme='light']) .work .tile:hover .media__frame img[data-theme-img='light'],
+      :root:not([data-theme='light']) .work .tile:focus-within .media__frame img[data-theme-img='light'] {
+        clip-path: inset(0);
+      }
+      :root:not([data-theme='light']) .work .tile:hover .media__frame img[data-theme-img='dark'],
+      :root:not([data-theme='light']) .work .tile:focus-within .media__frame img[data-theme-img='dark'] {
+        clip-path: none;
+      }
+    }
+    :root[data-theme='dark'] .work .tile .media__frame img[data-theme-img='dark'] {
+      z-index: 0;
+      clip-path: none;
+    }
+    :root[data-theme='dark'] .work .tile .media__frame img[data-theme-img='light'] {
+      z-index: 1;
+      clip-path: inset(0 0 0 100%);
+      transition: clip-path var(--semantic-duration-overlay) var(--semantic-easing-out);
+    }
+    :root[data-theme='dark'] .work .tile:hover .media__frame img[data-theme-img='light'],
+    :root[data-theme='dark'] .work .tile:focus-within .media__frame img[data-theme-img='light'] {
+      clip-path: inset(0);
+    }
+    :root[data-theme='dark'] .work .tile:hover .media__frame img[data-theme-img='dark'],
+    :root[data-theme='dark'] .work .tile:focus-within .media__frame img[data-theme-img='dark'] {
+      clip-path: none;
+    }
   }
   @media (hover: hover) and (pointer: fine) {
     .work .tile:hover .tile__media .media__frame,
@@ -1103,9 +1330,9 @@ const covers = new Map(
   .work > li[data-tint] .tile__summary { color: var(--semantic-fg-on-tint); }
 
   /*
-    A cool field, not a lime slab. The ground is paper. A sky mist opens
-    the top corner and the signal pools softly toward the button. Navy
-    type stays on that light ground in both themes.
+    A cool field, not a lime slab. The ground is the same cool grey as the
+    work. A sky mist opens the top corner and the signal pools softly toward
+    the button. Navy type stays on that light ground in both themes.
   */
   .home-close {
     background:
@@ -1124,7 +1351,7 @@ const covers = new Map(
         color-mix(in srgb, var(--primitive-deesyn-sage) 50%, transparent),
         transparent 68%
       ),
-      var(--semantic-fg-on-ink);
+      var(--home-ground);
     color: var(--semantic-fg-on-highlight);
     padding-block: var(--primitive-layout-l80);
   }

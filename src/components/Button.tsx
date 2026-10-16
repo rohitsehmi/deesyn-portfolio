@@ -35,7 +35,11 @@ export function Button({ variant = 'primary', size = 'md', iconLeading, iconTrai
   const content = (
     <>
       {iconLeading && <Icon name={iconLeading} size={ICON_SIZE[size]} />}
-      {children && <span className="button__label">{children}</span>}
+      {children && (
+        <span className="button__label">
+          <span className="button__roll">{children}</span>
+        </span>
+      )}
       {iconTrailing && <Icon name={iconTrailing} size={ICON_SIZE[size]} />}
     </>
   );

@@ -70,9 +70,9 @@ export function bootHeroField(): void {
   };
 
   const seed = () => {
-    /* A few more than the first pass, still a scatter. The floor is what a
+    /* A little denser than the last pass, still a scatter. The floor is what a
        phone actually hits; the cap is a wide desktop. */
-    const count = Math.round(Math.min(48, Math.max(20, (width * height) / 28000)));
+    const count = Math.round(Math.min(56, Math.max(24, (width * height) / 23000)));
     specks = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,

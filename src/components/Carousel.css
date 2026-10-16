@@ -70,6 +70,7 @@
 .carousel {
   --carousel-arrow-inset: var(--primitive-space-sp600);
   --carousel-arrow-size: var(--primitive-size-button-md);
+  --carousel-dwell: 0s;
   --carousel-slide-gutter: calc(
     var(--carousel-arrow-inset) + var(--carousel-arrow-size) + var(--primitive-space-sp400)
   );
@@ -170,7 +171,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--primitive-size-s24);
+  min-width: var(--primitive-size-s24);
   height: var(--primitive-size-s24);
   padding: 0;
   border: 0;
@@ -179,13 +180,38 @@
   border-radius: var(--primitive-radius-round);
 }
 .carousel__dot-mark {
-  width: var(--primitive-space-sp200);
-  height: var(--primitive-space-sp200);
+  width: var(--primitive-space-sp300);
+  height: var(--primitive-space-sp300);
   border-radius: var(--primitive-radius-round);
   background: var(--semantic-fg-secondary);
-  transition: background-color var(--semantic-duration-tooltip) var(--semantic-easing-out);
+  overflow: hidden;
+  transition: width var(--semantic-duration-tooltip) var(--semantic-easing-out);
 }
-.carousel__dot[aria-current='true'] .carousel__dot-mark { background: var(--semantic-fg-accent); }
+.carousel__dot-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--semantic-fg-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.carousel__dot[aria-current='true'] .carousel__dot-mark { width: var(--primitive-size-s32); }
+.carousel__dot[aria-current='true'] .carousel__dot-fill { transform: scaleX(1); }
+/* The fill is the dwell made visible. It starts empty and finishes as the
+   screen changes, which is the pill on apple.com. Linear, because it is a
+   clock. A paused gallery holds the fill where it is. */
+.carousel__dot[data-playing] .carousel__dot-fill {
+  transform: scaleX(0);
+  animation: carousel-dot-fill var(--carousel-dwell) var(--semantic-easing-linear) forwards;
+}
+.carousel[data-paused] .carousel__dot[data-playing] .carousel__dot-fill {
+  animation-play-state: paused;
+}
+@keyframes carousel-dot-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
 .carousel__dot:focus-visible {
   outline: 2px solid var(--semantic-border-focus);
   outline-offset: 2px;
@@ -215,6 +241,11 @@
 @media (prefers-reduced-motion: reduce) {
   .carousel__track { scroll-behavior: auto; }
   .carousel__dot-mark { transition: none; }
+  .carousel__dot[data-playing] .carousel__dot-fill,
+  .carousel__dot[aria-current='true'] .carousel__dot-fill {
+    animation: none;
+    transform: scaleX(1);
+  }
   .carousel__arrows [data-carousel-prev]:active,
   .carousel__arrows [data-carousel-next]:active { transform: translateY(-50%); }
 }

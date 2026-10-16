@@ -78,16 +78,19 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.carousel__arrows [data-carousel-prev]` | left | `--carousel-arrow-inset` (local property, not a token) |
 | `.carousel__arrows [data-carousel-next]` | right | `--carousel-arrow-inset` (local property, not a token) |
 | `.carousel__dots` | gap | `primitive.space.sp200` |
-| `.carousel__dot` | width | `primitive.size.s24` |
+| `.carousel__dot` | min-width | `primitive.size.s24` |
 | `.carousel__dot` | height | `primitive.size.s24` |
 | `.carousel__dot` | border-radius | `primitive.radius.round` |
-| `.carousel__dot-mark` | width | `primitive.space.sp200` |
-| `.carousel__dot-mark` | height | `primitive.space.sp200` |
+| `.carousel__dot-mark` | width | `primitive.space.sp300` |
+| `.carousel__dot-mark` | height | `primitive.space.sp300` |
 | `.carousel__dot-mark` | border-radius | `primitive.radius.round` |
 | `.carousel__dot-mark` | background | `semantic.*.fg.secondary` |
 | `.carousel__dot-mark` | transition | `semantic.*.duration.tooltip` |
 | `.carousel__dot-mark` | transition | `semantic.*.easing.out` |
-| `.carousel__dot[aria-current='true'] .carousel__dot-mark` | background | `semantic.*.fg.accent` |
+| `.carousel__dot-fill` | background | `semantic.*.fg.primary` |
+| `.carousel__dot[aria-current='true'] .carousel__dot-mark` | width | `primitive.size.s32` |
+| `.carousel__dot[data-playing] .carousel__dot-fill` | animation | `--carousel-dwell` (local property, not a token) |
+| `.carousel__dot[data-playing] .carousel__dot-fill` | animation | `semantic.*.easing.linear` |
 | `.carousel__dot:focus-visible` | outline | `semantic.*.border.focus` |
 | `.carousel__label,
 .carousel__caption` | font | `typography.body.3` |

@@ -194,7 +194,7 @@
     ],
     ".carousel__dot": [
       {
-        "property": "width",
+        "property": "min-width",
         "var": "--primitive-size-s24",
         "ref": "primitive.size.s24"
       },
@@ -212,13 +212,13 @@
     ".carousel__dot-mark": [
       {
         "property": "width",
-        "var": "--primitive-space-sp200",
-        "ref": "primitive.space.sp200"
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
       },
       {
         "property": "height",
-        "var": "--primitive-space-sp200",
-        "ref": "primitive.space.sp200"
+        "var": "--primitive-space-sp300",
+        "ref": "primitive.space.sp300"
       },
       {
         "property": "border-radius",
@@ -241,11 +241,30 @@
         "ref": "semantic.*.easing.out"
       }
     ],
-    ".carousel__dot[aria-current='true'] .carousel__dot-mark": [
+    ".carousel__dot-fill": [
       {
         "property": "background",
-        "var": "--semantic-fg-accent",
-        "ref": "semantic.*.fg.accent"
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ".carousel__dot[aria-current='true'] .carousel__dot-mark": [
+      {
+        "property": "width",
+        "var": "--primitive-size-s32",
+        "ref": "primitive.size.s32"
+      }
+    ],
+    ".carousel__dot[data-playing] .carousel__dot-fill": [
+      {
+        "property": "animation",
+        "var": "--carousel-dwell",
+        "local": "--carousel-dwell"
+      },
+      {
+        "property": "animation",
+        "var": "--semantic-easing-linear",
+        "ref": "semantic.*.easing.linear"
       }
     ],
     ".carousel__dot:focus-visible": [

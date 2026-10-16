@@ -56,6 +56,11 @@
     "markCopyRef": {
       "type": "string",
       "required": false
+    },
+    "cue": {
+      "type": "boolean",
+      "required": false,
+      "note": "The circled arrow at the foot of the tile. The homepage sends the same signal with a pointer disc instead, so it can leave this off."
     }
   },
   "tokens": {

@@ -163,13 +163,22 @@
   One sweep, not a loop. A 3s linear lap crawled next to hovers that finish
   in 160ms, and a ring that keeps turning reads as a spinner. Ease-out on
   the counter duration starts at the same pace as the other buttons and
-  settles. 360deg lands on the same arc it left, so the end is invisible.
+  settles. 360deg lands on the same arc it left. The ring fades through that
+  settle, on a linear clock, rather than dropping off once the lap has
+  stopped. A short ease-out on the way out spent the fade in the first
+  moments and read as a cut. Leaving the arc up sat a second outline on
+  the pill.
 
   :focus-within, not just :hover — a keyboard user gets the same affordance.
   The motion rule against animating keyboard-initiated actions is about the
   action itself; this is the target advertising that it is focused, and it is
-  the same treatment the pointer gets.
+  the same treatment the pointer gets. The button's own outline stays, so
+  focus is still visible after the arc has gone.
 */
+@keyframes nav-cta-hide {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
 @media (hover: hover) and (pointer: fine) {
   .nav__cta:hover::before {
     opacity: 1;
@@ -177,6 +186,7 @@
     transition:
       opacity var(--semantic-duration-press) var(--semantic-easing-out),
       --nav-cta-angle var(--semantic-duration-counter) var(--semantic-easing-out);
+    animation: nav-cta-hide var(--semantic-duration-overlay) var(--semantic-easing-linear) calc(var(--semantic-duration-counter) - var(--semantic-duration-overlay)) forwards;
   }
 }
 .nav__cta:focus-within::before {
@@ -185,6 +195,7 @@
   transition:
     opacity var(--semantic-duration-press) var(--semantic-easing-out),
     --nav-cta-angle var(--semantic-duration-counter) var(--semantic-easing-out);
+  animation: nav-cta-hide var(--semantic-duration-overlay) var(--semantic-easing-linear) calc(var(--semantic-duration-counter) - var(--semantic-duration-overlay)) forwards;
 }
 
 /* Keep the arc, drop the sweep. The bar still changes colour; it does not grow or shrink. */
@@ -193,6 +204,7 @@
   .nav__cta:hover::before,
   .nav__cta:focus-within::before {
     transition: opacity var(--semantic-duration-press) var(--semantic-easing-out);
+    animation: none;
   }
   .nav,
   .nav[data-state='top'],

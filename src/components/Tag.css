@@ -5,6 +5,8 @@
   padding: var(--primitive-space-sp150) var(--primitive-space-sp400);
   font: var(--type-emphasis-3);
   letter-spacing: var(--type-emphasis-3-tracking);
+  /* Medium. The emphasis style is semibold, and at this size that reads heavy. */
+  font-weight: var(--type-ui-body-weight);
 }
 /*
   fg/primary, not fg/secondary. fg/secondary is built for 4.87:1 on pure white;

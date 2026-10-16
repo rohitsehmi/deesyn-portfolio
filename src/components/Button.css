@@ -29,6 +29,25 @@
   letter-spacing: var(--type-emphasis-1-tracking);
 }
 
+/*
+  The label steps up onto a second copy. The button's height is fixed, and
+  the line is clipped to one line, so the step does not move anything around it.
+  The copy is a shadow, not a second string, so the name stays the words once.
+*/
+.button__label {
+  display: block;
+  overflow: hidden;
+  height: 1lh;
+}
+.button__roll { display: block; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .button__roll {
+    text-shadow: 0 1lh currentColor;
+    transition: transform var(--semantic-duration-overlay) var(--semantic-easing-out);
+  }
+  .button:is(:hover, :focus-visible) .button__roll { transform: translateY(-1lh); }
+}
+
 /* Variants. Every colour is a semantic token, so a band flips them for free. */
 .button[data-variant='primary']   { background: var(--semantic-action-primary-bg);   color: var(--semantic-action-primary-fg); }
 .button[data-variant='secondary'] { background: var(--semantic-action-secondary-bg); color: var(--semantic-action-secondary-fg); }

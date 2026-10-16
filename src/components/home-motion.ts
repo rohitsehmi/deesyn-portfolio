@@ -100,7 +100,42 @@ export function bootHomeMotion(): void {
       });
     }
 
+    const ground = document.querySelector<HTMLElement>('.home-ground-fade');
+    const heroBand = ground?.parentElement;
+    if (ground && heroBand) {
+      // Follows the scroll. A timed wash plays itself after a short move, and
+      // the floor goes pale whether or not the next band has arrived.
+      gsap.fromTo(
+        ground,
+        { '--ground-fade': 0 },
+        {
+          '--ground-fade': 22,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: heroBand,
+            start: 'bottom 108%',
+            end: 'bottom 62%',
+            scrub: true,
+          },
+        },
+      );
+    }
+
+    const radius = cssVar('--primitive-radius-r32') || '32px';
+    for (const frame of gsap.utils.toArray<HTMLElement>('.work .tile .media__frame, .archive__media')) {
+      gsap.fromTo(
+        frame,
+        { clipPath: `inset(14% 10% round ${radius})` },
+        {
+          clipPath: `inset(0% round ${radius})`,
+          ease: 'none',
+          scrollTrigger: { trigger: frame, start: 'top bottom', end: 'top 58%', scrub: true },
+        },
+      );
+    }
+
     const stopPan = followArchive();
+    const stopPointer = followPointer();
 
     let lenis: Lenis | undefined;
     let raf: ((time: number) => void) | undefined;
@@ -124,11 +159,47 @@ export function bootHomeMotion(): void {
 
     return () => {
       stopPan();
+      stopPointer();
       window.removeEventListener('load', refresh);
       if (raf) gsap.ticker.remove(raf);
       lenis?.destroy();
     };
   });
+}
+
+/**
+ * A lime disc with an arrow, in place of the arrow that used to sit in the
+ * card. It follows the pointer while a homepage card is under it, and it is
+ * gone the moment the pointer leaves. The disc does not receive the click.
+ */
+function followPointer(): () => void {
+  const disc = document.querySelector<HTMLElement>('[data-pointer-arrow]');
+  if (!disc || !window.matchMedia(FINE_POINTER).matches) return () => {};
+  const place = (event: PointerEvent) => {
+    disc.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+  };
+  const show = (event: PointerEvent) => {
+    place(event);
+    disc.dataset.on = 'true';
+  };
+  const hide = () => {
+    delete disc.dataset.on;
+  };
+  const stops: Array<() => void> = [];
+  for (const card of document.querySelectorAll<HTMLElement>('.work .tile, .archive__card')) {
+    card.addEventListener('pointerenter', show);
+    card.addEventListener('pointermove', place);
+    card.addEventListener('pointerleave', hide);
+    stops.push(() => {
+      card.removeEventListener('pointerenter', show);
+      card.removeEventListener('pointermove', place);
+      card.removeEventListener('pointerleave', hide);
+    });
+  }
+  return () => {
+    hide();
+    stops.forEach((stop) => stop());
+  };
 }
 
 /**
