@@ -594,7 +594,9 @@ const covers = new Map(
     :root:not([data-theme='dark']) main ~ .band[data-band='sunken'] {
       background: var(--primitive-deesyn-ink);
       color: var(--primitive-deesyn-paper);
-      --semantic-fg-secondary: var(--primitive-deesyn-mist);
+    }
+    :root:not([data-theme='dark']) main ~ .band[data-band='sunken'] .footer__copy {
+      color: var(--primitive-deesyn-mist);
     }
     :root:not([data-theme='dark']) {
       background: var(--primitive-deesyn-ink);
@@ -615,7 +617,9 @@ const covers = new Map(
   :root[data-theme='light'] main ~ .band[data-band='sunken'] {
     background: var(--primitive-deesyn-ink);
     color: var(--primitive-deesyn-paper);
-    --semantic-fg-secondary: var(--primitive-deesyn-mist);
+  }
+  :root[data-theme='light'] main ~ .band[data-band='sunken'] .footer__copy {
+    color: var(--primitive-deesyn-mist);
   }
   :root[data-theme='light'] {
     background: var(--primitive-deesyn-ink);
