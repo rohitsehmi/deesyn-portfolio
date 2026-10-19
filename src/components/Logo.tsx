@@ -1,27 +1,11 @@
 import './Logo.css';
-import { MARK_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, PARTNER_WORDMARKS, X_GLYPH } from './logo-paths';
-import { PARTNER_BRANDS } from '../data/brands';
-
-/*
-  The brands the `x` belongs to, as one whitespace-separated attribute value.
-
-  Derived from BRANDS rather than typed, so a sixth brand cannot arrive to find
-  the glyph hidden on its own hostname — which is the failure the hero copy and
-  the index grid have both already had in their own form.
-*/
-const PARTNER_LIST = PARTNER_BRANDS.join(' ');
+import { MARK_PATHS, MARK_VIEWBOX, LOCKUP_VIEWBOX, X_GLYPH } from './logo-paths';
 
 export interface LogoProps {
   /**
-   * `wordmark` is the lockup, 233x48: the disc, an `x`, and whichever partner
-   * logotype the hostname calls for. `mark` is the disc alone, 48x48.
-   *
-   * ON THE DEFAULT BRAND THE TWO RENDER THE SAME THING, which is not a bug and
-   * is why the lockup is still what Nav and Footer ask for. That brand has no
-   * partner, so its `x` and every logotype are gated away and the CSS narrows
-   * the viewport to the disc — see Logo.css. Asking for the lockup keeps one
-   * element in the markup on every host rather than two swapped by CSS, and so
-   * keeps one copy of the 6.5kB disc in the HTML.
+   * `wordmark` is the lockup: the disc, then the × and the word deesyn beside
+   * it. `mark` is the disc alone. Nav and Footer ask for the lockup. The
+   * partner logotypes were removed on 2026-10-19.
    *
    * The names are kept from the Figma component set so the two do not diverge,
    * though `lockup` would now be the more accurate word for the first. Rename
@@ -128,27 +112,6 @@ export function Logo({ variant = 'wordmark', height = 24, title = 'Rohit Sehmi' 
       focusable="false"
     >
       <MarkGeometry />
-      {isLockup && (
-        <path d={X_GLYPH.d} data-brand-only={PARTNER_LIST} />
-      )}
-      {/*
-        The fill rule has to be carried here too, and it was not until Asos
-        arrived. Wise and Healf are both non-zero, so the omission was
-        invisible for as long as they were the only partners; Asos is one
-        evenodd path whose counters are cut out of it, and without the rule
-        every a, o and s fills in solid. Same spread as the shared paths
-        above, deliberately — a second way of writing the same thing is how
-        the two diverged in the first place.
-      */}
-      {isLockup &&
-        Object.entries(PARTNER_WORDMARKS).map(([brand, p]) => (
-          <path
-            key={brand}
-            d={p.d}
-            data-brand-only={brand}
-            {...(p.evenOdd ? { fillRule: 'evenodd' as const, clipRule: 'evenodd' as const } : {})}
-          />
-        ))}
     </svg>
     {isLockup && (
       <svg

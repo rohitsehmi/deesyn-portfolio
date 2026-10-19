@@ -1,7 +1,7 @@
 # www.deesyn.com is the site to index.
 #
-# One file answers every hostname. Partner hostnames and preview deploys
-# send X-Robots-Tag: noindex from vercel.json, and so does /Ro_CV.pdf.
+# Partner hostnames redirect to www. Preview deploys and /Ro_CV.pdf
+# send X-Robots-Tag: noindex from vercel.json.
 # A meta tag cannot cover a PDF.
 #
 # Crawlers that answer questions are included in User-agent: *.

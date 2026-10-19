@@ -22,7 +22,13 @@
  * build-code-specs.mjs writes a contract for each one. This is data, not a
  * component, and must move neither number.
  */
-export const BRANDS = ['deesyn', 'wise', 'healf', 'ticketmaster', 'asos', 'spotify'] as const;
+/*
+ * Wise, Healf, Ticketmaster, ASOS and Spotify were retired on 2026-10-19.
+ * Those hostnames were addresses sent to one person. The site is public now,
+ * and one HTML file was still carrying every partner headline. They redirect
+ * to www. The paths are in git if a hostname is ever restored.
+ */
+export const BRANDS = ['deesyn'] as const;
 
 export type Brand = (typeof BRANDS)[number];
 

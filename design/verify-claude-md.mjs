@@ -165,14 +165,14 @@ const CLAIMS = [
   {
     what: 'brands (§ Brands)',
     expected: brandCount,
-    re: /\*\*One build serves (\w+) brands, chosen by hostname\.\*\*/,
+    re: /\*\*One build serves (\w+) brands?, chosen by hostname\.\*\*/,
     parse: (m) => WORDS.indexOf(m[1].toLowerCase()),
     fix: 'src/data/brands.ts is the one list'
   },
   {
     what: 'brands (§ Next up)',
     expected: brandCount,
-    re: /no gaps rendering on any live page, (\w+) brands live/,
+    re: /no gaps rendering on any live page, (\w+) brands? live/,
     parse: (m) => WORDS.indexOf(m[1].toLowerCase()),
     fix: 'src/data/brands.ts is the one list'
   }

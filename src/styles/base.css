@@ -238,10 +238,7 @@ body {
 
   Everything that emitted one value keeps working untouched, which is why this
   was a change to three selectors rather than to every call site.
+
+  Partner arms were removed on 2026-10-19. There is one brand, and this is the only rule.
 */
 :root:not([data-brand]) [data-brand-only]:not([data-brand-only~='deesyn']) { display: none; }
-[data-brand='wise'] [data-brand-only]:not([data-brand-only~='wise']) { display: none; }
-[data-brand='healf'] [data-brand-only]:not([data-brand-only~='healf']) { display: none; }
-[data-brand='ticketmaster'] [data-brand-only]:not([data-brand-only~='ticketmaster']) { display: none; }
-[data-brand='asos'] [data-brand-only]:not([data-brand-only~='asos']) { display: none; }
-[data-brand='spotify'] [data-brand-only]:not([data-brand-only~='spotify']) { display: none; }

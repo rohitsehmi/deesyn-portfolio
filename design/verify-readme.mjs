@@ -56,7 +56,7 @@ const CLAIMS = [
   {
     what: 'brands',
     expected: brandCount(),
-    re: /\*\*One build serves (\w+) brands, chosen by hostname\.\*\*/,
+    re: /\*\*One build serves (\w+) brands?, chosen by hostname\.\*\*/,
     parse: (m) => WORDS.indexOf(m[1].toLowerCase())
   },
   {

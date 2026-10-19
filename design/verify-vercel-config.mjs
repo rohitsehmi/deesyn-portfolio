@@ -183,7 +183,7 @@ for (const rule of config.rewrites ?? []) {
  * WHAT WOULD ACTUALLY FIX IT is a build per brand -- the brand-pack split
  * already planned -- or an edge function rewriting the tag. As of 2026-10-19
  * www is crawled, so an unfurler does fetch the tag, and the card it gets is
- * the apex mark. Partner hostnames stay noindex. The pin is therefore
+ * the apex mark. Partner hostnames redirect to www. The pin is therefore
  * DECLARED below rather than removed, and it prints on every run: an accepted
  * risk that stops being visible has quietly become an assumption, which is why
  * verify-provenance.mjs lists its reconstructions and verify.mjs prints
@@ -193,8 +193,8 @@ const ACCEPTED_PINS = {
   '/og.png': [
     'Accepted 2026-08-19, revised 2026-10-19. og:image must be absolute and one',
     'prerendered build has one origin, so every host unfurls the apex card.',
-    'The card is the Ro mark. www is crawled; partner hosts and previews stay',
-    'noindex. The fix for a per-host card is a build per brand, not middleware.'
+    'The card is the Ro mark. www is crawled. Partner hostnames redirect to www.',
+    'Previews stay noindex. A per-host card would need a build per brand.'
   ]
 };
 
@@ -274,7 +274,7 @@ if (!hostRule) {
      A regex is not a list, and re-deriving the alternation would be a second
      implementation of Vercel's matcher — the drift this check exists to stop. */
   const missing = expected.filter((h) => !re.test(`${h}.deesyn.com`));
-  const retired = ['revolut'].filter(
+  const retired = ['revolut', 'wise', 'healf', 'ticketmaster', 'asos', 'spotify'].filter(
     (h) => !expected.includes(h) && re.test(`${h}.deesyn.com`)
   );
 

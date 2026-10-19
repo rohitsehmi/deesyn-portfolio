@@ -25,31 +25,10 @@
       "href": "/work/making-the-app-testable"
     }
   ],
-  "_brands": "Per-brand overrides. Rendered alongside the default and chosen at runtime by [data-brand]; see base.css. Only strings that name a company belong here, which since 2026-08-26 means ALL of them: the default brand deliberately names none. Its line has to work for a stranger who reached the apex with no covering message, so it says what the site is rather than who it is for. \"In full\" is the argument the whole project rests on, that a study which skips the explorations, the testing and the numbers is a gallery entry rather than a case study.",
+  "_brands": "Partner hero lines were removed on 2026-10-19, with the hostnames. The homepage has one title. Do not put a company name back in this file.",
   "_count": "The {count} token is how many tiles THIS brand sees, spelled as a word and substituted in index.astro. Partner titles still carry it. The default title does not: it names the practice, and a number there would be a typed count again. A digit or a number-word in a title with no token still fails the build. Not hypothetical — the Wise hero read \"Two case studies\" above a three-tile grid until 2026-08-17.",
   "_systems": "The standfirst stopped counting on 2026-10-14. On 2026-10-19 it speaks as Rohit: I’m Ro, a principal designer, and I design the system and the product. Do not type a number back into the standfirst: a typed \"two\" or \"one\" is how the old sentence went stale, and index.astro still refuses one. The Hotels.com proof line was removed the same day it was added. Do not put \"we\" back in the standfirst. The case studies still say \"we\" where the work was a team Rohit was in.",
-  "brands": {
-    "wise": {
-      "heroTitle": "{count} case studies, for Wise.",
-      "heroAccent": "Wise"
-    },
-    "healf": {
-      "heroTitle": "{count} case studies, for Healf.",
-      "heroAccent": "Healf"
-    },
-    "ticketmaster": {
-      "heroTitle": "{count} case studies, for Ticketmaster.",
-      "heroAccent": "Ticketmaster"
-    },
-    "asos": {
-      "heroTitle": "{count} case studies, for ASOS.",
-      "heroAccent": "ASOS"
-    },
-    "spotify": {
-      "heroTitle": "{count} case studies, for Spotify.",
-      "heroAccent": "Spotify"
-    }
-  },
+  "brands": {},
   "_clients": "The homepage company row. Employers from the CV, plus Vrbo because scaling-a-system names it as one of the four systems, and Grabbd because that project has its own page here. Viaplay is the name on the TV work that the CV lists as Viasat. MTG is the parent Rohit named for that role. Ziggo Group is the name he gave for Chellomedia. Sky and Turner are marks he asked for; they are not lines on the CV. Partner hostnames are not in this row. Grabbd is the header mark from grabbd.gouthaman.dev, a PNG, so it stays a picture rather than a path.",
   "clients": [
     { "name": "Expedia Group", "mark": "expedia-group" },
