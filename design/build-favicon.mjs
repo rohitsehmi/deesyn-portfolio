@@ -17,7 +17,9 @@
  * The SVG is theme-aware, which matters more here than on the page: a favicon
  * sits on the browser's tab strip, not on the site's background, so a dark mark
  * disappears into a dark tab. `prefers-color-scheme` inside the SVG is honoured
- * by Chrome, Safari and Firefox for favicons.
+ * by Chrome, Safari and Firefox for favicons. A light plate sits behind the
+ * disc anyway, because a browser that ignores that query would otherwise paint
+ * navy on a dark tab and the icon would vanish.
  *
  * The PNG fallbacks cannot be theme-aware, so they take the light-mode fill —
  * the one that reads on the white-ish surfaces iOS and legacy browsers
@@ -52,15 +54,26 @@ if (!light || !dark) throw new Error('could not resolve mark colours from tokens
 
 const shapes = MARK_PATHS.map((path) => {
   const rule = path.evenOdd ? ' fill-rule="evenodd"' : '';
-  return `<path class="ink" d="${path.d}"${rule}/>`;
+  return `<path class="ink" fill="${light}" d="${path.d}"${rule}/>`;
 }).join('');
 
+/*
+  The disc fills its own viewBox, so a navy mark on a dark tab is the tab.
+  A plate behind it, with the disc inset, keeps a light ring and light letters
+  when a browser ignores the media query. The query still flips both for a
+  dark tab that does honour it.
+*/
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}" role="img" aria-label="deesyn">
 <style>
+  .plate { fill: ${dark} }
   .ink { fill: ${light} }
-  @media (prefers-color-scheme: dark) { .ink { fill: ${dark} } }
+  @media (prefers-color-scheme: dark) {
+    .plate { fill: ${light} }
+    .ink { fill: ${dark} }
+  }
 </style>
-${shapes}
+<rect class="plate" width="48" height="48" rx="24" fill="${dark}"/>
+<g transform="translate(3 3) scale(0.875)">${shapes}</g>
 </svg>
 `;
 
@@ -69,11 +82,29 @@ mkdirSync(pub, { recursive: true });
 writeFileSync(join(pub, 'favicon.svg'), svg);
 
 // Flat-fill copy for the raster fallbacks; no media query, light fill only.
-const flat = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}"><g fill="${light}">${shapes.replaceAll(' class="ink"', '')}</g></svg>`;
+const flat = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}"><rect width="48" height="48" rx="24" fill="${dark}"/><g transform="translate(3 3) scale(0.875)" fill="${light}">${shapes.replaceAll(/ class="ink"| fill="[^"]*"/g, '')}</g></svg>`;
+const png32 = join(pub, 'favicon-32.png');
 for (const [name, size] of [['favicon-32.png', 32], ['apple-touch-icon.png', 180]]) {
   await sharp(Buffer.from(flat), { density: 384 }).resize(size, size).png().toFile(join(pub, name));
 }
 
+/* Browsers still request /favicon.ico on their own. A 404 there replaces the
+   tab icon even when the SVG link is fine. The ICO wraps the 32px PNG. */
+const png = await sharp(png32).png().toBuffer();
+const header = Buffer.alloc(6);
+header.writeUInt16LE(0, 0);
+header.writeUInt16LE(1, 2);
+header.writeUInt16LE(1, 4);
+const entry = Buffer.alloc(16);
+entry.writeUInt8(32, 0);
+entry.writeUInt8(32, 1);
+entry.writeUInt16LE(1, 4);
+entry.writeUInt16LE(32, 6);
+entry.writeUInt32LE(png.length, 8);
+entry.writeUInt32LE(22, 12);
+writeFileSync(join(pub, 'favicon.ico'), Buffer.concat([header, entry, png]));
+
 console.log(`favicon.svg          Ro mark, ${light} / ${dark}`);
 console.log('favicon-32.png       32x32');
 console.log('apple-touch-icon.png 180x180');
+console.log('favicon.ico          32x32');
