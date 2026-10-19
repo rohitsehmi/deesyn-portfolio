@@ -28,7 +28,7 @@ export const roles: Role[] = [
     location: 'London',
     points: [
       'Most recently worked on the architecture of a machine-readable component library, built from components with slots on Figma’s current feature set, across every brand in the Expedia Design System Group.',
-      'Evolved component frameworks, introducing structure and theme-based solutions serving around 90 brands at scale.',
+      'Evolved component frameworks, introducing structure and theme-based solutions serving 100+ brands at scale.',
       'Partnered with motion specialists to design and implement app shell transition patterns within the product experience.',
       'Defined cross-platform layout foundations, establishing scalable spacing and structural standards.',
       'Managed design token synchronisation pipelines across platform repositories.',
@@ -93,7 +93,7 @@ export const cvPdf = {
   href: '/Ro_CV.pdf',
   filename: 'Ro_CV.pdf',
   /** Shown beside the button. A download with an unknown size is a small rudeness. */
-  size: '174 KB',
+  size: '161 KB',
   /**
    * Shown too, because the one thing a reader cannot tell about a CV file is
    * whether it is the current one. Bump it by hand when the PDF is replaced —

@@ -181,9 +181,9 @@ for (const rule of config.rewrites ?? []) {
  * rules, all correct, all reachable, none ever reached.
  *
  * WHAT WOULD ACTUALLY FIX IT is a build per brand -- the brand-pack split
- * already planned -- or an edge function rewriting the tag. Neither is worth it
- * while robots.txt disallows every agent and the X-Robots-Tag header enforces
- * it, so no compliant unfurler reads the tag at all. The pin is therefore
+ * already planned -- or an edge function rewriting the tag. As of 2026-10-19
+ * www is crawled, so an unfurler does fetch the tag, and the card it gets is
+ * the apex mark. Partner hostnames stay noindex. The pin is therefore
  * DECLARED below rather than removed, and it prints on every run: an accepted
  * risk that stops being visible has quietly become an assumption, which is why
  * verify-provenance.mjs lists its reconstructions and verify.mjs prints
@@ -191,10 +191,10 @@ for (const rule of config.rewrites ?? []) {
  */
 const ACCEPTED_PINS = {
   '/og.png': [
-    'Accepted 2026-08-19. og:image must be absolute and one prerendered build has',
-    'one origin, so every host unfurls the default card. Contained by robots.txt',
-    'and X-Robots-Tag, which stop a compliant unfurler reading the tag at all.',
-    'The fix is the brand-pack split, not middleware.'
+    'Accepted 2026-08-19, revised 2026-10-19. og:image must be absolute and one',
+    'prerendered build has one origin, so every host unfurls the apex card.',
+    'The card is the Ro mark. www is crawled; partner hosts and previews stay',
+    'noindex. The fix for a per-host card is a build per brand, not middleware.'
   ]
 };
 

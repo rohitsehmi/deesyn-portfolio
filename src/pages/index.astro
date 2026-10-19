@@ -269,8 +269,9 @@ const covers = new Map(
 );
 ---
 <Base
-  title="Deesyn · A design systems studio"
-  description="Deesyn is a design systems studio for product teams. Rohit Sehmi designs the system, and the product it lives in."
+  title="Rohit Sehmi · Product and design systems"
+  socialTitle="Product and design systems"
+  description={copy.heroStandfirst}
   pageEnd="sunken"
 >
   {/*
@@ -318,6 +319,7 @@ const covers = new Map(
             </>
           ))}
         </p>
+        <p class="home-hero__availability" data-copy="home:heroAvailability">{copy.heroAvailability}</p>
         <div class="home-hero__actions">
           <Button href="#work" variant="secondary" size="lg" data-copy="home:heroSecondary">{heroSecondary}</Button>
         </div>
@@ -329,7 +331,8 @@ const covers = new Map(
         loop, hidden from the accessibility tree. Reduced motion drops it.
       */}
       <div class="clients" data-clients>
-        <div class="clients__viewport">
+        <p class="clients__label" id="clients-label" data-copy="home:clientsLabel">{copy.clientsLabel}</p>
+        <div class="clients__viewport" role="group" aria-labelledby="clients-label">
           <div class="clients__track">
             {[false, true].map((clone) => (
               <ul class="clients__list" aria-hidden={clone ? 'true' : undefined} inert={clone ? true : undefined}>
@@ -926,13 +929,19 @@ const covers = new Map(
     background-size: var(--accent-wipe) 0.1em;
   }
   /* Secondary is the band's own. The old 32ch cap was for type on the photograph. */
-  .home-hero__standfirst {
+  .home-hero__standfirst,
+  .home-hero__availability {
     margin: 0;
-    max-width: 36ch;
+    max-width: 42ch;
     font: var(--type-body-l);
     letter-spacing: var(--type-body-l-tracking);
     color: var(--semantic-fg-secondary);
     text-wrap: pretty;
+  }
+  .home-hero__availability {
+    margin: var(--primitive-space-sp200) 0 0;
+    font: var(--type-ui-body);
+    letter-spacing: var(--type-ui-body-tracking);
   }
   /*
     Dark theme flips this band to the pale ground, so secondary is graphite.
@@ -941,11 +950,13 @@ const covers = new Map(
     Light theme keeps the mist, which is 8.9:1 on the navy hero.
   */
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme='light']) .home-hero__standfirst {
+    :root:not([data-theme='light']) .home-hero__standfirst,
+    :root:not([data-theme='light']) .home-hero__availability {
       color: var(--semantic-fg-primary);
     }
   }
-  :root[data-theme='dark'] .home-hero__standfirst {
+  :root[data-theme='dark'] .home-hero__standfirst,
+  :root[data-theme='dark'] .home-hero__availability {
     color: var(--semantic-fg-primary);
   }
   @media (min-width: 768px) {
@@ -1130,8 +1141,16 @@ const covers = new Map(
     color: var(--semantic-fg-on-highlight);
   }
   .home-stage .clients__item,
-  .home-stage .clients__svg {
+  .home-stage .clients__svg,
+  .home-stage .clients__label {
     color: var(--semantic-fg-on-highlight);
+  }
+  .clients__label {
+    margin: 0 0 var(--primitive-space-sp400);
+    text-align: center;
+    font: var(--type-label-mono);
+    letter-spacing: var(--type-label-mono-tracking);
+    text-transform: uppercase;
   }
   /*
     The row runs full-bleed, and the fade starts at the measure, not at the
@@ -1496,6 +1515,20 @@ const covers = new Map(
   }
   @media (min-width: 768px) {
     .work { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /*
+      An odd tile out spans the row instead of sitting beside a hole.
+      With three studies, that is the third card: image on the left,
+      text on the right. The inline script removes other brands' tiles
+      from the DOM, so a hidden tile does not stay in the count. None of
+      the three studies is brand-scoped today, so the third card spans
+      either way.
+    */
+    .work > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .work > li:last-child:nth-child(odd) .tile[data-variant='card'] {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: center;
+    }
   }
   .work .tile[data-variant='card'] { border-radius: var(--primitive-radius-r32); }
   /*

@@ -25,13 +25,22 @@ interface Props {
    * its own author's name is simply wrong.
    */
   socialTitle?: string;
+  /**
+   * www.deesyn.com is indexable. Pass `noindex, follow` for a page whose
+   * copy disagrees with the rest of the site. Partner hostnames, preview
+   * deploys and the CV PDF are kept out by X-Robots-Tag in vercel.json,
+   * because this HTML is the same file on every host and a meta tag
+   * cannot cover a PDF.
+   */
+  robots?: string;
 }
 const {
   title,
   description = 'Product design work by Rohit Sehmi.',
   pageEnd = 'base',
   article,
-  socialTitle
+  socialTitle,
+  robots = 'index, follow, max-image-preview:large, max-snippet:-1'
 } = Astro.props;
 const cardTitle = socialTitle ?? title;
 
@@ -53,8 +62,10 @@ const ogType = article ? 'article' : 'website';
 const person = {
   '@type': 'Person',
   name: 'Rohit Sehmi',
-  url: siteOrigin,
+  url: `${siteOrigin}/`,
   jobTitle: 'Product and design systems designer',
+  email: 'rohit.sehmi@gmail.com',
+  sameAs: ['https://www.linkedin.com/in/rohitsehmi'],
   address: { '@type': 'PostalAddress', addressLocality: 'London', addressCountry: 'GB' }
 };
 
@@ -76,8 +87,9 @@ const structuredData = article
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'Rohit Sehmi',
+      alternateName: 'Deesyn',
       description,
-      url: siteOrigin,
+      url: `${siteOrigin}/`,
       inLanguage: 'en-GB',
       author: person
     };
@@ -90,23 +102,20 @@ const structuredData = article
     <title>{title}</title>
     <meta name="description" content={description} />
     {/*
-      Unlisted, not private. Belt and braces with public/robots.txt and the
-      X-Robots-Tag header in vercel.json: robots.txt asks a crawler not to
-      fetch, this tells one that did fetch not to index, and the header covers
-      what a meta tag cannot reach — the CV PDF in public/.
+      www.deesyn.com is the address to index. robots.txt allows the crawl
+      and names the sitemap. Partner hostnames, preview deploys and
+      /Ro_CV.pdf stay noindex via X-Robots-Tag, which is the only signal
+      that can differ by host or cover a PDF. A page passes `robots` when
+      it should stay out.
     */}
-    <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content={robots} />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" type="application/xml" href={`${siteOrigin}/sitemap.xml`} />
     {/*
       The unfurl card, for the one way this URL actually travels: pasted into a
       message to a named person. Without these, Slack, LinkedIn, iMessage and
       WhatsApp render the bare address, which is the least persuasive thing a
       link to a portfolio can look like.
-
-      Not in tension with noindex. `og:*` is read by link previewers to draw a
-      card; `noindex` is read by search engines to stay out of an index. A card
-      in a DM is not a listing. See public/robots.txt for the one thing that
-      does gate this.
 
       og:image is an absolute URL because the spec requires it, and generated
       from the brand lockup rather than drawn — see design/build-og-image.mjs.
@@ -142,13 +151,13 @@ const structuredData = article
       gives each one its own `site`.
 
       Not fixable here, and not a bodge worth attempting: an absolute URL pins
-      the host before any rewrite is consulted. It is contained rather than
-      solved — robots.txt disallows every agent and the X-Robots-Tag header
-      enforces it, so no compliant unfurler fetches the page at all — and the
-      brand-pack split fixes it for free, since each build would set its own
-      `site`. design/verify-vercel-config.mjs prints the pin on every run so it
-      cannot quietly become an assumption. See CLAUDE.md § Social and
-      structured data.
+      the host before any rewrite is consulted. As of 2026-10-19 www is
+      crawled, so an unfurler does fetch this tag, and the card it gets is
+      the apex mark. Partner hostnames and preview deploys stay noindex.
+      A build per brand would give each host its own card, since each build
+      would set its own `site`. design/verify-vercel-config.mjs prints the
+      pin on every run so it cannot quietly become an assumption. See
+      CLAUDE.md § Social and structured data.
     */}
     <meta property="og:image:alt" content="Rohit Sehmi" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -231,6 +240,25 @@ const structuredData = article
         var q = new URLSearchParams(location.search).get('brand');
         var h = q || location.hostname.split('.')[0];
         if (['wise', 'healf', 'ticketmaster', 'asos', 'spotify'].indexOf(h) >= 0) document.documentElement.dataset.brand = h;
+        /*
+          CSS hides the other brands' copy, but it stays in the DOM, so anything
+          that reads the page rather than paints it still finds "for Wise" on
+          asos.deesyn.com. Remove the nodes that are not this brand. The raw
+          HTML still has every brand: a client that never runs this script
+          still sees them. One page per brand is what would fix that.
+        */
+        var b = document.documentElement.dataset.brand || 'deesyn';
+        document.addEventListener('DOMContentLoaded', function () {
+          document.querySelectorAll('[data-brand-only]').forEach(function (el) {
+            var tokens = ' ' + el.getAttribute('data-brand-only') + ' ';
+            if (tokens.indexOf(' ' + b + ' ') >= 0) return;
+            var prev = el.previousSibling;
+            var next = el.nextSibling;
+            if (prev && prev.nodeType === 3 && !/\S/.test(prev.textContent)) prev.remove();
+            if (next && next.nodeType === 3 && !/\S/.test(next.textContent)) next.remove();
+            el.remove();
+          });
+        });
       } catch (e) {}
     </script>
     {/*

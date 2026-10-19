@@ -37,6 +37,12 @@
   "redirects": [
     {
       "source": "/(.*)",
+      "has": [{ "type": "host", "value": "^deesyn\\.com$" }],
+      "destination": "https://www.deesyn.com/$1",
+      "permanent": false
+    },
+    {
+      "source": "/(.*)",
       "missing": [
         {
           "type": "host",
@@ -65,12 +71,17 @@
   "headers": [
     {
       "source": "/(.*)",
-      "headers": [
+      "has": [
         {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow, noarchive"
+          "type": "host",
+          "value": "^(?:wise|healf|ticketmaster|asos|spotify)\\.deesyn\\.com$|^.+\\.vercel\\.app$"
         }
-      ]
+      ],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/Ro_CV.pdf",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     }
   ]
 }
