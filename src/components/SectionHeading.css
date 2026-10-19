@@ -46,6 +46,14 @@
   color: var(--semantic-fg-secondary);
   text-wrap: pretty;
 }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) [data-band='inverse'] .section-heading__standfirst {
+    color: var(--semantic-fg-primary);
+  }
+}
+:root[data-theme='dark'] [data-band='inverse'] .section-heading__standfirst {
+  color: var(--semantic-fg-primary);
+}
 @media (min-width: 768px) {
   .section-heading__standfirst {
     font: var(--type-body-xl);

@@ -137,6 +137,20 @@
         "ref": "semantic.*.fg.secondary"
       }
     ],
+    "@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) [data-band='inverse'] .metrics__label,\n  :root:not([data-theme='light']) [data-band='inverse'] .metrics__from,\n  :root:not([data-theme='light']) [data-band='inverse'] .metrics__source }": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ":root[data-theme='dark'] [data-band='inverse'] .metrics__label,\n:root[data-theme='dark'] [data-band='inverse'] .metrics__from,\n:root[data-theme='dark'] [data-band='inverse'] .metrics__source": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
     ".metrics__source": [
       {
         "property": "font",

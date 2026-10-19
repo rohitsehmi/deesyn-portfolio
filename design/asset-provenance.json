@@ -445,6 +445,110 @@
     "nca-exploration-vertical-offset.png": {
       "kind": "reconstruction",
       "note": "Same Figma-chrome reconstruction as nca-dialog-platforms. Accepted 2026-08-17."
+    },
+    "dark-work-betfair-sportsbook.webp": {
+      "kind": "capture",
+      "note": "The sportsbook cover with the white studio ground removed. Opened 2026-10-19. The black phone, the green odds and the players are the same pixels as work-betfair-sportsbook.jpg."
+    },
+    "dark-work-tv.webp": {
+      "kind": "capture",
+      "note": "The TV cover with the white studio ground removed. Opened 2026-10-19. The two Viasat Film tablets are the same photograph as work-tv.jpg."
+    },
+    "dark-work-grabbd.webp": {
+      "kind": "capture",
+      "note": "The Grabbd cover with the flat blue ground removed. Opened 2026-10-19. The Android phone and the Grabbd icon are the same pixels as work-grabbd.png."
+    },
+    "dark-project-apps-further.webp": {
+      "kind": "capture",
+      "note": "Three Hotels.com phones with the white ground removed. Opened 2026-10-19. The screens are the same capture as project-apps-further.jpg."
+    },
+    "dark-project-apps-store-1.webp": {
+      "kind": "capture",
+      "note": "Store artwork on red boards, white page ground removed. Opened 2026-10-19. Same captures as project-apps-store-1.jpg."
+    },
+    "dark-project-apps-store-2.webp": {
+      "kind": "capture",
+      "note": "App of the Day and the Play listing, white page ground removed. Opened 2026-10-19. Same captures as project-apps-store-2.jpg."
+    },
+    "dark-project-rebrand-devices.webp": {
+      "kind": "capture",
+      "note": "iMac, iPad and iPhone with the white ground removed. Opened 2026-10-19. Same photograph as project-rebrand-devices.jpg."
+    },
+    "dark-project-key-flow.webp": {
+      "kind": "capture",
+      "note": "Mobile key screens with the white ground removed. Opened 2026-10-19. Same capture as project-key-flow.png. The screens themselves stay light."
+    },
+    "dark-project-watch.webp": {
+      "kind": "capture",
+      "note": "Watch faces in a row with the white ground removed. Opened 2026-10-19. Same capture as project-watch.png."
+    },
+    "dark-project-casino-phones.webp": {
+      "kind": "capture",
+      "note": "Two green Betfair Casino phones with the white ground removed. Opened 2026-10-19. Same render as project-casino-phones.jpg."
+    },
+    "dark-project-casino-ipad.webp": {
+      "kind": "capture",
+      "note": "A Betfair Casino iPad with the white ground removed. Opened 2026-10-19. Same render as project-casino-ipad.jpg."
+    },
+    "dark-project-casino.webp": {
+      "kind": "capture",
+      "note": "Betfair Casino handsets with the white ground removed. Opened 2026-10-19. Same render as project-casino.jpg."
+    },
+    "dark-project-arcade.webp": {
+      "kind": "capture",
+      "note": "Betfair Arcade handset and card with the pale ground removed. Opened 2026-10-19. Same render as project-arcade.jpg."
+    },
+    "dark-project-arcade-bonus.webp": {
+      "kind": "capture",
+      "note": "Two Arcade phones with the white ground removed. Opened 2026-10-19. Same render as project-arcade-bonus.jpg."
+    },
+    "dark-project-arcade-phones.webp": {
+      "kind": "capture",
+      "note": "A row of Arcade phones with the white ground removed. Opened 2026-10-19. Same render as project-arcade-phones.jpg."
+    },
+    "dark-project-poker-iphone.webp": {
+      "kind": "capture",
+      "note": "A poker iPhone with the white ground removed. Opened 2026-10-19. Same render as project-poker-iphone.jpg."
+    },
+    "dark-project-poker-android.webp": {
+      "kind": "capture",
+      "note": "A poker Android phone with the white ground removed. Opened 2026-10-19. Same render as project-poker-android.jpg."
+    },
+    "dark-project-sportsbook-1.webp": {
+      "kind": "capture",
+      "note": "Sportsbook tablet and phone with the white ground removed. Opened 2026-10-19. Same render as project-sportsbook-1.jpg."
+    },
+    "dark-project-sportsbook-2.webp": {
+      "kind": "capture",
+      "note": "Sportsbook screens with the white ground removed. Opened 2026-10-19. Same render as project-sportsbook-2.jpg."
+    },
+    "dark-project-sportsbook-3.webp": {
+      "kind": "capture",
+      "note": "Sportsbook phones with the white ground removed. Opened 2026-10-19. Same render as project-sportsbook-3.jpg."
+    },
+    "dark-project-grabbd-concepts.webp": {
+      "kind": "capture",
+      "note": "Grabbd concept screens with the pale ground removed. Opened 2026-10-19. Same board as project-grabbd-concepts.jpg."
+    },
+    "dark-project-tv-22.webp": {
+      "kind": "capture",
+      "note": "Two Viasat phones with the white ground removed. Opened 2026-10-19. Same photograph as project-tv-22.jpg."
+    },
+    "dark-project-tv-11.webp": {
+      "kind": "capture",
+      "note": "A television showing Viaplay, white ground removed. Opened 2026-10-19. Same photograph as project-tv-11.jpg."
+    },
+    "dark-project-tv-guide.webp": {
+      "kind": "capture",
+      "note": "A Sky guide on a television, white ground removed. Opened 2026-10-19. Same photograph as project-tv-guide.jpg."
+    },
+    "dark-project-tv-note.webp": {
+      "kind": "capture",
+      "note": "A Sky Movies screen, white ground removed. Opened 2026-10-19. Same photograph as project-tv-note.jpg."
+    },
+    "dark-project-tv-playback.webp": {
+      "kind": "capture",
+      "note": "A television playing a film, white ground removed. Opened 2026-10-19. Same photograph as project-tv-playback.jpg."
     }
   }
 }

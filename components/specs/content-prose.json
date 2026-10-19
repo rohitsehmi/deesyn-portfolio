@@ -141,6 +141,20 @@
         "ref": "primitive.space.sp300"
       }
     ],
+    "@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) [data-band='inverse'] .prose p,\n  :root:not([data-theme='light']) [data-band='inverse'] .prose li }": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ":root[data-theme='dark'] [data-band='inverse'] .prose p,\n:root[data-theme='dark'] [data-band='inverse'] .prose li": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
     ".prose hr": [
       {
         "property": "border-top",

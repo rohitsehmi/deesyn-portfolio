@@ -65,5 +65,7 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.section-heading__standfirst` | font | `typography.body.l` |
 | `.section-heading__standfirst` | letter-spacing | `typography.body.l` |
 | `.section-heading__standfirst` | color | `semantic.*.fg.secondary` |
+| `@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) [data-band='inverse'] .section-heading__standfirst }` | color | `semantic.*.fg.primary` |
+| `:root[data-theme='dark'] [data-band='inverse'] .section-heading__standfirst` | color | `semantic.*.fg.primary` |
 | `@media (min-width: 768px) { .section-heading__standfirst }` | font | `typography.body.xl` |
 | `@media (min-width: 768px) { .section-heading__standfirst }` | letter-spacing | `typography.body.xl` |

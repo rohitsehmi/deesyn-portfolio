@@ -52,7 +52,25 @@
   font: var(--type-body-2);
   letter-spacing: var(--type-body-2-tracking);
   color: var(--semantic-fg-secondary);
-  opacity: 0.85;
+}
+
+/*
+  The impact band is inverse. In the dark theme that surface is pale, and
+  secondary is graphite: 5.6:1, which is the grey that looks too faint.
+  At 85% opacity the same graphite was 4.0:1 and failed. Primary is navy
+  on this surface. The light theme keeps graphite's pair, mist on navy.
+*/
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) [data-band='inverse'] .metrics__label,
+  :root:not([data-theme='light']) [data-band='inverse'] .metrics__from,
+  :root:not([data-theme='light']) [data-band='inverse'] .metrics__source {
+    color: var(--semantic-fg-primary);
+  }
+}
+:root[data-theme='dark'] [data-band='inverse'] .metrics__label,
+:root[data-theme='dark'] [data-band='inverse'] .metrics__from,
+:root[data-theme='dark'] [data-band='inverse'] .metrics__source {
+  color: var(--semantic-fg-primary);
 }
 
 /* Provenance, set quietly but at full contrast. fg/tertiary would fail AA. */

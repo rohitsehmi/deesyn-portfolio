@@ -15,6 +15,7 @@ import {
   projectOrder,
   projectCopy,
   projectImages,
+  projectPlate,
   projectPath,
   type ProjectSlug
 } from '../../data/projects';
@@ -43,9 +44,18 @@ const rendered = await Promise.all(
           widths: [480, 720, 960, 1280, 1600],
           sizes: FIGURE_SIZES
         });
+        const plate = projectPlate(figure.key);
+        const dark = plate
+          ? await getImage({
+              src: plate,
+              format: 'webp',
+              widths: [480, 720, 960, 1280, 1600],
+              sizes: FIGURE_SIZES
+            })
+          : undefined;
         const caption =
           'caption' in figure && typeof figure.caption === 'string' ? figure.caption : undefined;
-        return { ...figure, caption, image };
+        return { ...figure, caption, image, dark };
       })
     )
   }))
@@ -124,6 +134,8 @@ if (!nextSlug && !nextStudy) throw new Error(`${slug}: no case study to continue
                 <Media
                   src={figure.image.src}
                   srcSet={figure.image.srcSet.attribute}
+                  srcDark={figure.dark?.src}
+                  srcSetDark={figure.dark?.srcSet.attribute}
                   sizes={FIGURE_SIZES}
                   alt={figure.alt}
                   caption={figure.caption}

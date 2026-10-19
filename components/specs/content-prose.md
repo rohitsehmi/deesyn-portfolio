@@ -51,5 +51,9 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.prose li` | letter-spacing | `typography.body.l` |
 | `.prose li` | color | `semantic.*.fg.secondary` |
 | `.prose li + li` | margin-block-start | `primitive.space.sp300` |
+| `@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) [data-band='inverse'] .prose p,
+  :root:not([data-theme='light']) [data-band='inverse'] .prose li }` | color | `semantic.*.fg.primary` |
+| `:root[data-theme='dark'] [data-band='inverse'] .prose p,
+:root[data-theme='dark'] [data-band='inverse'] .prose li` | color | `semantic.*.fg.primary` |
 | `.prose hr` | border-top | `semantic.*.border.subtle` |
 | `.prose hr` | margin-block | `primitive.layout.l40` |

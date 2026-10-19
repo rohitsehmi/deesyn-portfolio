@@ -163,6 +163,20 @@
         "ref": "semantic.*.fg.secondary"
       }
     ],
+    "@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) [data-band='inverse'] .section-heading__standfirst }": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
+    ":root[data-theme='dark'] [data-band='inverse'] .section-heading__standfirst": [
+      {
+        "property": "color",
+        "var": "--semantic-fg-primary",
+        "ref": "semantic.*.fg.primary"
+      }
+    ],
     "@media (min-width: 768px) { .section-heading__standfirst }": [
       {
         "property": "font",

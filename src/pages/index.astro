@@ -15,6 +15,7 @@ import { CLIENT_MARKS } from '../components/client-marks';
 import betfairMark from '../assets/mark-betfair.png';
 import grabbdMark from '../assets/mark-grabbd.png';
 import contact from '../copy/contact.json';
+import { archivePlates } from '../data/projects';
 import { getImage } from 'astro:assets';
 import workHotels from '../assets/work-hotels-apps.webp';
 import workRebrand from '../assets/work-rebrand.png';
@@ -58,7 +59,16 @@ const archiveImages = new Map(
         widths: [480, 720, 960, 1280, 1600],
         sizes: ARCHIVE_SIZES
       });
-      return [item.slug, image] as const;
+      const plate = archivePlates[item.slug];
+      const dark = plate
+        ? await getImage({
+            src: plate,
+            format: 'webp',
+            widths: [480, 720, 960, 1280, 1600],
+            sizes: ARCHIVE_SIZES
+          })
+        : undefined;
+      return [item.slug, { image, dark }] as const;
     })
   )
 );
@@ -258,7 +268,11 @@ const covers = new Map(
   )
 );
 ---
-<Base title="Rohit Sehmi · Product and design systems" pageEnd="sunken">
+<Base
+  title="Deesyn · A design systems studio"
+  description="Deesyn is a design systems studio for product teams. Rohit Sehmi designs the system, and the product it lives in."
+  pageEnd="sunken"
+>
   {/*
     Transparent over the inverse hero, then the page canvas once it scrolls.
     The bar is outside the band, so the homepage stylesheet paints its top
@@ -278,6 +292,7 @@ const covers = new Map(
       Inverse, then the work returns to base, which is the legal step out.
     */}
     <Band role="inverse" scale="compact">
+      <canvas class="home-shader" aria-hidden="true"></canvas>
       <canvas class="home-field" aria-hidden="true"></canvas>
       <div class="home-stage">
       <div class="home-hero">
@@ -366,6 +381,27 @@ const covers = new Map(
     </Band>
 
     <Band role="base" scale="compact">
+      <div class="home-offers" id="work">
+        <h2 data-copy="home:offersTitle">{copy.offersTitle}</h2>
+        <ul>
+          {copy.offers.map((item, i) => {
+            const mark = (['brands', 'read', 'product'] as const)[i];
+            return (
+              <li>
+                <a href={item.href}>
+                  <span class="home-offers__mark" data-mark={mark} aria-hidden="true">
+                    {mark === 'product' ? <span></span> : <><span></span><span></span><span></span></>}
+                  </span>
+                  <span class="home-offers__text">
+                    <span class="home-offers__title" data-copy={`home:offers.${i}.title`}>{item.title}</span>
+                    <span class="home-offers__summary" data-copy={`home:offers.${i}.summary`}>{item.summary}</span>
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
       {/*
         No count on the list, deliberately, and this is where one used to be.
 
@@ -378,7 +414,7 @@ const covers = new Map(
         guarding it. Nothing here needs to know how many tiles this brand sees,
         so nothing can get that number wrong.
       */}
-      <ul class="work" id="work">
+      <ul class="work">
         {/*
           Every live study across every brand, with the brand-specific ones
           marked so CSS can drop them. It has to be this way round: one build
@@ -419,19 +455,31 @@ const covers = new Map(
       </ul>
       <ul class="archive">
           {copy.archive.map((item, i) => {
-            const image = archiveImages.get(item.slug)!;
+            const shot = archiveImages.get(item.slug)!;
             return (
               <li data-archive={item.slug}>
                 <article class="archive__card">
                   <span class="archive__media">
                     <img
-                      src={image.src}
-                      srcset={image.srcSet.attribute}
+                      src={shot.image.src}
+                      srcset={shot.image.srcSet.attribute}
                       sizes={ARCHIVE_SIZES}
                       alt={item.alt}
                       loading="lazy"
                       decoding="async"
+                      data-theme-img={shot.dark ? 'light' : undefined}
                     />
+                    {shot.dark && (
+                      <img
+                        src={shot.dark.src}
+                        srcset={shot.dark.srcSet.attribute}
+                        sizes={ARCHIVE_SIZES}
+                        alt={item.alt}
+                        loading="lazy"
+                        decoding="async"
+                        data-theme-img="dark"
+                      />
+                    )}
                     <span class="archive__tag">
                       <Tag copyRef={`home:archive.${i}.tag`}>{item.tag}</Tag>
                     </span>
@@ -457,6 +505,7 @@ const covers = new Map(
     then base, then sunken. Inverse has to return to base, and it does.
   */}
   <section class="home-close">
+    <canvas class="home-shader" aria-hidden="true"></canvas>
     <div class="measure home-close__inner">
       <h2 data-copy="contact:standfirst">{contact.standfirst}</h2>
       <Button href="/contact" size="lg" data-copy="contact:title">{contact.title}</Button>
@@ -472,9 +521,11 @@ const covers = new Map(
 <script>
   import { bootHomeMotion } from '../components/home-motion';
   import { bootHeroField } from '../components/home-field';
+  import { bootHomeShader } from '../components/home-shader';
 
   bootHomeMotion();
   bootHeroField();
+  bootHomeShader();
 </script>
 
 <style is:global>
@@ -517,6 +568,47 @@ const covers = new Map(
     bar and out of the pool the companies sit on. The colour is the band's
     own foreground, so the field flips with the theme.
   */
+  /*
+    The mesh sits under the specks. Its stops are the band's own surfaces,
+    so the type keeps its contrast while the field moves. The mask is the
+    field's mask: nothing in the bar, and the lime floor stays the gradient.
+  */
+  .home-shader {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    --shader-a: var(--semantic-band-base);
+    --shader-b: var(--semantic-band-sunken);
+    --shader-c: var(--semantic-bg-surface);
+    --shader-d: var(--semantic-band-base);
+  }
+  .home-shader[data-live='true'] {
+    opacity: 1;
+    transition: opacity var(--semantic-duration-overlay) var(--semantic-easing-out);
+  }
+  .home-shader[data-failed] { display: none; }
+  main > .band[data-band='inverse'] .home-shader {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--primitive-size-nav) * 2),
+      black calc(var(--primitive-size-nav) * 2 + var(--primitive-layout-l64)),
+      black 46%,
+      transparent 66%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--primitive-size-nav) * 2),
+      black calc(var(--primitive-size-nav) * 2 + var(--primitive-layout-l64)),
+      black 46%,
+      transparent 66%
+    );
+  }
   .home-field {
     position: absolute;
     z-index: 0;
@@ -544,7 +636,7 @@ const covers = new Map(
     );
   }
   @media (prefers-reduced-motion: reduce) {
-    .home-field { display: none; }
+    .home-field, .home-shader { display: none; }
   }
   .home-stage { position: relative; z-index: 1; }
   /*
@@ -581,9 +673,7 @@ const covers = new Map(
     the same ground, or the join turns yellow again. The footer is the
     navy itself, with the light type, so the page ends where the hero began.
   */
-  :root {
-    --home-ground: color-mix(in srgb, var(--primitive-deesyn-ink) 7%, var(--primitive-deesyn-white));
-  }
+  /* --home-ground lives in base.css. Every page uses it, not only this one. */
   @media (prefers-color-scheme: light) {
     :root:not([data-theme='dark']) main > .band[data-band='base'] {
       background: var(--home-ground);
@@ -598,7 +688,9 @@ const covers = new Map(
     :root:not([data-theme='dark']) main ~ .band[data-band='sunken'] .footer__copy {
       color: var(--primitive-deesyn-mist);
     }
-    :root:not([data-theme='dark']) {
+    /* The extra :root is specificity. The shared ground rule is (0,3,0) and
+       would paint the overscroll grey. Past the navy footer it stays navy. */
+    html:root:root:not([data-theme='dark']) {
       background: var(--primitive-deesyn-ink);
     }
     :root:not([data-theme='dark']) body {
@@ -621,7 +713,7 @@ const covers = new Map(
   :root[data-theme='light'] main ~ .band[data-band='sunken'] .footer__copy {
     color: var(--primitive-deesyn-mist);
   }
-  :root[data-theme='light'] {
+  html:root:root[data-theme='light'] {
     background: var(--primitive-deesyn-ink);
   }
   :root[data-theme='light'] body {
@@ -842,6 +934,20 @@ const covers = new Map(
     color: var(--semantic-fg-secondary);
     text-wrap: pretty;
   }
+  /*
+    Dark theme flips this band to the pale ground, so secondary is graphite.
+    That is 5.6:1 on the paper and 4.9:1 where the gradient reaches the lime,
+    and it reads as faint next to the navy headline. Primary is navy here.
+    Light theme keeps the mist, which is 8.9:1 on the navy hero.
+  */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .home-hero__standfirst {
+      color: var(--semantic-fg-primary);
+    }
+  }
+  :root[data-theme='dark'] .home-hero__standfirst {
+    color: var(--semantic-fg-primary);
+  }
   @media (min-width: 768px) {
     .home-hero__standfirst { font: var(--type-body-xl); letter-spacing: var(--type-body-xl-tracking); }
   }
@@ -909,7 +1015,8 @@ const covers = new Map(
     overflow: hidden;
     flex: none;
     border-radius: var(--primitive-radius-r32);
-    background: var(--semantic-bg-subtle);
+    /* The cut-out plate is transparent, so this is the ground the device sits on. */
+    background: var(--semantic-bg-surface);
   }
   /*
     The tag sits on the picture, bottom left, the same place as a case study.
@@ -941,6 +1048,20 @@ const covers = new Map(
     transform: translate3d(var(--pan-x), var(--pan-y), 0);
     transition: transform var(--semantic-duration-dropdown) var(--semantic-easing-out);
   }
+  /*
+    Same cascade as Media.css. A picture with no dark plate has no
+    data-theme-img, so none of this matches it. The hidden one is
+    display:none, so a screen reader meets the picture once.
+  */
+  .archive__media img[data-theme-img='dark'] { display: none; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .archive__media img[data-theme-img='light'] { display: none; }
+    :root:not([data-theme='light']) .archive__media img[data-theme-img='dark'] { display: block; }
+  }
+  [data-theme='dark'] .archive__media img[data-theme-img='light'] { display: none; }
+  [data-theme='dark'] .archive__media img[data-theme-img='dark'] { display: block; }
+  [data-theme='light'] .archive__media img[data-theme-img='light'] { display: block; }
+  [data-theme='light'] .archive__media img[data-theme-img='dark'] { display: none; }
   /* The scale makes room for the pointer shift. Both live on one transform so they do not fight. */
   @media (hover: hover) and (pointer: fine) {
     .archive__card:hover .archive__media img {
@@ -1200,6 +1321,171 @@ const covers = new Map(
     Three reading cards, the same shape. Two columns, so the third drops
     under the first pair rather than squeezing the summary to a third of the measure.
   */
+  /*
+    What I take on, then the studies that show it. Three links, not
+    three cards.
+  */
+  .home-offers {
+    margin-bottom: var(--primitive-layout-l80);
+    scroll-margin-top: calc(var(--primitive-size-nav) + var(--primitive-space-sp600));
+  }
+  .home-offers h2 {
+    margin: 0 0 var(--primitive-layout-l40);
+    font-family: var(--type-heading-l-family);
+    font-weight: var(--type-heading-l-weight);
+    font-size: var(--type-heading-l-size);
+    letter-spacing: var(--type-heading-l-tracking);
+    line-height: var(--type-heading-l-line);
+  }
+  .home-offers ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--primitive-layout-l40);
+  }
+  @media (min-width: 768px) {
+    .home-offers ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .home-offers a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--primitive-space-sp500);
+    min-height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+  /*
+    A circle beside each offer. The icon set is arrows, mail and a sun, none
+    of which say these three things, so the marks are geometry: three brands,
+    lines being written, a screen filling. Decorative. The link name is the
+    sentence. The loop is longer than the motion scale on purpose: that scale
+    is for controls, and a control this slow would feel broken.
+  */
+  .home-offers li:nth-child(2) { --offer-shift: 0.4s; }
+  .home-offers li:nth-child(3) { --offer-shift: 0.8s; }
+  .home-offers__mark {
+    --offer-loop: 2.8s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: var(--primitive-size-s48);
+    height: var(--primitive-size-s48);
+    border-radius: var(--primitive-radius-round);
+    background: var(--semantic-action-primary-bg);
+    color: var(--semantic-action-primary-fg);
+  }
+  .home-offers__mark[data-mark='brands'] { gap: var(--primitive-space-sp150); }
+  .home-offers__mark[data-mark='brands'] span {
+    width: var(--primitive-size-s6);
+    height: var(--primitive-size-s6);
+    border-radius: var(--primitive-radius-round);
+    background: currentColor;
+  }
+  .home-offers__mark[data-mark='brands'] span:nth-child(2) {
+    background: var(--semantic-highlight);
+  }
+  .home-offers__mark[data-mark='read'] {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--primitive-space-sp100);
+    padding-inline-start: calc((var(--primitive-size-s48) - var(--primitive-size-s16)) / 2);
+  }
+  .home-offers__mark[data-mark='read'] span {
+    height: var(--primitive-size-s2);
+    border-radius: var(--primitive-radius-r2);
+    background: currentColor;
+    transform-origin: left center;
+  }
+  .home-offers__mark[data-mark='read'] span:nth-child(1) { width: var(--primitive-size-s16); }
+  .home-offers__mark[data-mark='read'] span:nth-child(2) {
+    width: var(--primitive-size-s12);
+    background: var(--semantic-highlight);
+  }
+  .home-offers__mark[data-mark='read'] span:nth-child(3) { width: var(--primitive-size-s8); }
+  .home-offers__mark[data-mark='product'] span {
+    position: relative;
+    width: var(--primitive-size-s16);
+    height: var(--primitive-size-s20);
+    border: var(--primitive-size-s2) solid currentColor;
+    border-radius: var(--primitive-radius-r4);
+    overflow: hidden;
+  }
+  .home-offers__mark[data-mark='product'] span::before {
+    content: '';
+    position: absolute;
+    left: var(--primitive-space-sp50);
+    right: var(--primitive-space-sp50);
+    bottom: var(--primitive-space-sp50);
+    height: 62%;
+    border-radius: var(--primitive-radius-r2);
+    background: var(--semantic-highlight);
+    transform-origin: bottom center;
+  }
+  .home-offers__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-space-sp200);
+    min-width: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .home-offers__mark[data-mark='brands'] span {
+      animation: offer-pulse var(--offer-loop) var(--semantic-easing-in-out) infinite;
+    }
+    .home-offers__mark[data-mark='brands'] span:nth-child(1) { animation-delay: var(--offer-shift, 0s); }
+    .home-offers__mark[data-mark='brands'] span:nth-child(2) { animation-delay: calc(var(--offer-shift, 0s) + 0.22s); }
+    .home-offers__mark[data-mark='brands'] span:nth-child(3) { animation-delay: calc(var(--offer-shift, 0s) + 0.44s); }
+    .home-offers__mark[data-mark='read'] span {
+      animation: offer-draw var(--offer-loop) var(--semantic-easing-out) infinite;
+    }
+    .home-offers__mark[data-mark='read'] span:nth-child(1) { animation-delay: var(--offer-shift, 0s); }
+    .home-offers__mark[data-mark='read'] span:nth-child(2) { animation-delay: calc(var(--offer-shift, 0s) + 0.18s); }
+    .home-offers__mark[data-mark='read'] span:nth-child(3) { animation-delay: calc(var(--offer-shift, 0s) + 0.36s); }
+    .home-offers__mark[data-mark='product'] span::before {
+      animation: offer-fill var(--offer-loop) var(--semantic-easing-in-out) infinite;
+      animation-delay: var(--offer-shift, 0s);
+    }
+  }
+  @keyframes offer-pulse {
+    0%, 100% { transform: scale(0.7); }
+    42% { transform: scale(1.35); }
+  }
+  @keyframes offer-draw {
+    0% { transform: scaleX(0.2); }
+    46%, 68% { transform: scaleX(1); }
+    100% { transform: scaleX(0.2); }
+  }
+  @keyframes offer-fill {
+    0%, 100% { transform: scaleY(0.25); }
+    48% { transform: scaleY(1); }
+  }
+  .home-offers__title {
+    font-family: var(--type-heading-s-family);
+    font-weight: var(--type-heading-s-weight);
+    font-size: var(--type-heading-s-size);
+    letter-spacing: var(--type-heading-s-tracking);
+    line-height: var(--type-heading-s-line);
+    background-image: linear-gradient(var(--semantic-highlight), var(--semantic-highlight));
+    background-repeat: no-repeat;
+    background-position: 0 92%;
+    background-size: 0 0.42em;
+    transition: background-size var(--semantic-duration-dropdown) var(--semantic-easing-out);
+  }
+  .home-offers__summary {
+    color: var(--semantic-fg-secondary);
+    font: var(--type-body-1);
+    letter-spacing: var(--type-body-1-tracking);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .home-offers a:hover .home-offers__title { background-size: 100% 0.42em; }
+  }
+  .home-offers a:focus-visible {
+    outline: 2px solid var(--semantic-border-focus);
+    outline-offset: var(--primitive-space-sp200);
+  }
+  .home-offers a:focus-visible .home-offers__title { background-size: 100% 0.42em; }
   .work {
     list-style: none;
     margin: 0;
@@ -1207,7 +1493,6 @@ const covers = new Map(
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--primitive-layout-l48);
-    scroll-margin-top: calc(var(--primitive-size-nav) + var(--primitive-space-sp600));
   }
   @media (min-width: 768px) {
     .work { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1339,6 +1624,7 @@ const covers = new Map(
     the button. Navy type stays on that light ground in both themes.
   */
   .home-close {
+    position: relative;
     background:
       radial-gradient(
         78% 160% at 108% 140%,
@@ -1383,7 +1669,15 @@ const covers = new Map(
       ),
       var(--semantic-band-sunken);
   }
+  .home-close .home-shader {
+    --shader-a: var(--home-ground);
+    --shader-b: var(--primitive-deesyn-sky);
+    --shader-c: var(--primitive-deesyn-sage);
+    --shader-d: color-mix(in srgb, var(--semantic-highlight) 45%, var(--primitive-deesyn-paper));
+  }
   .home-close__inner {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-wrap: wrap;
     align-items: center;

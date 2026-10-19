@@ -54,6 +54,57 @@ body {
     background-color var(--semantic-duration-tooltip) var(--semantic-easing-out),
     color var(--semantic-duration-tooltip) var(--semantic-easing-out);
 }
+
+/*
+  The reading ground is a little navy in white. The paper token stays the
+  yellow it is, because the lime floor and the inverse bands still use it.
+  A whole article on that paper is the yellow the homepage already stepped
+  off. Sunken is the same grey, one step darker, so two bands still have a
+  seam. 11% is as far as the step can go: graphite on it is 4.7:1, and 13%
+  falls under 4.5. Partner hosts are left on their own pack.
+*/
+:root {
+  --home-ground: color-mix(in srgb, var(--primitive-deesyn-ink) 7%, var(--primitive-deesyn-white));
+  --home-ground-deep: color-mix(in srgb, var(--primitive-deesyn-ink) 11%, var(--primitive-deesyn-white));
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-brand]):not([data-theme='dark']) [data-band='base'] {
+    background: var(--home-ground);
+  }
+  :root:not([data-brand]):not([data-theme='dark']) [data-band='sunken'] {
+    background: var(--home-ground-deep);
+  }
+  :root:not([data-brand]):not([data-theme='dark']) body,
+  :root:not([data-brand]):not([data-theme='dark']) .nav[data-state='scrolled'],
+  :root:not([data-brand]):not([data-theme='dark']) .nav__panel {
+    background: var(--home-ground);
+  }
+  :root:not([data-brand]):not([data-theme='dark']) {
+    background: var(--home-ground);
+  }
+  :root:not([data-brand]):not([data-theme='dark']) .hindsight,
+  :root:not([data-brand]):not([data-theme='dark']) .media__frame {
+    background: var(--home-ground-deep);
+  }
+}
+:root:not([data-brand])[data-theme='light'] [data-band='base'] {
+  background: var(--home-ground);
+}
+:root:not([data-brand])[data-theme='light'] [data-band='sunken'] {
+  background: var(--home-ground-deep);
+}
+:root:not([data-brand])[data-theme='light'] body,
+:root:not([data-brand])[data-theme='light'] .nav[data-state='scrolled'],
+:root:not([data-brand])[data-theme='light'] .nav__panel {
+  background: var(--home-ground);
+}
+:root:not([data-brand])[data-theme='light'] {
+  background: var(--home-ground);
+}
+:root:not([data-brand])[data-theme='light'] .hindsight,
+:root:not([data-brand])[data-theme='light'] .media__frame {
+  background: var(--home-ground-deep);
+}
 ::selection {
   background: var(--semantic-highlight);
   /* Navy on the lime, in both themes. Paper on the lime is about 1.1:1. */

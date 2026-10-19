@@ -141,3 +141,59 @@ export function projectCopy(slug: ProjectSlug) {
 }
 
 export const projectPath = (slug: string) => `/work/${slug}`;
+
+/*
+  The same photograph, with the flat studio ground taken out. Dark mode shows
+  this so a white sweep does not sit in the middle of a navy page. The screen
+  is not redrawn. Diagrams whose white is the paper are absent on purpose:
+  taking that white out eats the artwork. See design/build-dark-plates.py.
+*/
+const plateModules = import.meta.glob<ImageMetadata>('../assets/dark-*.webp', {
+  eager: true,
+  import: 'default'
+});
+
+const plate = (file: string): ImageMetadata => {
+  const found = plateModules[`../assets/${file}`];
+  if (!found) throw new Error(`projects: no dark plate ${file}`);
+  return found;
+};
+
+/** Homepage archive slug to its dark plate, when the cover has a studio ground. */
+export const archivePlates: Partial<Record<string, ImageMetadata>> = {
+  'betfair-sportsbook': plate('dark-work-betfair-sportsbook.webp'),
+  grabbd: plate('dark-work-grabbd.webp'),
+  tv: plate('dark-work-tv.webp')
+};
+
+const PLATE_FOR_FIGURE: Record<string, string> = {
+  'apps-further': 'dark-project-apps-further.webp',
+  'apps-store-1': 'dark-project-apps-store-1.webp',
+  'apps-store-2': 'dark-project-apps-store-2.webp',
+  'rebrand-devices': 'dark-project-rebrand-devices.webp',
+  'key-flow': 'dark-project-key-flow.webp',
+  watch: 'dark-project-watch.webp',
+  'casino-phones': 'dark-project-casino-phones.webp',
+  'casino-ipad': 'dark-project-casino-ipad.webp',
+  casino: 'dark-project-casino.webp',
+  arcade: 'dark-project-arcade.webp',
+  'arcade-bonus': 'dark-project-arcade-bonus.webp',
+  'arcade-phones': 'dark-project-arcade-phones.webp',
+  'poker-iphone': 'dark-project-poker-iphone.webp',
+  'poker-android': 'dark-project-poker-android.webp',
+  'sportsbook-ios': 'dark-project-sportsbook-1.webp',
+  'sportsbook-web': 'dark-project-sportsbook-2.webp',
+  'sportsbook-3': 'dark-project-sportsbook-3.webp',
+  'grabbd-app': 'dark-project-grabbd-concepts.webp',
+  'tv-film': 'dark-work-tv.webp',
+  'tv-viaplay': 'dark-project-tv-22.webp',
+  'tv-viagame': 'dark-project-tv-11.webp',
+  'tv-guide': 'dark-project-tv-guide.webp',
+  'tv-note': 'dark-project-tv-note.webp',
+  'tv-playback': 'dark-project-tv-playback.webp'
+};
+
+export const projectPlate = (key: string): ImageMetadata | undefined => {
+  const file = PLATE_FOR_FIGURE[key];
+  return file ? plate(file) : undefined;
+};

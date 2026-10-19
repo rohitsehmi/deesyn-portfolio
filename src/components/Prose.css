@@ -34,6 +34,18 @@
 }
 .prose li + li { margin-block-start: var(--primitive-space-sp300); }
 
+/* Same pale inverse surface as the metrics. Graphite body copy looks faint there. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) [data-band='inverse'] .prose p,
+  :root:not([data-theme='light']) [data-band='inverse'] .prose li {
+    color: var(--semantic-fg-primary);
+  }
+}
+:root[data-theme='dark'] [data-band='inverse'] .prose p,
+:root[data-theme='dark'] [data-band='inverse'] .prose li {
+  color: var(--semantic-fg-primary);
+}
+
 /* One rule, used sparsely, rather than a hairline under every row. */
 .prose hr {
   border: 0;

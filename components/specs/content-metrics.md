@@ -55,6 +55,12 @@ Every value is a token reference, not a literal. Verified by `design/verify-css.
 | `.metrics__from` | font | `typography.body.2` |
 | `.metrics__from` | letter-spacing | `typography.body.2` |
 | `.metrics__from` | color | `semantic.*.fg.secondary` |
+| `@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) [data-band='inverse'] .metrics__label,
+  :root:not([data-theme='light']) [data-band='inverse'] .metrics__from,
+  :root:not([data-theme='light']) [data-band='inverse'] .metrics__source }` | color | `semantic.*.fg.primary` |
+| `:root[data-theme='dark'] [data-band='inverse'] .metrics__label,
+:root[data-theme='dark'] [data-band='inverse'] .metrics__from,
+:root[data-theme='dark'] [data-band='inverse'] .metrics__source` | color | `semantic.*.fg.primary` |
 | `.metrics__source` | font | `typography.body.2` |
 | `.metrics__source` | letter-spacing | `typography.body.2` |
 | `.metrics__source` | color | `semantic.*.fg.secondary` |
