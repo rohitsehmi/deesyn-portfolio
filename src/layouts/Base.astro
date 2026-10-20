@@ -176,16 +176,14 @@ const structuredData = article
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
     {/*
       Rohit's own mark, generated from the same path data the Logo component
-      renders — see design/build-favicon.mjs. The SVG carries its own
-      prefers-color-scheme rule, which matters more here than on the page: a
-      favicon sits on the browser's tab strip rather than on the site, so a dark
-      mark would vanish into a dark tab. The PNGs are the fallback and cannot
-      flip, so they take the light fill.
+      renders — see design/build-favicon.mjs. The PNG is listed first and the
+      tile is light, because a navy disc disappears on a dark tab and a browser
+      that refuses the SVG then shows nothing at all.
     */}
-    <link rel="icon" href="/favicon.ico?v=2" sizes="32x32" />
-    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
-    <link rel="icon" href="/favicon-32.png?v=2" sizes="32x32" type="image/png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
+    <link rel="icon" href="/favicon-32.png?v=3" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico?v=3" sizes="16x16 32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
     {/*
       Applies a remembered theme before the first paint. It has to be inline
       and blocking: a module script, or anything React does after hydration,

@@ -711,7 +711,7 @@ Not moved: `src/data/cv.ts`, already a single readable file carrying structure t
 
 The one thing it hardcodes is colour, and it resolves it from the token rather than typing it: a favicon is fetched outside the page, so it has no stylesheet and cannot use `var(--semantic-*)`.
 
-`favicon.svg` carries its own `prefers-color-scheme` rule. That matters more here than anywhere on the site — a favicon sits on the browser's **tab strip**, not on the page background, so a dark mark disappears into a dark tab. A light plate sits behind the disc so a browser that ignores the query still shows the mark. The PNG fallbacks and `favicon.ico` can't flip and take the light fill. `/favicon.ico` is served because a 404 there replaces the tab icon.
+The icon is a light tile with the navy mark on it, in the SVG, the PNG and `favicon.ico`. A navy disc on a dark tab is the tab, which is how the icon went missing on 2026-10-19. The SVG has no stylesheet: a browser that refuses a style block paints nothing and does not fall through to the PNG. The PNG is the first link for that reason. `favicon.ico` is a bitmap, because a PNG wrapped in an ICO header is what Safari declines, and a missing `/favicon.ico` replaces the tab icon on its own.
 
 `public/` exists only for these files. It was briefly empty after the hero moved to `src/assets/`, and an empty directory holds no tracked files — git prunes it on checkout, so it vanished from fresh clones and `build-storybook` failed on its missing `staticDirs` entry everywhere but the machine with the stale folder. If it ever empties again, drop the `staticDirs` line with it rather than committing a `.gitkeep`.
 

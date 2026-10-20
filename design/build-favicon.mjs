@@ -14,16 +14,15 @@
  * values are therefore read out of tokens/tokens.json at build time and inlined
  * — resolved from the token, never typed in.
  *
- * The SVG is theme-aware, which matters more here than on the page: a favicon
- * sits on the browser's tab strip, not on the site's background, so a dark mark
- * disappears into a dark tab. `prefers-color-scheme` inside the SVG is honoured
- * by Chrome, Safari and Firefox for favicons. A light plate sits behind the
- * disc anyway, because a browser that ignores that query would otherwise paint
- * navy on a dark tab and the icon would vanish.
+ * The tab strip is not the page. A navy disc on a dark tab is the tab, which
+ * is what "the favicon has gone" looked like on 2026-10-19 and again the next
+ * day. The icon is a light tile with the mark on it, in every file, with no
+ * stylesheet inside the SVG. A style block is what some browsers refuse to
+ * paint, and a refused SVG leaves the tab empty even when the PNG beside it
+ * is fine. The PNG is listed first for that reason.
  *
- * The PNG fallbacks cannot be theme-aware, so they take the light-mode fill —
- * the one that reads on the white-ish surfaces iOS and legacy browsers
- * composite onto.
+ * favicon.ico is a real bitmap, not a PNG wrapped in an ICO header. Safari
+ * does not decode the wrapped kind and then shows nothing.
  */
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -54,55 +53,70 @@ if (!light || !dark) throw new Error('could not resolve mark colours from tokens
 
 const shapes = MARK_PATHS.map((path) => {
   const rule = path.evenOdd ? ' fill-rule="evenodd"' : '';
-  return `<path class="ink" fill="${light}" d="${path.d}"${rule}/>`;
+  return `<path fill="${light}" d="${path.d}"${rule}/>`;
 }).join('');
 
-/*
-  The disc fills its own viewBox, so a navy mark on a dark tab is the tab.
-  A plate behind it, with the disc inset, keeps a light ring and light letters
-  when a browser ignores the media query. The query still flips both for a
-  dark tab that does honour it.
-*/
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}" role="img" aria-label="deesyn">
-<style>
-  .plate { fill: ${dark} }
-  .ink { fill: ${light} }
-  @media (prefers-color-scheme: dark) {
-    .plate { fill: ${light} }
-    .ink { fill: ${dark} }
-  }
-</style>
-<rect class="plate" width="48" height="48" rx="24" fill="${dark}"/>
-<g transform="translate(3 3) scale(0.875)">${shapes}</g>
-</svg>
+/* A full light square, then the disc inset, so a dark tab shows a tile. */
+const art = `<rect width="48" height="48" fill="${dark}"/><g transform="translate(6 6) scale(0.75)">${shapes}</g>`;
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}" role="img" aria-label="deesyn">${art}</svg>
 `;
 
 const pub = join(root, FAVICON_OUT);
 mkdirSync(pub, { recursive: true });
 writeFileSync(join(pub, 'favicon.svg'), svg);
 
-// Flat-fill copy for the raster fallbacks; no media query, light fill only.
-const flat = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}"><rect width="48" height="48" rx="24" fill="${dark}"/><g transform="translate(3 3) scale(0.875)" fill="${light}">${shapes.replaceAll(/ class="ink"| fill="[^"]*"/g, '')}</g></svg>`;
-const png32 = join(pub, 'favicon-32.png');
+const flat = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}">${art}</svg>`;
 for (const [name, size] of [['favicon-32.png', 32], ['apple-touch-icon.png', 180]]) {
   await sharp(Buffer.from(flat), { density: 384 }).resize(size, size).png().toFile(join(pub, name));
 }
 
-/* Browsers still request /favicon.ico on their own. A 404 there replaces the
-   tab icon even when the SVG link is fine. The ICO wraps the 32px PNG. */
-const png = await sharp(png32).png().toBuffer();
-const header = Buffer.alloc(6);
-header.writeUInt16LE(0, 0);
-header.writeUInt16LE(1, 2);
-header.writeUInt16LE(1, 4);
-const entry = Buffer.alloc(16);
-entry.writeUInt8(32, 0);
-entry.writeUInt8(32, 1);
-entry.writeUInt16LE(1, 4);
-entry.writeUInt16LE(32, 6);
-entry.writeUInt32LE(png.length, 8);
-entry.writeUInt32LE(22, 12);
-writeFileSync(join(pub, 'favicon.ico'), Buffer.concat([header, entry, png]));
+/* Classic ICO: a DIB, bottom-up, plus an AND mask. Width 0 in the directory
+   means 256, so 16 and 32 are written as themselves. */
+function dib(raw, size) {
+  const header = Buffer.alloc(40);
+  header.writeUInt32LE(40, 0);
+  header.writeInt32LE(size, 4);
+  header.writeInt32LE(size * 2, 8);
+  header.writeUInt16LE(1, 12);
+  header.writeUInt16LE(32, 14);
+  const xor = Buffer.alloc(size * size * 4);
+  const stride = Math.ceil(size / 32) * 4;
+  const mask = Buffer.alloc(stride * size);
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const src = ((size - 1 - y) * size + x) * 4;
+      const dst = (y * size + x) * 4;
+      xor[dst] = raw[src + 2];
+      xor[dst + 1] = raw[src + 1];
+      xor[dst + 2] = raw[src];
+      xor[dst + 3] = raw[src + 3];
+    }
+  }
+  return Buffer.concat([header, xor, mask]);
+}
+
+const images = [];
+for (const size of [16, 32]) {
+  const raw = await sharp(Buffer.from(flat), { density: 384 }).resize(size, size).ensureAlpha().raw().toBuffer();
+  images.push({ size, data: dib(raw, size) });
+}
+const dir = Buffer.alloc(6);
+dir.writeUInt16LE(0, 0);
+dir.writeUInt16LE(1, 2);
+dir.writeUInt16LE(images.length, 4);
+let offset = 6 + images.length * 16;
+const entries = images.map(({ size, data }) => {
+  const entry = Buffer.alloc(16);
+  entry.writeUInt8(size, 0);
+  entry.writeUInt8(size, 1);
+  entry.writeUInt16LE(1, 4);
+  entry.writeUInt16LE(32, 6);
+  entry.writeUInt32LE(data.length, 8);
+  entry.writeUInt32LE(offset, 12);
+  offset += data.length;
+  return entry;
+});
+writeFileSync(join(pub, 'favicon.ico'), Buffer.concat([dir, ...entries, ...images.map((image) => image.data)]));
 
 console.log(`favicon.svg          Ro mark, ${light} / ${dark}`);
 console.log('favicon-32.png       32x32');
