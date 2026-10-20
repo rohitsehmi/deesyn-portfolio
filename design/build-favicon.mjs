@@ -23,6 +23,10 @@
  *
  * favicon.ico is a real bitmap, not a PNG wrapped in an ICO header. Safari
  * does not decode the wrapped kind and then shows nothing.
+ *
+ * favicon.png is 192px and its URL does not carry a query string. Google
+ * Search ignores SVG favicons, wants a PNG larger than 48px, and drops an
+ * icon whose address keeps changing. The browser links can still be versioned.
  */
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -66,7 +70,7 @@ mkdirSync(pub, { recursive: true });
 writeFileSync(join(pub, 'favicon.svg'), svg);
 
 const flat = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}">${art}</svg>`;
-for (const [name, size] of [['favicon-32.png', 32], ['apple-touch-icon.png', 180]]) {
+for (const [name, size] of [['favicon-32.png', 32], ['favicon.png', 192], ['apple-touch-icon.png', 180]]) {
   await sharp(Buffer.from(flat), { density: 384 }).resize(size, size).png().toFile(join(pub, name));
 }
 
@@ -119,6 +123,7 @@ const entries = images.map(({ size, data }) => {
 writeFileSync(join(pub, 'favicon.ico'), Buffer.concat([dir, ...entries, ...images.map((image) => image.data)]));
 
 console.log(`favicon.svg          Ro mark, ${light} / ${dark}`);
+console.log('favicon.png          192x192');
 console.log('favicon-32.png       32x32');
 console.log('apple-touch-icon.png 180x180');
 console.log('favicon.ico          32x32');

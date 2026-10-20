@@ -178,8 +178,10 @@ const structuredData = article
       Rohit's own mark, generated from the same path data the Logo component
       renders — see design/build-favicon.mjs. The PNG is listed first and the
       tile is light, because a navy disc disappears on a dark tab and a browser
-      that refuses the SVG then shows nothing at all.
+      that refuses the SVG then shows nothing at all. /favicon.png has no query
+      string: Google Search ignores the SVG and wants a stable PNG above 48px.
     */}
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon-32.png?v=3" type="image/png" sizes="32x32" />
     <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico?v=3" sizes="16x16 32x32" />
